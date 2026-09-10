@@ -1,5 +1,7 @@
 # Architecture
 
-Initial structure: backend/ for the API; frontend/, data/ and eval/ reserved for future work; docs/ for project documentation.
+HTTP client -> Uvicorn -> FastAPI application in backend/main.py -> JSON response.
 
-No database or AI integration is implemented.
+GET /health returns HTTP 200 and {"status":"ok"}. It does not test database connectivity.
+
+frontend/, data/ and eval/ are reserved for future work. No database or AI integration is implemented.
