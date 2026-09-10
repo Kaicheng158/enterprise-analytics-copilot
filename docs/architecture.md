@@ -1,7 +1,12 @@
 # Architecture
 
-HTTP client -> Uvicorn -> FastAPI application in backend/main.py -> JSON response.
+Browser -> local Uvicorn/FastAPI (127.0.0.1:8765).
 
-GET /health returns HTTP 200 and {"status":"ok"}. It does not test database connectivity.
+- GET /health returns {"status":"ok"} without querying PostgreSQL.
+- GET /health/db uses backend/database.py and Psycopg to execute SELECT 1.
+- PostgreSQL 17 runs in Docker Compose and is bound to 127.0.0.1:5432.
+- Data persists in a Docker named volume.
+- Credentials are loaded from the ignored local .env file.
+- Connections and queries have five-second timeouts. Database errors return a generic HTTP 503 response.
 
-frontend/, data/ and eval/ are reserved for future work. No database or AI integration is implemented.
+FastAPI is not containerized. No LLM, RAG or Agent functionality is implemented.
