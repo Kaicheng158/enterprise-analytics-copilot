@@ -10,4 +10,4 @@
 7. Deployment.
 8. Enterprise permissions, security and human review.
 
-Only the minimum FastAPI milestone is currently authorized.
+Phase 0 complete: FastAPI and PostgreSQL run together in Docker Compose; both health endpoints have been verified. Stop here; Phase 1 has not started.

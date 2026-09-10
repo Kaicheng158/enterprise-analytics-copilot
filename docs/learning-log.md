@@ -8,3 +8,6 @@
 - Docker 29.7.2 and Compose 5.5.1 verified. PostgreSQL 17.11 container healthy.
 - Verified real HTTP 200 responses from /health and /health/db; the latter executed SELECT 1 and returned 1.
 - Verified database errors map to generic HTTP 503 without exposing connection details.
+- Completed Phase 0 containerization: Compose starts PostgreSQL and FastAPI; both report healthy.
+- Real HTTP requests to the containerized API returned 200 for /health and /health/db, with SELECT 1 returning 1.
+- Confirmed the API runs as non-root and its image contains neither .env nor analytics-agent-env.
