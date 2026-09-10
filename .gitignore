@@ -1,0 +1,9 @@
+analytics-agent-env/
+__pycache__/
+*.py[cod]
+.DS_Store
+.env
+.env.*
+*.pem
+*.key
+*.log
