@@ -16,3 +16,6 @@
 - Eight offline tests passed; blank HTTP input returned 422; /health and /health/db remained HTTP 200.
 - Added provider abstraction and placeholder .env.example; no new dependencies.
 - Phase 1 Task 1 complete: classified sanitized provider errors, fixed wrapped timeouts and interrupted/malformed responses; 12 offline tests pass, including ASGI error-response verification. No paid API request needed for this task.
+- Phase 1 Tasks 2–3 complete: validated network timeout and bounded HTTP retries with jitter; correlated attempt/request usage and latency logs; versioned cache-aware peak/off-peak USD cost estimates.
+- 19 offline tests pass, covering retries, deterministic failures, config bounds, price boundaries, log sanitization and total latency.
+- Real container /chat verification: HTTP 200, 10 tokens, 1125 ms, retry_count=0, estimated USD 0.00000195; both health endpoints HTTP 200. Single sample, not a benchmark.

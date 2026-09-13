@@ -1,5 +1,6 @@
 import psycopg
-from fastapi import Depends, FastAPI, HTTPException
+from fastapi import Depends, FastAPI, HTTPException, Request
+from fastapi.responses import JSONResponse
 from pydantic import BaseModel, Field, field_validator
 
 from backend.llm import ChatResult, LLMProvider, ProviderError, get_provider
@@ -7,6 +8,12 @@ from backend.llm import ChatResult, LLMProvider, ProviderError, get_provider
 from backend.database import check_database
 
 app = FastAPI()
+
+
+@app.exception_handler(ProviderError)
+async def provider_error_handler(request: Request, error: ProviderError):
+    return JSONResponse(status_code=error.status_code,
+                        content={"detail": {"code": error.code, "message": str(error)}})
 
 
 @app.get("/health")

@@ -6,7 +6,7 @@ from http.client import IncompleteRead, RemoteDisconnected
 from unittest.mock import patch
 from urllib.error import HTTPError, URLError
 
-from backend.llm import DeepSeekProvider, ProviderError, get_provider
+from backend.llm import DeepSeekProvider, ProviderError, get_provider, RetryConfig
 from backend.main import app
 
 
@@ -14,7 +14,7 @@ class ErrorTests(unittest.TestCase):
     def check_error(self, error, status, code):
         with patch('backend.llm.urlopen', side_effect=error):
             with self.assertRaises(ProviderError) as caught:
-                DeepSeekProvider('private-key', 'deepseek-flash').chat('private-prompt')
+                DeepSeekProvider('private-key', 'deepseek-flash', RetryConfig(max_retries=0)).chat('private-prompt')
         self.assertEqual(caught.exception.status_code, status)
         self.assertEqual(caught.exception.code, code)
         self.assertNotIn('private', str(caught.exception))
@@ -51,7 +51,7 @@ class ErrorTests(unittest.TestCase):
                     json.dumps({**base, 'usage': None}).encode(), json.dumps({**base, 'choices': []}).encode()]:
             with self.subTest(raw=raw), patch('backend.llm.urlopen', return_value=io.BytesIO(raw)):
                 with self.assertRaises(ProviderError) as caught:
-                    DeepSeekProvider('private-key', 'deepseek-flash').chat('private-prompt')
+                    DeepSeekProvider('private-key', 'deepseek-flash', RetryConfig(max_retries=0)).chat('private-prompt')
                 self.assertEqual(caught.exception.code, 'llm_invalid_response')
 
     def test_asgi_error_contract(self):

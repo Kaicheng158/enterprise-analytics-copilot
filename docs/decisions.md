@@ -13,5 +13,7 @@
 
 - Phase 1 implements DeepSeek only, using official deepseek-flash and a minimal provider protocol.
 - Use standard-library HTTP rather than adding an SDK for one endpoint.
-- Return reported usage and measure provider latency; do not implement billing or monetary estimates yet.
+- Return reported usage and provider latency. Phase 1 now includes versioned cost estimates; billing remains out of scope.
 - Store DeepSeek key in ignored .env and runtime container environment; .env.example contains placeholders only.
+- Retry only an explicit HTTP status allowlist; do not retry ambiguous network failures. Record unknown failed-attempt usage rather than claiming complete cost.
+- Maintain price snapshots in backend/pricing.py and choose peak/off-peak tier by attempt start UTC; use decimal arithmetic.

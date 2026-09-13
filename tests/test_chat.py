@@ -6,7 +6,7 @@ from urllib.error import HTTPError
 
 from fastapi import HTTPException
 from pydantic import ValidationError
-from backend.llm import DeepSeekProvider, ProviderError
+from backend.llm import DeepSeekProvider, ProviderError, RetryConfig
 from backend.main import ChatRequest, chat
 
 
@@ -18,7 +18,7 @@ class ChatTests(unittest.TestCase):
 
     def test_usage_and_request_contract(self):
         with patch('backend.llm.urlopen', return_value=io.BytesIO(json.dumps(self.payload()).encode())) as call:
-            result = DeepSeekProvider('test-key', 'deepseek-flash').chat('Hello')
+            result = DeepSeekProvider('test-key', 'deepseek-flash', RetryConfig(max_retries=0)).chat('Hello')
         self.assertEqual(result.usage.total_tokens, 5)
         self.assertEqual(result.usage.prompt_cache_hit_tokens, 1)
         body = json.loads(call.call_args.args[0].data)
@@ -29,7 +29,7 @@ class ChatTests(unittest.TestCase):
     def test_missing_key(self):
         with patch('backend.llm.urlopen') as call:
             with self.assertRaises(ProviderError) as caught:
-                DeepSeekProvider('', 'deepseek-flash').chat('Hello')
+                DeepSeekProvider('', 'deepseek-flash', RetryConfig(max_retries=0)).chat('Hello')
             self.assertEqual(caught.exception.status_code, 503)
             call.assert_not_called()
 
@@ -37,21 +37,21 @@ class ChatTests(unittest.TestCase):
         for code, expected in [(401, 503), (402, 503), (429, 503), (500, 502)]:
             with self.subTest(code=code), patch('backend.llm.urlopen', side_effect=HTTPError('https://api.deepseek.com', code, 'SECRET', {}, None)):
                 with self.assertRaises(ProviderError) as caught:
-                    DeepSeekProvider('test-key', 'deepseek-flash').chat('Hello')
+                    DeepSeekProvider('test-key', 'deepseek-flash', RetryConfig(max_retries=0)).chat('Hello')
                 self.assertEqual(caught.exception.status_code, expected)
                 self.assertNotIn('SECRET', str(caught.exception))
 
     def test_timeout(self):
         with patch('backend.llm.urlopen', side_effect=TimeoutError):
             with self.assertRaises(ProviderError) as caught:
-                DeepSeekProvider('test-key', 'deepseek-flash').chat('Hello')
+                DeepSeekProvider('test-key', 'deepseek-flash', RetryConfig(max_retries=0)).chat('Hello')
             self.assertEqual(caught.exception.status_code, 504)
 
     def test_missing_usage_is_not_fabricated(self):
         data = self.payload(); del data['usage']
         with patch('backend.llm.urlopen', return_value=io.BytesIO(json.dumps(data).encode())):
             with self.assertRaises(ProviderError):
-                DeepSeekProvider('test-key', 'deepseek-flash').chat('Hello')
+                DeepSeekProvider('test-key', 'deepseek-flash', RetryConfig(max_retries=0)).chat('Hello')
 
     def test_invalid_messages(self):
         for value in ['', '   ', 'x' * 8001]:

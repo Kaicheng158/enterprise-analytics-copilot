@@ -65,7 +65,7 @@ curl -X POST http://127.0.0.1:8765/chat -H 'Content-Type: application/json' -d '
 
 The response includes `answer`, `provider`, `model`, `usage`, `latency_ms` and `finish_reason`. Usage includes input/output/total tokens, cache hit/miss tokens and reasoning tokens when supplied by DeepSeek. Missing optional counters are null, not fabricated zeroes. Logs record usage metadata without prompts, answers or API keys. These logs are not a billing ledger or durable usage database.
 
-This is a single-turn, non-streaming call to the official OpenAI-compatible `https://api.deepseek.com/chat/completions` endpoint. Thinking is disabled and output is limited to 512 tokens. `finish_reason=length` means the answer was truncated. The network timeout is 30 seconds per blocking operation; there are no automatic retries. Input is limited to 8000 characters and blank messages return 422. Provider configuration/rate/balance errors return 503, other upstream failures 502, and timeouts 504, without upstream error details.
+This is a single-turn, non-streaming call to the official OpenAI-compatible `https://api.deepseek.com/chat/completions` endpoint. Thinking is disabled and output is limited to 512 tokens. `finish_reason=length` means the answer was truncated. The default network timeout is 30 seconds per blocking operation; retry configuration is documented below. Input is limited to 8000 characters and blank messages return 422. Provider configuration/rate/balance errors return 503, other upstream failures 502, and timeouts 504, without upstream error details.
 
 No new package is needed: the adapter uses Python's standard HTTP library. Business routes depend on an LLMProvider protocol, not DeepSeek HTTP details. Only DeepSeek is implemented.
 
@@ -94,5 +94,24 @@ This replaces the earlier string-valued provider `detail`. Request validation re
 | 502 | llm_invalid_response | Malformed response, missing usage or empty answer |
 | 504 | llm_timeout | Direct or wrapped network timeout |
 
-Messages are locally defined; upstream bodies and credentials are never returned. No retry behavior is introduced by this task.
+Messages are locally defined; upstream bodies and credentials are never returned. Retry behavior is documented below.
 [DeepSeek error reference](https://api-docs.deepseek.com/quick_start/error_codes/)
+
+### Timeout and retry
+
+- `LLM_TIMEOUT_SECONDS`: per-blocking-operation network timeout, default 30, range (0,120]. This is not a hard end-to-end deadline.
+- `LLM_MAX_RETRIES`: default 2 (3 attempts total), range 0–3.
+- `LLM_BACKOFF_SECONDS`: default 1, range (0,5]. Delay is min(8, base * 2^retry_index) plus 0–25% jitter, at most 10 seconds per wait.
+- Retry only upstream HTTP 429, 500, 502, 503 and 504. Authentication, access, balance, invalid request and malformed responses are not retried.
+- Network timeouts and disconnects are not automatically retried because completion and charging may already have occurred. HTTP retries can also incur upstream usage; no exactly-once guarantee is claimed.
+- Invalid retry configuration returns HTTP 503 / `llm_invalid_config` without exposing environment values. Restart/recreate the API after configuration changes.
+
+### Usage, latency and estimated cost
+
+Logs emit `llm_attempt` for each attempt and `llm_request` once at completion/failure. JSON records contain request_id, provider, model, input/output/total tokens, latency_ms, retry_count and status. Attempt latency excludes backoff; request latency includes attempts and waits. Request records summarize attempts and must not be summed with attempt records.
+
+The response adds request_id, retry_count, estimated_cost (decimal string in USD), pricing_version, pricing_tier and cost_complete. Token counts and estimated_cost describe the successful attempt only. Failed attempts have unknown usage/cost (null), so any retried request has cost_complete=false. Missing cache counts or unknown model prices also produce null cost, never an invented zero.
+
+Rates and peak/off-peak rules are maintained in `backend/pricing.py`, with source URL and snapshot version. Rates are USD per million tokens. Estimates use cache-hit input, cache-miss input and output counts; reasoning tokens are already part of output and are not charged twice. The rate tier is selected using the UTC start time of the successful attempt. Requests crossing a rate boundary may differ from provider billing. These are estimates for reported usage, not a billing ledger or guarantee of the final charged amount.
+
+[Official price source](https://api-docs.deepseek.com/quick_start/pricing/)
