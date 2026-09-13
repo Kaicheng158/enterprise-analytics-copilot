@@ -10,3 +10,8 @@
 - Use Psycopg binary and python-dotenv in the project venv; keep credentials out of Git.
 - Use postgres:5432 within the Compose network, regardless of host database port settings.
 - Preserve the database volume and the browser API address during containerization.
+
+- Phase 1 implements DeepSeek only, using official deepseek-flash and a minimal provider protocol.
+- Use standard-library HTTP rather than adding an SDK for one endpoint.
+- Return reported usage and measure provider latency; do not implement billing or monetary estimates yet.
+- Store DeepSeek key in ignored .env and runtime container environment; .env.example contains placeholders only.

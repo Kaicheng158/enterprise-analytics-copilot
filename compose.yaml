@@ -5,6 +5,8 @@ services:
       POSTGRES_USER: ${POSTGRES_USER:?required}
       POSTGRES_DB: ${POSTGRES_DB:?required}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?required}
+      DEEPSEEK_API_KEY: ${DEEPSEEK_API_KEY:-}
+      DEEPSEEK_MODEL: ${DEEPSEEK_MODEL:-deepseek-flash}
       POSTGRES_HOST: postgres
       POSTGRES_PORT: "5432"
     ports:

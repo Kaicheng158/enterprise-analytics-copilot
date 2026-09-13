@@ -11,3 +11,7 @@
 - Completed Phase 0 containerization: Compose starts PostgreSQL and FastAPI; both report healthy.
 - Real HTTP requests to the containerized API returned 200 for /health and /health/db, with SELECT 1 returning 1.
 - Confirmed the API runs as non-root and its image contains neither .env nor analytics-agent-env.
+- Phase 1: direct real deepseek-flash call returned OK with 58 total tokens.
+- Container POST /chat returned HTTP 200, OK, 9 prompt + 1 completion = 10 tokens, provider latency 1151 ms (single smoke test, not a benchmark).
+- Eight offline tests passed; blank HTTP input returned 422; /health and /health/db remained HTTP 200.
+- Added provider abstraction and placeholder .env.example; no new dependencies.
