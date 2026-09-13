@@ -18,3 +18,5 @@ Future direction (not implemented): provider/model switching and quality/latency
 No RAG, Tool Calling, Agent or LangGraph is implemented.
 
 The provider emits correlated attempt and request-summary logs. A bounded HTTP retry loop surrounds each call. Request latency includes backoff; successful-attempt token usage and cost remain separate from unknown failed-attempt charges.
+
+Central configuration: backend/config.py loads validated settings and the provider/price catalog. The provider factory selects the sole registered DeepSeek adapter. ChatRequest separates system/user content; the adapter serializes them as distinct role messages.

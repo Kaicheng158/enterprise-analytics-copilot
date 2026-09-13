@@ -2,16 +2,7 @@
 from datetime import datetime, timezone
 from decimal import Decimal
 
-PRICING_VERSION = "deepseek-2026-09-13"
-PRICING_SOURCE = "https://api-docs.deepseek.com/quick_start/pricing/"
-PRICES = {
-    ("deepseek", "deepseek-flash"): {
-        "peak": {"hit": "0.006", "miss": "0.3", "output": "1.2"},
-        "off_peak": {"hit": "0.003", "miss": "0.15", "output": "0.6"},
-        "peak_weekdays": [0, 1, 2, 3, 4],
-        "peak_utc_hours": [(1, 4), (6, 10)],
-    }
-}
+from backend.config import PRICING_VERSION, PRICING_SOURCE, PRICES
 
 
 def estimate_cost(provider, model, usage, started_at: datetime):

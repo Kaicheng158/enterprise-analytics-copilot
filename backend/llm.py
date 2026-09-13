@@ -4,21 +4,21 @@ import random
 import uuid
 from datetime import datetime, timezone
 import logging
-import os
 from http.client import HTTPException as HTTPTransportError
 import socket
 import time
-from pathlib import Path
 from typing import Protocol
 from urllib.error import HTTPError, URLError
 from urllib.request import Request, urlopen
 
 from backend.pricing import PRICING_VERSION, estimate_cost
 
-from dotenv import load_dotenv
 from pydantic import BaseModel, Field, ValidationError
 
-load_dotenv(Path(__file__).resolve().parents[1] / ".env")
+from backend.config import (
+    BACKOFF_CAP_SECONDS, BACKOFF_JITTER_FRACTION, COST_CURRENCY,
+    LLMSettings, PROVIDERS, RETRYABLE_HTTP_STATUSES, RetryConfig, load_settings,
+)
 logger = logging.getLogger("uvicorn.error")
 
 
@@ -41,7 +41,7 @@ class ChatResult(BaseModel):
     request_id: str = ""
     retry_count: int = 0
     estimated_cost: str | None = None
-    cost_currency: str = "USD"
+    cost_currency: str = COST_CURRENCY
     pricing_version: str = PRICING_VERSION
     pricing_tier: str | None = None
     cost_complete: bool = False
@@ -56,34 +56,30 @@ class ProviderError(Exception):
 
 
 class LLMProvider(Protocol):
-    def chat(self, message: str) -> ChatResult: ...
-
-
-class RetryConfig(BaseModel):
-    timeout_seconds: float = Field(default=30, gt=0, le=120, allow_inf_nan=False)
-    max_retries: int = Field(default=2, ge=0, le=3)
-    backoff_seconds: float = Field(default=1, gt=0, le=5, allow_inf_nan=False)
+    def chat(self, message: str, system_message: str | None = None) -> ChatResult: ...
 
 
 class DeepSeekProvider:
-    def __init__(self, api_key: str, model: str, config: RetryConfig | None = None):
+    def __init__(self, api_key: str, model: str, config: RetryConfig | None = None, settings: LLMSettings | None = None):
         self.api_key = api_key
         self.model = model
-        self.config = config or RetryConfig()
+        self.settings = settings or LLMSettings(model=model)
+        self.config = config or self.settings
+        self.provider = self.settings.provider
 
-    def chat(self, message: str) -> ChatResult:
+    def chat(self, message: str, system_message: str | None = None) -> ChatResult:
         request_id = str(uuid.uuid4())
         started = time.monotonic()
         for attempt in range(self.config.max_retries + 1):
             attempt_start = time.monotonic()
             utc_start = datetime.now(timezone.utc)
             try:
-                result = self._chat_once(message)
+                result = self._chat_once(message, system_message)
             except ProviderError as error:
                 record = {
-                    "request_id": request_id, "provider": "deepseek", "model": self.model,
+                    "request_id": request_id, "provider": self.provider, "model": self.model,
                     "input_tokens": None, "output_tokens": None, "total_tokens": None,
-                    "estimated_cost": None, "cost_currency": "USD", "pricing_version": PRICING_VERSION,
+                    "estimated_cost": None, "cost_currency": COST_CURRENCY, "pricing_version": PRICING_VERSION,
                     "latency_ms": round((time.monotonic() - attempt_start) * 1000),
                     "retry_count": attempt, "status": "error", "error_code": error.code,
                 }
@@ -94,10 +90,10 @@ class DeepSeekProvider:
                     logger.info("llm_request %s", json.dumps(record))
                     raise
                 # Bounded exponential backoff with jitter; no unbounded retry loop.
-                delay = min(8.0, self.config.backoff_seconds * 2 ** attempt)
-                time.sleep(delay + random.uniform(0, delay * 0.25))
+                delay = min(BACKOFF_CAP_SECONDS, self.config.backoff_seconds * 2 ** attempt)
+                time.sleep(delay + random.uniform(0, delay * BACKOFF_JITTER_FRACTION))
                 continue
-            amount, tier = estimate_cost("deepseek", result.model, result.usage, utc_start)
+            amount, tier = estimate_cost(self.provider, result.model, result.usage, utc_start)
             result.request_id = request_id
             result.retry_count = attempt
             result.estimated_cost = amount
@@ -109,7 +105,7 @@ class DeepSeekProvider:
                 "output_tokens": result.usage.completion_tokens,
                 "total_tokens": result.usage.total_tokens,
                 "usage": result.usage.model_dump(), "estimated_cost": amount,
-                "cost_currency": "USD", "pricing_version": PRICING_VERSION,
+                "cost_currency": COST_CURRENCY, "pricing_version": PRICING_VERSION,
                 "pricing_tier": tier, "retry_count": attempt, "status": "success",
                 "latency_ms": round((time.monotonic() - attempt_start) * 1000),
             }
@@ -120,17 +116,20 @@ class DeepSeekProvider:
             return result
         raise AssertionError("Unreachable retry state")
 
-    def _chat_once(self, message: str) -> ChatResult:
+    def _chat_once(self, message: str, system_message: str | None = None) -> ChatResult:
         if not self.api_key:
             raise ProviderError(503, "LLM provider is not configured", "llm_not_configured")
         request = Request(
-            "https://api.deepseek.com/chat/completions",
+            PROVIDERS[self.provider]["chat_url"],
             data=json.dumps({
                 "model": self.model,
-                "messages": [{"role": "user", "content": message}],
+                "messages": [
+                    {"role": "system", "content": self.settings.system_message if system_message is None else system_message},
+                    {"role": "user", "content": message},
+                ],
                 "stream": False,
-                "thinking": {"type": "disabled"},
-                "max_tokens": 512,
+                "thinking": {"type": self.settings.thinking},
+                "max_tokens": self.settings.max_output_tokens,
             }).encode(),
             headers={"Authorization": "Bearer " + self.api_key,
                      "Content-Type": "application/json"},
@@ -153,7 +152,7 @@ class DeepSeekProvider:
                 error.code, (502, "llm_upstream_error", "LLM provider request failed")
             )
             error.close()
-            raise ProviderError(status, message, code, retryable=error.code in (429, 500, 502, 503, 504)) from None
+            raise ProviderError(status, message, code, retryable=error.code in RETRYABLE_HTTP_STATUSES) from None
         except (TimeoutError, socket.timeout):
             raise ProviderError(504, "LLM provider timed out", "llm_timeout") from None
         except URLError as error:
@@ -180,7 +179,7 @@ class DeepSeekProvider:
                 "reasoning_tokens": (details or {}).get("reasoning_tokens"),
             })
             result = ChatResult(
-                answer=answer, provider="deepseek", model=data["model"], usage=usage,
+                answer=answer, provider=self.provider, model=data["model"], usage=usage,
                 latency_ms=round((time.monotonic() - started) * 1000),
                 finish_reason=choice["finish_reason"],
             )
@@ -189,17 +188,14 @@ class DeepSeekProvider:
         return result
 
 
+# Registration boundary for future adapters; no other provider is implemented.
+PROVIDER_ADAPTERS = {"deepseek": DeepSeekProvider}
+
+
 def get_provider() -> LLMProvider:
     try:
-        config = RetryConfig(
-            timeout_seconds=os.getenv("LLM_TIMEOUT_SECONDS", "30"),
-            max_retries=os.getenv("LLM_MAX_RETRIES", "2"),
-            backoff_seconds=os.getenv("LLM_BACKOFF_SECONDS", "1"),
-        )
-    except ValidationError:
-        raise ProviderError(503, "Invalid LLM retry configuration", "llm_invalid_config") from None
-    return DeepSeekProvider(
-        config=config,
-        api_key=os.getenv("DEEPSEEK_API_KEY", ""),
-        model=os.getenv("DEEPSEEK_MODEL", "deepseek-flash"),
-    )
+        settings = load_settings()
+        adapter = PROVIDER_ADAPTERS[settings.provider]
+    except (ValueError, KeyError):
+        raise ProviderError(503, "Invalid LLM configuration", "llm_invalid_config") from None
+    return adapter(api_key=settings.api_key.get_secret_value(), model=settings.model, settings=settings)

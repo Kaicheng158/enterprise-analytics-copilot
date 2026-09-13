@@ -60,13 +60,13 @@ class ChatTests(unittest.TestCase):
 
     def test_route_accepts_provider_abstraction(self):
         class Stub:
-            def chat(self, message):
+            def chat(self, message, system_message=None):
                 return message
         self.assertEqual(chat(ChatRequest(message='Hello'), Stub()), 'Hello')
 
     def test_route_maps_provider_error(self):
         class Failing:
-            def chat(self, message):
+            def chat(self, message, system_message=None):
                 raise ProviderError(504, 'LLM provider timed out')
         with self.assertRaises(HTTPException) as caught:
             chat(ChatRequest(message='Hello'), Failing())

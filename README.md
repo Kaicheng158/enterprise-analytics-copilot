@@ -56,7 +56,7 @@ Documentation lives in docs/. RAG, Tool Calling and Agent features are not imple
 
 ## Phase 1: DeepSeek chat
 
-Copy `.env.example` to `.env` only for a new setup. For an existing setup, preserve database credentials and add `DEEPSEEK_API_KEY` locally. Never share or commit its value. `DEEPSEEK_MODEL` defaults to `deepseek-flash`.
+Copy `.env.example` to `.env` only for a new setup. For an existing setup, preserve database credentials and add `DEEPSEEK_API_KEY` locally. Never share or commit its value. `LLM_MODEL` defaults to `deepseek-flash`; the legacy `DEEPSEEK_MODEL` remains a fallback.
 
 ```sh
 docker compose up -d --build --wait
@@ -112,6 +112,33 @@ Logs emit `llm_attempt` for each attempt and `llm_request` once at completion/fa
 
 The response adds request_id, retry_count, estimated_cost (decimal string in USD), pricing_version, pricing_tier and cost_complete. Token counts and estimated_cost describe the successful attempt only. Failed attempts have unknown usage/cost (null), so any retried request has cost_complete=false. Missing cache counts or unknown model prices also produce null cost, never an invented zero.
 
-Rates and peak/off-peak rules are maintained in `backend/pricing.py`, with source URL and snapshot version. Rates are USD per million tokens. Estimates use cache-hit input, cache-miss input and output counts; reasoning tokens are already part of output and are not charged twice. The rate tier is selected using the UTC start time of the successful attempt. Requests crossing a rate boundary may differ from provider billing. These are estimates for reported usage, not a billing ledger or guarantee of the final charged amount.
+Rates and peak/off-peak rules are maintained in `backend/config.py`, with source URL and snapshot version. Rates are USD per million tokens. Estimates use cache-hit input, cache-miss input and output counts; reasoning tokens are already part of output and are not charged twice. The rate tier is selected using the UTC start time of the successful attempt. Requests crossing a rate boundary may differ from provider billing. These are estimates for reported usage, not a billing ledger or guarantee of the final charged amount.
 
 [Official price source](https://api-docs.deepseek.com/quick_start/pricing/)
+
+### Central model configuration and messages
+
+`backend/config.py` is the single source for provider catalog, supported model names, API endpoint, retry defaults/limits, generation settings, default system instruction and versioned pricing. `backend/pricing.py` only calculates estimates. The provider factory selects a registered adapter; only DeepSeek/deepseek-flash is enabled.
+
+Configuration precedence: process/Compose environment over local .env; LLM_MODEL over legacy DEEPSEEK_MODEL over the catalog default. Empty optional environment values use defaults. Unsupported provider/model or invalid limits return a sanitized 503 / llm_invalid_config. No silent provider fallback occurs.
+
+| Environment variable | Default |
+|---|---|
+| LLM_PROVIDER | deepseek |
+| LLM_MODEL | deepseek-flash |
+| LLM_TIMEOUT_SECONDS | 30 |
+| LLM_MAX_RETRIES | 2 |
+| LLM_BACKOFF_SECONDS | 1 |
+| LLM_MAX_OUTPUT_TOKENS | 512 (allowed 1–8192) |
+| LLM_SYSTEM_MESSAGE | You are a helpful assistant. |
+
+`DEEPSEEK_API_KEY` remains a runtime secret. Thinking stays disabled in this phase. Compose forwards overrides, while Python owns the defaults. Recreate the API after changing .env.
+
+```sh
+curl -X POST http://127.0.0.1:8765/chat -H 'Content-Type: application/json' \
+  -d '{"user_message":"Say hello.","system_message":"Answer briefly in English."}'
+```
+
+`user_message` is required (1–8000 characters). `system_message` is optional (1–2000 characters when provided); omission or null uses the configured default. Blank text is rejected. The adapter sends separate system and user role messages, in that order. The old `message` field is accepted as an alias for user_message; sending both is rejected. Unknown fields are rejected. Provider/model selection is server configuration, not a per-request feature.
+
+Per-request system instructions are a local prototype feature, not an authorization boundary. No message history, tool execution or complex prompting is added.

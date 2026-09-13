@@ -19,3 +19,6 @@
 - Phase 1 Tasks 2–3 complete: validated network timeout and bounded HTTP retries with jitter; correlated attempt/request usage and latency logs; versioned cache-aware peak/off-peak USD cost estimates.
 - 19 offline tests pass, covering retries, deterministic failures, config bounds, price boundaries, log sanitization and total latency.
 - Real container /chat verification: HTTP 200, 10 tokens, 1125 ms, retry_count=0, estimated USD 0.00000195; both health endpoints HTTP 200. Single sample, not a benchmark.
+- Phase 1 Tasks 4–5 complete: centralized provider/model/retry/generation/price configuration with validated overrides and a provider adapter registry (DeepSeek only).
+- Added user_message and optional system_message, simple default instruction, legacy message compatibility, and ambiguity/blank validation.
+- 26 offline tests pass. Real container call with separate roles returned HTTP 200, OK, 12 tokens, 1080 ms; OpenAPI fields and HTTP 422 invalid-input checks passed; health endpoints remain HTTP 200.

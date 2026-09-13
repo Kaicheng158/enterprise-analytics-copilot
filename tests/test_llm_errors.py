@@ -56,7 +56,7 @@ class ErrorTests(unittest.TestCase):
 
     def test_asgi_error_contract(self):
         class FailingProvider:
-            def chat(self, message):
+            def chat(self, message, system_message=None):
                 raise ProviderError(503, 'LLM provider rate limit reached', 'llm_rate_limited')
         async def request():
             messages = []

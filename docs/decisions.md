@@ -16,4 +16,6 @@
 - Return reported usage and provider latency. Phase 1 now includes versioned cost estimates; billing remains out of scope.
 - Store DeepSeek key in ignored .env and runtime container environment; .env.example contains placeholders only.
 - Retry only an explicit HTTP status allowlist; do not retry ambiguous network failures. Record unknown failed-attempt usage rather than claiming complete cost.
-- Maintain price snapshots in backend/pricing.py and choose peak/off-peak tier by attempt start UTC; use decimal arithmetic.
+- Maintain price snapshots in backend/config.py and choose peak/off-peak tier by attempt start UTC; use decimal arithmetic.
+- Centralize all runtime defaults and model/price catalog in backend/config.py; Compose forwards optional overrides without duplicating defaults.
+- /chat uses separate user_message and optional system_message; preserve legacy message alias but reject ambiguous dual fields.
