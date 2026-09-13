@@ -76,3 +76,23 @@ python -m unittest discover -s tests -v
 ```
 
 [DeepSeek Chat Completions documentation](https://api-docs.deepseek.com/api/create-chat-completion/)
+
+### LLM error contract
+
+Provider failures return `{"detail":{"code":"llm_rate_limited","message":"LLM provider rate limit reached"}}` (example).
+This replaces the earlier string-valued provider `detail`. Request validation remains FastAPI HTTP 422.
+
+| HTTP | Code | Meaning |
+|---|---|---|
+| 503 | llm_not_configured | Missing local API key |
+| 503 | llm_authentication_failed / llm_access_denied | Upstream credential or access failure |
+| 503 | llm_insufficient_balance | Upstream balance unavailable |
+| 503 | llm_rate_limited | Upstream rate limit |
+| 502 | llm_request_rejected | Upstream rejects request format/parameters |
+| 502 | llm_upstream_error | Other upstream HTTP failure |
+| 502 | llm_connection_failed | Connection failure or interrupted response |
+| 502 | llm_invalid_response | Malformed response, missing usage or empty answer |
+| 504 | llm_timeout | Direct or wrapped network timeout |
+
+Messages are locally defined; upstream bodies and credentials are never returned. No retry behavior is introduced by this task.
+[DeepSeek error reference](https://api-docs.deepseek.com/quick_start/error_codes/)

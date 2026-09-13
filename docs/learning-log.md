@@ -15,3 +15,4 @@
 - Container POST /chat returned HTTP 200, OK, 9 prompt + 1 completion = 10 tokens, provider latency 1151 ms (single smoke test, not a benchmark).
 - Eight offline tests passed; blank HTTP input returned 422; /health and /health/db remained HTTP 200.
 - Added provider abstraction and placeholder .env.example; no new dependencies.
+- Phase 1 Task 1 complete: classified sanitized provider errors, fixed wrapped timeouts and interrupted/malformed responses; 12 offline tests pass, including ASGI error-response verification. No paid API request needed for this task.

@@ -39,4 +39,4 @@ def chat(request: ChatRequest, provider: LLMProvider = Depends(get_provider)) ->
     try:
         return provider.chat(request.message)
     except ProviderError as error:
-        raise HTTPException(status_code=error.status_code, detail=str(error)) from None
+        raise HTTPException(status_code=error.status_code, detail={"code": error.code, "message": str(error)}) from None
