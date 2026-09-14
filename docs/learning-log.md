@@ -22,3 +22,4 @@
 - Phase 1 Tasks 4–5 complete: centralized provider/model/retry/generation/price configuration with validated overrides and a provider adapter registry (DeepSeek only).
 - Added user_message and optional system_message, simple default instruction, legacy message compatibility, and ambiguity/blank validation.
 - 26 offline tests pass. Real container call with separate roles returned HTTP 200, OK, 12 tokens, 1080 ms; OpenAPI fields and HTTP 422 invalid-input checks passed; health endpoints remain HTTP 200.
+- Phase 1 closeout (2026-09-14): 31 tests passed; strict token consistency fix; Docker down/up recreation, two real chat requests, health and credential/image isolation checks passed. See phase1-acceptance.md. Stop before Phase 2.

@@ -13,7 +13,7 @@ from urllib.request import Request, urlopen
 
 from backend.pricing import PRICING_VERSION, estimate_cost
 
-from pydantic import BaseModel, Field, ValidationError
+from pydantic import BaseModel, Field, ValidationError, model_validator
 
 from backend.config import (
     BACKOFF_CAP_SECONDS, BACKOFF_JITTER_FRACTION, COST_CURRENCY,
@@ -23,12 +23,28 @@ logger = logging.getLogger("uvicorn.error")
 
 
 class TokenUsage(BaseModel):
-    prompt_tokens: int = Field(ge=0)
-    completion_tokens: int = Field(ge=0)
-    total_tokens: int = Field(ge=0)
-    prompt_cache_hit_tokens: int | None = Field(default=None, ge=0)
-    prompt_cache_miss_tokens: int | None = Field(default=None, ge=0)
-    reasoning_tokens: int | None = Field(default=None, ge=0)
+    prompt_tokens: int = Field(ge=0, strict=True)
+    completion_tokens: int = Field(ge=0, strict=True)
+    total_tokens: int = Field(ge=0, strict=True)
+    prompt_cache_hit_tokens: int | None = Field(default=None, ge=0, strict=True)
+    prompt_cache_miss_tokens: int | None = Field(default=None, ge=0, strict=True)
+    reasoning_tokens: int | None = Field(default=None, ge=0, strict=True)
+
+
+    @model_validator(mode="after")
+    def consistent_counts(self):
+        if self.total_tokens != self.prompt_tokens + self.completion_tokens:
+            raise ValueError("Inconsistent total tokens")
+        hit, miss = self.prompt_cache_hit_tokens, self.prompt_cache_miss_tokens
+        if hit is not None and hit > self.prompt_tokens:
+            raise ValueError("Invalid cache hit count")
+        if miss is not None and miss > self.prompt_tokens:
+            raise ValueError("Invalid cache miss count")
+        if hit is not None and miss is not None and hit + miss != self.prompt_tokens:
+            raise ValueError("Inconsistent cache tokens")
+        if self.reasoning_tokens is not None and self.reasoning_tokens > self.completion_tokens:
+            raise ValueError("Invalid reasoning token count")
+        return self
 
 
 class ChatResult(BaseModel):

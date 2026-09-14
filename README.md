@@ -142,3 +142,7 @@ curl -X POST http://127.0.0.1:8765/chat -H 'Content-Type: application/json' \
 `user_message` is required (1–8000 characters). `system_message` is optional (1–2000 characters when provided); omission or null uses the configured default. Blank text is rejected. The adapter sends separate system and user role messages, in that order. The old `message` field is accepted as an alias for user_message; sending both is rejected. Unknown fields are rejected. Provider/model selection is server configuration, not a per-request feature.
 
 Per-request system instructions are a local prototype feature, not an authorization boundary. No message history, tool execution or complex prompting is added.
+
+## Phase 1 acceptance
+
+Phase 1 is complete. See [acceptance results](docs/phase1-acceptance.md) for checks and limits. Token counts are validated as nonnegative integers with consistent totals/cache/reasoning counts; invalid usage fails safely with 502. Phase 2 has not started.

@@ -3,7 +3,7 @@
 ## Overall stages
 
 0. Engineering foundation — complete: FastAPI + PostgreSQL in Compose.
-1. LLM API and prompts — in progress, DeepSeek only.
+1. LLM API and prompts — complete, DeepSeek only.
 2. Business knowledge RAG — not started.
 3. Safe SQL and tool calling — not started.
 4. Analysis tools and controlled agent — not started.
@@ -21,9 +21,9 @@ Completed baseline: real DeepSeek API integration, provider abstraction, POST /c
 3. [x] Usage/latency/cost logging: request correlation, success/failure records, per-attempt versus total timing, versioned model pricing and currency for estimates, cache accounting, unknown usage/cost handling. Estimates must not be presented as billed amounts; no billing ledger or quota implementation.
 4. [x] Model config: centralized validated DeepSeek model, output limits and generation settings; update env example and Compose configuration. Completed: central validated config/catalog, price snapshot, environment precedence and one registered adapter.
 5. [x] Basic system/user messages: configurable system instruction and validated user message; no conversation memory or tools.
-6. [ ] Phase 1 closeout: full regression suite, bounded real-call verification, configuration/startup checks, updated README and completion criteria.
+6. [x] Phase 1 closeout: full regression suite, bounded real-call verification, configuration/startup checks, updated README and completion criteria.
 
-Work rule: execute one task, run relevant tests, update documentation, commit and push, then stop. Tasks 4 and 5 completed together as authorized. Next task is 6 (Phase 1 closeout); stop before starting it.
+Work rule: execute one task, run relevant tests, update documentation, commit and push, then stop. Phase 1 accepted on 2026-09-14. All six engineering tasks complete. Stop here; Phase 2 has not started.
 
 ## Future direction (not implemented)
 
