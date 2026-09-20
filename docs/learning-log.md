@@ -41,3 +41,5 @@
 - Phase 2.7: six synthetic attack categories, 12 real DeepSeek calls. Baseline 4/6 (one safely blocked invalid output; one inaccurate disclosure refusal). Added generic authority/confidentiality/format boundaries, then final 6/6. Retained residual relevance defect and unknown failed-call usage/cost. 47 tests pass. See injection-boundaries.md; stop before 2.8.
 
 - Phase 2.8: six attribution probes and 24 baseline/candidate real calls. Candidate saved 30 input tokens per request but had quality caveats and higher observed estimated cost; rejected. Production prefix unchanged. 50 tests pass; evidence in efficiency-*.json and context-efficiency.md. Stop before 2.9.
+
+- Phase 2.9: froze production prefix as analytics-v1; full bytes and hash equal the Phase 2.8 evidence. Added immutable registry, deployment-owned active selection, checksum checks, and prompt_version/prompt_sha256 in success/error logs and new evals. 57 offline tests pass. No prompt tuning or paid model calls. Stop before 2.10.

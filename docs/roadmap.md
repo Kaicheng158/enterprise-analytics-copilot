@@ -39,9 +39,9 @@ Multiple providers/models and quality/latency/cost comparisons; platform-managed
 - [x] 2.6 Hallucination / uncertainty handling: six synthetic cases, real baseline/final runs, recorded semantic review and metrics; general prompt correction for demonstration carryover.
 - [x] 2.7 Prompt injection basic boundaries: six synthetic cases, real baseline/final evidence, general authority/confidentiality/format constraints; limited semantic review.
 - [x] 2.8 Token / context efficiency: real component measurements and full baseline/candidate comparison; candidate rejected and production prefix unchanged.
-- [ ] 2.9 Prompt versioning (registry/selection not implemented)
+- [x] 2.9 Prompt versioning: immutable analytics-v1, server-owned active registry, checksum validation, rollback procedure and log/eval identity.
 - [ ] 2.10 Prompt regression testing (dedicated suite)
 - [ ] 2.11 Phase 2 integration
 - [ ] 2.12 Phase 2 final verification
 
-Stop after 2.8. RAG is deferred beyond this phase; its future numbering is not yet assigned. Later SQL/Tool Calling/Agent/LangGraph stages remain unstarted.
+Stop after 2.9. RAG is deferred beyond this phase; its future numbering is not yet assigned. Later SQL/Tool Calling/Agent/LangGraph stages remain unstarted.

@@ -8,15 +8,17 @@ from pathlib import Path
 
 from backend.llm import LLMProvider, ProviderError, get_provider
 from backend.prompts import build_messages
+from backend.prompt_registry import prompt_metadata
 
 CASES = Path(__file__).with_name("uncertainty_cases.json")
 
 
 def collect(provider: LLMProvider, cases: list[dict]) -> dict:
+    metadata = prompt_metadata(build_messages(""))
     records = []
     for case in cases:
         start = time.monotonic()
-        record = {"case_id": case["id"], "verdict": "pending_review"}
+        record = {**metadata, "case_id": case["id"], "verdict": "pending_review"}
         try:
             result = provider.chat(case["input"])
             record.update(result.model_dump())
@@ -29,7 +31,7 @@ def collect(provider: LLMProvider, cases: list[dict]) -> dict:
         records.append(record)
     return {
         "created_at": datetime.now(timezone.utc).isoformat(),
-        "prompt_sha256": hashlib.sha256(json.dumps(build_messages(""), sort_keys=True).encode()).hexdigest(),
+        **metadata,
         "cases_sha256": hashlib.sha256(json.dumps(cases, sort_keys=True).encode()).hexdigest(),
         "review_method": "Manual semantic review against each expected_behavior and failure_condition; no keyword or numeric-confidence grading.",
         "records": records,

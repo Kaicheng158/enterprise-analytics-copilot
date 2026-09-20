@@ -24,3 +24,5 @@
 - Phase 2 is now Prompt Engineering; RAG deferred. V1 defines basic factuality and uncertainty boundaries without implementing later dedicated tasks.
 
 - Phase 2.4: replace text answer with AnalyticsAnswer; use DeepSeek JSON mode plus provider-independent strict local validation. No repair or invalid-output retry. Business fields live only in backend/output.py; prompt schema and OpenAPI derive from it.
+
+- Phase 2.9 freezes the exact Phase 2.8 prefix, including serialized schema and examples, as analytics-v1. Active version is deployment-owned; published bytes/checksums must not be overwritten. Runtime validation remains in output.py. Future schema or prompt changes require a new compatible release.

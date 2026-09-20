@@ -119,7 +119,7 @@ Rates and peak/off-peak rules are maintained in `backend/config.py`, with source
 
 ### Model configuration and server-owned prompts
 
-Runtime model, timeout/retry, generation and price settings remain centralized in `backend/config.py`. Prompt content now lives separately in `backend/prompts.py`.
+Runtime model, timeout/retry, generation and price settings remain centralized in `backend/config.py`. Prompt releases live in `backend/prompt_analytics_v1.py` and the server-owned registry; `backend/prompts.py` builds the active release.
 
 Configuration precedence: process/Compose environment over local `.env`; `LLM_MODEL` over legacy `DEEPSEEK_MODEL` over the catalog default. Empty optional values use defaults. Unsupported provider/model or invalid limits return sanitized 503 / `llm_invalid_config`; no silent provider fallback occurs.
 
@@ -147,7 +147,7 @@ See [prompt architecture](docs/prompt-architecture.md). JSON output is validated
 
 ## Phase 1 acceptance
 
-Phase 1 is complete. See [acceptance results](docs/phase1-acceptance.md) for checks and limits. Token counts are validated as nonnegative integers with consistent totals/cache/reasoning counts; invalid usage fails safely with 502. Phase 2.1–2.8 are complete; later Phase 2 tasks have not started.
+Phase 1 is complete. See [acceptance results](docs/phase1-acceptance.md) for checks and limits. Token counts are validated as nonnegative integers with consistent totals/cache/reasoning counts; invalid usage fails safely with 502. Phase 2.1–2.9 are complete; later Phase 2 tasks have not started.
 
 ### Structured output (Phase 2.4)
 
@@ -168,3 +168,7 @@ User/quoted instructions cannot acquire system authority; internal prompt disclo
 ### Context efficiency (Phase 2.8)
 
 Measured context components and compared a schema-whitespace candidate using both eval sets. Production prompt retained: minor input savings did not establish quality/stability or total-cost improvement. See [evidence and decision](docs/context-efficiency.md).
+
+### Prompt versioning (Phase 2.9)
+
+`analytics-v1` freezes the Phase 2.8 production prefix without content changes. The server-owned registry selects the active release. Responses, logs and new eval records include `prompt_version` and `prompt_sha256`; clients cannot select a version. See [publication and rollback](docs/prompt-versioning.md).

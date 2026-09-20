@@ -12,6 +12,7 @@ from urllib.error import HTTPError, URLError
 from urllib.request import Request, urlopen
 
 from backend.prompts import build_messages
+from backend.prompt_registry import prompt_metadata
 from backend.output import AnalyticsAnswer, parse_answer
 from backend.pricing import PRICING_VERSION, estimate_cost
 
@@ -56,6 +57,8 @@ class ChatResult(BaseModel):
     usage: TokenUsage
     latency_ms: int
     finish_reason: str
+    prompt_version: str = ""
+    prompt_sha256: str = ""
     request_id: str = ""
     retry_count: int = 0
     estimated_cost: str | None = None
@@ -86,16 +89,21 @@ class DeepSeekProvider:
         self.provider = self.settings.provider
 
     def chat(self, message: str) -> ChatResult:
+        try:
+            messages = build_messages(message)
+            metadata = prompt_metadata(messages)
+        except ValueError:
+            raise ProviderError(503, "Invalid prompt configuration", "llm_invalid_prompt") from None
         request_id = str(uuid.uuid4())
         started = time.monotonic()
         for attempt in range(self.config.max_retries + 1):
             attempt_start = time.monotonic()
             utc_start = datetime.now(timezone.utc)
             try:
-                result = self._chat_once(message)
+                result = self._chat_once(messages)
             except ProviderError as error:
                 record = {
-                    "request_id": request_id, "provider": self.provider, "model": self.model,
+                    **metadata, "request_id": request_id, "provider": self.provider, "model": self.model,
                     "input_tokens": None, "output_tokens": None, "total_tokens": None,
                     "estimated_cost": None, "cost_currency": COST_CURRENCY, "pricing_version": PRICING_VERSION,
                     "latency_ms": round((time.monotonic() - attempt_start) * 1000),
@@ -112,13 +120,15 @@ class DeepSeekProvider:
                 time.sleep(delay + random.uniform(0, delay * BACKOFF_JITTER_FRACTION))
                 continue
             amount, tier = estimate_cost(self.provider, result.model, result.usage, utc_start)
+            result.prompt_version = metadata["prompt_version"]
+            result.prompt_sha256 = metadata["prompt_sha256"]
             result.request_id = request_id
             result.retry_count = attempt
             result.estimated_cost = amount
             result.pricing_tier = tier
             result.cost_complete = attempt == 0 and amount is not None
             record = {
-                "request_id": request_id, "provider": result.provider, "model": result.model,
+                **metadata, "request_id": request_id, "provider": result.provider, "model": result.model,
                 "input_tokens": result.usage.prompt_tokens,
                 "output_tokens": result.usage.completion_tokens,
                 "total_tokens": result.usage.total_tokens,
@@ -134,14 +144,14 @@ class DeepSeekProvider:
             return result
         raise AssertionError("Unreachable retry state")
 
-    def _chat_once(self, message: str) -> ChatResult:
+    def _chat_once(self, messages: list[dict[str, str]]) -> ChatResult:
         if not self.api_key:
             raise ProviderError(503, "LLM provider is not configured", "llm_not_configured")
         request = Request(
             PROVIDERS[self.provider]["chat_url"],
             data=json.dumps({
                 "model": self.model,
-                "messages": build_messages(message),
+                "messages": messages,
                 "stream": False,
                 "response_format": {"type": "json_object"},
                 "thinking": {"type": self.settings.thinking},

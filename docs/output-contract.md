@@ -10,7 +10,7 @@ The model must output one JSON object. `backend/output.py` centrally defines Ana
 | limitations | Identify missing data, ambiguous definitions, uncertainty and verification limits; request the specific information needed. | Do not invent limitations or claim certainty if none further is apparent. |
 
 
-`backend/prompts.py` supplies the role and semantic constraints and derives the JSON schema from AnalyticsAnswer. The DeepSeek adapter enables `response_format={"type":"json_object"}` and calls the provider-independent parser; field definitions are not duplicated in the adapter or route. This uses JSON mode plus local validation, not provider-enforced JSON Schema. [Official DeepSeek JSON guide](https://api-docs.deepseek.com/guides/json_mode/).
+`backend/prompts.py` selects a published release containing the role, semantic constraints and a frozen JSON-schema snapshot originally derived from AnalyticsAnswer. Schema changes require a new release; current compatibility is tested. The DeepSeek adapter enables `response_format={"type":"json_object"}` and calls the provider-independent parser; field definitions are not duplicated in the adapter or route. This uses JSON mode plus local validation, not provider-enforced JSON Schema. [Official DeepSeek JSON guide](https://api-docs.deepseek.com/guides/json_mode/).
 
 Breaking change from 2.3: `/chat` now returns `answer` as a validated object, not a JSON-encoded string. Existing provider/model/usage/latency/cost metadata remains alongside it. `/docs` exposes AnalyticsAnswer as the nested response schema.
 

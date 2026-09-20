@@ -1,6 +1,6 @@
 # Few-shot examples — Phase 2.5
 
-`backend/examples.py` owns exactly two synthetic user/assistant exchanges. It has no provider imports or configuration. Assistant responses are constructed with AnalyticsAnswer and serialized as compact JSON; the same strict parser used for real answers validates them in tests. Immutable strings/tuples store the examples, and each request gets fresh message dictionaries.
+`backend/prompt_analytics_v1.py` freezes exactly two synthetic user/assistant exchanges; `backend/examples.py` exposes a compatibility view. It has no provider imports or configuration. Assistant responses were validated with AnalyticsAnswer and frozen as compact JSON; the same strict parser used for real answers validates them in tests. Immutable strings/tuples store the examples, and each request gets fresh message dictionaries.
 
 | Example | Distinct failure mode | Intended behavior |
 |---|---|---|
