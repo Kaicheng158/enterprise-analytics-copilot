@@ -11,6 +11,7 @@ from typing import Protocol
 from urllib.error import HTTPError, URLError
 from urllib.request import Request, urlopen
 
+from backend.prompts import build_messages
 from backend.pricing import PRICING_VERSION, estimate_cost
 
 from pydantic import BaseModel, Field, ValidationError, model_validator
@@ -72,7 +73,7 @@ class ProviderError(Exception):
 
 
 class LLMProvider(Protocol):
-    def chat(self, message: str, system_message: str | None = None) -> ChatResult: ...
+    def chat(self, message: str) -> ChatResult: ...
 
 
 class DeepSeekProvider:
@@ -83,14 +84,14 @@ class DeepSeekProvider:
         self.config = config or self.settings
         self.provider = self.settings.provider
 
-    def chat(self, message: str, system_message: str | None = None) -> ChatResult:
+    def chat(self, message: str) -> ChatResult:
         request_id = str(uuid.uuid4())
         started = time.monotonic()
         for attempt in range(self.config.max_retries + 1):
             attempt_start = time.monotonic()
             utc_start = datetime.now(timezone.utc)
             try:
-                result = self._chat_once(message, system_message)
+                result = self._chat_once(message)
             except ProviderError as error:
                 record = {
                     "request_id": request_id, "provider": self.provider, "model": self.model,
@@ -132,17 +133,14 @@ class DeepSeekProvider:
             return result
         raise AssertionError("Unreachable retry state")
 
-    def _chat_once(self, message: str, system_message: str | None = None) -> ChatResult:
+    def _chat_once(self, message: str) -> ChatResult:
         if not self.api_key:
             raise ProviderError(503, "LLM provider is not configured", "llm_not_configured")
         request = Request(
             PROVIDERS[self.provider]["chat_url"],
             data=json.dumps({
                 "model": self.model,
-                "messages": [
-                    {"role": "system", "content": self.settings.system_message if system_message is None else system_message},
-                    {"role": "user", "content": message},
-                ],
+                "messages": build_messages(message),
                 "stream": False,
                 "thinking": {"type": self.settings.thinking},
                 "max_tokens": self.settings.max_output_tokens,

@@ -23,3 +23,7 @@
 - Added user_message and optional system_message, simple default instruction, legacy message compatibility, and ambiguity/blank validation.
 - 26 offline tests pass. Real container call with separate roles returned HTTP 200, OK, 12 tokens, 1080 ms; OpenAPI fields and HTTP 422 invalid-input checks passed; health endpoints remain HTTP 200.
 - Phase 1 closeout (2026-09-14): 31 tests passed; strict token consistency fix; Docker down/up recreation, two real chat requests, health and credential/image isolation checks passed. See phase1-acceptance.md. Stop before Phase 2.
+
+- Phase 2.1–2.2 (2026-09-20): added provider-independent prompt assembly and server-owned Enterprise Analytics Copilot System Prompt v1 in backend/prompts.py. Removed public system_message and retired LLM_SYSTEM_MESSAGE; preserved user_message/legacy message. No new dependencies.
+- Verification: 34 offline tests passed; Compose rebuild/start succeeded; /health and /health/db returned 200; system override returned 422. One real /chat request returned 200, 239 tokens, 1526 ms, zero retries; the answer explicitly acknowledged missing revenue data. This smoke test is not a factuality or injection-resistance guarantee.
+- Updated the complete Phase 2 Prompt Engineering roadmap; only 2.1 and 2.2 are complete. Stop before 2.3.

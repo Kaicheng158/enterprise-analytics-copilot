@@ -7,9 +7,7 @@ from dotenv import load_dotenv
 from pydantic import BaseModel, Field, SecretStr, field_validator
 
 DEFAULT_PROVIDER = "deepseek"
-DEFAULT_SYSTEM_MESSAGE = "You are a helpful assistant."
 MAX_USER_CHARACTERS = 8000
-MAX_SYSTEM_CHARACTERS = 2000
 PROVIDERS = {
     "deepseek": {
         "default_model": "deepseek-flash",
@@ -47,7 +45,6 @@ class LLMSettings(RetryConfig):
     api_key: SecretStr = SecretStr("")
     max_output_tokens: int = Field(default=512, ge=1, le=8192)
     thinking: Literal["disabled"] = "disabled"
-    system_message: str = Field(default=DEFAULT_SYSTEM_MESSAGE, min_length=1, max_length=MAX_SYSTEM_CHARACTERS)
 
     @field_validator("provider")
     @classmethod
@@ -56,7 +53,7 @@ class LLMSettings(RetryConfig):
             raise ValueError("Unsupported provider")
         return value
 
-    @field_validator("model", "system_message")
+    @field_validator("model")
     @classmethod
     def non_blank(cls, value):
         if not value.strip():
@@ -79,7 +76,6 @@ def load_settings() -> LLMSettings:
         "max_retries": "LLM_MAX_RETRIES",
         "backoff_seconds": "LLM_BACKOFF_SECONDS",
         "max_output_tokens": "LLM_MAX_OUTPUT_TOKENS",
-        "system_message": "LLM_SYSTEM_MESSAGE",
     }
     overrides = {field: os.environ[name] for field, name in names.items() if os.getenv(name) not in (None, "")}
     return LLMSettings(provider=provider, model=model,

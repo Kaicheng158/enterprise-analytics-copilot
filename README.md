@@ -116,11 +116,11 @@ Rates and peak/off-peak rules are maintained in `backend/config.py`, with source
 
 [Official price source](https://api-docs.deepseek.com/quick_start/pricing/)
 
-### Central model configuration and messages
+### Model configuration and server-owned prompts
 
-`backend/config.py` is the single source for provider catalog, supported model names, API endpoint, retry defaults/limits, generation settings, default system instruction and versioned pricing. `backend/pricing.py` only calculates estimates. The provider factory selects a registered adapter; only DeepSeek/deepseek-flash is enabled.
+Runtime model, timeout/retry, generation and price settings remain centralized in `backend/config.py`. Prompt content now lives separately in `backend/prompts.py`.
 
-Configuration precedence: process/Compose environment over local .env; LLM_MODEL over legacy DEEPSEEK_MODEL over the catalog default. Empty optional environment values use defaults. Unsupported provider/model or invalid limits return a sanitized 503 / llm_invalid_config. No silent provider fallback occurs.
+Configuration precedence: process/Compose environment over local `.env`; `LLM_MODEL` over legacy `DEEPSEEK_MODEL` over the catalog default. Empty optional values use defaults. Unsupported provider/model or invalid limits return sanitized 503 / `llm_invalid_config`; no silent provider fallback occurs.
 
 | Environment variable | Default |
 |---|---|
@@ -130,19 +130,20 @@ Configuration precedence: process/Compose environment over local .env; LLM_MODEL
 | LLM_MAX_RETRIES | 2 |
 | LLM_BACKOFF_SECONDS | 1 |
 | LLM_MAX_OUTPUT_TOKENS | 512 (allowed 1–8192) |
-| LLM_SYSTEM_MESSAGE | You are a helpful assistant. |
 
-`DEEPSEEK_API_KEY` remains a runtime secret. Thinking stays disabled in this phase. Compose forwards overrides, while Python owns the defaults. Recreate the API after changing .env.
+`DEEPSEEK_API_KEY` remains a runtime secret. Thinking stays disabled. Compose forwards overrides while Python owns defaults; recreate the API after changing `.env`. `user_message` must contain 1–8000 characters and cannot be blank.
+
+Phase 2.1–2.2 deliberately removes the earlier public system_message parameter. Requests containing it (including null) return 422. LLM_SYSTEM_MESSAGE is retired and ignored; remove it from local .env if present. Never overwrite existing database credentials or API keys when updating configuration.
 
 ```sh
 curl -X POST http://127.0.0.1:8765/chat -H 'Content-Type: application/json' \
-  -d '{"user_message":"Say hello.","system_message":"Answer briefly in English."}'
+  -d '{"user_message":"What data do you need to explain a revenue decline?"}'
 ```
 
-`user_message` is required (1–8000 characters). `system_message` is optional (1–2000 characters when provided); omission or null uses the configured default. Blank text is rejected. The adapter sends separate system and user role messages, in that order. The old `message` field is accepted as an alias for user_message; sending both is rejected. Unknown fields are rejected. Provider/model selection is server configuration, not a per-request feature.
+The server assembles System Prompt v1 followed by the user message. Legacy message remains a supported alias for user_message. Unknown fields and ambiguous aliases are rejected. Model and retry settings remain server configuration.
 
-Per-request system instructions are a local prototype feature, not an authorization boundary. No message history, tool execution or complex prompting is added.
+See [prompt architecture](docs/prompt-architecture.md). No structured output, few-shot examples, RAG or Agent is implemented.
 
 ## Phase 1 acceptance
 
-Phase 1 is complete. See [acceptance results](docs/phase1-acceptance.md) for checks and limits. Token counts are validated as nonnegative integers with consistent totals/cache/reasoning counts; invalid usage fails safely with 502. Phase 2 has not started.
+Phase 1 is complete. See [acceptance results](docs/phase1-acceptance.md) for checks and limits. Token counts are validated as nonnegative integers with consistent totals/cache/reasoning counts; invalid usage fails safely with 502. Phase 2.1–2.2 are complete; later Phase 2 tasks have not started.

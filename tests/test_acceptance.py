@@ -24,7 +24,7 @@ class AcceptanceTests(unittest.TestCase):
     def tearDown(self): app.dependency_overrides.clear()
 
     def test_http_success_roles_and_legacy(self):
-        for payload in [{'user_message':'Hi','system_message':'Be brief.'},{'message':'Hi'}]:
+        for payload in [{'user_message':'Hi'},{'message':'Hi'}]:
             with patch('backend.llm.urlopen',return_value=success()) as call:
                 status,data=asyncio.run(send_request(json.dumps(payload).encode()))
             self.assertEqual(status,200)
@@ -33,7 +33,6 @@ class AcceptanceTests(unittest.TestCase):
             self.assertTrue(data['request_id'])
             roles=json.loads(call.call_args.args[0].data)['messages']
             self.assertEqual([x['role'] for x in roles],['system','user'])
-            if 'system_message' in payload: self.assertEqual(roles[0]['content'],'Be brief.')
 
     def test_http_validation_no_provider_call(self):
         for body in [b'{}',b'null',b'[]',b'not json',b'{"user_message":5}',b'{"user_message":" "}',

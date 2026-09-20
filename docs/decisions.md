@@ -19,3 +19,6 @@
 - Maintain price snapshots in backend/config.py and choose peak/off-peak tier by attempt start UTC; use decimal arithmetic.
 - Centralize all runtime defaults and model/price catalog in backend/config.py; Compose forwards optional overrides without duplicating defaults.
 - /chat uses separate user_message and optional system_message; preserve legacy message alias but reject ambiguous dual fields.
+
+- Phase 2.1–2.2 supersedes public system_message support from Phase 1. Core prompt is server-owned in backend/prompts.py; no environment override.
+- Phase 2 is now Prompt Engineering; RAG deferred. V1 defines basic factuality and uncertainty boundaries without implementing later dedicated tasks.

@@ -4,7 +4,7 @@
 
 0. Engineering foundation — complete: FastAPI + PostgreSQL in Compose.
 1. LLM API and prompts — complete, DeepSeek only.
-2. Business knowledge RAG — not started.
+2. Prompt Engineering — tasks 2.1–2.2 complete; remaining tasks below.
 3. Safe SQL and tool calling — not started.
 4. Analysis tools and controlled agent — not started.
 5. LangGraph workflows — not started.
@@ -23,8 +23,25 @@ Completed baseline: real DeepSeek API integration, provider abstraction, POST /c
 5. [x] Basic system/user messages: configurable system instruction and validated user message; no conversation memory or tools.
 6. [x] Phase 1 closeout: full regression suite, bounded real-call verification, configuration/startup checks, updated README and completion criteria.
 
-Work rule: execute one task, run relevant tests, update documentation, commit and push, then stop. Phase 1 accepted on 2026-09-14. All six engineering tasks complete. Stop here; Phase 2 has not started.
+Work rule: execute one task, run relevant tests, update documentation, commit and push, then stop. Phase 1 accepted on 2026-09-14. All six engineering tasks complete. Phase 2 now follows the user-defined Prompt Engineering roadmap.
 
 ## Future direction (not implemented)
 
 Multiple providers/models and quality/latency/cost comparisons; platform-managed keys, BYOK, durable usage tracking, user quota and billing. Only the provider boundary is reserved today. Do not begin RAG, Tool Calling, Agent or LangGraph during Phase 1.
+
+## Phase 2 — Prompt Engineering (supersedes the former RAG phase label)
+
+- [x] 2.1 Prompt architecture: provider-independent message assembly in backend/prompts.py.
+- [x] 2.2 Server-owned System Prompt v1: role, goal, data boundaries and insufficient-information instruction; public overrides rejected.
+- [ ] 2.3 Output contract
+- [ ] 2.4 Structured output / JSON
+- [ ] 2.5 Few-shot examples
+- [ ] 2.6 Hallucination / uncertainty handling (dedicated implementation and evaluation)
+- [ ] 2.7 Prompt injection basic boundaries
+- [ ] 2.8 Token / context efficiency
+- [ ] 2.9 Prompt versioning (registry/selection not implemented)
+- [ ] 2.10 Prompt regression testing (dedicated suite)
+- [ ] 2.11 Phase 2 integration
+- [ ] 2.12 Phase 2 final verification
+
+Stop after 2.2. RAG is deferred beyond this phase; its future numbering is not yet assigned. Later SQL/Tool Calling/Agent/LangGraph stages remain unstarted.
