@@ -147,7 +147,7 @@ See [prompt architecture](docs/prompt-architecture.md). JSON output is validated
 
 ## Phase 1 acceptance
 
-Phase 1 is complete. See [acceptance results](docs/phase1-acceptance.md) for checks and limits. Token counts are validated as nonnegative integers with consistent totals/cache/reasoning counts; invalid usage fails safely with 502. Phase 2.1–2.6 are complete; later Phase 2 tasks have not started.
+Phase 1 is complete. See [acceptance results](docs/phase1-acceptance.md) for checks and limits. Token counts are validated as nonnegative integers with consistent totals/cache/reasoning counts; invalid usage fails safely with 502. Phase 2.1–2.7 are complete; later Phase 2 tasks have not started.
 
 ### Structured output (Phase 2.4)
 
@@ -160,3 +160,7 @@ Two provider-independent examples demonstrate fact/hypothesis separation and ins
 ### Uncertainty check (Phase 2.6)
 
 Six synthetic cases cover unsupported causes/premises, contradicted premises, supplied hypotheses, missing metrics and unavailable tools. Baseline 5/6; after a general prompt correction, final 6/6 in one run. See [rubrics, evidence and limitations](docs/uncertainty-evaluation.md).
+
+### Prompt boundaries (Phase 2.7)
+
+User/quoted instructions cannot acquire system authority; internal prompt disclosure and conflicting output requests are constrained in the server prompt. Six synthetic real-call checks: baseline 4/6, final 6/6 after a generic correction. This does not solve prompt injection. See [evidence and limitations](docs/injection-boundaries.md).

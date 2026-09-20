@@ -15,3 +15,5 @@ Compatibility: user_message and legacy message are accepted; system_message is r
 Phase 2.4 supersedes ordinary-text formatting: the system message combines role, semantic contract and the JSON schema generated from backend/output.py. The adapter enables JSON mode and delegates parsing to that provider-independent module. The validated AnalyticsAnswer becomes ChatResult.answer and is reflected in OpenAPI.
 
 Phase 2.5 inserts two [server-owned synthetic demonstrations](few-shot-examples.md) from backend/examples.py between the system message and final user message. Fresh messages are assembled for each call; examples are shared across providers and cannot be overridden by clients.
+
+Phase 2.7 adds general boundaries for user/quoted data, internal-instruction disclosure and truthful JSON refusals. Six-case evidence is documented in injection-boundaries.md; these prompt instructions are not a security enforcement guarantee.
