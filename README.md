@@ -146,4 +146,8 @@ See [prompt architecture](docs/prompt-architecture.md). No structured output, fe
 
 ## Phase 1 acceptance
 
-Phase 1 is complete. See [acceptance results](docs/phase1-acceptance.md) for checks and limits. Token counts are validated as nonnegative integers with consistent totals/cache/reasoning counts; invalid usage fails safely with 502. Phase 2.1–2.2 are complete; later Phase 2 tasks have not started.
+Phase 1 is complete. See [acceptance results](docs/phase1-acceptance.md) for checks and limits. Token counts are validated as nonnegative integers with consistent totals/cache/reasoning counts; invalid usage fails safely with 502. Phase 2.1–2.3 are complete; later Phase 2 tasks have not started.
+
+### Output contract (Phase 2.3)
+
+Model answers are instructed to use four ordinary-text sections: `summary`, `facts`, `interpretation`, `limitations`. Facts exclude speculation; interpretations label assumptions; limitations identify missing information and uncertainty. The `answer` API field remains a string. See [contract and enforcement limits](docs/output-contract.md).

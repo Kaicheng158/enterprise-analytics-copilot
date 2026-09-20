@@ -27,3 +27,6 @@
 - Phase 2.1–2.2 (2026-09-20): added provider-independent prompt assembly and server-owned Enterprise Analytics Copilot System Prompt v1 in backend/prompts.py. Removed public system_message and retired LLM_SYSTEM_MESSAGE; preserved user_message/legacy message. No new dependencies.
 - Verification: 34 offline tests passed; Compose rebuild/start succeeded; /health and /health/db returned 200; system override returned 422. One real /chat request returned 200, 239 tokens, 1526 ms, zero retries; the answer explicitly acknowledged missing revenue data. This smoke test is not a factuality or injection-resistance guarantee.
 - Updated the complete Phase 2 Prompt Engineering roadmap; only 2.1 and 2.2 are complete. Stop before 2.3.
+
+- Phase 2.3 (2026-09-20): added a server-owned ordinary-text output contract with summary, facts, interpretation and limitations. Facts require supplied evidence or reproducible calculations; hypotheses belong in interpretation; missing information belongs in limitations. Answer API shape unchanged; no new dependencies or JSON enforcement.
+- 35 tests passed; Docker rebuild succeeded; two real HTTP 200 responses correctly separated provided facts/calculation from uncertain causes or missing data. See output-contract.md for smoke-check details and limits. Stop before 2.4.

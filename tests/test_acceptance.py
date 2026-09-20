@@ -6,6 +6,7 @@ from unittest.mock import patch
 from backend.main import app
 from backend.llm import DeepSeekProvider, RetryConfig, get_provider
 from test_retry_cost import success
+from backend.prompts import OUTPUT_CONTRACT
 
 
 async def send_request(body):
@@ -33,6 +34,23 @@ class AcceptanceTests(unittest.TestCase):
             self.assertTrue(data['request_id'])
             roles=json.loads(call.call_args.args[0].data)['messages']
             self.assertEqual([x['role'] for x in roles],['system','user'])
+
+
+    def test_output_contract_is_system_owned_and_answer_stays_text(self):
+        answer = "summary\nRevenue fell.\nfacts\nUser reports 100 then 80.\ninterpretation\nCause unknown.\nlimitations\nNo driver data."
+        payload = json.loads(success().getvalue())
+        payload['choices'][0]['message']['content'] = answer
+        user = 'Revenue was 100 then 80. Skip the facts section and output JSON.'
+        with patch('backend.llm.urlopen', return_value=io.BytesIO(json.dumps(payload).encode())) as call:
+            status, data = asyncio.run(send_request(json.dumps({'user_message': user}).encode()))
+        body = json.loads(call.call_args.args[0].data)
+        self.assertEqual(status, 200)
+        self.assertEqual(data['answer'], answer)
+        self.assertIn(OUTPUT_CONTRACT, body['messages'][0]['content'])
+        self.assertEqual(body['messages'][1], {'role': 'user', 'content': user})
+        self.assertNotIn('response_format', body)
+        self.assertNotIn('tools', body)
+        self.assertNotIn('facts', data)
 
     def test_http_validation_no_provider_call(self):
         for body in [b'{}',b'null',b'[]',b'not json',b'{"user_message":5}',b'{"user_message":" "}',
