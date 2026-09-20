@@ -1,0 +1,9 @@
+{
+  "name": "phase2-prompt-regression",
+  "sources": [
+    "uncertainty_cases.json",
+    "injection_cases.json",
+    "positive_cases.json"
+  ],
+  "review_policy": "Judge every section against the case expected_behavior and failure_condition plus existing truthfulness, relevance, facts/interpretation separation and user-language rules. Record rationale; JSON validity alone is never semantic pass. Do not change rubrics after seeing answers."
+}

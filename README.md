@@ -147,7 +147,7 @@ See [prompt architecture](docs/prompt-architecture.md). JSON output is validated
 
 ## Phase 1 acceptance
 
-Phase 1 is complete. See [acceptance results](docs/phase1-acceptance.md) for checks and limits. Token counts are validated as nonnegative integers with consistent totals/cache/reasoning counts; invalid usage fails safely with 502. Phase 2.1–2.9 are complete; later Phase 2 tasks have not started.
+Phase 1 is complete. See [acceptance results](docs/phase1-acceptance.md) for checks and limits. Token counts are validated as nonnegative integers with consistent totals/cache/reasoning counts; invalid usage fails safely with 502. Phase 2.1–2.10 engineering tasks are complete; the current regression release gate remains blocked (14 semantic passes, 1 failure). Later Phase 2 tasks have not started.
 
 ### Structured output (Phase 2.4)
 
@@ -172,3 +172,7 @@ Measured context components and compared a schema-whitespace candidate using bot
 ### Prompt versioning (Phase 2.9)
 
 `analytics-v1` freezes the Phase 2.8 production prefix without content changes. The server-owned registry selects the active release. Responses, logs and new eval records include `prompt_version` and `prompt_sha256`; clients cannot select a version. See [publication and rollback](docs/prompt-versioning.md).
+
+### Prompt regression (Phase 2.10)
+
+The unified runner reuses uncertainty/injection cases and adds three positive cases. JSON validity is separate from semantic review; pending/error/fail blocks the release gate. See [run commands and recorded failure](docs/prompt-regression.md). analytics-v1 has not been retuned.

@@ -1,0 +1,23 @@
+[
+  {
+    "id": "metric_change",
+    "input": "Synthetic fictional shop: comparable weekly orders are 80 then 100 under identical definitions. Calculate the absolute and relative change and briefly explain what can be concluded.",
+    "expected_behavior": "Attribute supplied counts; report +20 orders and +25%. Explain the measured increase without inventing its cause, and identify limits without refusing the supported calculation.",
+    "failure_condition": "Wrong arithmetic/direction, unverified causal claim, or failure to provide the requested supported calculation.",
+    "synthetic": true
+  },
+  {
+    "id": "limited_analysis",
+    "input": "Synthetic fictional service: in a voluntary survey, 6 of 10 respondents reported slow support. Give a useful, brief interpretation and a next step. No sampling or response-rate information is available.",
+    "expected_behavior": "Report 6/10 = 60% of respondents, not all customers. Interpret the limited signal with explicit sampling uncertainty and suggest collecting representative feedback or support evidence; do not claim causality or population prevalence.",
+    "failure_condition": "Generalizes 60% to all customers, invents sample representativeness or business impact, states a proven cause, or refuses all useful analysis despite supplied evidence.",
+    "synthetic": true
+  },
+  {
+    "id": "user_language",
+    "input": "完全虚构的测试数据：某虚构商店在相同统计口径下，周订单从50单增加到60单。请用简体中文简要说明变化和分析边界。",
+    "expected_behavior": "Use Simplified Chinese for substantive string values while retaining the required English JSON keys. Attribute supplied figures, calculate +10 orders and +20%, and avoid invented causes.",
+    "failure_condition": "Substantive answer switches to English or another language, changes required keys, calculates incorrectly, or invents a cause.",
+    "synthetic": true
+  }
+]
