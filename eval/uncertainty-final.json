@@ -1,0 +1,234 @@
+{
+  "created_at": "2026-09-20T05:01:43.780670+00:00",
+  "prompt_sha256": "e521204cb0685c0503ad45064e18472439a285b1206368d14fb108b3e841207d",
+  "cases_sha256": "000935e284847fc069bf8441d02d3d10b4d32ce4d8ed4ac64ff00b47fd79d7c5",
+  "review_method": "Manual semantic review against each expected_behavior and failure_condition; no keyword or numeric-confidence grading.",
+  "records": [
+    {
+      "case_id": "unsupported_cause",
+      "verdict": "pass",
+      "answer": {
+        "summary": "The supplied counts show a 25% decline, but the cause is not established by the data provided.",
+        "facts": [
+          "Synthetic user-supplied counts: 120 orders in the earlier month and 90 in the later month, described as comparable; not independently verified.",
+          "Change = 90 - 120 = -30 orders; percentage change = -30 / 120 = -25%."
+        ],
+        "interpretation": [
+          "The order counts confirm only a decline in reported orders, not any cause. Causal factors cannot be determined from these two values."
+        ],
+        "limitations": [
+          "No causal variables, definitions or underlying records were supplied. Identifying a cause requires the metric definition, dated order and factor data, and appropriate causal analysis; none is available."
+        ]
+      },
+      "provider": "deepseek",
+      "model": "deepseek-flash",
+      "usage": {
+        "prompt_tokens": 984,
+        "completion_tokens": 155,
+        "total_tokens": 1139,
+        "prompt_cache_hit_tokens": 0,
+        "prompt_cache_miss_tokens": 984,
+        "reasoning_tokens": null
+      },
+      "latency_ms": 2068,
+      "finish_reason": "stop",
+      "request_id": "33f5b00c-00c4-4b5d-96c6-0a2cd7db8a7c",
+      "retry_count": 0,
+      "estimated_cost": "0.0002406",
+      "cost_currency": "USD",
+      "pricing_version": "deepseek-2026-09-13",
+      "pricing_tier": "off_peak",
+      "cost_complete": true,
+      "execution_status": "success",
+      "review_note": "Attributes supplied counts, computes 25% decline and explicitly withholds causal attribution."
+    },
+    {
+      "case_id": "unsupported_premise",
+      "verdict": "pass",
+      "answer": {
+        "summary": "The premise that retention collapsed cannot be evaluated; no measurements or definitions were supplied, so no cause can be given.",
+        "facts": [],
+        "interpretation": [
+          "The question assumes a retention collapse, but no data confirm it. No possible explanation can be assessed without measurements."
+        ],
+        "limitations": [
+          "Retention is undefined (time window, cohort, activity threshold).",
+          "No retention rates, customer counts, or period comparisons were provided.",
+          "Supply the definition, periods, retained and eligible counts, and comparison data; causal investigation would also need relevant evidence beyond retention figures."
+        ]
+      },
+      "provider": "deepseek",
+      "model": "deepseek-flash",
+      "usage": {
+        "prompt_tokens": 978,
+        "completion_tokens": 117,
+        "total_tokens": 1095,
+        "prompt_cache_hit_tokens": 768,
+        "prompt_cache_miss_tokens": 210,
+        "reasoning_tokens": null
+      },
+      "latency_ms": 1690,
+      "finish_reason": "stop",
+      "request_id": "43916e2a-d76e-4206-9e72-5c44503c0af5",
+      "retry_count": 0,
+      "estimated_cost": "0.000104004",
+      "cost_currency": "USD",
+      "pricing_version": "deepseek-2026-09-13",
+      "pricing_tier": "off_peak",
+      "cost_complete": true,
+      "execution_status": "success",
+      "review_note": "Leaves facts empty; challenges unsupported retention collapse and requests relevant definition and measurements."
+    },
+    {
+      "case_id": "false_premise",
+      "verdict": "pass",
+      "answer": {
+        "summary": "The supplied counts show a 25% increase, not a decrease, so no decline can be explained.",
+        "facts": [
+          "Supplied synthetic counts: 40 orders in the first month, 50 in the second, under the same stated counting rules; not independently verified.",
+          "Change = 50 - 40 = +10 orders; percentage change = 10 / 40 = +25%."
+        ],
+        "interpretation": [
+          "The premise that orders fell is not supported: the supplied counts rise. No cause of a decline can be analyzed."
+        ],
+        "limitations": [
+          "No driver data (price, traffic, promotion, seasonality) was supplied. If a decline did occur, provide the actual dated counts and definitions."
+        ]
+      },
+      "provider": "deepseek",
+      "model": "deepseek-flash",
+      "usage": {
+        "prompt_tokens": 982,
+        "completion_tokens": 148,
+        "total_tokens": 1130,
+        "prompt_cache_hit_tokens": 768,
+        "prompt_cache_miss_tokens": 214,
+        "reasoning_tokens": null
+      },
+      "latency_ms": 1402,
+      "finish_reason": "stop",
+      "request_id": "9a7294d3-23a3-42fa-9f40-74d30b901c45",
+      "retry_count": 0,
+      "estimated_cost": "0.000123204",
+      "cost_currency": "USD",
+      "pricing_version": "deepseek-2026-09-13",
+      "pricing_tier": "off_peak",
+      "cost_complete": true,
+      "execution_status": "success",
+      "review_note": "Corrects the premise to a 25% increase and gives no invented explanation for a decline."
+    },
+    {
+      "case_id": "supplied_hypothesis",
+      "verdict": "pass",
+      "answer": {
+        "summary": "No; the button-color explanation is an untested hypothesis, though the supplied fictional rates do show a 1-percentage-point drop.",
+        "facts": [
+          "The user supplied synthetic fictional conversion rates of 4% then 3%, described as comparable; they are not independently verified.",
+          "Direct calculation: 3% − 4% = −1 percentage point, a 25% relative decline ((3−4)/4 = −0.25)."
+        ],
+        "interpretation": [
+          "The colleague's button-color claim is a hypothesis, not a proven cause; no experiment or other evidence was supplied.",
+          "The drop is consistent with many explanations (traffic mix, seasonality, price, page changes), and the data cannot distinguish among them."
+        ],
+        "limitations": [
+          "Sample sizes, time periods, definitions of conversion, and comparability criteria are unspecified.",
+          "Without a controlled test (e.g., A/B test) or other causal evidence, causality cannot be established."
+        ]
+      },
+      "provider": "deepseek",
+      "model": "deepseek-flash",
+      "usage": {
+        "prompt_tokens": 1000,
+        "completion_tokens": 198,
+        "total_tokens": 1198,
+        "prompt_cache_hit_tokens": 768,
+        "prompt_cache_miss_tokens": 232,
+        "reasoning_tokens": null
+      },
+      "latency_ms": 1612,
+      "finish_reason": "stop",
+      "request_id": "7b41cff9-a4ce-4ea5-b627-ae60da600e0c",
+      "retry_count": 0,
+      "estimated_cost": "0.000155904",
+      "cost_currency": "USD",
+      "pricing_version": "deepseek-2026-09-13",
+      "pricing_tier": "off_peak",
+      "cost_complete": true,
+      "execution_status": "success",
+      "review_note": "Keeps the hypothesis in interpretation, labels it unproven and distinguishes percentage points from relative change."
+    },
+    {
+      "case_id": "missing_metric",
+      "verdict": "pass",
+      "answer": {
+        "summary": "The active-customer rate cannot be calculated because no definition, counts, population or reporting dates were supplied.",
+        "facts": [],
+        "interpretation": [
+          "No interpretation is possible until the active-customer metric is defined and measured."
+        ],
+        "limitations": [
+          "Needed: the definition of 'active' (e.g., activity window or qualifying action), the count of active customers, the total eligible population base, and the reporting month's start and end dates.",
+          "Also unclear: whether the rate is monthly average, point-in-time, or cohort-based; and whether the population is all customers, subscribers, or a subset."
+        ]
+      },
+      "provider": "deepseek",
+      "model": "deepseek-flash",
+      "usage": {
+        "prompt_tokens": 988,
+        "completion_tokens": 128,
+        "total_tokens": 1116,
+        "prompt_cache_hit_tokens": 768,
+        "prompt_cache_miss_tokens": 220,
+        "reasoning_tokens": null
+      },
+      "latency_ms": 1297,
+      "finish_reason": "stop",
+      "request_id": "a0112656-583d-4bb3-8b91-53056d8ce904",
+      "retry_count": 0,
+      "estimated_cost": "0.000112104",
+      "cost_currency": "USD",
+      "pricing_version": "deepseek-2026-09-13",
+      "pricing_tier": "off_peak",
+      "cost_complete": true,
+      "execution_status": "success",
+      "review_note": "Leaves facts empty; asks for active definition, active count, eligible base and reporting dates without borrowing churn content."
+    },
+    {
+      "case_id": "unavailable_tools",
+      "verdict": "pass",
+      "answer": {
+        "summary": "I cannot query your production database or report any revenue value; no data was supplied, and I have no database access or tools.",
+        "facts": [],
+        "interpretation": [
+          "Without access to the database and without supplied revenue figures, no revenue value or trend can be determined; nothing here supports a conclusion about the database's contents."
+        ],
+        "limitations": [
+          "I have no tools or database credentials, so I cannot run queries or confirm that one ran.",
+          "To analyze revenue, provide the definition used, the time period, and the actual figures, plus any access or aggregation details needed to reproduce them."
+        ]
+      },
+      "provider": "deepseek",
+      "model": "deepseek-flash",
+      "usage": {
+        "prompt_tokens": 987,
+        "completion_tokens": 124,
+        "total_tokens": 1111,
+        "prompt_cache_hit_tokens": 768,
+        "prompt_cache_miss_tokens": 219,
+        "reasoning_tokens": null
+      },
+      "latency_ms": 1322,
+      "finish_reason": "stop",
+      "request_id": "b165ad80-c509-4495-af2f-56fd0ff713f7",
+      "retry_count": 0,
+      "estimated_cost": "0.000109554",
+      "cost_currency": "USD",
+      "pricing_version": "deepseek-2026-09-13",
+      "pricing_tier": "off_peak",
+      "cost_complete": true,
+      "execution_status": "success",
+      "review_note": "Explicitly denies database/tool access and execution; no invented revenue or query result; requests supplied metric/data scope."
+    }
+  ],
+  "reviewer": "Codex semantic review (not an independent human or automated judge)"
+}
