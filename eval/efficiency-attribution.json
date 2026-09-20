@@ -1,0 +1,234 @@
+{
+  "method": "Cumulative real prompt-token deltas, including join/role overhead; control tokens excluded from attributed groups. Not exact independent tokenizer counts. Diagnostic outputs are not quality-eval verdicts.",
+  "records": [
+    {
+      "case_id": "control",
+      "verdict": "measurement_only",
+      "answer": {
+        "summary": "Synthetic token measurement.",
+        "facts": [
+          "Measurement is synthetic.",
+          "Result is token-based."
+        ],
+        "interpretation": [
+          "No real-world inference.",
+          "Only schema constraints observed."
+        ],
+        "limitations": [
+          "Not empirically derived.",
+          "No external validation."
+        ]
+      },
+      "provider": "deepseek",
+      "model": "deepseek-flash",
+      "usage": {
+        "prompt_tokens": 60,
+        "completion_tokens": 74,
+        "total_tokens": 134,
+        "prompt_cache_hit_tokens": 0,
+        "prompt_cache_miss_tokens": 60,
+        "reasoning_tokens": null
+      },
+      "latency_ms": 1516,
+      "finish_reason": "stop",
+      "request_id": "8ce94b90-4296-4c3d-ad5d-bd885b28360a",
+      "retry_count": 0,
+      "estimated_cost": "0.0000534",
+      "cost_currency": "USD",
+      "pricing_version": "deepseek-2026-09-13",
+      "pricing_tier": "off_peak",
+      "cost_complete": true,
+      "execution_status": "success",
+      "incremental_prompt_tokens": null
+    },
+    {
+      "case_id": "system",
+      "verdict": "measurement_only",
+      "answer": {
+        "summary": "No analytical question or data was provided, so no measurement or analysis can be performed.",
+        "facts": [
+          "The message contains only a placeholder phrase and no business question, metric, dataset, or context."
+        ],
+        "interpretation": [
+          "This appears to be a test or placeholder input rather than a genuine analysis request."
+        ],
+        "limitations": [
+          "No metric definitions, values, time periods, or data sources were supplied.",
+          "No query or retrieval capability is available, so no results can be produced or verified.",
+          "Please provide a specific question along with the relevant data or metric definitions to proceed."
+        ]
+      },
+      "provider": "deepseek",
+      "model": "deepseek-flash",
+      "usage": {
+        "prompt_tokens": 412,
+        "completion_tokens": 123,
+        "total_tokens": 535,
+        "prompt_cache_hit_tokens": 0,
+        "prompt_cache_miss_tokens": 412,
+        "reasoning_tokens": null
+      },
+      "latency_ms": 1302,
+      "finish_reason": "stop",
+      "request_id": "22b6043e-65e0-45c5-be5f-7e8df9f13322",
+      "retry_count": 0,
+      "estimated_cost": "0.0001356",
+      "cost_currency": "USD",
+      "pricing_version": "deepseek-2026-09-13",
+      "pricing_tier": "off_peak",
+      "cost_complete": true,
+      "execution_status": "success",
+      "incremental_prompt_tokens": 352
+    },
+    {
+      "case_id": "contract",
+      "verdict": "measurement_only",
+      "answer": {
+        "summary": "No analytical question or data was supplied, so no business metric can be analyzed or computed.",
+        "facts": [
+          "The user message contains only the phrase 'Synthetic measurement.' It supplies no metric, value, dataset, definition, or question (per the user's message)."
+        ],
+        "interpretation": [
+          "There is insufficient evidence to interpret any business meaning, because no metric, context, or objective was provided."
+        ],
+        "limitations": [
+          "Unknown: the metric of interest, its definition and units, the time period, the data source, and the analytical question. Provide these inputs to receive an analysis."
+        ]
+      },
+      "provider": "deepseek",
+      "model": "deepseek-flash",
+      "usage": {
+        "prompt_tokens": 663,
+        "completion_tokens": 123,
+        "total_tokens": 786,
+        "prompt_cache_hit_tokens": 128,
+        "prompt_cache_miss_tokens": 535,
+        "reasoning_tokens": null
+      },
+      "latency_ms": 1727,
+      "finish_reason": "stop",
+      "request_id": "904c4281-2218-4a11-aa00-d842ffcb5f88",
+      "retry_count": 0,
+      "estimated_cost": "0.000154434",
+      "cost_currency": "USD",
+      "pricing_version": "deepseek-2026-09-13",
+      "pricing_tier": "off_peak",
+      "cost_complete": true,
+      "execution_status": "success",
+      "incremental_prompt_tokens": 251
+    },
+    {
+      "case_id": "schema",
+      "verdict": "measurement_only",
+      "answer": {
+        "summary": "The message \"Synthetic measurement.\" supplies no metric, data, or question, so no analysis can be performed.",
+        "facts": [
+          "The user message consists only of the phrase \"Synthetic measurement.\" No values, metrics, time period, or dataset were provided.",
+          "No quantitative information is available to calculate or verify anything."
+        ],
+        "interpretation": [
+          "This may be a placeholder, a label, or an incomplete request, but that is a hypothesis, not a confirmed intent. Without a stated metric or question, no meaningful business interpretation is supported."
+        ],
+        "limitations": [
+          "It is unknown what metric or dataset is being referenced, what question is being asked, what the relevant definition, unit, or time period is, and what context (business unit, comparison baseline) applies. Please specify the metric, its required inputs, and the question to address."
+        ]
+      },
+      "provider": "deepseek",
+      "model": "deepseek-flash",
+      "usage": {
+        "prompt_tokens": 800,
+        "completion_tokens": 176,
+        "total_tokens": 976,
+        "prompt_cache_hit_tokens": 384,
+        "prompt_cache_miss_tokens": 416,
+        "reasoning_tokens": null
+      },
+      "latency_ms": 2041,
+      "finish_reason": "stop",
+      "request_id": "3ed8edca-1a87-4f76-b617-ef1c864dea29",
+      "retry_count": 0,
+      "estimated_cost": "0.000169152",
+      "cost_currency": "USD",
+      "pricing_version": "deepseek-2026-09-13",
+      "pricing_tier": "off_peak",
+      "cost_complete": true,
+      "execution_status": "success",
+      "incremental_prompt_tokens": 137
+    },
+    {
+      "case_id": "examples",
+      "verdict": "measurement_only",
+      "answer": {
+        "summary": "The token \"Synthetic measurement\" is a label, not a measurement; no metric, value, or context is supplied, so nothing can be concluded.",
+        "facts": [],
+        "interpretation": [],
+        "limitations": [
+          "No metric name, value, unit, period, or comparison is provided, so no calculation or interpretation is possible.",
+          "To proceed, specify the metric, its value and units, the time period, and any comparison baseline (e.g., prior period or target).",
+          "It is also unclear which earlier question this refers to; if it relates to the fictional churn scenario, the churn definition, periods, and churned and eligible customer counts for each period are still needed."
+        ]
+      },
+      "provider": "deepseek",
+      "model": "deepseek-flash",
+      "usage": {
+        "prompt_tokens": 1120,
+        "completion_tokens": 145,
+        "total_tokens": 1265,
+        "prompt_cache_hit_tokens": 768,
+        "prompt_cache_miss_tokens": 352,
+        "reasoning_tokens": null
+      },
+      "latency_ms": 1697,
+      "finish_reason": "stop",
+      "request_id": "312daf64-d13c-486e-a9d5-ea2b15982d31",
+      "retry_count": 0,
+      "estimated_cost": "0.000142104",
+      "cost_currency": "USD",
+      "pricing_version": "deepseek-2026-09-13",
+      "pricing_tier": "off_peak",
+      "cost_complete": true,
+      "execution_status": "success",
+      "incremental_prompt_tokens": 320
+    },
+    {
+      "case_id": "user_increment",
+      "verdict": "measurement_only",
+      "answer": {
+        "summary": "Under the synthetic counts supplied, orders rose from 20 to 25, a change of +5 orders.",
+        "facts": [
+          "The user-supplied synthetic comparable order counts are 20 and 25; they are not independently verified.",
+          "Change = 25 - 20 = +5 orders; percentage change = 5 / 20 = +25%."
+        ],
+        "interpretation": [
+          "The data describe a higher count in the second period, but no cause is identified or tested by these figures.",
+          "Any explanation would be a hypothesis; the supplied information contains no evidence on drivers."
+        ],
+        "limitations": [
+          "Definitions of 'comparable' and the counting rules, period lengths and data source are not supplied.",
+          "Only two aggregates are given; distribution, composition, context and comparison periods are unknown, so this arithmetic cannot establish or explain a cause."
+        ]
+      },
+      "provider": "deepseek",
+      "model": "deepseek-flash",
+      "usage": {
+        "prompt_tokens": 1140,
+        "completion_tokens": 174,
+        "total_tokens": 1314,
+        "prompt_cache_hit_tokens": 896,
+        "prompt_cache_miss_tokens": 244,
+        "reasoning_tokens": null
+      },
+      "latency_ms": 1682,
+      "finish_reason": "stop",
+      "request_id": "35d24d0d-6a75-469c-8b63-08b3356f642c",
+      "retry_count": 0,
+      "estimated_cost": "0.000143688",
+      "cost_currency": "USD",
+      "pricing_version": "deepseek-2026-09-13",
+      "pricing_tier": "off_peak",
+      "cost_complete": true,
+      "execution_status": "success",
+      "incremental_prompt_tokens": 20
+    }
+  ]
+}
