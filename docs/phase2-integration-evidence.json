@@ -1,0 +1,114 @@
+{
+  "created_at": "2026-09-20T13:36:35.899813+00:00",
+  "kind": "Docker HTTP integration smoke, not semantic regression",
+  "checks": {
+    "/health": 200,
+    "/health/db": 200,
+    "/docs": 200,
+    "system_message": 422,
+    "prompt_version": 422,
+    "examples": 422,
+    "output_contract": 422,
+    "response_format": 422,
+    "chat": 200
+  },
+  "response": {
+    "answer": {
+      "summary": "The comparable counts increased by 2 toys, from 10 to 12.",
+      "facts": [
+        "The supplied synthetic toy counts are 10 and 12, stated as comparable; they are not independently verified.",
+        "Change = 12 - 10 = +2 toys; percentage change = 2 / 10 = +20%."
+      ],
+      "interpretation": [
+        "The counts rose; with only these two figures, no interpretation of why is supported."
+      ],
+      "limitations": [
+        "No cause-related data was supplied, so none can be inferred; if a cause is of interest, request dated drivers relevant to toy counts."
+      ]
+    },
+    "provider": "deepseek",
+    "model": "deepseek-flash",
+    "usage": {
+      "prompt_tokens": 1123,
+      "completion_tokens": 127,
+      "total_tokens": 1250,
+      "prompt_cache_hit_tokens": 896,
+      "prompt_cache_miss_tokens": 227,
+      "reasoning_tokens": null
+    },
+    "latency_ms": 1797,
+    "finish_reason": "stop",
+    "prompt_version": "analytics-v1",
+    "prompt_sha256": "bc480e10f14ae9d6158a70014eb4aef2b2ee0c00137f655e8cb05955a349bfb8",
+    "request_id": "3451ad86-1ce7-49d3-8044-20634199f264",
+    "retry_count": 0,
+    "estimated_cost": "0.000112938",
+    "cost_currency": "USD",
+    "pricing_version": "deepseek-2026-09-13",
+    "pricing_tier": "off_peak",
+    "cost_complete": true
+  },
+  "matching_logs": [
+    {
+      "kind": "llm_attempt",
+      "prompt_version": "analytics-v1",
+      "prompt_sha256": "bc480e10f14ae9d6158a70014eb4aef2b2ee0c00137f655e8cb05955a349bfb8",
+      "request_id": "3451ad86-1ce7-49d3-8044-20634199f264",
+      "provider": "deepseek",
+      "model": "deepseek-flash",
+      "input_tokens": 1123,
+      "output_tokens": 127,
+      "total_tokens": 1250,
+      "usage": {
+        "prompt_tokens": 1123,
+        "completion_tokens": 127,
+        "total_tokens": 1250,
+        "prompt_cache_hit_tokens": 896,
+        "prompt_cache_miss_tokens": 227,
+        "reasoning_tokens": null
+      },
+      "estimated_cost": "0.000112938",
+      "cost_currency": "USD",
+      "pricing_version": "deepseek-2026-09-13",
+      "pricing_tier": "off_peak",
+      "retry_count": 0,
+      "status": "success",
+      "latency_ms": 1796
+    },
+    {
+      "kind": "llm_request",
+      "prompt_version": "analytics-v1",
+      "prompt_sha256": "bc480e10f14ae9d6158a70014eb4aef2b2ee0c00137f655e8cb05955a349bfb8",
+      "request_id": "3451ad86-1ce7-49d3-8044-20634199f264",
+      "provider": "deepseek",
+      "model": "deepseek-flash",
+      "input_tokens": 1123,
+      "output_tokens": 127,
+      "total_tokens": 1250,
+      "usage": {
+        "prompt_tokens": 1123,
+        "completion_tokens": 127,
+        "total_tokens": 1250,
+        "prompt_cache_hit_tokens": 896,
+        "prompt_cache_miss_tokens": 227,
+        "reasoning_tokens": null
+      },
+      "estimated_cost": "0.000112938",
+      "cost_currency": "USD",
+      "pricing_version": "deepseek-2026-09-13",
+      "pricing_tier": "off_peak",
+      "retry_count": 0,
+      "status": "success",
+      "latency_ms": 1797,
+      "cost_complete": true
+    }
+  ],
+  "openapi_matches": true,
+  "known_regression": {
+    "pass": 14,
+    "fail": 1,
+    "release_gate": "blocked"
+  },
+  "input": "Entirely synthetic integration test, unrelated to any real business: a fictional shop reports comparable toy counts of 10 then 12. Briefly calculate the change without guessing its cause.",
+  "historical_eval_metadata_matches": true
+}

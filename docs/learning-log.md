@@ -45,3 +45,5 @@
 - Phase 2.9: froze production prefix as analytics-v1; full bytes and hash equal the Phase 2.8 evidence. Added immutable registry, deployment-owned active selection, checksum checks, and prompt_version/prompt_sha256 in success/error logs and new evals. 57 offline tests pass. No prompt tuning or paid model calls. Stop before 2.10.
 
 - Phase 2.10: unified 15-case suite referencing existing uncertainty/injection sources plus three positives. Added checkpointed collection, hashes/runtime metadata, evidence-bound semantic review and non-passing exit behavior. 63 offline tests pass. One full real run: 15/15 schema-valid, 14 semantic passes/1 failure (contradictory missing-volume claim); preserved as a blocked release gate without changing analytics-v1 or rubrics. Stop before 2.11.
+
+- Phase 2.11: 66 offline tests passed, including full factory/route/provider integration. Docker rebuild/force-recreation and one real synthetic /chat call succeeded; response, logs, OpenAPI and historical eval identity agree. All five client overrides returned 422. analytics-v1 and 14/15 blocked regression evidence unchanged; stop before 2.12.

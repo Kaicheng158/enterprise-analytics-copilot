@@ -147,7 +147,7 @@ See [prompt architecture](docs/prompt-architecture.md). JSON output is validated
 
 ## Phase 1 acceptance
 
-Phase 1 is complete. See [acceptance results](docs/phase1-acceptance.md) for checks and limits. Token counts are validated as nonnegative integers with consistent totals/cache/reasoning counts; invalid usage fails safely with 502. Phase 2.1–2.10 engineering tasks are complete; the current regression release gate remains blocked (14 semantic passes, 1 failure). Later Phase 2 tasks have not started.
+Phase 1 is complete. See [acceptance results](docs/phase1-acceptance.md) for checks and limits. Token counts are validated as nonnegative integers with consistent totals/cache/reasoning counts; invalid usage fails safely with 502. Phase 2.1–2.11 engineering tasks are complete; the current regression release gate remains blocked (14 semantic passes, 1 failure). Later Phase 2 tasks have not started.
 
 ### Structured output (Phase 2.4)
 
@@ -176,3 +176,7 @@ Measured context components and compared a schema-whitespace candidate using bot
 ### Prompt regression (Phase 2.10)
 
 The unified runner reuses uncertainty/injection cases and adds three positive cases. JSON validity is separate from semantic review; pending/error/fail blocks the release gate. See [run commands and recorded failure](docs/prompt-regression.md). analytics-v1 has not been retuned.
+
+### Phase 2 integration (2.11)
+
+Docker /chat, typed output, version metadata, logging, client boundaries and OpenAPI integration are verified. Integration passing does not clear the existing analytics-v1 semantic gate (14/15, blocked). See [integration checks](docs/phase2-integration.md).
