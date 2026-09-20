@@ -143,12 +143,16 @@ curl -X POST http://127.0.0.1:8765/chat -H 'Content-Type: application/json' \
 
 The server assembles System Prompt v1 followed by the user message. Legacy message remains a supported alias for user_message. Unknown fields and ambiguous aliases are rejected. Model and retry settings remain server configuration.
 
-See [prompt architecture](docs/prompt-architecture.md). JSON output is validated locally; few-shot examples, RAG and Agent are not implemented.
+See [prompt architecture](docs/prompt-architecture.md). JSON output is validated locally; two server-owned synthetic few-shot examples guide analytics responses. RAG and Agent are not implemented.
 
 ## Phase 1 acceptance
 
-Phase 1 is complete. See [acceptance results](docs/phase1-acceptance.md) for checks and limits. Token counts are validated as nonnegative integers with consistent totals/cache/reasoning counts; invalid usage fails safely with 502. Phase 2.1–2.4 are complete; later Phase 2 tasks have not started.
+Phase 1 is complete. See [acceptance results](docs/phase1-acceptance.md) for checks and limits. Token counts are validated as nonnegative integers with consistent totals/cache/reasoning counts; invalid usage fails safely with 502. Phase 2.1–2.5 are complete; later Phase 2 tasks have not started.
 
 ### Structured output (Phase 2.4)
 
 `answer` is now an object with required `summary: string`, `facts: list[string]`, `interpretation: list[string]`, and `limitations: list[string]`. Clients expecting a string must adapt. DeepSeek JSON mode is enabled; the server strictly parses and validates before returning. Invalid output safely returns 502 without repair or retry. `/docs` shows the nested response schema. See [contract and enforcement limits](docs/output-contract.md).
+
+### Few-shot examples (Phase 2.5)
+
+Two provider-independent examples demonstrate fact/hypothesis separation and insufficient evidence. They precede the real user message and use synthetic data only. See [example design and tests](docs/few-shot-examples.md).

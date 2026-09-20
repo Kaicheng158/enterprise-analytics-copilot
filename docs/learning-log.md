@@ -33,3 +33,5 @@
 
 - Phase 2.4 (2026-09-20): enabled DeepSeek JSON object mode; centralized AnalyticsAnswer schema and strict parser; answer is now a validated object. Missing/wrong/extra fields, invalid/ambiguous JSON and incomplete generation fail safely without repair or retry. No dependencies added.
 - Verification: 38 offline tests passed, including failure sanitization/no retry and OpenAPI schema; Docker rebuild passed; live /docs returned 200 with the nested schema; one real DeepSeek call using explicitly synthetic toy-sales data returned HTTP 200, 847 total tokens and finish_reason=stop, with all four fields validated. Formatting/type checks do not validate factual correctness. Stop before 2.5.
+
+- Phase 2.5: added two server-owned, provider-independent synthetic examples for unverified cause attribution and unsupported churn premises. Both assistant messages validate as AnalyticsAnswer JSON. 41 tests pass, including final-user ordering, request isolation and client override rejection. No dependencies or paid model calls added; dedicated hallucination evaluation remains unstarted. Stop before 2.6.
