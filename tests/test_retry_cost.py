@@ -11,7 +11,7 @@ from backend.pricing import estimate_cost
 
 
 def success():
-    return io.BytesIO(json.dumps({'model':'deepseek-flash','choices':[{'message':{'content':'OK'},'finish_reason':'stop'}],
+    return io.BytesIO(json.dumps({'model':'deepseek-flash','choices':[{'message':{'content':json.dumps({'summary':'OK','facts':[],'interpretation':[],'limitations':[]})},'finish_reason':'stop'}],
         'usage':{'prompt_tokens':100,'completion_tokens':20,'total_tokens':120,
                  'prompt_cache_hit_tokens':40,'prompt_cache_miss_tokens':60}}).encode())
 

@@ -4,6 +4,7 @@ from unittest.mock import patch
 from pydantic import ValidationError
 from backend.config import LLMSettings, load_settings
 from backend.llm import DeepSeekProvider, ProviderError, get_provider
+from backend.output import AnalyticsAnswer
 from backend.prompts import OUTPUT_CONTRACT, SYSTEM_PROMPT_V1
 from backend.main import ChatRequest, chat
 from test_retry_cost import success
@@ -39,7 +40,7 @@ class ConfigMessageTests(unittest.TestCase):
         with patch('backend.llm.urlopen',return_value=success()) as call:
             provider.chat('User question')
         body=json.loads(call.call_args.args[0].data)
-        self.assertEqual(body['messages'],[{'role':'system','content':SYSTEM_PROMPT_V1 + '\n\n' + OUTPUT_CONTRACT},{'role':'user','content':'User question'}])
+        self.assertEqual(body['messages'],[{'role':'system','content':SYSTEM_PROMPT_V1 + '\n\n' + OUTPUT_CONTRACT + '\nJSON schema: ' + json.dumps(AnalyticsAnswer.model_json_schema())},{'role':'user','content':'User question'}])
         self.assertEqual(body['max_tokens'],64)
         self.assertNotIn('tools',body)
 

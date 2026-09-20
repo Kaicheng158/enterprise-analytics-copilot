@@ -30,3 +30,6 @@
 
 - Phase 2.3 (2026-09-20): added a server-owned ordinary-text output contract with summary, facts, interpretation and limitations. Facts require supplied evidence or reproducible calculations; hypotheses belong in interpretation; missing information belongs in limitations. Answer API shape unchanged; no new dependencies or JSON enforcement.
 - 35 tests passed; Docker rebuild succeeded; two real HTTP 200 responses correctly separated provided facts/calculation from uncertain causes or missing data. See output-contract.md for smoke-check details and limits. Stop before 2.4.
+
+- Phase 2.4 (2026-09-20): enabled DeepSeek JSON object mode; centralized AnalyticsAnswer schema and strict parser; answer is now a validated object. Missing/wrong/extra fields, invalid/ambiguous JSON and incomplete generation fail safely without repair or retry. No dependencies added.
+- Verification: 38 offline tests passed, including failure sanitization/no retry and OpenAPI schema; Docker rebuild passed; live /docs returned 200 with the nested schema; one real DeepSeek call using explicitly synthetic toy-sales data returned HTTP 200, 847 total tokens and finish_reason=stop, with all four fields validated. Formatting/type checks do not validate factual correctness. Stop before 2.5.

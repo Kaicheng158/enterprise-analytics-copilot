@@ -12,6 +12,7 @@ from urllib.error import HTTPError, URLError
 from urllib.request import Request, urlopen
 
 from backend.prompts import build_messages
+from backend.output import AnalyticsAnswer, parse_answer
 from backend.pricing import PRICING_VERSION, estimate_cost
 
 from pydantic import BaseModel, Field, ValidationError, model_validator
@@ -49,7 +50,7 @@ class TokenUsage(BaseModel):
 
 
 class ChatResult(BaseModel):
-    answer: str
+    answer: AnalyticsAnswer
     provider: str
     model: str
     usage: TokenUsage
@@ -142,6 +143,7 @@ class DeepSeekProvider:
                 "model": self.model,
                 "messages": build_messages(message),
                 "stream": False,
+                "response_format": {"type": "json_object"},
                 "thinking": {"type": self.settings.thinking},
                 "max_tokens": self.settings.max_output_tokens,
             }).encode(),
@@ -181,7 +183,7 @@ class DeepSeekProvider:
             choice = data["choices"][0]
             answer = choice["message"]["content"]
             if not isinstance(answer, str) or not answer.strip():
-                raise ValueError("Empty answer")
+                raise ProviderError(502, "Invalid LLM structured output", "llm_invalid_output")
             raw_usage = data["usage"]
             if not isinstance(raw_usage, dict):
                 raise ValueError("Usage must be an object")
@@ -192,8 +194,14 @@ class DeepSeekProvider:
                 **raw_usage,
                 "reasoning_tokens": (details or {}).get("reasoning_tokens"),
             })
+            try:
+                if choice["finish_reason"] != "stop":
+                    raise ValueError("Incomplete output")
+                parsed_answer = parse_answer(answer)
+            except (ValueError, TypeError, RecursionError):
+                raise ProviderError(502, "Invalid LLM structured output", "llm_invalid_output") from None
             result = ChatResult(
-                answer=answer, provider=self.provider, model=data["model"], usage=usage,
+                answer=parsed_answer, provider=self.provider, model=data["model"], usage=usage,
                 latency_ms=round((time.monotonic() - started) * 1000),
                 finish_reason=choice["finish_reason"],
             )

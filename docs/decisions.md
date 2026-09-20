@@ -22,3 +22,5 @@
 
 - Phase 2.1–2.2 supersedes public system_message support from Phase 1. Core prompt is server-owned in backend/prompts.py; no environment override.
 - Phase 2 is now Prompt Engineering; RAG deferred. V1 defines basic factuality and uncertainty boundaries without implementing later dedicated tasks.
+
+- Phase 2.4: replace text answer with AnalyticsAnswer; use DeepSeek JSON mode plus provider-independent strict local validation. No repair or invalid-output retry. Business fields live only in backend/output.py; prompt schema and OpenAPI derive from it.

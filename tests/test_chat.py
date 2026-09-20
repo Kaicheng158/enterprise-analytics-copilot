@@ -12,7 +12,7 @@ from backend.main import ChatRequest, chat
 
 class ChatTests(unittest.TestCase):
     def payload(self):
-        return {'model': 'deepseek-flash', 'choices': [{'message': {'content': 'Hello'}, 'finish_reason': 'stop'}],
+        return {'model': 'deepseek-flash', 'choices': [{'message': {'content': json.dumps({'summary':'Hello','facts':[],'interpretation':[],'limitations':[]})}, 'finish_reason': 'stop'}],
                 'usage': {'prompt_tokens': 3, 'completion_tokens': 2, 'total_tokens': 5,
                           'prompt_cache_hit_tokens': 1, 'prompt_cache_miss_tokens': 2}}
 

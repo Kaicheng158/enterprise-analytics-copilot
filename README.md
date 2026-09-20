@@ -65,7 +65,7 @@ curl -X POST http://127.0.0.1:8765/chat -H 'Content-Type: application/json' -d '
 
 The response includes `answer`, `provider`, `model`, `usage`, `latency_ms` and `finish_reason`. Usage includes input/output/total tokens, cache hit/miss tokens and reasoning tokens when supplied by DeepSeek. Missing optional counters are null, not fabricated zeroes. Logs record usage metadata without prompts, answers or API keys. These logs are not a billing ledger or durable usage database.
 
-This is a single-turn, non-streaming call to the official OpenAI-compatible `https://api.deepseek.com/chat/completions` endpoint. Thinking is disabled and output is limited to 512 tokens. `finish_reason=length` means the answer was truncated. The default network timeout is 30 seconds per blocking operation; retry configuration is documented below. Input is limited to 8000 characters and blank messages return 422. Provider configuration/rate/balance errors return 503, other upstream failures 502, and timeouts 504, without upstream error details.
+This is a single-turn, non-streaming call to the official OpenAI-compatible `https://api.deepseek.com/chat/completions` endpoint. Thinking is disabled and output is limited to 512 tokens. Incomplete generation (including `finish_reason=length`) fails with 502 / `llm_invalid_output`. The default network timeout is 30 seconds per blocking operation; retry configuration is documented below. Input is limited to 8000 characters and blank messages return 422. Provider configuration/rate/balance errors return 503, other upstream failures 502, and timeouts 504, without upstream error details.
 
 No new package is needed: the adapter uses Python's standard HTTP library. Business routes depend on an LLMProvider protocol, not DeepSeek HTTP details. Only DeepSeek is implemented.
 
@@ -91,7 +91,8 @@ This replaces the earlier string-valued provider `detail`. Request validation re
 | 502 | llm_request_rejected | Upstream rejects request format/parameters |
 | 502 | llm_upstream_error | Other upstream HTTP failure |
 | 502 | llm_connection_failed | Connection failure or interrupted response |
-| 502 | llm_invalid_response | Malformed response, missing usage or empty answer |
+| 502 | llm_invalid_response | Malformed upstream envelope or invalid/missing usage |
+| 502 | llm_invalid_output | Invalid JSON/schema or incomplete generation; no repair/retry |
 | 504 | llm_timeout | Direct or wrapped network timeout |
 
 Messages are locally defined; upstream bodies and credentials are never returned. Retry behavior is documented below.
@@ -142,12 +143,12 @@ curl -X POST http://127.0.0.1:8765/chat -H 'Content-Type: application/json' \
 
 The server assembles System Prompt v1 followed by the user message. Legacy message remains a supported alias for user_message. Unknown fields and ambiguous aliases are rejected. Model and retry settings remain server configuration.
 
-See [prompt architecture](docs/prompt-architecture.md). No structured output, few-shot examples, RAG or Agent is implemented.
+See [prompt architecture](docs/prompt-architecture.md). JSON output is validated locally; few-shot examples, RAG and Agent are not implemented.
 
 ## Phase 1 acceptance
 
-Phase 1 is complete. See [acceptance results](docs/phase1-acceptance.md) for checks and limits. Token counts are validated as nonnegative integers with consistent totals/cache/reasoning counts; invalid usage fails safely with 502. Phase 2.1–2.3 are complete; later Phase 2 tasks have not started.
+Phase 1 is complete. See [acceptance results](docs/phase1-acceptance.md) for checks and limits. Token counts are validated as nonnegative integers with consistent totals/cache/reasoning counts; invalid usage fails safely with 502. Phase 2.1–2.4 are complete; later Phase 2 tasks have not started.
 
-### Output contract (Phase 2.3)
+### Structured output (Phase 2.4)
 
-Model answers are instructed to use four ordinary-text sections: `summary`, `facts`, `interpretation`, `limitations`. Facts exclude speculation; interpretations label assumptions; limitations identify missing information and uncertainty. The `answer` API field remains a string. See [contract and enforcement limits](docs/output-contract.md).
+`answer` is now an object with required `summary: string`, `facts: list[string]`, `interpretation: list[string]`, and `limitations: list[string]`. Clients expecting a string must adapt. DeepSeek JSON mode is enabled; the server strictly parses and validates before returning. Invalid output safely returns 502 without repair or retry. `/docs` shows the nested response schema. See [contract and enforcement limits](docs/output-contract.md).

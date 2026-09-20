@@ -34,7 +34,7 @@ Multiple providers/models and quality/latency/cost comparisons; platform-managed
 - [x] 2.1 Prompt architecture: provider-independent message assembly in backend/prompts.py.
 - [x] 2.2 Server-owned System Prompt v1: role, goal, data boundaries and insufficient-information instruction; public overrides rejected.
 - [x] 2.3 Output contract: four ordinary-text sections (summary/facts/interpretation/limitations), server-owned constraints; no JSON enforcement.
-- [ ] 2.4 Structured output / JSON
+- [x] 2.4 Structured output / JSON: DeepSeek JSON mode, centralized strict schema/parser, validated answer object, safe failures and OpenAPI.
 - [ ] 2.5 Few-shot examples
 - [ ] 2.6 Hallucination / uncertainty handling (dedicated implementation and evaluation)
 - [ ] 2.7 Prompt injection basic boundaries
@@ -44,4 +44,4 @@ Multiple providers/models and quality/latency/cost comparisons; platform-managed
 - [ ] 2.11 Phase 2 integration
 - [ ] 2.12 Phase 2 final verification
 
-Stop after 2.3. RAG is deferred beyond this phase; its future numbering is not yet assigned. Later SQL/Tool Calling/Agent/LangGraph stages remain unstarted.
+Stop after 2.4. RAG is deferred beyond this phase; its future numbering is not yet assigned. Later SQL/Tool Calling/Agent/LangGraph stages remain unstarted.
