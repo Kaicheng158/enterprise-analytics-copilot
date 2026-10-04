@@ -16,6 +16,14 @@ from test_retry_cost import success, failure
 
 
 class PromptVersioningTests(unittest.TestCase):
+    # These historical-release tests keep checking v1 even after active promotion.
+    def setUp(self):
+        self.selection = patch('backend.prompt_registry.ACTIVE_PROMPT_VERSION','analytics-v1')
+        self.selection.start()
+
+    def tearDown(self):
+        self.selection.stop()
+
     def test_release_exactly_matches_phase28_production_snapshot(self):
         artifact = json.loads(Path('eval/efficiency-baseline.json').read_text())
         messages = build_messages('')

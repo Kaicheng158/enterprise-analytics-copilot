@@ -4,6 +4,7 @@ import hashlib
 import json
 from types import MappingProxyType
 from backend.prompt_analytics_v1 import PREFIX
+from backend.prompt_analytics_v2 import PREFIX as V2_PREFIX
 
 
 def prompt_sha256(messages):
@@ -28,9 +29,13 @@ class PromptRelease:
 
 RELEASES = MappingProxyType({
     "analytics-v1": PromptRelease("analytics-v1", PREFIX, "bc480e10f14ae9d6158a70014eb4aef2b2ee0c00137f655e8cb05955a349bfb8"),
+    "analytics-v2": PromptRelease("analytics-v2", V2_PREFIX, "b04bd2ea98f0e007b00c7a76e4b6a7e7ef8cd28478f350589e81f1f7b52d3fd6"),
 })
+
+CANDIDATES = MappingProxyType({})
+
 # Deployment-owned selection. Roll back by selecting a retained release and redeploying.
-ACTIVE_PROMPT_VERSION = "analytics-v1"
+ACTIVE_PROMPT_VERSION = "analytics-v2"
 
 
 def active_release() -> PromptRelease:
@@ -42,7 +47,7 @@ def active_release() -> PromptRelease:
 
 def prompt_metadata(messages):
     digest = prompt_sha256(messages)
-    release = active_release()
-    # Eval-only modified prefixes must never masquerade as the published release.
-    version = release.version if digest == release.sha256 else "unpublished"
+    # Label exact known releases/candidates, without making candidates active.
+    version = next((release.version for release in (*RELEASES.values(), *CANDIDATES.values())
+                    if digest == release.sha256), "unpublished")
     return {"prompt_version": version, "prompt_sha256": digest}

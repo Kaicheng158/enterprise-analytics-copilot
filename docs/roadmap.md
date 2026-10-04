@@ -4,7 +4,7 @@
 
 0. Engineering foundation — complete: FastAPI + PostgreSQL in Compose.
 1. LLM API and prompts — complete, DeepSeek only.
-2. Prompt Engineering — tasks 2.1–2.2 complete; remaining tasks below.
+2. Prompt Engineering — complete: analytics-v2 published and active after three gate-v2 passes and Docker acceptance.
 3. Safe SQL and tool calling — not started.
 4. Analysis tools and controlled agent — not started.
 5. LangGraph workflows — not started.
@@ -42,6 +42,6 @@ Multiple providers/models and quality/latency/cost comparisons; platform-managed
 - [x] 2.9 Prompt versioning: immutable analytics-v1, server-owned active registry, checksum validation, rollback procedure and log/eval identity.
 - [x] 2.10 Prompt regression infrastructure: unified 15-case suite and evidence-bound review; current live result 14 pass/1 fail, release gate blocked. analytics-v1 unchanged.
 - [x] 2.11 Phase 2 integration: 66 offline tests and real Docker /chat/log/OpenAPI verification passed; analytics-v1 remains 14/15, release gate blocked.
-- [ ] 2.12 Phase 2 final verification
+- [x] 2.12 Phase 2 final verification: analytics-v2 published at its accepted SHA; three unchanged gate-v2 rounds PASS, 87 offline tests pass, Docker health/database/chat/logging/OpenAPI/client boundaries verified. Historical v1 14/15 blocked remains preserved. See [final acceptance](phase2-acceptance.md).
 
-Stop after 2.11. RAG is deferred beyond this phase; its future numbering is not yet assigned. Later SQL/Tool Calling/Agent/LangGraph stages remain unstarted.
+Stop at Phase 2; 2.12 is accepted and released. RAG is deferred beyond this phase; its future numbering is not yet assigned. Later SQL/Tool Calling/Agent/LangGraph stages remain unstarted.

@@ -1,0 +1,138 @@
+{
+  "/health": {
+    "status": 200,
+    "body": {
+      "status": "ok"
+    }
+  },
+  "/health/db": {
+    "status": 200,
+    "body": {
+      "status": "ok",
+      "database": "connected",
+      "result": 1
+    }
+  },
+  "openapi_matches_local_schema": true,
+  "client_boundaries": {
+    "system_message": 422,
+    "prompt_version": 422,
+    "examples": 422,
+    "output_contract": 422,
+    "response_format": 422,
+    "temperature": 422,
+    "model": 422,
+    "provider": 422,
+    "max_output_tokens": 422,
+    "thinking": 422,
+    "timeout_seconds": 422,
+    "max_retries": 422
+  },
+  "/chat": {
+    "status": 200,
+    "response": {
+      "answer": {
+        "summary": "From period A to period B, units changed by +10, a 25% increase.",
+        "facts": [
+          "Supplied synthetic data: 40 units in period A and 50 units in period B, measured on the same basis.",
+          "Absolute change = 50 - 40 = +10 units.",
+          "Percentage change = (50 - 40) / 40 \u00d7 100 = 25%."
+        ],
+        "interpretation": [
+          "Within the supplied scope, the later value (period B) is 10 units above the baseline (period A), a 25% relative increase."
+        ],
+        "limitations": []
+      },
+      "provider": "deepseek",
+      "model": "deepseek-flash",
+      "usage": {
+        "prompt_tokens": 1864,
+        "completion_tokens": 127,
+        "total_tokens": 1991,
+        "prompt_cache_hit_tokens": 1664,
+        "prompt_cache_miss_tokens": 200,
+        "reasoning_tokens": null
+      },
+      "latency_ms": 1083,
+      "finish_reason": "stop",
+      "prompt_version": "analytics-v2",
+      "prompt_sha256": "b04bd2ea98f0e007b00c7a76e4b6a7e7ef8cd28478f350589e81f1f7b52d3fd6",
+      "request_id": "97875262-f16d-44ba-b8b8-64af2ab16694",
+      "retry_count": 0,
+      "estimated_cost": "0.000111192",
+      "cost_currency": "USD",
+      "pricing_version": "deepseek-2026-09-13",
+      "pricing_tier": "off_peak",
+      "cost_complete": true
+    }
+  },
+  "correlated_logs": [
+    {
+      "event": "llm_attempt",
+      "prompt_version": "analytics-v2",
+      "prompt_sha256": "b04bd2ea98f0e007b00c7a76e4b6a7e7ef8cd28478f350589e81f1f7b52d3fd6",
+      "request_id": "97875262-f16d-44ba-b8b8-64af2ab16694",
+      "provider": "deepseek",
+      "model": "deepseek-flash",
+      "input_tokens": 1864,
+      "output_tokens": 127,
+      "total_tokens": 1991,
+      "usage": {
+        "prompt_tokens": 1864,
+        "completion_tokens": 127,
+        "total_tokens": 1991,
+        "prompt_cache_hit_tokens": 1664,
+        "prompt_cache_miss_tokens": 200,
+        "reasoning_tokens": null
+      },
+      "estimated_cost": "0.000111192",
+      "cost_currency": "USD",
+      "pricing_version": "deepseek-2026-09-13",
+      "pricing_tier": "off_peak",
+      "retry_count": 0,
+      "status": "success",
+      "latency_ms": 1082,
+      "generation_config": {
+        "model": "deepseek-flash",
+        "max_output_tokens": 512,
+        "temperature": 0.2,
+        "thinking": "disabled"
+      }
+    },
+    {
+      "event": "llm_request",
+      "prompt_version": "analytics-v2",
+      "prompt_sha256": "b04bd2ea98f0e007b00c7a76e4b6a7e7ef8cd28478f350589e81f1f7b52d3fd6",
+      "request_id": "97875262-f16d-44ba-b8b8-64af2ab16694",
+      "provider": "deepseek",
+      "model": "deepseek-flash",
+      "input_tokens": 1864,
+      "output_tokens": 127,
+      "total_tokens": 1991,
+      "usage": {
+        "prompt_tokens": 1864,
+        "completion_tokens": 127,
+        "total_tokens": 1991,
+        "prompt_cache_hit_tokens": 1664,
+        "prompt_cache_miss_tokens": 200,
+        "reasoning_tokens": null
+      },
+      "estimated_cost": "0.000111192",
+      "cost_currency": "USD",
+      "pricing_version": "deepseek-2026-09-13",
+      "pricing_tier": "off_peak",
+      "retry_count": 0,
+      "status": "success",
+      "latency_ms": 1083,
+      "generation_config": {
+        "model": "deepseek-flash",
+        "max_output_tokens": 512,
+        "temperature": 0.2,
+        "thinking": "disabled"
+      },
+      "cost_complete": true
+    }
+  ],
+  "frozen_files_unchanged": 136,
+  "verified_at": "2026-10-04T04:26:22.818400+00:00"
+}

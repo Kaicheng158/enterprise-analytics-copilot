@@ -1,0 +1,22 @@
+{
+  "gate_version": "phase2-release-gate-v2",
+  "policy_sha256": "3a4d529b47e5bd433d5131247e901e5d3f0d5572d6dd03c0fa495b3f165a1f6e",
+  "suite_sha256": "807ed9f61f393780838eaf34b70966317c2c1f950f52a7dc4ae10e900bd26496",
+  "rounds_required": 3,
+  "registered_at": "2026-10-03T13:33:08.324448+00:00",
+  "prompt_version": "analytics-v2",
+  "prompt_sha256": "b04bd2ea98f0e007b00c7a76e4b6a7e7ef8cd28478f350589e81f1f7b52d3fd6",
+  "provider": "deepseek",
+  "model": "deepseek-flash",
+  "runtime_config": {
+    "timeout_seconds": 30.0,
+    "max_retries": 2,
+    "backoff_seconds": 1.0,
+    "provider": "deepseek",
+    "model": "deepseek-flash",
+    "max_output_tokens": 512,
+    "temperature": 0.2,
+    "thinking": "disabled"
+  },
+  "sha256": "d1486021a36a40f0886246e98e4636f899019710dfbd83f84ccde31fc9a92e2c"
+}

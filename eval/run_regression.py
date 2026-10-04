@@ -6,11 +6,13 @@ import hashlib
 import json
 from pathlib import Path
 import uuid
+from contextlib import ExitStack
+from unittest.mock import patch
 
 from backend.config import load_settings
 from backend.llm import PROVIDER_ADAPTERS
 from backend.output import AnalyticsAnswer
-from backend.prompt_registry import prompt_metadata
+from backend.prompt_registry import prompt_metadata, CANDIDATES
 from backend.prompts import build_messages
 from eval.run_uncertainty import collect
 
@@ -119,6 +121,7 @@ if __name__ == '__main__':
     sub = parser.add_subparsers(dest='command',required=True)
     run = sub.add_parser('run')
     run.add_argument('--output',type=Path,required=True)
+    run.add_argument('--candidate', choices=list(CANDIDATES), help='Eval-only candidate; does not change server active release')
     review = sub.add_parser('review')
     review.add_argument('--evidence',type=Path,required=True)
     review.add_argument('--decisions',type=Path,required=True)
@@ -130,7 +133,12 @@ if __name__ == '__main__':
     if args.command == 'run':
         settings = load_settings()
         provider = PROVIDER_ADAPTERS[settings.provider](api_key=settings.api_key.get_secret_value(),model=settings.model,settings=settings)
-        report = run_suite(provider,settings.model_dump(exclude={'api_key'}),load_suite(),lambda r:write_checkpoint(args.output,r))
+        with ExitStack() as context:
+            if args.candidate:
+                builder = CANDIDATES[args.candidate].messages
+                for target in ['backend.llm.build_messages', 'eval.run_uncertainty.build_messages', '__main__.build_messages']:
+                    context.enter_context(patch(target, builder))
+            report = run_suite(provider,settings.model_dump(exclude={'api_key'}),load_suite(),lambda r:write_checkpoint(args.output,r))
     else:
         report = review_report(json.loads(args.evidence.read_text()),json.loads(args.decisions.read_text()))
         write_checkpoint(args.output,report)

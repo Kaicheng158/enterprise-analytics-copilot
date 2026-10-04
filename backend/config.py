@@ -44,6 +44,7 @@ class LLMSettings(RetryConfig):
     model: str = PROVIDERS[DEFAULT_PROVIDER]["default_model"]
     api_key: SecretStr = SecretStr("")
     max_output_tokens: int = Field(default=512, ge=1, le=8192)
+    temperature: float = Field(default=0.2, ge=0, le=2, allow_inf_nan=False)
     thinking: Literal["disabled"] = "disabled"
 
     @field_validator("provider")
@@ -76,6 +77,7 @@ def load_settings() -> LLMSettings:
         "max_retries": "LLM_MAX_RETRIES",
         "backoff_seconds": "LLM_BACKOFF_SECONDS",
         "max_output_tokens": "LLM_MAX_OUTPUT_TOKENS",
+        "temperature": "LLM_TEMPERATURE",
     }
     overrides = {field: os.environ[name] for field, name in names.items() if os.getenv(name) not in (None, "")}
     return LLMSettings(provider=provider, model=model,

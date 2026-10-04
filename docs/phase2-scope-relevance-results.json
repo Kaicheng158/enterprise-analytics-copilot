@@ -1,0 +1,86 @@
+{
+  "status": "blocked",
+  "active_version": "analytics-v1",
+  "candidate_published": false,
+  "candidate_sha256": "60fbcc4661bbdf0f53c99404501083d4ca7584259dd3d2fd2a5601d292d6dc6d",
+  "runtime_config": {
+    "timeout_seconds": 30.0,
+    "max_retries": 2,
+    "backoff_seconds": 1.0,
+    "provider": "deepseek",
+    "model": "deepseek-flash",
+    "max_output_tokens": 512,
+    "temperature": 0.2,
+    "thinking": "disabled"
+  },
+  "suite_sha256": "807ed9f61f393780838eaf34b70966317c2c1f950f52a7dc4ae10e900bd26496",
+  "offline_tests_passed": 72,
+  "distinct_requests": 45,
+  "runs": [
+    {
+      "round": 1,
+      "run_id": "d2394ab2-b064-4eab-acda-b41e2aab4c92",
+      "summary": {
+        "counts": {
+          "pass": 14,
+          "fail": 1
+        },
+        "release_gate": "blocked"
+      },
+      "schema_passes": 15,
+      "input_tokens": 26497,
+      "output_tokens": 2155,
+      "total_tokens": 28652,
+      "summed_latency_ms": 24263,
+      "estimated_cost_usd": "0.001955934",
+      "failures": [
+        {
+          "case_id": "uncertainty/supplied_hypothesis",
+          "verdict": "fail",
+          "rationale": "Correctly says hypothesis unproven and keeps it outside facts, but omits the causal evidence request required by expected_behavior; no field identifies a next evidence need. Empty limitations alone is not the failure."
+        }
+      ]
+    },
+    {
+      "round": 2,
+      "run_id": "3184c5a2-6419-4ee8-8bc0-fa925a796d04",
+      "summary": {
+        "counts": {
+          "pass": 14,
+          "fail": 1
+        },
+        "release_gate": "blocked"
+      },
+      "schema_passes": 15,
+      "input_tokens": 26497,
+      "output_tokens": 2146,
+      "total_tokens": 28643,
+      "summed_latency_ms": 22311,
+      "estimated_cost_usd": "0.001875270",
+      "failures": [
+        {
+          "case_id": "positive/limited_analysis",
+          "verdict": "fail",
+          "rationale": "Recasts the requested generic next step as investigating why support is slow, then says that invented task cannot be supported without ticket/case data. This expands user scope and invents a requested causal task instead of offering a scoped next step. Other calculations and sampling cautions are correct."
+        }
+      ]
+    },
+    {
+      "round": 3,
+      "run_id": "a78aa68a-7f3e-4bfe-b2a3-e36e3c434f13",
+      "summary": {
+        "counts": {
+          "pass": 15
+        },
+        "release_gate": "passed"
+      },
+      "schema_passes": 15,
+      "input_tokens": 26497,
+      "output_tokens": 2107,
+      "total_tokens": 28604,
+      "summed_latency_ms": 23269,
+      "estimated_cost_usd": "0.001851870",
+      "failures": []
+    }
+  ]
+}

@@ -8,7 +8,7 @@ The production prefix at the end of Phase 2.8 is frozen as `analytics-v1` in `ba
 
 1. Never edit a published release file or replace its registry entry/checksum. For changed instructions, schema text, examples or formatting, add a new release module and a new registry entry with its checksum.
 2. Verify the new release and output-schema compatibility, then change only the server-owned active selector and redeploy. There is no client parameter, environment prompt override, remote configuration or runtime management endpoint.
-3. To roll back, select a retained release and redeploy. Only v1 is published now; switch/rollback behavior is tested with a test-only release. Keep the output validator/API compatible with a selected release; rollback across a breaking output schema also requires rolling back compatible application code.
+3. To roll back, select a retained release and redeploy. analytics-v1 and analytics-v2 are published; v2 is active, and retained v1 selection is tested. v1 retains its historical blocked evaluation and should not be mistaken for a quality-approved fallback. Keep the output validator/API compatible with a selected release; rollback across a breaking output schema also requires rolling back compatible application code.
 
 Checksums reject accidental in-place content drift before an upstream call (503 / llm_invalid_prompt); immutable tuples, frozen records and a read-only map prevent normal runtime mutation. Source-control review and tests enforce the publication policy. This is not tamper-proof storage: a maintainer who deliberately changes source and its checksum can bypass it.
 
@@ -27,3 +27,9 @@ Eval-only altered prefixes are labelled `unpublished` with their actual hash; th
 57 offline tests pass. The release's full message prefix and digest match the saved Phase 2.8 production baseline exactly. Tests cover tampering rejection, immutable registry/records, selection/rollback, user version override rejection, retry metadata consistency, failed-provider logging, and unpublished eval candidates, plus existing uncertainty/injection/structured-output checks. Docker rebuild and health checks verify release packaging. No new paid LLM call is required for this byte-preserving refactor; prior live evals are historical evidence, not newly rerun results.
 
 Stop before Phase 2.10; no new regression framework or prompt UI/database is introduced.
+
+## Phase 2.12 candidate verification and publication
+
+`CANDIDATES` is a separate immutable map used only by the eval CLI. Run the unchanged suite with `python -m eval.run_regression run --candidate analytics-v2 --output <new-evidence-path>`, then bind explicit semantic decisions with the existing review command. Pending review exits nonzero. Candidate collection never changes the active server selector. Production selection rejects a candidate absent from `RELEASES`. Candidate revisions keep their prefix snapshots and distinct SHA-256 evidence; published v1 remains untouched.
+
+The original two-round legacy gate remains historical. Publication was subsequently authorized using separately pre-registered phase2-release-gate-v2 (85% provisional quality threshold, all hard invariants required, no core or repeated severe-quality blockers). Three complete independent rounds passed. analytics-v2 moved unchanged from CANDIDATES into RELEASES, and active selection now uses v2. CANDIDATES is empty. See [final acceptance](phase2-acceptance.md).

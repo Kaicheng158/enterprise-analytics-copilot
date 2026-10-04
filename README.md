@@ -130,6 +130,7 @@ Configuration precedence: process/Compose environment over local `.env`; `LLM_MO
 | LLM_TIMEOUT_SECONDS | 30 |
 | LLM_MAX_RETRIES | 2 |
 | LLM_BACKOFF_SECONDS | 1 |
+| LLM_TEMPERATURE | 0.2 (finite, 0–2; explicitly sent) |
 | LLM_MAX_OUTPUT_TOKENS | 512 (allowed 1–8192) |
 
 `DEEPSEEK_API_KEY` remains a runtime secret. Thinking stays disabled. Compose forwards overrides while Python owns defaults; recreate the API after changing `.env`. `user_message` must contain 1–8000 characters and cannot be blank.
@@ -141,13 +142,13 @@ curl -X POST http://127.0.0.1:8765/chat -H 'Content-Type: application/json' \
   -d '{"user_message":"What data do you need to explain a revenue decline?"}'
 ```
 
-The server assembles System Prompt v1 followed by the user message. Legacy message remains a supported alias for user_message. Unknown fields and ambiguous aliases are rejected. Model and retry settings remain server configuration.
+The server assembles the active immutable prompt release, including server-owned instructions and examples, followed by the real user message. Legacy message remains a supported alias for user_message. Unknown fields and ambiguous aliases are rejected. Model and retry settings remain server configuration.
 
 See [prompt architecture](docs/prompt-architecture.md). JSON output is validated locally; two server-owned synthetic few-shot examples guide analytics responses. RAG and Agent are not implemented.
 
 ## Phase 1 acceptance
 
-Phase 1 is complete. See [acceptance results](docs/phase1-acceptance.md) for checks and limits. Token counts are validated as nonnegative integers with consistent totals/cache/reasoning counts; invalid usage fails safely with 502. Phase 2.1–2.11 engineering tasks are complete; the current regression release gate remains blocked (14 semantic passes, 1 failure). Later Phase 2 tasks have not started.
+Phase 1 is complete. See [acceptance results](docs/phase1-acceptance.md) for checks and limits. Token counts are validated as nonnegative integers with consistent totals/cache/reasoning counts; invalid usage fails safely with 502. Phase 2 is complete: analytics-v2 is published and active after three gate-v2 passes and Docker verification. analytics-v1 retains its historical 14/15 blocked result.
 
 ### Structured output (Phase 2.4)
 
@@ -180,3 +181,7 @@ The unified runner reuses uncertainty/injection cases and adds three positive ca
 ### Phase 2 integration (2.11)
 
 Docker /chat, typed output, version metadata, logging, client boundaries and OpenAPI integration are verified. Integration passing does not clear the existing analytics-v1 semantic gate (14/15, blocked). See [integration checks](docs/phase2-integration.md).
+
+### Phase 2.12 in progress
+
+analytics-v2 is published unchanged from the accepted candidate and is active. Three phase2-release-gate-v2 rounds passed; 87 offline tests and Docker smoke checks passed. See [final acceptance](docs/phase2-acceptance.md). Earlier failures and original gate verdicts are preserved. No RAG work has started.

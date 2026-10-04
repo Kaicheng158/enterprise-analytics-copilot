@@ -1,0 +1,10 @@
+{
+  "registration_sha256": "d1486021a36a40f0886246e98e4636f899019710dfbd83f84ccde31fc9a92e2c",
+  "rounds": 3,
+  "raw_files": [
+    "round-1-raw.json",
+    "round-2-raw.json",
+    "round-3-raw.json"
+  ],
+  "policy": "Collect every planned round once; retain failures; no prompt/config changes or best-of reruns."
+}

@@ -28,6 +28,11 @@ def collect(provider: LLMProvider, cases: list[dict]) -> dict:
             record.update(execution_status="error", error_code=error.code,
                           verdict="execution_error", usage=None, estimated_cost=None,
                           cost_complete=False, latency_ms=round((time.monotonic()-start)*1000))
+            # Provider supplies only allowlisted metadata, never raw content/headers.
+            safe_fields = {"request_id", "retry_count", "usage", "estimated_cost", "cost_currency",
+                           "pricing_version", "pricing_tier", "cost_complete", "latency_ms",
+                           "output_diagnostic", "finish_reason", "generation_config", "provider", "model"}
+            record.update({k:v for k,v in error.telemetry.items() if k in safe_fields})
         records.append(record)
     return {
         "created_at": datetime.now(timezone.utc).isoformat(),

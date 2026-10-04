@@ -6,7 +6,7 @@ from unittest.mock import patch
 from backend.main import app
 from backend.llm import DeepSeekProvider, RetryConfig, get_provider
 from test_retry_cost import success
-from backend.prompts import OUTPUT_CONTRACT
+from backend.prompt_registry import active_release
 
 
 async def send_request(body):
@@ -33,7 +33,8 @@ class AcceptanceTests(unittest.TestCase):
             self.assertIsNotNone(data['estimated_cost'])
             self.assertTrue(data['request_id'])
             roles=json.loads(call.call_args.args[0].data)['messages']
-            self.assertEqual([x['role'] for x in roles],['system','user','assistant','user','assistant','user'])
+            self.assertEqual(roles, active_release().messages('Hi'))
+            self.assertEqual(roles[-1], {'role': 'user', 'content': 'Hi'})
 
 
     def test_output_contract_is_system_owned_and_answer_is_validated_object(self):
@@ -46,7 +47,7 @@ class AcceptanceTests(unittest.TestCase):
         body = json.loads(call.call_args.args[0].data)
         self.assertEqual(status, 200)
         self.assertEqual(data['answer'], answer)
-        self.assertIn(OUTPUT_CONTRACT, body['messages'][0]['content'])
+        self.assertEqual(body['messages'][0]['content'], active_release().prefix[0][1])
         self.assertEqual(body['messages'][-1], {'role': 'user', 'content': user})
         self.assertEqual(body['response_format'], {'type':'json_object'})
         self.assertNotIn('tools', body)

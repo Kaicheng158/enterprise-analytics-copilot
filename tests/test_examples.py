@@ -2,6 +2,7 @@ import unittest
 from backend.examples import FEW_SHOT_EXAMPLES
 from backend.output import parse_answer
 from backend.prompts import build_messages
+from backend.prompt_registry import active_release
 
 
 class FewShotTests(unittest.TestCase):
@@ -25,16 +26,16 @@ class FewShotTests(unittest.TestCase):
         user = 'Analyse this separate scenario: 7 orders.'
         messages = build_messages(user)
         self.assertEqual([m['role'] for m in messages],
-                         ['system', 'user', 'assistant', 'user', 'assistant', 'user'])
+                         [role for role, _ in active_release().prefix] + ['user'])
         self.assertEqual(messages[-1], {'role':'user', 'content':user})
         self.assertEqual([m['content'] for m in messages[1:-1]],
-                         [text for pair in FEW_SHOT_EXAMPLES for text in pair])
+                         [content for role,content in active_release().prefix[1:]])
         messages[1]['content'] = 'mutated'
         messages[2]['content'] = '{}'
         messages.pop()
         fresh = build_messages('Next request')
-        self.assertEqual(fresh[1]['content'], FEW_SHOT_EXAMPLES[0][0])
-        self.assertEqual(fresh[2]['content'], FEW_SHOT_EXAMPLES[0][1])
+        self.assertEqual(fresh[1]['content'], active_release().prefix[1][1])
+        self.assertEqual(fresh[2]['content'], active_release().prefix[2][1])
         self.assertEqual(fresh[-1]['content'], 'Next request')
 
     def test_client_cannot_supply_examples(self):

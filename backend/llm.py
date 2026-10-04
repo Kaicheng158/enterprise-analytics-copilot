@@ -13,7 +13,7 @@ from urllib.request import Request, urlopen
 
 from backend.prompts import build_messages
 from backend.prompt_registry import prompt_metadata
-from backend.output import AnalyticsAnswer, parse_answer
+from backend.output import AnalyticsAnswer, parse_answer, OutputFailure
 from backend.pricing import PRICING_VERSION, estimate_cost
 
 from pydantic import BaseModel, Field, ValidationError, model_validator
@@ -74,6 +74,9 @@ class ProviderError(Exception):
         self.status_code = status_code
         self.code = code
         self.retryable = retryable
+        self.diagnostic = None
+        self.usage = None
+        self.telemetry = {}
 
 
 class LLMProvider(Protocol):
@@ -94,6 +97,7 @@ class DeepSeekProvider:
             metadata = prompt_metadata(messages)
         except ValueError:
             raise ProviderError(503, "Invalid prompt configuration", "llm_invalid_prompt") from None
+        generation_config = self.settings.model_dump(include={"model", "thinking", "temperature", "max_output_tokens"})
         request_id = str(uuid.uuid4())
         started = time.monotonic()
         for attempt in range(self.config.max_retries + 1):
@@ -109,10 +113,20 @@ class DeepSeekProvider:
                     "latency_ms": round((time.monotonic() - attempt_start) * 1000),
                     "retry_count": attempt, "status": "error", "error_code": error.code,
                 }
+                record["generation_config"] = generation_config
+                if error.diagnostic is not None:
+                    record["output_diagnostic"] = error.diagnostic
+                    record["finish_reason"] = error.diagnostic["finish_reason"]
+                if error.usage is not None:
+                    amount, tier = estimate_cost(self.provider, self.model, error.usage, utc_start)
+                    record.update(usage=error.usage.model_dump(), input_tokens=error.usage.prompt_tokens,
+                                  output_tokens=error.usage.completion_tokens, total_tokens=error.usage.total_tokens,
+                                  estimated_cost=amount, pricing_tier=tier)
                 logger.info("llm_attempt %s", json.dumps(record))
                 if not error.retryable or attempt == self.config.max_retries:
                     record["latency_ms"] = round((time.monotonic() - started) * 1000)
-                    record["cost_complete"] = False
+                    record["cost_complete"] = attempt == 0 and record["estimated_cost"] is not None
+                    error.telemetry = dict(record)
                     logger.info("llm_request %s", json.dumps(record))
                     raise
                 # Bounded exponential backoff with jitter; no unbounded retry loop.
@@ -137,6 +151,7 @@ class DeepSeekProvider:
                 "pricing_tier": tier, "retry_count": attempt, "status": "success",
                 "latency_ms": round((time.monotonic() - attempt_start) * 1000),
             }
+            record["generation_config"] = generation_config
             logger.info("llm_attempt %s", json.dumps(record))
             result.latency_ms = round((time.monotonic() - started) * 1000)
             record.update(latency_ms=result.latency_ms, cost_complete=result.cost_complete)
@@ -156,6 +171,7 @@ class DeepSeekProvider:
                 "response_format": {"type": "json_object"},
                 "thinking": {"type": self.settings.thinking},
                 "max_tokens": self.settings.max_output_tokens,
+                "temperature": self.settings.temperature,
             }).encode(),
             headers={"Authorization": "Bearer " + self.api_key,
                      "Content-Type": "application/json"},
@@ -192,8 +208,6 @@ class DeepSeekProvider:
         try:
             choice = data["choices"][0]
             answer = choice["message"]["content"]
-            if not isinstance(answer, str) or not answer.strip():
-                raise ProviderError(502, "Invalid LLM structured output", "llm_invalid_output")
             raw_usage = data["usage"]
             if not isinstance(raw_usage, dict):
                 raise ValueError("Usage must be an object")
@@ -205,11 +219,20 @@ class DeepSeekProvider:
                 "reasoning_tokens": (details or {}).get("reasoning_tokens"),
             })
             try:
-                if choice["finish_reason"] != "stop":
-                    raise ValueError("Incomplete output")
+                if choice.get("finish_reason") == "length":
+                    raise OutputFailure("completion", "truncation")
+                if choice.get("finish_reason") != "stop":
+                    raise OutputFailure("completion", "incomplete_output")
                 parsed_answer = parse_answer(answer)
-            except (ValueError, TypeError, RecursionError):
-                raise ProviderError(502, "Invalid LLM structured output", "llm_invalid_output") from None
+            except OutputFailure as failure:
+                error = ProviderError(502, "Invalid LLM structured output", "llm_invalid_output")
+                # Whitelist provider enum; arbitrary strings can contain sensitive data.
+                reason = choice.get("finish_reason")
+                safe_reason = reason if isinstance(reason, str) and reason in {"stop", "length", "content_filter", "tool_calls", "insufficient_system_resource"} else "unknown"
+                error.diagnostic = {**failure.diagnostic, "finish_reason": safe_reason,
+                                    "content_length": len(answer) if isinstance(answer, str) else None}
+                error.usage = usage
+                raise error from None
             result = ChatResult(
                 answer=parsed_answer, provider=self.provider, model=data["model"], usage=usage,
                 latency_ms=round((time.monotonic() - started) * 1000),

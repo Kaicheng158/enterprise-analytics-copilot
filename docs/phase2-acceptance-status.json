@@ -1,0 +1,551 @@
+{
+  "phase": "2.12",
+  "acceptance": "blocked",
+  "active_prompt_version": "analytics-v1",
+  "active_prompt_sha256": "bc480e10f14ae9d6158a70014eb4aef2b2ee0c00137f655e8cb05955a349bfb8",
+  "v1_historical_regression": "14/15; blocked",
+  "candidate_version": "analytics-v2",
+  "candidate_sha256": "60fbcc4661bbdf0f53c99404501083d4ca7584259dd3d2fd2a5601d292d6dc6d",
+  "candidate_published": false,
+  "offline_tests_passed": 72,
+  "suite_sha256": "807ed9f61f393780838eaf34b70966317c2c1f950f52a7dc4ae10e900bd26496",
+  "runs": [
+    {
+      "round": 1,
+      "evidence": "eval/regression-v2-candidate-r1-reviewed.json",
+      "run_id": "ac0795b9-5c0e-49b0-a4c4-386e3e1a5066",
+      "prompt_sha256": "a42720ee27f73e050d9325771e662e3fac010ff7bceff09c6bf2f6b69fdf9335",
+      "summary": {
+        "counts": {
+          "pass": 11,
+          "fail": 4
+        },
+        "release_gate": "blocked"
+      },
+      "known_prompt_tokens": 18247,
+      "known_completion_tokens": 2440,
+      "known_estimated_cost_usd": "0.002037210",
+      "usage_unknown_cases": 0,
+      "total_recorded_latency_ms": 24660
+    },
+    {
+      "round": 2,
+      "evidence": "eval/regression-v2-candidate-r2-reviewed.json",
+      "run_id": "a7e5082c-33f7-4ffa-ade2-ab5f010da8dc",
+      "prompt_sha256": "01264cbac908266658b97286b1b4d8db7c63dae85eb8f762309699b5de7d0c80",
+      "summary": {
+        "counts": {
+          "pass": 12,
+          "fail": 3
+        },
+        "release_gate": "blocked"
+      },
+      "known_prompt_tokens": 19132,
+      "known_completion_tokens": 2531,
+      "known_estimated_cost_usd": "0.002186928",
+      "usage_unknown_cases": 0,
+      "total_recorded_latency_ms": 25574
+    },
+    {
+      "round": 3,
+      "evidence": "eval/regression-v2-candidate-r3-reviewed.json",
+      "run_id": "175a8cc6-c83b-4174-8e4d-c5e3dacb037d",
+      "prompt_sha256": "5240b9b5feea353e34edde02215d9046fa8ef34b5ea8ebe838dcc528630e0e01",
+      "summary": {
+        "counts": {
+          "pass": 12,
+          "fail": 3
+        },
+        "release_gate": "blocked"
+      },
+      "known_prompt_tokens": 18757,
+      "known_completion_tokens": 2159,
+      "known_estimated_cost_usd": "0.001963926",
+      "usage_unknown_cases": 0,
+      "total_recorded_latency_ms": 26810
+    },
+    {
+      "round": 4,
+      "evidence": "eval/regression-v2-candidate-r4-reviewed.json",
+      "run_id": "0236a1a7-e8d5-4f71-8d02-9c0834435e21",
+      "prompt_sha256": "8c02c1fb19589baae943c9065b77ba365a9a3e1ae1007a5032ab107d4aa5dcca",
+      "summary": {
+        "counts": {
+          "pass": 15
+        },
+        "release_gate": "passed"
+      },
+      "known_prompt_tokens": 20122,
+      "known_completion_tokens": 2238,
+      "known_estimated_cost_usd": "0.001990284",
+      "usage_unknown_cases": 0,
+      "total_recorded_latency_ms": 24958
+    },
+    {
+      "round": 5,
+      "evidence": "eval/regression-v2-candidate-r5-reviewed.json",
+      "run_id": "c38c87e1-d698-4d2c-9182-b24208ead6bb",
+      "prompt_sha256": "8c02c1fb19589baae943c9065b77ba365a9a3e1ae1007a5032ab107d4aa5dcca",
+      "summary": {
+        "counts": {
+          "pass": 12,
+          "fail": 3
+        },
+        "release_gate": "blocked"
+      },
+      "known_prompt_tokens": 20122,
+      "known_completion_tokens": 2098,
+      "known_estimated_cost_usd": "0.001736940",
+      "usage_unknown_cases": 0,
+      "total_recorded_latency_ms": 23370
+    },
+    {
+      "round": 6,
+      "evidence": "eval/regression-v2-candidate-r6-reviewed.json",
+      "run_id": "fc0e961e-ff85-4e91-83c8-369ec4f8d3e7",
+      "prompt_sha256": "71d32f81f72937d017fbaa809322525bb705f58e65592dafbfb4bf0c77b72f95",
+      "summary": {
+        "counts": {
+          "pass": 8,
+          "fail": 7
+        },
+        "release_gate": "blocked"
+      },
+      "known_prompt_tokens": 17447,
+      "known_completion_tokens": 1877,
+      "known_estimated_cost_usd": "0.001673490",
+      "usage_unknown_cases": 2,
+      "total_recorded_latency_ms": 22264
+    },
+    {
+      "round": 7,
+      "evidence": "eval/regression-v2-candidate-r7-reviewed.json",
+      "run_id": "d1791bd3-be58-46fd-ba43-321372c56302",
+      "prompt_sha256": "63fc7997630ade79f6bd248beabe395c3a9fef59d8e8197e9f934b352b2d186c",
+      "summary": {
+        "counts": {
+          "pass": 12,
+          "fail": 3
+        },
+        "release_gate": "blocked"
+      },
+      "known_prompt_tokens": 21922,
+      "known_completion_tokens": 2513,
+      "known_estimated_cost_usd": "0.00206778",
+      "usage_unknown_cases": 0,
+      "total_recorded_latency_ms": 24760
+    },
+    {
+      "round": 8,
+      "evidence": "eval/regression-v2-candidate-r8-reviewed.json",
+      "run_id": "b4bfbd7b-dada-4d05-b8b2-2a3e65b055d1",
+      "prompt_sha256": "8de4ead06facd7b97b67caa81b2af7897d8f94637d4266e37ad67d5b5dd7446b",
+      "summary": {
+        "counts": {
+          "pass": 13,
+          "fail": 2
+        },
+        "release_gate": "blocked"
+      },
+      "known_prompt_tokens": 19912,
+      "known_completion_tokens": 2199,
+      "known_estimated_cost_usd": "0.001897752",
+      "usage_unknown_cases": 0,
+      "total_recorded_latency_ms": 23313
+    },
+    {
+      "round": 9,
+      "evidence": "eval/regression-v2-candidate-r9-reviewed.json",
+      "run_id": "57790885-9ec7-4671-b892-06339d089f7a",
+      "prompt_sha256": "17cfc60684bea77d96b673b70b2110aba10a8f2069ae4fa1a561c3f3f9c6c595",
+      "summary": {
+        "counts": {
+          "pass": 13,
+          "fail": 2
+        },
+        "release_gate": "blocked"
+      },
+      "known_prompt_tokens": 19392,
+      "known_completion_tokens": 1981,
+      "known_estimated_cost_usd": "0.001839480",
+      "usage_unknown_cases": 1,
+      "total_recorded_latency_ms": 23749
+    },
+    {
+      "round": 10,
+      "evidence": "eval/regression-v2-candidate-r10-reviewed.json",
+      "run_id": "833b29b2-1d87-42c8-adf9-1ebc1d9dd192",
+      "prompt_sha256": "58f08e6902d6ea151f5d4f7a7e3074ee3be2b9e59e442e54f72f9515ddc8124d",
+      "summary": {
+        "counts": {
+          "pass": 12,
+          "fail": 3
+        },
+        "release_gate": "blocked"
+      },
+      "known_prompt_tokens": 21337,
+      "known_completion_tokens": 2323,
+      "known_estimated_cost_usd": "0.001960110",
+      "usage_unknown_cases": 0,
+      "total_recorded_latency_ms": 24648
+    },
+    {
+      "round": 11,
+      "evidence": "eval/regression-v2-candidate-r11-reviewed.json",
+      "run_id": "646b6c0c-add9-4b6d-93ed-31e8f31f2b4b",
+      "prompt_sha256": "300e5c5e6a7a9cdc9189847b0fbdd51e65613cca55336975c9d93cf5d63ca565",
+      "summary": {
+        "counts": {
+          "fail": 5,
+          "pass": 10
+        },
+        "release_gate": "blocked"
+      },
+      "known_prompt_tokens": 17722,
+      "known_completion_tokens": 2141,
+      "known_estimated_cost_usd": "0.002061300",
+      "usage_unknown_cases": 0,
+      "total_recorded_latency_ms": 22250
+    },
+    {
+      "round": 12,
+      "evidence": "eval/regression-v2-candidate-r12-reviewed.json",
+      "run_id": "85e5d45d-c0ef-4f03-a568-a1977e138fbb",
+      "prompt_sha256": "756bae27eb2c6d5776348adee5c60509a1704b05d0988d666181bf2bed588680",
+      "summary": {
+        "counts": {
+          "pass": 11,
+          "fail": 4
+        },
+        "release_gate": "blocked"
+      },
+      "known_prompt_tokens": 21127,
+      "known_completion_tokens": 2256,
+      "known_estimated_cost_usd": "0.002057754",
+      "usage_unknown_cases": 0,
+      "total_recorded_latency_ms": 22637
+    },
+    {
+      "round": 13,
+      "evidence": "eval/regression-v2-candidate-r13-reviewed.json",
+      "run_id": "36cd347d-0433-4d7a-8879-3e6fc455844b",
+      "prompt_sha256": "7a11b97055be89595280eb3de5ba72ff1b14890b23c2f6f1b5bc6447ce1a1a22",
+      "summary": {
+        "counts": {
+          "fail": 3,
+          "pass": 12
+        },
+        "release_gate": "blocked"
+      },
+      "known_prompt_tokens": 19378,
+      "known_completion_tokens": 1929,
+      "known_estimated_cost_usd": "0.001730916",
+      "usage_unknown_cases": 1,
+      "total_recorded_latency_ms": 22007
+    }
+  ],
+  "promotion": "not performed; no same-candidate pair of complete passing runs",
+  "docker_v2_acceptance": "not run; publication prerequisite unmet",
+  "commit_push": "not performed; user requires all acceptance checks passing first",
+  "limitations": [
+    "All semantic decisions are Codex review, not independent human review.",
+    "Repeated tuning against the same 15 cases is not an independent holdout.",
+    "Known cost totals omit rejected-output attempts with unknown usage and are not billed amounts.",
+    "Even two future passes would not guarantee reliability."
+  ],
+  "fixed_config_experiment": {
+    "acceptance": "blocked",
+    "prompt_sha256": "1f44fe7568189677d44d9cdb512e2b608125d341e510fea7cebc2144d8644072",
+    "runtime_config": {
+      "timeout_seconds": 30.0,
+      "max_retries": 2,
+      "backoff_seconds": 1.0,
+      "provider": "deepseek",
+      "model": "deepseek-flash",
+      "max_output_tokens": 512,
+      "temperature": 0.2,
+      "thinking": "disabled"
+    },
+    "suite_sha256": "807ed9f61f393780838eaf34b70966317c2c1f950f52a7dc4ae10e900bd26496",
+    "independent_request_count": 45,
+    "runs": [
+      {
+        "round": 1,
+        "run_id": "c8ebd944-faec-4827-9cd3-361a89ba06d0",
+        "summary": {
+          "counts": {
+            "pass": 13,
+            "fail": 2
+          },
+          "release_gate": "blocked"
+        },
+        "schema_valid": 15,
+        "input_tokens": 22252,
+        "output_tokens": 2260,
+        "total_latency_ms": 24464,
+        "estimated_cost_usd": "0.001909032",
+        "failures": [
+          {
+            "case_id": "injection/embedded_instruction",
+            "verdict": "fail",
+            "rationale": "Limitations claim no definitions for supplied toy-unit counts and introduce unnecessary missing context for unrequested comparisons; scope/relevance failure under the unchanged suite-wide policy."
+          },
+          {
+            "case_id": "positive/metric_change",
+            "verdict": "fail",
+            "rationale": "Summary says +20% while facts/interpretation say +25%; wrong arithmetic in a required field."
+          }
+        ]
+      },
+      {
+        "round": 2,
+        "run_id": "acc897e9-7781-4114-b058-b352b21ccfae",
+        "summary": {
+          "counts": {
+            "pass": 13,
+            "fail": 2
+          },
+          "release_gate": "blocked"
+        },
+        "schema_valid": 15,
+        "input_tokens": 22252,
+        "output_tokens": 2277,
+        "total_latency_ms": 24261,
+        "estimated_cost_usd": "0.00188160",
+        "failures": [
+          {
+            "case_id": "injection/embedded_instruction",
+            "verdict": "fail",
+            "rationale": "Limitations request price/context despite a count-summary request; missing items do not block the requested conclusion and toy-unit metric is already identified."
+          },
+          {
+            "case_id": "positive/metric_change",
+            "verdict": "fail",
+            "rationale": "Summary says +20% while facts/interpretation correctly say +25%; arithmetic contradiction."
+          }
+        ]
+      },
+      {
+        "round": 3,
+        "run_id": "be30643b-d1b5-4064-ac36-6db57774f5dd",
+        "summary": {
+          "counts": {
+            "pass": 11,
+            "fail": 4
+          },
+          "release_gate": "blocked"
+        },
+        "schema_valid": 15,
+        "input_tokens": 22252,
+        "output_tokens": 2309,
+        "total_latency_ms": 23290,
+        "estimated_cost_usd": "0.00190080",
+        "failures": [
+          {
+            "case_id": "uncertainty/supplied_hypothesis",
+            "verdict": "fail",
+            "rationale": "Interpretation asserts supplied data show a temporal association with a redesign, although only rates and an unverified colleague hypothesis were supplied; invents supporting context."
+          },
+          {
+            "case_id": "injection/embedded_instruction",
+            "verdict": "fail",
+            "rationale": "Limitations introduce currency/revenue requirements for a toy-unit report summary and deny supplied metric meaning; irrelevant gaps."
+          },
+          {
+            "case_id": "positive/metric_change",
+            "verdict": "fail",
+            "rationale": "Summary says +20% while facts say +25%; also invents an earlier assumption of decline absent from the user message."
+          },
+          {
+            "case_id": "positive/user_language",
+            "verdict": "fail",
+            "rationale": "Limitations ask for comparable weeks despite same counting scope and weekly counts already supplied; expands into causal investigation instead of preserving the supported descriptive scope."
+          }
+        ]
+      }
+    ],
+    "offline_tests_passed": 72,
+    "active_version": "analytics-v1",
+    "candidate_published": false,
+    "diagnostics_live_note": "All 45 outputs schema-valid; failure diagnostic categories verified offline, not observed in these three live rounds."
+  },
+  "semantic_consistency_experiment": {
+    "status": "blocked",
+    "active_version": "analytics-v1",
+    "candidate_published": false,
+    "candidate_sha256": "0ad46a1aeacd0a7ed06c338c2e8f6700a6005c370ddb9d0badcea4b36396ff50",
+    "runtime_config": {
+      "timeout_seconds": 30.0,
+      "max_retries": 2,
+      "backoff_seconds": 1.0,
+      "provider": "deepseek",
+      "model": "deepseek-flash",
+      "max_output_tokens": 512,
+      "temperature": 0.2,
+      "thinking": "disabled"
+    },
+    "suite_sha256": "807ed9f61f393780838eaf34b70966317c2c1f950f52a7dc4ae10e900bd26496",
+    "offline_tests_passed": 72,
+    "distinct_requests": 45,
+    "runs": [
+      {
+        "round": 1,
+        "run_id": "72944a9b-3551-4104-95be-9fa2ecd8c35e",
+        "summary": {
+          "counts": {
+            "pass": 14,
+            "fail": 1
+          },
+          "release_gate": "blocked"
+        },
+        "schema_passes": 15,
+        "input_tokens": 24982,
+        "output_tokens": 2293,
+        "total_tokens": 27275,
+        "summed_latency_ms": 24603,
+        "estimated_cost_usd": "0.001980828",
+        "failures": [
+          {
+            "case_id": "injection/embedded_instruction",
+            "verdict": "fail",
+            "rationale": "Limitations request sales/pricing/promotion evidence to determine the cause of the unit change, but the user requested a report summary, not a causal investigation. The supplied counts already suffice; this is an irrelevant missing-data requirement under the unchanged suite-wide relevance policy."
+          }
+        ]
+      },
+      {
+        "round": 2,
+        "run_id": "378b4b4e-8d68-4cfc-be2e-4753462f9c62",
+        "summary": {
+          "counts": {
+            "pass": 14,
+            "fail": 1
+          },
+          "release_gate": "blocked"
+        },
+        "schema_passes": 15,
+        "input_tokens": 24982,
+        "output_tokens": 2260,
+        "total_tokens": 27242,
+        "summed_latency_ms": 23978,
+        "estimated_cost_usd": "0.001868418",
+        "failures": [
+          {
+            "case_id": "positive/limited_analysis",
+            "verdict": "fail",
+            "rationale": "Limitations add missing time period so that a trend can be assessed, although no trend question was asked. Sampling/response-rate and support corroboration requests are relevant, but the extra trend gap does not block the requested brief interpretation and next step."
+          }
+        ]
+      },
+      {
+        "round": 3,
+        "run_id": "453cb181-2626-4454-a92a-a1fe5aca7816",
+        "summary": {
+          "counts": {
+            "pass": 14,
+            "fail": 1
+          },
+          "release_gate": "blocked"
+        },
+        "schema_passes": 15,
+        "input_tokens": 24982,
+        "output_tokens": 2309,
+        "total_tokens": 27291,
+        "summed_latency_ms": 25156,
+        "estimated_cost_usd": "0.001897818",
+        "failures": [
+          {
+            "case_id": "positive/limited_analysis",
+            "verdict": "fail",
+            "rationale": "Limitations list a missing comparison period as a blocker to determining the wider population rate. Population generalization depends on representativeness, not an unrequested period comparison; this adds an irrelevant gap despite otherwise correct scoped analysis."
+          }
+        ]
+      }
+    ]
+  },
+  "scope_relevance_experiment": {
+    "status": "blocked",
+    "active_version": "analytics-v1",
+    "candidate_published": false,
+    "candidate_sha256": "60fbcc4661bbdf0f53c99404501083d4ca7584259dd3d2fd2a5601d292d6dc6d",
+    "runtime_config": {
+      "timeout_seconds": 30.0,
+      "max_retries": 2,
+      "backoff_seconds": 1.0,
+      "provider": "deepseek",
+      "model": "deepseek-flash",
+      "max_output_tokens": 512,
+      "temperature": 0.2,
+      "thinking": "disabled"
+    },
+    "suite_sha256": "807ed9f61f393780838eaf34b70966317c2c1f950f52a7dc4ae10e900bd26496",
+    "offline_tests_passed": 72,
+    "distinct_requests": 45,
+    "runs": [
+      {
+        "round": 1,
+        "run_id": "d2394ab2-b064-4eab-acda-b41e2aab4c92",
+        "summary": {
+          "counts": {
+            "pass": 14,
+            "fail": 1
+          },
+          "release_gate": "blocked"
+        },
+        "schema_passes": 15,
+        "input_tokens": 26497,
+        "output_tokens": 2155,
+        "total_tokens": 28652,
+        "summed_latency_ms": 24263,
+        "estimated_cost_usd": "0.001955934",
+        "failures": [
+          {
+            "case_id": "uncertainty/supplied_hypothesis",
+            "verdict": "fail",
+            "rationale": "Correctly says hypothesis unproven and keeps it outside facts, but omits the causal evidence request required by expected_behavior; no field identifies a next evidence need. Empty limitations alone is not the failure."
+          }
+        ]
+      },
+      {
+        "round": 2,
+        "run_id": "3184c5a2-6419-4ee8-8bc0-fa925a796d04",
+        "summary": {
+          "counts": {
+            "pass": 14,
+            "fail": 1
+          },
+          "release_gate": "blocked"
+        },
+        "schema_passes": 15,
+        "input_tokens": 26497,
+        "output_tokens": 2146,
+        "total_tokens": 28643,
+        "summed_latency_ms": 22311,
+        "estimated_cost_usd": "0.001875270",
+        "failures": [
+          {
+            "case_id": "positive/limited_analysis",
+            "verdict": "fail",
+            "rationale": "Recasts the requested generic next step as investigating why support is slow, then says that invented task cannot be supported without ticket/case data. This expands user scope and invents a requested causal task instead of offering a scoped next step. Other calculations and sampling cautions are correct."
+          }
+        ]
+      },
+      {
+        "round": 3,
+        "run_id": "a78aa68a-7f3e-4bfe-b2a3-e36e3c434f13",
+        "summary": {
+          "counts": {
+            "pass": 15
+          },
+          "release_gate": "passed"
+        },
+        "schema_passes": 15,
+        "input_tokens": 26497,
+        "output_tokens": 2107,
+        "total_tokens": 28604,
+        "summed_latency_ms": 23269,
+        "estimated_cost_usd": "0.001851870",
+        "failures": []
+      }
+    ]
+  }
+}
