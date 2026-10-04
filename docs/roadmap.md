@@ -47,3 +47,7 @@ Multiple providers/models and quality/latency/cost comparisons; platform-managed
 - [x] 2.12 Phase 2 final verification: analytics-v2 published at its accepted SHA; three unchanged gate-v2 rounds PASS, 87 offline tests pass, Docker health/database/chat/logging/OpenAPI/client boundaries verified. Historical v1 14/15 blocked remains preserved. See [final acceptance](phase2-acceptance.md).
 
 Phase 2 remains accepted and released. Phase 3 is now RAG; 3.1–3.6 foundation through context builder are complete. See [design and verified baseline](phase3-rag-design.md). SQL/Tool Calling/Agent/LangGraph remain unstarted. Stop before 3.7/grounded generation until requested.
+
+## Phase 3.7 — Grounded generation implemented
+
+Independent `rag-grounded-v1` and `rag-response-v1`, current-context source-label checks, real local DeepSeek token counting plus output/safety reserves. Existing /chat, analytics-v2 and retrieval/context remain unchanged. 134 offline + 31 database tests passed; one synthetic live response has a correct core answer and a documented limitation-relevance concern. No endpoint integration or ANN. See [generation verification and Phase 3.8 recommendations](phase3-generation.md).

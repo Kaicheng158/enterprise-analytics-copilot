@@ -1,0 +1,120 @@
+{
+  "query": "How is a processed request counted when it is reopened?",
+  "synthetic_only": true,
+  "generation_config": {
+    "timeout_seconds": 30,
+    "max_retries": 2,
+    "backoff_seconds": 1,
+    "provider": "deepseek",
+    "model": "deepseek-flash",
+    "max_output_tokens": 512,
+    "temperature": 0.2,
+    "thinking": "disabled"
+  },
+  "result": {
+    "contract_version": "rag-response-v1",
+    "answer": {
+      "summary": "A reopened request is counted once, at its final completion, under the same definition in both sample periods.",
+      "facts": [
+        "A processed request is defined as a request marked complete within the sample reporting period. [S-8dd1ffdf5fcb34b9]",
+        "Reopened requests are counted once, at their final completion. [S-8dd1ffdf5fcb34b9]",
+        "Both sample periods use this same definition. [S-8dd1ffdf5fcb34b9]"
+      ],
+      "interpretation": [
+        "Because counting occurs at final completion, a request reopened after an earlier completion is not counted again for that earlier completion."
+      ],
+      "limitations": [
+        "The evidence does not specify how a request still open at period end is treated."
+      ]
+    },
+    "citations": [
+      {
+        "field": "facts",
+        "index": 0,
+        "source_label": "S-8dd1ffdf5fcb34b9"
+      },
+      {
+        "field": "facts",
+        "index": 1,
+        "source_label": "S-8dd1ffdf5fcb34b9"
+      },
+      {
+        "field": "facts",
+        "index": 2,
+        "source_label": "S-8dd1ffdf5fcb34b9"
+      }
+    ],
+    "sources": [
+      {
+        "source_label": "S-8dd1ffdf5fcb34b9",
+        "document_id": "c18f1081-0078-5b3e-bad1-4de1ac1a262e",
+        "chunk_id": "f7c9de55-811f-59f0-b88b-561bc71a193b",
+        "rank": 1,
+        "distance": 0.4312047111095042,
+        "source_metadata": {
+          "source_uri": "local://phase33-synthetic/metrics.md",
+          "title": "metrics.md",
+          "document_revision": "3fcd9f9569f3c89bf51279a658e5cb05ccafb4793aeefaf000f6054bbc90f9ef",
+          "locator": "chars:232:643",
+          "chunk_metadata": {
+            "char_end": 643,
+            "line_end": 8,
+            "char_start": 232,
+            "line_start": 3,
+            "offset_unit": "unicode_codepoint",
+            "config_sha256": "14c57407ff1e2cd59acc8c408984eb070fa0c8b8d8aed4ec46380baa3f979fb7",
+            "section_at_start": "Synthetic Operations Note"
+          }
+        },
+        "segments": [
+          {
+            "char_start": 232,
+            "char_end": 643,
+            "text": "e counts describe the sample only and do not establish a cause for the change.\n\n## Metric definition\n\nA processed request is a request marked complete within the sample reporting period. Reopened requests are counted once, at their final completion. Both sample periods use this same definition. No customer names, credentials, private support tickets or real company identifiers are included in this fixture.\n\n"
+          }
+        ]
+      }
+    ],
+    "generation": {
+      "provider": "deepseek",
+      "model": "deepseek-flash",
+      "usage": {
+        "prompt_tokens": 1700,
+        "completion_tokens": 163,
+        "total_tokens": 1863,
+        "prompt_cache_hit_tokens": 0,
+        "prompt_cache_miss_tokens": 1700,
+        "reasoning_tokens": null
+      },
+      "latency_ms": 1453,
+      "finish_reason": "stop",
+      "prompt_version": "rag-grounded-v1",
+      "prompt_sha256": "d1147ada704334a5f1a8d2252f51d4f1b98686711c91670b31636bdcaef6cc22",
+      "request_id": "dbbbcfe0-01c7-4f78-91cd-ccbc7d43ff79",
+      "retry_count": 0,
+      "estimated_cost": "0.0003528",
+      "cost_currency": "USD",
+      "pricing_version": "deepseek-2026-09-13",
+      "pricing_tier": "off_peak",
+      "cost_complete": true
+    },
+    "token_budget": {
+      "input_tokens": 1677,
+      "fixed_prefix_and_envelope_tokens": 903,
+      "query_increment_tokens": 10,
+      "context_increment_tokens": 764,
+      "output_reserve": 512,
+      "safety_reserve": 256,
+      "total_reserved": 2445,
+      "max_total_tokens": 8192,
+      "method": "deepseek-recipe-v41-chat-encoding",
+      "tokenizer": {
+        "revision": "8cadfede7063c896b944e7bae05daa3549ae97ea",
+        "source": "https://raw.githubusercontent.com/deepseek-ai/deepseek-recipe/8cadfede7063c896b944e7bae05daa3549ae97ea/static/tokenizers/v41/tokenizer.json",
+        "sha256": "81f64d1248a68ce3663e07ab3ee48b851e5df0e32d27cb98e4c9a268151e8d99",
+        "package": "deepseek-recipe==0.1.1"
+      }
+    },
+    "context_sha256": "d7eab02add1fd55e861f76611497409efd953ecd1641ee42afcc7a042053a810"
+  }
+}

@@ -97,6 +97,10 @@ class DeepSeekProvider:
             metadata = prompt_metadata(messages)
         except ValueError:
             raise ProviderError(503, "Invalid prompt configuration", "llm_invalid_prompt") from None
+        return self.generate_messages(messages, metadata)
+
+    def generate_messages(self, messages: list[dict[str, str]], metadata: dict[str, str]) -> ChatResult:
+        """Internal server-owned message boundary; not exposed as request input."""
         generation_config = self.settings.model_dump(include={"model", "thinking", "temperature", "max_output_tokens"})
         request_id = str(uuid.uuid4())
         started = time.monotonic()

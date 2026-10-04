@@ -75,3 +75,7 @@ Query embedding shares the exact document profile and feeds scoped exact cosine 
 ## Phase 3.6 update
 
 Pure context construction now consumes ranked result data, preserves provenance and exact source spans, conservatively deduplicates, and applies a full JSON character budget. It produces untrusted evidence data, never role messages. No model or /chat integration. See [context verification](phase3-context.md).
+
+## Phase 3.7 — Grounded generation implemented
+
+Independent `rag-grounded-v1` and `rag-response-v1`, current-context source-label checks, real local DeepSeek token counting plus output/safety reserves. Existing /chat, analytics-v2 and retrieval/context remain unchanged. 134 offline + 31 database tests passed; one synthetic live response has a correct core answer and a documented limitation-relevance concern. No endpoint integration or ANN. See [generation verification and Phase 3.8 recommendations](phase3-generation.md).

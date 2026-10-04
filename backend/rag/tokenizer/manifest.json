@@ -1,0 +1,6 @@
+{
+  "revision": "8cadfede7063c896b944e7bae05daa3549ae97ea",
+  "source": "https://raw.githubusercontent.com/deepseek-ai/deepseek-recipe/8cadfede7063c896b944e7bae05daa3549ae97ea/static/tokenizers/v41/tokenizer.json",
+  "sha256": "81f64d1248a68ce3663e07ab3ee48b851e5df0e32d27cb98e4c9a268151e8d99",
+  "package": "deepseek-recipe==0.1.1"
+}
