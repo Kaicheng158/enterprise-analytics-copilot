@@ -1,0 +1,156 @@
+{
+  "tenant": "synthetic-phase33",
+  "runs": [
+    {
+      "document_id": "c18f1081-0078-5b3e-bad1-4de1ac1a262e",
+      "revision": "3fcd9f9569f3c89bf51279a658e5cb05ccafb4793aeefaf000f6054bbc90f9ef",
+      "source": "local://phase33-synthetic/metrics.md",
+      "chunks": 3,
+      "reused": false
+    },
+    {
+      "document_id": "c18f1081-0078-5b3e-bad1-4de1ac1a262e",
+      "revision": "3fcd9f9569f3c89bf51279a658e5cb05ccafb4793aeefaf000f6054bbc90f9ef",
+      "source": "local://phase33-synthetic/metrics.md",
+      "chunks": 3,
+      "reused": true
+    },
+    {
+      "document_id": "a342aab7-b9ec-5cf9-a8ba-c245363822a3",
+      "revision": "ac3f0c35800c192352e2f8cda468eed345a749915fcfed3c365557fd004591ed",
+      "source": "local://phase33-synthetic/unicode.txt",
+      "chunks": 1,
+      "reused": false
+    },
+    {
+      "document_id": "a342aab7-b9ec-5cf9-a8ba-c245363822a3",
+      "revision": "ac3f0c35800c192352e2f8cda468eed345a749915fcfed3c365557fd004591ed",
+      "source": "local://phase33-synthetic/unicode.txt",
+      "chunks": 1,
+      "reused": true
+    }
+  ],
+  "documents": [
+    {
+      "document_id": "c18f1081-0078-5b3e-bad1-4de1ac1a262e",
+      "revision": "3fcd9f9569f3c89bf51279a658e5cb05ccafb4793aeefaf000f6054bbc90f9ef",
+      "title": "metrics.md",
+      "source_uri": "local://phase33-synthetic/metrics.md",
+      "content_sha256": "85526f5de8ed5bfb11caab11f6a156e8c581560829f995370e314deadb871f4b",
+      "status": "ready",
+      "is_current": true,
+      "metadata": {
+        "config": {
+          "algorithm": "structure-char-v1",
+          "max_chars": 600,
+          "overlap_chars": 80
+        },
+        "text_sha256": "85526f5de8ed5bfb11caab11f6a156e8c581560829f995370e314deadb871f4b",
+        "source_bytes": 922,
+        "config_sha256": "14c57407ff1e2cd59acc8c408984eb070fa0c8b8d8aed4ec46380baa3f979fb7",
+        "relative_path": "metrics.md",
+        "source_sha256": "85526f5de8ed5bfb11caab11f6a156e8c581560829f995370e314deadb871f4b",
+        "loader_version": "utf8-local-v1",
+        "source_namespace": "phase33-synthetic"
+      }
+    },
+    {
+      "document_id": "a342aab7-b9ec-5cf9-a8ba-c245363822a3",
+      "revision": "ac3f0c35800c192352e2f8cda468eed345a749915fcfed3c365557fd004591ed",
+      "title": "unicode.txt",
+      "source_uri": "local://phase33-synthetic/unicode.txt",
+      "content_sha256": "26ba40bbd3ce7196f2df29602eac8b03464097b83048f091542e5b69e50c0fe6",
+      "status": "ready",
+      "is_current": true,
+      "metadata": {
+        "config": {
+          "algorithm": "structure-char-v1",
+          "max_chars": 600,
+          "overlap_chars": 80
+        },
+        "text_sha256": "26ba40bbd3ce7196f2df29602eac8b03464097b83048f091542e5b69e50c0fe6",
+        "source_bytes": 504,
+        "config_sha256": "14c57407ff1e2cd59acc8c408984eb070fa0c8b8d8aed4ec46380baa3f979fb7",
+        "relative_path": "unicode.txt",
+        "source_sha256": "26ba40bbd3ce7196f2df29602eac8b03464097b83048f091542e5b69e50c0fe6",
+        "loader_version": "utf8-local-v1",
+        "source_namespace": "phase33-synthetic"
+      }
+    }
+  ],
+  "chunks": [
+    {
+      "title": "metrics.md",
+      "ordinal": 0,
+      "chunk_id": "5addd45b-e34b-5134-b3bf-ecf003d4b569",
+      "text_content": "# Synthetic Operations Note\n\nThis document is an invented ingestion fixture, not production business data. In the first sample period the fictional team processed 40 requests; in the next sample period it processed 50 requests. These counts describe the sample only and do not establish a cause for the change.\n\n",
+      "locator": "chars:0:312",
+      "metadata": {
+        "char_end": 312,
+        "line_end": 4,
+        "char_start": 0,
+        "line_start": 1,
+        "offset_unit": "unicode_codepoint",
+        "config_sha256": "14c57407ff1e2cd59acc8c408984eb070fa0c8b8d8aed4ec46380baa3f979fb7",
+        "section_at_start": "Synthetic Operations Note"
+      },
+      "content_sha256": "28d4f78c5a6b4b1063751044fefbc64c2a6fce03cef49a94d58a247a7129f2fd"
+    },
+    {
+      "title": "metrics.md",
+      "ordinal": 1,
+      "chunk_id": "f7c9de55-811f-59f0-b88b-561bc71a193b",
+      "text_content": "e counts describe the sample only and do not establish a cause for the change.\n\n## Metric definition\n\nA processed request is a request marked complete within the sample reporting period. Reopened requests are counted once, at their final completion. Both sample periods use this same definition. No customer names, credentials, private support tickets or real company identifiers are included in this fixture.\n\n",
+      "locator": "chars:232:643",
+      "metadata": {
+        "char_end": 643,
+        "line_end": 8,
+        "char_start": 232,
+        "line_start": 3,
+        "offset_unit": "unicode_codepoint",
+        "config_sha256": "14c57407ff1e2cd59acc8c408984eb070fa0c8b8d8aed4ec46380baa3f979fb7",
+        "section_at_start": "Synthetic Operations Note"
+      },
+      "content_sha256": "6e71c315c701b137a5f7442d03b3079cfac070123bea1d7bd6ca1e55c0825b99"
+    },
+    {
+      "title": "metrics.md",
+      "ordinal": 2,
+      "chunk_id": "e1d2be5f-a79b-5e9f-8c14-dd562f14a5e8",
+      "text_content": "vate support tickets or real company identifiers are included in this fixture.\n\n## Data quality\n\nThe source deliberately does not contain a causal explanation. Future analytics should distinguish supplied facts from hypotheses. These sentences also make the fixture long enough to exercise a bounded chunk with an overlap while retaining paragraph locations.\n",
+      "locator": "chars:563:922",
+      "metadata": {
+        "char_end": 922,
+        "line_end": 11,
+        "char_start": 563,
+        "line_start": 7,
+        "offset_unit": "unicode_codepoint",
+        "config_sha256": "14c57407ff1e2cd59acc8c408984eb070fa0c8b8d8aed4ec46380baa3f979fb7",
+        "section_at_start": "Metric definition"
+      },
+      "content_sha256": "d0c55b69cf24a23755be1ec6ea8bb9df410278f07692ce1a2beee432ac79cae6"
+    },
+    {
+      "title": "unicode.txt",
+      "ordinal": 0,
+      "chunk_id": "52343f53-9a03-5d83-a857-715ca479044d",
+      "text_content": "合成测试说明\n\n这是一份用于验证本地文档导入的虚构资料，不是真实企业数据。示例中的指标定义、数量和描述仅用于测试。第一期处理四十条请求，第二期处理五十条请求；这些数字不能证明任何因果关系。\n\n字符保留检查\n\n中文、English、café、emoji 🙂 和组合字符 é 应原样保留。文件按 UTF-8 解码，不进行 Unicode 标准化。每个片段记录原文的字符位置与行号，便于验证来源。\n",
+      "locator": "chars:0:197",
+      "metadata": {
+        "char_end": 197,
+        "line_end": 7,
+        "char_start": 0,
+        "line_start": 1,
+        "offset_unit": "unicode_codepoint",
+        "config_sha256": "14c57407ff1e2cd59acc8c408984eb070fa0c8b8d8aed4ec46380baa3f979fb7",
+        "section_at_start": null
+      },
+      "content_sha256": "26ba40bbd3ce7196f2df29602eac8b03464097b83048f091542e5b69e50c0fe6"
+    }
+  ],
+  "chunk_embeddings_rows": 0,
+  "offline_tests": 98,
+  "database_tests": 10,
+  "health": 200,
+  "health_db": 200
+}

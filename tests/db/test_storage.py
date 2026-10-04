@@ -42,10 +42,10 @@ class StorageTests(unittest.TestCase):
         with tempfile.TemporaryDirectory() as directory:
             for p in (ROOT/'migrations').glob('*.sql'):
                 (Path(directory)/p.name).write_bytes(p.read_bytes())
-            (Path(directory)/'003_failure.sql').write_text('CREATE TABLE rag.rollback_probe(id int); SELECT 1/0;')
+            (Path(directory)/'004_failure.sql').write_text('CREATE TABLE rag.rollback_probe(id int); SELECT 1/0;')
             with self.assertRaises(psycopg.errors.DivisionByZero): apply_migrations(self.db,directory)
         self.assertIsNone(self.db.execute("SELECT to_regclass('rag.rollback_probe')").fetchone()[0])
-        self.assertEqual(self.db.execute('SELECT count(*) FROM app_migrations.applied').fetchone()[0],2)
+        self.assertEqual(self.db.execute('SELECT count(*) FROM app_migrations.applied').fetchone()[0],3)
 
     def test_vector_storage_constraints_and_cascade(self):
         doc,chunk,profile=[uuid.uuid4() for _ in range(3)]

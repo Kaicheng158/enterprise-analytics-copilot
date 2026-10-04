@@ -59,3 +59,7 @@ No quality claims are made from scaffold imports. Phase 3.1 acceptance is isolat
 ## Phase 3.2 update
 
 The baseline above records the pre-change state. PostgreSQL now uses the pinned PG17.11/pgvector0.8.7 trixie image; vector is enabled by versioned migrations. Four empty RAG tables provide metadata and dimension-validated vector storage without choosing an embedding model. The vector column uses per-row profile checks rather than a fixed vector(n) typmod. See [backup, migrations and tests](phase3-storage.md). RAG module contracts remain disconnected from /chat.
+
+## Phase 3.3 update
+
+Local operator CLI now implements controlled Text/Markdown loading, versioned character chunking and atomic document/chunk storage. Readiness/current selection and source/config revisions are explicit. No embedding/retrieval/generation or /chat integration. See [ingestion contracts and verification](phase3-ingestion.md).

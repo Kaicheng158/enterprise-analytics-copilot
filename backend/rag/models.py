@@ -3,7 +3,7 @@
 These immutable records carry data, not authorization or validation guarantees.
 Future adapters must validate inputs and enforce server-derived access scope.
 """
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 
 
 @dataclass(frozen=True)
@@ -15,6 +15,7 @@ class Document:
     source_uri: str
     content_sha256: str
     text: str
+    metadata: dict = field(default_factory=dict)
 
 
 @dataclass(frozen=True)
@@ -28,6 +29,7 @@ class Chunk:
     locator: str  # Source page/section or text offset, not a model-invented citation.
     chunker_version: str
     content_sha256: str
+    metadata: dict = field(default_factory=dict)
 
 
 @dataclass(frozen=True)
