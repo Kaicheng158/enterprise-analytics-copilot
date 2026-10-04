@@ -63,3 +63,7 @@ The baseline above records the pre-change state. PostgreSQL now uses the pinned 
 ## Phase 3.3 update
 
 Local operator CLI now implements controlled Text/Markdown loading, versioned character chunking and atomic document/chunk storage. Readiness/current selection and source/config revisions are explicit. No embedding/retrieval/generation or /chat integration. See [ingestion contracts and verification](phase3-ingestion.md).
+
+## Phase 3.4 update
+
+Document-only embedding now uses OpenAI text-embedding-3-small at 1536 dimensions, with profile-bound atomic vector persistence and safe telemetry. Existing tables suffice; no schema or /chat change. Only one authorized synthetic live call followed all passing offline/database tests. Query embedding and retrieval remain unimplemented. See [embedding acceptance](phase3-embedding.md).

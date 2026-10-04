@@ -1,0 +1,35 @@
+{
+  "verified_at": "2026-10-04T12:37:15.066697+00:00",
+  "provider": "openai",
+  "model": "text-embedding-3-small",
+  "dimensions": 1536,
+  "document_id": "a342aab7-b9ec-5cf9-a8ba-c245363822a3",
+  "revision": "ac3f0c35800c192352e2f8cda468eed345a749915fcfed3c365557fd004591ed",
+  "synthetic_source": "data/synthetic/rag/unicode.txt",
+  "result": {
+    "profile_id": "1418489a-d2c4-5bbc-a533-b4ba9178927e",
+    "inserted": 1,
+    "reused": 0,
+    "requests": [
+      {
+        "input_tokens": 150,
+        "latency_ms": 2794,
+        "retry_count": 0,
+        "estimated_cost_usd": "0.000003",
+        "cost_complete": true
+      }
+    ]
+  },
+  "repeat": {
+    "profile_id": "1418489a-d2c4-5bbc-a533-b4ba9178927e",
+    "inserted": 0,
+    "reused": 1,
+    "requests": []
+  },
+  "stored_vector_count": 1,
+  "stored_dimensions": 1536,
+  "stored_norm": 0.9995825388456223,
+  "pricing_version": "openai-embedding-2026-10-04",
+  "offline_tests": 106,
+  "database_tests": 18
+}
