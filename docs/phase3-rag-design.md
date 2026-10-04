@@ -71,3 +71,7 @@ Document-only embedding now uses OpenAI text-embedding-3-small at 1536 dimension
 ## Phase 3.5 update
 
 Query embedding shares the exact document profile and feeds scoped exact cosine retrieval. Current/ready/profile filters, Top-K/cutoff, stable ties and source metadata are implemented. No /chat integration or context/generation. See [verification](phase3-retrieval.md).
+
+## Phase 3.6 update
+
+Pure context construction now consumes ranked result data, preserves provenance and exact source spans, conservatively deduplicates, and applies a full JSON character budget. It produces untrusted evidence data, never role messages. No model or /chat integration. See [context verification](phase3-context.md).
