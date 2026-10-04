@@ -5,7 +5,9 @@
 0. Engineering foundation — complete: FastAPI + PostgreSQL in Compose.
 1. LLM API and prompts — complete, DeepSeek only.
 2. Prompt Engineering — complete: analytics-v2 published and active after three gate-v2 passes and Docker acceptance.
-3. Safe SQL and tool calling — not started.
+3. RAG — 3.1 foundation and 3.2 pgvector storage complete; later tasks not started. See [Phase 3 roadmap](phase3-roadmap.md).
+
+Later-stage SQL/tool/agent numbering below is provisional and will be revised separately.
 4. Analysis tools and controlled agent — not started.
 5. LangGraph workflows — not started.
 6. Evaluation — not started.
@@ -44,4 +46,4 @@ Multiple providers/models and quality/latency/cost comparisons; platform-managed
 - [x] 2.11 Phase 2 integration: 66 offline tests and real Docker /chat/log/OpenAPI verification passed; analytics-v1 remains 14/15, release gate blocked.
 - [x] 2.12 Phase 2 final verification: analytics-v2 published at its accepted SHA; three unchanged gate-v2 rounds PASS, 87 offline tests pass, Docker health/database/chat/logging/OpenAPI/client boundaries verified. Historical v1 14/15 blocked remains preserved. See [final acceptance](phase2-acceptance.md).
 
-Stop at Phase 2; 2.12 is accepted and released. RAG is deferred beyond this phase; its future numbering is not yet assigned. Later SQL/Tool Calling/Agent/LangGraph stages remain unstarted.
+Phase 2 remains accepted and released. Phase 3 is now RAG; 3.1 foundation and 3.2 pgvector storage are complete. See [design and verified baseline](phase3-rag-design.md). SQL/Tool Calling/Agent/LangGraph remain unstarted. Stop before 3.3 until requested.

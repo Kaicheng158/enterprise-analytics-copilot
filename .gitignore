@@ -8,3 +8,6 @@ __pycache__/
 *.key
 *.log
 !.env.example
+
+# Private database backups (may contain data and role credentials)
+backups/

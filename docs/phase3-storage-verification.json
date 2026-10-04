@@ -1,0 +1,63 @@
+{
+  "image": "pgvector/pgvector:0.8.7-pg17-trixie@sha256:7a7e9f22015b67edb4bef5c59daeebcd7e74bfa570df6ce60ae01237c8648a84",
+  "postgres_version": "17.11 (Debian 17.11-1.pgdg13+2)",
+  "vector_version": "0.8.7",
+  "collation": [
+    "2.41",
+    "2.41"
+  ],
+  "backup": {
+    "backup_path": "/Users/liangkaicheng/Desktop/enterprise-analytics-copilot/backups/phase32-20261004T114221Z",
+    "backup_sha256": "4ef3577b8ff5f094048c47bd0582226d987a832e3e2d7ef21103fbacc22bb0a2",
+    "logical_sha256": "191800a6850b033c084b5febf6aa1a63b44982a21bc8bda0598845d459099c17",
+    "source_image_id": "sha256:67f41722b7a8cbdb868a44a4995c846eddfdc2973bccb291ce937dce88ad5675",
+    "restore_verified": true,
+    "user_table_count": 0,
+    "restoration": "isolated container, no published ports; logical dump comparison including data passed",
+    "globals_note": "globals saved securely; role/password restoration not executed",
+    "created_at": "2026-10-04T11:42:26.826943+00:00"
+  },
+  "migration_history": [
+    [
+      "001_vector.sql",
+      "46ef54fe79e16c79f655360a452a826dda291e7b2ecabbe4bcc7013f879d869a"
+    ],
+    [
+      "002_rag_storage.sql",
+      "f379ef5376d7f4d996184ed6a39676d89369bd355c0c19737bdcf54b81962355"
+    ]
+  ],
+  "production_rag_rows": {
+    "documents": 0,
+    "document_chunks": 0,
+    "embedding_profiles": 0,
+    "chunk_embeddings": 0
+  },
+  "health": {
+    "/health": {
+      "status": 200,
+      "body": {
+        "status": "ok"
+      }
+    },
+    "/health/db": {
+      "status": 200,
+      "body": {
+        "status": "ok",
+        "database": "connected",
+        "result": 1
+      }
+    }
+  },
+  "prompt_version": "analytics-v2",
+  "prompt_sha256": "b04bd2ea98f0e007b00c7a76e4b6a7e7ef8cd28478f350589e81f1f7b52d3fd6",
+  "offline_tests": 89,
+  "database_tests": 4,
+  "vector_smoke": {
+    "same_vector_l2": 0,
+    "orthogonal_unit_vector_l2": 1.4142135623730951,
+    "fixtures": "temporary database removed"
+  },
+  "existing_data": "original logical dump comparison passed before migration; no preexisting user tables",
+  "commit_push": false
+}
