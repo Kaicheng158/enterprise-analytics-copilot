@@ -1,0 +1,95 @@
+{
+  "query": "How is a processed request counted when it is reopened?",
+  "top_k": 3,
+  "max_distance": 0.7,
+  "note": "Illustrative threshold fixed before requests; not calibrated",
+  "created_at": "2026-10-04T12:46:55.133103+00:00",
+  "completed_at": "2026-10-04T12:46:57.698978+00:00",
+  "model": "text-embedding-3-small",
+  "dimensions": 1536,
+  "document_preparation": [
+    {
+      "profile_id": "1418489a-d2c4-5bbc-a533-b4ba9178927e",
+      "inserted": 3,
+      "reused": 0,
+      "requests": [
+        {
+          "input_tokens": 189,
+          "latency_ms": 1354,
+          "retry_count": 0,
+          "estimated_cost_usd": "0.00000378",
+          "cost_complete": true
+        }
+      ]
+    },
+    {
+      "profile_id": "1418489a-d2c4-5bbc-a533-b4ba9178927e",
+      "inserted": 0,
+      "reused": 1,
+      "requests": []
+    }
+  ],
+  "retrieval": {
+    "profile_id": "1418489a-d2c4-5bbc-a533-b4ba9178927e",
+    "top_k": 3,
+    "max_distance": 0.7,
+    "results": [
+      {
+        "chunk_id": "f7c9de55-811f-59f0-b88b-561bc71a193b",
+        "document_id": "c18f1081-0078-5b3e-bad1-4de1ac1a262e",
+        "content": "e counts describe the sample only and do not establish a cause for the change.\n\n## Metric definition\n\nA processed request is a request marked complete within the sample reporting period. Reopened requests are counted once, at their final completion. Both sample periods use this same definition. No customer names, credentials, private support tickets or real company identifiers are included in this fixture.\n\n",
+        "source_metadata": {
+          "source_uri": "local://phase33-synthetic/metrics.md",
+          "title": "metrics.md",
+          "document_revision": "3fcd9f9569f3c89bf51279a658e5cb05ccafb4793aeefaf000f6054bbc90f9ef",
+          "locator": "chars:232:643",
+          "chunk_metadata": {
+            "char_end": 643,
+            "line_end": 8,
+            "char_start": 232,
+            "line_start": 3,
+            "offset_unit": "unicode_codepoint",
+            "config_sha256": "14c57407ff1e2cd59acc8c408984eb070fa0c8b8d8aed4ec46380baa3f979fb7",
+            "section_at_start": "Synthetic Operations Note"
+          }
+        },
+        "rank": 1,
+        "distance": 0.4312047111095042
+      },
+      {
+        "chunk_id": "5addd45b-e34b-5134-b3bf-ecf003d4b569",
+        "document_id": "c18f1081-0078-5b3e-bad1-4de1ac1a262e",
+        "content": "# Synthetic Operations Note\n\nThis document is an invented ingestion fixture, not production business data. In the first sample period the fictional team processed 40 requests; in the next sample period it processed 50 requests. These counts describe the sample only and do not establish a cause for the change.\n\n",
+        "source_metadata": {
+          "source_uri": "local://phase33-synthetic/metrics.md",
+          "title": "metrics.md",
+          "document_revision": "3fcd9f9569f3c89bf51279a658e5cb05ccafb4793aeefaf000f6054bbc90f9ef",
+          "locator": "chars:0:312",
+          "chunk_metadata": {
+            "char_end": 312,
+            "line_end": 4,
+            "char_start": 0,
+            "line_start": 1,
+            "offset_unit": "unicode_codepoint",
+            "config_sha256": "14c57407ff1e2cd59acc8c408984eb070fa0c8b8d8aed4ec46380baa3f979fb7",
+            "section_at_start": "Synthetic Operations Note"
+          }
+        },
+        "rank": 2,
+        "distance": 0.6224643825514311
+      }
+    ],
+    "query_embedding": {
+      "input_tokens": 11,
+      "latency_ms": 1035,
+      "retry_count": 0,
+      "estimated_cost_usd": "2.2E-7",
+      "cost_complete": true
+    },
+    "latency_ms": 1057
+  },
+  "offline_tests": 109,
+  "database_tests": 31,
+  "embedding_rows_unchanged_by_query": true,
+  "ann_indexes": 0
+}

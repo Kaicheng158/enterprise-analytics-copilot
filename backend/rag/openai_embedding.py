@@ -1,4 +1,4 @@
-"""Minimal official OpenAI document embedding adapter; stdlib HTTP, no SDK."""
+"""Minimal official OpenAI embedding adapter; stdlib HTTP, no SDK."""
 from dataclasses import dataclass, field
 from decimal import Decimal
 from http.client import HTTPException
@@ -69,6 +69,10 @@ class OpenAIEmbeddingProvider:
     def profile(self):
         return EmbeddingProfile('openai',self.settings.model,'api-alias:'+self.settings.model,
                                 self.settings.dimensions,'document-raw-utf8-v1')
+
+    def embed_query(self, text):
+        # This OpenAI model uses identical raw-text preprocessing for both roles.
+        return self.embed_documents((text,))
 
     def embed_documents(self,texts):
         if not 1 <= len(texts) <= MAX_BATCH or any(not isinstance(t,str) or not t.strip() or len(t.encode('utf-8'))>MAX_INPUT_BYTES for t in texts):

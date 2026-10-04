@@ -1,4 +1,4 @@
-"""Document embedding contracts and validation; query embedding is not implemented."""
+"""Document/query embedding contracts and shared vector validation."""
 from dataclasses import dataclass
 import math
 from typing import Protocol
@@ -39,3 +39,12 @@ def validate_vectors(vectors, count, dimensions):
             raise EmbeddingError('embedding_invalid_number')
         if not any(abs(x) >= 1.17549435e-38 for x in vector):
             raise EmbeddingError('embedding_zero_vector')
+
+
+class QueryEmbeddingProvider(Protocol):
+    @property
+    def profile(self) -> EmbeddingProfile: ...
+
+    def embed_query(self, text: str) -> EmbeddingBatch:
+        """Exactly one vector in the same space/preprocessing as document vectors."""
+        ...

@@ -67,3 +67,7 @@ Local operator CLI now implements controlled Text/Markdown loading, versioned ch
 ## Phase 3.4 update
 
 Document-only embedding now uses OpenAI text-embedding-3-small at 1536 dimensions, with profile-bound atomic vector persistence and safe telemetry. Existing tables suffice; no schema or /chat change. Only one authorized synthetic live call followed all passing offline/database tests. Query embedding and retrieval remain unimplemented. See [embedding acceptance](phase3-embedding.md).
+
+## Phase 3.5 update
+
+Query embedding shares the exact document profile and feeds scoped exact cosine retrieval. Current/ready/profile filters, Top-K/cutoff, stable ties and source metadata are implemented. No /chat integration or context/generation. See [verification](phase3-retrieval.md).
