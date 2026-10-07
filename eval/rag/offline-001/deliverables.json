@@ -1,0 +1,210 @@
+{
+  "case_id": "deliverables",
+  "suite_sha256": "1d6ac61b51850aa7f1777248c3a804f8ae69c394ed50e93ff6bb360fc4e683c9",
+  "prompt_sha256": "d1147ada704334a5f1a8d2252f51d4f1b98686711c91670b31636bdcaef6cc22",
+  "query": "State what we can conclude and give one actionable next step to investigate the reported delay.",
+  "expected_behavior": "Report observed +1 day; cause unknown; explicit relevant executable next step, multiple reasonable options allowed.",
+  "failure_condition": "Invent cause, omit conclusion or requested actionable next step; missing-data list alone is insufficient.",
+  "document_embedding": [
+    {
+      "profile_id": "247bad12-9816-5f6b-b3a0-22852f5e6ea3",
+      "inserted": 1,
+      "reused": 0,
+      "requests": [
+        {
+          "input_tokens": 0,
+          "latency_ms": 0,
+          "retry_count": 0,
+          "estimated_cost_usd": "0",
+          "cost_complete": true
+        }
+      ]
+    }
+  ],
+  "documents": [
+    {
+      "document_id": "cf74348a-fd98-5f16-9750-0b70acfd4be7",
+      "revision": "f1a70c124cb0242e28be8944f1f1369522d488097ea7189e45ecc32d5d41e52c",
+      "source": "local://rag-eval-deliverables/delay.txt",
+      "chunks": 1,
+      "reused": false
+    }
+  ],
+  "retrieval": {
+    "profile_id": "247bad12-9816-5f6b-b3a0-22852f5e6ea3",
+    "top_k": 3,
+    "max_distance": null,
+    "results": [
+      {
+        "chunk_id": "6fb0eac1-030f-5380-a96e-93ef9ad7a19e",
+        "document_id": "cf74348a-fd98-5f16-9750-0b70acfd4be7",
+        "content": "Synthetic log: the median completion time increased from 2 days to 3 days. No cause, segment breakdown or event history is available.",
+        "source_metadata": {
+          "source_uri": "local://rag-eval-deliverables/delay.txt",
+          "title": "delay.txt",
+          "document_revision": "f1a70c124cb0242e28be8944f1f1369522d488097ea7189e45ecc32d5d41e52c",
+          "locator": "chars:0:133",
+          "chunk_metadata": {
+            "char_end": 133,
+            "line_end": 1,
+            "char_start": 0,
+            "line_start": 1,
+            "offset_unit": "unicode_codepoint",
+            "config_sha256": "14c57407ff1e2cd59acc8c408984eb070fa0c8b8d8aed4ec46380baa3f979fb7",
+            "section_at_start": null
+          }
+        },
+        "rank": 1,
+        "distance": 0.0
+      }
+    ],
+    "query_embedding": {
+      "input_tokens": 0,
+      "latency_ms": 0,
+      "retry_count": 0,
+      "estimated_cost_usd": "0",
+      "cost_complete": true
+    },
+    "latency_ms": 12
+  },
+  "retrieval_metrics": {
+    "expected_relevant_sources": [
+      "delay.txt"
+    ],
+    "ranked": [
+      {
+        "source": "delay.txt",
+        "chunk_id": "6fb0eac1-030f-5380-a96e-93ef9ad7a19e",
+        "rank": 1,
+        "distance": 0.0
+      }
+    ],
+    "hit_at_k": true,
+    "source_recall_at_k": 1.0,
+    "unexpected_sources": [],
+    "returned_count": 1
+  },
+  "context": {
+    "context": "{\"sources\":[{\"chunk_id\":\"6fb0eac1-030f-5380-a96e-93ef9ad7a19e\",\"distance\":0.0,\"document_id\":\"cf74348a-fd98-5f16-9750-0b70acfd4be7\",\"rank\":1,\"segments\":[{\"char_end\":133,\"char_start\":0,\"text\":\"Synthetic log: the median completion time increased from 2 days to 3 days. No cause, segment breakdown or event history is available.\"}],\"source_label\":\"S-741497b1ef7ad9b1\",\"source_metadata\":{\"chunk_metadata\":{\"char_end\":133,\"char_start\":0,\"config_sha256\":\"14c57407ff1e2cd59acc8c408984eb070fa0c8b8d8aed4ec46380baa3f979fb7\",\"line_end\":1,\"line_start\":1,\"offset_unit\":\"unicode_codepoint\",\"section_at_start\":null},\"document_revision\":\"f1a70c124cb0242e28be8944f1f1369522d488097ea7189e45ecc32d5d41e52c\",\"locator\":\"chars:0:133\",\"source_uri\":\"local://rag-eval-deliverables/delay.txt\",\"title\":\"delay.txt\"}}],\"trust\":\"untrusted_evidence\"}",
+    "blocks": [
+      {
+        "source_label": "S-741497b1ef7ad9b1",
+        "document_id": "cf74348a-fd98-5f16-9750-0b70acfd4be7",
+        "chunk_id": "6fb0eac1-030f-5380-a96e-93ef9ad7a19e",
+        "rank": 1,
+        "distance": 0.0,
+        "source_metadata": {
+          "source_uri": "local://rag-eval-deliverables/delay.txt",
+          "title": "delay.txt",
+          "document_revision": "f1a70c124cb0242e28be8944f1f1369522d488097ea7189e45ecc32d5d41e52c",
+          "locator": "chars:0:133",
+          "chunk_metadata": {
+            "char_end": 133,
+            "line_end": 1,
+            "char_start": 0,
+            "line_start": 1,
+            "offset_unit": "unicode_codepoint",
+            "config_sha256": "14c57407ff1e2cd59acc8c408984eb070fa0c8b8d8aed4ec46380baa3f979fb7",
+            "section_at_start": null
+          }
+        },
+        "segments": [
+          {
+            "char_start": 0,
+            "char_end": 133,
+            "text": "Synthetic log: the median completion time increased from 2 days to 3 days. No cause, segment breakdown or event history is available."
+          }
+        ]
+      }
+    ],
+    "audit": [
+      {
+        "source_label": "S-741497b1ef7ad9b1",
+        "document_id": "cf74348a-fd98-5f16-9750-0b70acfd4be7",
+        "chunk_id": "6fb0eac1-030f-5380-a96e-93ef9ad7a19e",
+        "rank": 1,
+        "distance": 0.0,
+        "source_metadata": {
+          "source_uri": "local://rag-eval-deliverables/delay.txt",
+          "title": "delay.txt",
+          "document_revision": "f1a70c124cb0242e28be8944f1f1369522d488097ea7189e45ecc32d5d41e52c",
+          "locator": "chars:0:133",
+          "chunk_metadata": {
+            "char_end": 133,
+            "line_end": 1,
+            "char_start": 0,
+            "line_start": 1,
+            "offset_unit": "unicode_codepoint",
+            "config_sha256": "14c57407ff1e2cd59acc8c408984eb070fa0c8b8d8aed4ec46380baa3f979fb7",
+            "section_at_start": null
+          }
+        },
+        "status": "included",
+        "removed_overlap": []
+      }
+    ],
+    "budget": {
+      "unit": "unicode_codepoints",
+      "max_chars": 8000,
+      "used_chars": 819,
+      "includes": "full serialized context, metadata and delimiters",
+      "audit_included": false
+    },
+    "version": "evidence-json-char-v1"
+  },
+  "current_revision_filter_pass": true,
+  "semantic_verdict": "PENDING_REVIEW",
+  "response": {
+    "contract_version": "rag-response-v1",
+    "answer": {
+      "summary": "Deterministic transport fixture; not a semantic answer.",
+      "facts": [],
+      "interpretation": [],
+      "limitations": []
+    },
+    "citations": [],
+    "sources": [],
+    "generation": {
+      "provider": "fake",
+      "model": "fixture",
+      "usage": {
+        "prompt_tokens": 0,
+        "completion_tokens": 0,
+        "total_tokens": 0,
+        "prompt_cache_hit_tokens": null,
+        "prompt_cache_miss_tokens": null,
+        "reasoning_tokens": null
+      },
+      "latency_ms": 0,
+      "finish_reason": "stop",
+      "prompt_version": "rag-grounded-v1",
+      "prompt_sha256": "d1147ada704334a5f1a8d2252f51d4f1b98686711c91670b31636bdcaef6cc22",
+      "request_id": "",
+      "retry_count": 0,
+      "estimated_cost": null,
+      "cost_currency": "USD",
+      "pricing_version": "deepseek-2026-09-13",
+      "pricing_tier": null,
+      "cost_complete": false
+    },
+    "token_budget": {
+      "input_tokens": 1264,
+      "fixed_prefix_and_envelope_tokens": 903,
+      "query_increment_tokens": 16,
+      "context_increment_tokens": 345,
+      "output_reserve": 512,
+      "safety_reserve": 256,
+      "total_reserved": 2032,
+      "max_total_tokens": 8192,
+      "method": "deepseek-recipe-v41-chat-encoding",
+      "tokenizer": {
+        "revision": "8cadfede7063c896b944e7bae05daa3549ae97ea",
+        "source": "https://raw.githubusercontent.com/deepseek-ai/deepseek-recipe/8cadfede7063c896b944e7bae05daa3549ae97ea/static/tokenizers/v41/tokenizer.json",
+        "sha256": "81f64d1248a68ce3663e07ab3ee48b851e5df0e32d27cb98e4c9a268151e8d99",
+        "package": "deepseek-recipe==0.1.1"
+      }
+    },
+    "context_sha256": "6afd667f717ea4327e2fcf986d3a6b4ca81ea44a71481025029d0432debd4458"
+  },
+  "status": "generated"
+}

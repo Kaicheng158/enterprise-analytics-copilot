@@ -1,0 +1,39 @@
+[
+  {
+    "case_id": "fabricated_label",
+    "kind": "offline injected response against live retrieved context; not a DeepSeek output",
+    "live_evidence_sha256": "3e7f7ce5b1ce6fc2031ea4040d3ba177987436e6fc3b357ef925a964dde42915",
+    "injected_answer": {
+      "summary": "Deterministic transport fixture; not a semantic answer.",
+      "facts": [
+        "Count is 12 [S-0000000000000000]"
+      ],
+      "interpretation": [],
+      "limitations": []
+    },
+    "expected_behavior": "A deliberately forged citation must fail server validation.",
+    "server_status": "rejected",
+    "error_code": "rag_invalid_citation",
+    "citation_membership_pass": false,
+    "semantic_grounding_pass": null,
+    "rationale": "Fabricated label rejected by unchanged server validation as expected."
+  },
+  {
+    "case_id": "valid_label_unsupported",
+    "kind": "offline injected response against live retrieved context; not a DeepSeek output",
+    "live_evidence_sha256": "c479c6422f7043d997f6ba1256cf3c4dbe27b30cb71ab2c494cf404ac7dfa1e5",
+    "injected_answer": {
+      "summary": "Deterministic transport fixture; not a semantic answer.",
+      "facts": [
+        "Enterprise revenue is $9 million [S-6ceea3253a14ac91]"
+      ],
+      "interpretation": [],
+      "limitations": []
+    },
+    "expected_behavior": "Valid source membership cannot justify invented revenue; semantic grounding review must fail injected answer.",
+    "server_status": "accepted",
+    "citation_membership_pass": true,
+    "semantic_grounding_pass": false,
+    "rationale": "Source only provides order count/absence of revenue; injected $9m revenue has no support. Membership validation is not semantic validation."
+  }
+]

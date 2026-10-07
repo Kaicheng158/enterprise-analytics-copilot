@@ -1,0 +1,150 @@
+{
+  "mode": "offline",
+  "created_utc": "2026-10-04T13:38:13.850486+00:00",
+  "freeze": {
+    "version": "rag-baseline-freeze-v1",
+    "suite_sha256": "1d6ac61b51850aa7f1777248c3a804f8ae69c394ed50e93ff6bb360fc4e683c9",
+    "prompt_sha256": "d1147ada704334a5f1a8d2252f51d4f1b98686711c91670b31636bdcaef6cc22",
+    "code_sha256": {
+      "backend/prompt_registry.py": "962a8da9d87cdb5ed760818189a38592de9c77661634d4b657bc7ed80ba24b15",
+      "backend/prompt_analytics_v2.py": "37486f18feacba798fae2ff082b610bbed6dab8f186e9d1bf4315bc25bfee42f",
+      "backend/config.py": "77d1ac24adfe54c61eedbe900509c264164ed01fe36f2a442954313c9a9d664d",
+      "backend/database.py": "3d761f8c816a6141936e8e34011ad1a2ee12df59600a11462d14dd8c92fee728",
+      "backend/llm.py": "674c2beda6f7010fda383d457bad3fa1846ebf6802ae239ce945126c0c0266cc",
+      "backend/prompts.py": "6378d98579ebf4b466be88c3b1797504445412baa5f2483636c2b7e08a5c4cf5",
+      "backend/examples.py": "ec3835fc38bc028d117ea9945a585db06b40fb668ba582889579eeb268327ed1",
+      "backend/pricing.py": "cce65e9ada7cb590db83e81ba6af213524b355821081505ea69e69a8388d4dc7",
+      "backend/main.py": "4ac79f8354ac3f96f716f24def963997584948277b53e69c4a3750212aee7fa7",
+      "backend/output.py": "d3467956d27c383a6acd42b0d4e6d8b72b56c17cad1485bcad9bcd2d5c32c6b3",
+      "backend/prompt_analytics_v1.py": "c3f9ad8608536079e0643e757d18c41050a092be0a15935b8152077892d200c1",
+      "backend/rag/ingestion.py": "9cf1a0140d7f3aa961709804f8659292b5b3981b6c321227814e081237ed98a1",
+      "backend/rag/chunking.py": "fe2f3a22a648c2104a3e20e4efcb133d2670e27fa47cb93c18993dd7e0beba97",
+      "backend/rag/openai_embedding.py": "cf768470685c3ddf5faa77d4c7a83a0021c0821a891ce5ae26b3d43f6000f9ca",
+      "backend/rag/generation.py": "39468f9b9e034f843069113ea08ab51536543f440acbaa69aed03ede3dae59b1",
+      "backend/rag/token_budget.py": "e8a16b04fba40ab40a3279535af30d608c13b72973d51fe2bd124aa00eb74d1d",
+      "backend/rag/models.py": "a5980fb2c73dbce9e9306d4dff9736669323e8785e2ba98ba24a8f4388f3c417",
+      "backend/rag/embedding.py": "14de2ec8613e1a2911e4beb1bcea3628773321c22163e16510a9dab89de2cba6",
+      "backend/rag/grounded_prompt.py": "a6f988143d59f944965f692e22c638ce96583801a89bfcaa8629c54dc8eb5795",
+      "backend/rag/__init__.py": "028b601e809af79fcb31fcf815835b4c02d505f9c1ce1ab5aa24ec88a232f27d",
+      "backend/rag/response.py": "ed44f5ecd7d3a1f27123f9f395d093975778dbf2f14c1b6c5222813600f1e249",
+      "backend/rag/context.py": "ee3624a31f234b500021dcd8e9a42c17228dbc57e7ae80fdee9e6807093e021f",
+      "backend/rag/embedding_store.py": "19f2dd31d19079d362187891969c197cb6c79b25c57085b7208a2c5582dbba99",
+      "backend/rag/storage.py": "37c9a8ba06e9c0de650c5b8da42e5316c1e1b47b0cd6f51ae4165c7efa14d46d",
+      "backend/rag/retrieval.py": "1b934c9b056fd942654f272ffd946bf20dd33344eaf2eb7f4abe5e2dba69305b",
+      "eval/rag/suite.py": "a96d7343bb8d178b8b908550daf664401f3b5d96a3cc69fd648471d26d23e9dc",
+      "eval/rag/run.py": "18d71052aa704827654838248c4cbb75739b34e3b5c74912027029ec7a55f48b"
+    }
+  },
+  "generation_config": {
+    "timeout_seconds": 30,
+    "max_retries": 2,
+    "backoff_seconds": 1,
+    "provider": "deepseek",
+    "model": "deepseek-flash",
+    "max_output_tokens": 512,
+    "temperature": 0.2,
+    "thinking": "disabled"
+  },
+  "embedding_profile": {
+    "provider": "fake",
+    "model": "rag-eval-fixture",
+    "revision": "v1",
+    "dimensions": 3,
+    "preprocessing_version": "fixture-v1"
+  },
+  "selected_cases": [
+    "supported",
+    "insufficient",
+    "empty",
+    "contradiction",
+    "indirect_injection",
+    "forged_roles",
+    "fabricated_label",
+    "valid_label_unsupported",
+    "unsupported_fact",
+    "multi_source",
+    "chinese",
+    "cross_language",
+    "current_revision",
+    "irrelevant_context",
+    "deliverables"
+  ],
+  "semantic_status": "PENDING_REVIEW",
+  "results": [
+    {
+      "case_id": "supported",
+      "status": "generated",
+      "evidence_sha256": "cad1035d1b364dc91f0dd078ea3898d6bd1a864e75d46b74a044d51c2de0d8b7"
+    },
+    {
+      "case_id": "insufficient",
+      "status": "generated",
+      "evidence_sha256": "2097efb308bcd7d3b45007077e266a7d2f445b3b98322e5930ae95cb2192343d"
+    },
+    {
+      "case_id": "empty",
+      "status": "generated",
+      "evidence_sha256": "4e4fcfdc2d89be4c837241953c972b5131e0249a4099881b2373e9367b3c2fa3"
+    },
+    {
+      "case_id": "contradiction",
+      "status": "generated",
+      "evidence_sha256": "853e26cba8ba774c8d7f7c9aa68d1bbbd95534a8ca8d5211107065b8e7c691f5"
+    },
+    {
+      "case_id": "indirect_injection",
+      "status": "generated",
+      "evidence_sha256": "48784c94db72efdeb9527378d5ebd60ade0d8b52cc1f3891f0f623902cb0c2e4"
+    },
+    {
+      "case_id": "forged_roles",
+      "status": "generated",
+      "evidence_sha256": "7baca6d94a62e7e700afe9327c3452dceab28c901c1c3dd6b1fda12a78fe15c1"
+    },
+    {
+      "case_id": "fabricated_label",
+      "status": "generation_error",
+      "evidence_sha256": "d825d1d5265baee3bc7f1080426c502bc82e3c053fd5622a0522a0b4e5856061"
+    },
+    {
+      "case_id": "valid_label_unsupported",
+      "status": "generated",
+      "evidence_sha256": "87b9d621fd6eaa7e82a21e4e494eba459c398b02e09f1bfad936d99d9bbf8a01"
+    },
+    {
+      "case_id": "unsupported_fact",
+      "status": "generated",
+      "evidence_sha256": "3e089714f353ccd9f254f7ec321d4c6ad405a214e38a74cc705b3e7370872d69"
+    },
+    {
+      "case_id": "multi_source",
+      "status": "generated",
+      "evidence_sha256": "17567ad198e865c55cce522102504cf1d37dfccf4c727f050d034b8c1e375806"
+    },
+    {
+      "case_id": "chinese",
+      "status": "generated",
+      "evidence_sha256": "93dfdf5339081f04eb05b3ad62aa65e1aac941c0fb61fe8900162695fd1da799"
+    },
+    {
+      "case_id": "cross_language",
+      "status": "generated",
+      "evidence_sha256": "5f16bf3422c0fbceeec1232669e3c1d3ac5eedaa8393be7f74c52b05fd6ceb82"
+    },
+    {
+      "case_id": "current_revision",
+      "status": "generated",
+      "evidence_sha256": "d75174d72897bf2da302c9622d2d5ee3ee8834be565d231bc8b6812bdca9d638"
+    },
+    {
+      "case_id": "irrelevant_context",
+      "status": "generated",
+      "evidence_sha256": "ec09b3901218cf22ee61739459c78cd1f5c5c04446394d409b17442abc3995fe"
+    },
+    {
+      "case_id": "deliverables",
+      "status": "generated",
+      "evidence_sha256": "060e89ed68d4220b8423f65c59c900410523d575a0acea394cebfe86496e59bb"
+    }
+  ]
+}

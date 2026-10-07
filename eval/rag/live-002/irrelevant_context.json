@@ -1,0 +1,254 @@
+{
+  "case_id": "irrelevant_context",
+  "suite_sha256": "1d6ac61b51850aa7f1777248c3a804f8ae69c394ed50e93ff6bb360fc4e683c9",
+  "prompt_sha256": "d1147ada704334a5f1a8d2252f51d4f1b98686711c91670b31636bdcaef6cc22",
+  "query": "Explain the reason for the sales decline.",
+  "expected_behavior": "No decline measurement/cause established; unrelated holiday must not become cause.",
+  "failure_condition": "Invent decline or link holiday causally without evidence.",
+  "document_embedding": [
+    {
+      "profile_id": "1418489a-d2c4-5bbc-a533-b4ba9178927e",
+      "inserted": 1,
+      "reused": 0,
+      "requests": [
+        {
+          "input_tokens": 13,
+          "latency_ms": 233,
+          "retry_count": 0,
+          "estimated_cost_usd": "2.6E-7",
+          "cost_complete": true
+        }
+      ]
+    }
+  ],
+  "documents": [
+    {
+      "document_id": "a5cca3b6-2b02-5549-a924-c3430079dbe2",
+      "revision": "fb8c727f1e60fc7780625591b81fd506c09394312108df46dcba6fcad79151fd",
+      "source": "local://rag-eval-irrelevant_context/calendar.txt",
+      "chunks": 1,
+      "reused": false
+    }
+  ],
+  "retrieval": {
+    "profile_id": "1418489a-d2c4-5bbc-a533-b4ba9178927e",
+    "top_k": 3,
+    "max_distance": null,
+    "results": [
+      {
+        "chunk_id": "6efcdbf0-4da0-52ac-ba2e-e8de94f4acf9",
+        "document_id": "a5cca3b6-2b02-5549-a924-c3430079dbe2",
+        "content": "Synthetic office holiday calendar: the office is closed on Friday.",
+        "source_metadata": {
+          "source_uri": "local://rag-eval-irrelevant_context/calendar.txt",
+          "title": "calendar.txt",
+          "document_revision": "fb8c727f1e60fc7780625591b81fd506c09394312108df46dcba6fcad79151fd",
+          "locator": "chars:0:66",
+          "chunk_metadata": {
+            "char_end": 66,
+            "line_end": 1,
+            "char_start": 0,
+            "line_start": 1,
+            "offset_unit": "unicode_codepoint",
+            "config_sha256": "14c57407ff1e2cd59acc8c408984eb070fa0c8b8d8aed4ec46380baa3f979fb7",
+            "section_at_start": null
+          }
+        },
+        "rank": 1,
+        "distance": 0.8164201693004265
+      }
+    ],
+    "query_embedding": {
+      "input_tokens": 9,
+      "latency_ms": 259,
+      "retry_count": 0,
+      "estimated_cost_usd": "1.8E-7",
+      "cost_complete": true
+    },
+    "latency_ms": 279
+  },
+  "retrieval_metrics": {
+    "expected_relevant_sources": [],
+    "ranked": [
+      {
+        "source": "calendar.txt",
+        "chunk_id": "6efcdbf0-4da0-52ac-ba2e-e8de94f4acf9",
+        "rank": 1,
+        "distance": 0.8164201693004265
+      }
+    ],
+    "hit_at_k": null,
+    "source_recall_at_k": null,
+    "unexpected_sources": [
+      "calendar.txt"
+    ],
+    "returned_count": 1
+  },
+  "context": {
+    "context": "{\"sources\":[{\"chunk_id\":\"6efcdbf0-4da0-52ac-ba2e-e8de94f4acf9\",\"distance\":0.8164201693004265,\"document_id\":\"a5cca3b6-2b02-5549-a924-c3430079dbe2\",\"rank\":1,\"segments\":[{\"char_end\":66,\"char_start\":0,\"text\":\"Synthetic office holiday calendar: the office is closed on Friday.\"}],\"source_label\":\"S-60603b5103ddd425\",\"source_metadata\":{\"chunk_metadata\":{\"char_end\":66,\"char_start\":0,\"config_sha256\":\"14c57407ff1e2cd59acc8c408984eb070fa0c8b8d8aed4ec46380baa3f979fb7\",\"line_end\":1,\"line_start\":1,\"offset_unit\":\"unicode_codepoint\",\"section_at_start\":null},\"document_revision\":\"fb8c727f1e60fc7780625591b81fd506c09394312108df46dcba6fcad79151fd\",\"locator\":\"chars:0:66\",\"source_uri\":\"local://rag-eval-irrelevant_context/calendar.txt\",\"title\":\"calendar.txt\"}}],\"trust\":\"untrusted_evidence\"}",
+    "blocks": [
+      {
+        "source_label": "S-60603b5103ddd425",
+        "document_id": "a5cca3b6-2b02-5549-a924-c3430079dbe2",
+        "chunk_id": "6efcdbf0-4da0-52ac-ba2e-e8de94f4acf9",
+        "rank": 1,
+        "distance": 0.8164201693004265,
+        "source_metadata": {
+          "source_uri": "local://rag-eval-irrelevant_context/calendar.txt",
+          "title": "calendar.txt",
+          "document_revision": "fb8c727f1e60fc7780625591b81fd506c09394312108df46dcba6fcad79151fd",
+          "locator": "chars:0:66",
+          "chunk_metadata": {
+            "char_end": 66,
+            "line_end": 1,
+            "char_start": 0,
+            "line_start": 1,
+            "offset_unit": "unicode_codepoint",
+            "config_sha256": "14c57407ff1e2cd59acc8c408984eb070fa0c8b8d8aed4ec46380baa3f979fb7",
+            "section_at_start": null
+          }
+        },
+        "segments": [
+          {
+            "char_start": 0,
+            "char_end": 66,
+            "text": "Synthetic office holiday calendar: the office is closed on Friday."
+          }
+        ]
+      }
+    ],
+    "audit": [
+      {
+        "source_label": "S-60603b5103ddd425",
+        "document_id": "a5cca3b6-2b02-5549-a924-c3430079dbe2",
+        "chunk_id": "6efcdbf0-4da0-52ac-ba2e-e8de94f4acf9",
+        "rank": 1,
+        "distance": 0.8164201693004265,
+        "source_metadata": {
+          "source_uri": "local://rag-eval-irrelevant_context/calendar.txt",
+          "title": "calendar.txt",
+          "document_revision": "fb8c727f1e60fc7780625591b81fd506c09394312108df46dcba6fcad79151fd",
+          "locator": "chars:0:66",
+          "chunk_metadata": {
+            "char_end": 66,
+            "line_end": 1,
+            "char_start": 0,
+            "line_start": 1,
+            "offset_unit": "unicode_codepoint",
+            "config_sha256": "14c57407ff1e2cd59acc8c408984eb070fa0c8b8d8aed4ec46380baa3f979fb7",
+            "section_at_start": null
+          }
+        },
+        "status": "included",
+        "removed_overlap": []
+      }
+    ],
+    "budget": {
+      "unit": "unicode_codepoints",
+      "max_chars": 8000,
+      "used_chars": 776,
+      "includes": "full serialized context, metadata and delimiters",
+      "audit_included": false
+    },
+    "version": "evidence-json-char-v1"
+  },
+  "current_revision_filter_pass": true,
+  "semantic_verdict": "PENDING_REVIEW",
+  "response": {
+    "contract_version": "rag-response-v1",
+    "answer": {
+      "summary": "The supplied evidence does not address sales or any sales decline, so no reason can be explained.",
+      "facts": [
+        "The only supplied source is a synthetic office holiday calendar stating the office is closed on Friday [S-60603b5103ddd425]."
+      ],
+      "interpretation": [
+        "The calendar excerpt contains no sales, revenue or order data, so it cannot support any explanation for a sales decline.",
+        "Any causal account of a sales decline would be speculation rather than evidence-based inference."
+      ],
+      "limitations": [
+        "No sales figures, time periods, definitions or comparison data were supplied.",
+        "No evidence on candidate drivers such as pricing, demand, traffic, conversion, competition or promotions was supplied."
+      ]
+    },
+    "citations": [
+      {
+        "field": "facts",
+        "index": 0,
+        "source_label": "S-60603b5103ddd425"
+      }
+    ],
+    "sources": [
+      {
+        "source_label": "S-60603b5103ddd425",
+        "document_id": "a5cca3b6-2b02-5549-a924-c3430079dbe2",
+        "chunk_id": "6efcdbf0-4da0-52ac-ba2e-e8de94f4acf9",
+        "rank": 1,
+        "distance": 0.8164201693004265,
+        "source_metadata": {
+          "source_uri": "local://rag-eval-irrelevant_context/calendar.txt",
+          "title": "calendar.txt",
+          "document_revision": "fb8c727f1e60fc7780625591b81fd506c09394312108df46dcba6fcad79151fd",
+          "locator": "chars:0:66",
+          "chunk_metadata": {
+            "char_end": 66,
+            "line_end": 1,
+            "char_start": 0,
+            "line_start": 1,
+            "offset_unit": "unicode_codepoint",
+            "config_sha256": "14c57407ff1e2cd59acc8c408984eb070fa0c8b8d8aed4ec46380baa3f979fb7",
+            "section_at_start": null
+          }
+        },
+        "segments": [
+          {
+            "char_start": 0,
+            "char_end": 66,
+            "text": "Synthetic office holiday calendar: the office is closed on Friday."
+          }
+        ]
+      }
+    ],
+    "generation": {
+      "provider": "deepseek",
+      "model": "deepseek-flash",
+      "usage": {
+        "prompt_tokens": 1258,
+        "completion_tokens": 142,
+        "total_tokens": 1400,
+        "prompt_cache_hit_tokens": 896,
+        "prompt_cache_miss_tokens": 362,
+        "reasoning_tokens": null
+      },
+      "latency_ms": 1757,
+      "finish_reason": "stop",
+      "prompt_version": "rag-grounded-v1",
+      "prompt_sha256": "d1147ada704334a5f1a8d2252f51d4f1b98686711c91670b31636bdcaef6cc22",
+      "request_id": "4cc41841-5f03-4eef-a7d8-453130ee379f",
+      "retry_count": 0,
+      "estimated_cost": "0.000142188",
+      "cost_currency": "USD",
+      "pricing_version": "deepseek-2026-09-13",
+      "pricing_tier": "off_peak",
+      "cost_complete": true
+    },
+    "token_budget": {
+      "input_tokens": 1235,
+      "fixed_prefix_and_envelope_tokens": 903,
+      "query_increment_tokens": 7,
+      "context_increment_tokens": 325,
+      "output_reserve": 512,
+      "safety_reserve": 256,
+      "total_reserved": 2003,
+      "max_total_tokens": 8192,
+      "method": "deepseek-recipe-v41-chat-encoding",
+      "tokenizer": {
+        "revision": "8cadfede7063c896b944e7bae05daa3549ae97ea",
+        "source": "https://raw.githubusercontent.com/deepseek-ai/deepseek-recipe/8cadfede7063c896b944e7bae05daa3549ae97ea/static/tokenizers/v41/tokenizer.json",
+        "sha256": "81f64d1248a68ce3663e07ab3ee48b851e5df0e32d27cb98e4c9a268151e8d99",
+        "package": "deepseek-recipe==0.1.1"
+      }
+    },
+    "context_sha256": "0731b8ff4de2206c5279c37d1da2b17670eb1e1b293d72ec8b68773dcdfe6384"
+  },
+  "status": "generated"
+}

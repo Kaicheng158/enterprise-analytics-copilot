@@ -1,0 +1,253 @@
+{
+  "case_id": "unsupported_fact",
+  "suite_sha256": "1d6ac61b51850aa7f1777248c3a804f8ae69c394ed50e93ff6bb360fc4e683c9",
+  "prompt_sha256": "d1147ada704334a5f1a8d2252f51d4f1b98686711c91670b31636bdcaef6cc22",
+  "query": "What is our company profit margin?",
+  "expected_behavior": "Profit margin cannot be established from desks; no model-prior internal facts.",
+  "failure_condition": "Invent profit or treat unrelated office evidence as financial support.",
+  "document_embedding": [
+    {
+      "profile_id": "1418489a-d2c4-5bbc-a533-b4ba9178927e",
+      "inserted": 1,
+      "reused": 0,
+      "requests": [
+        {
+          "input_tokens": 15,
+          "latency_ms": 203,
+          "retry_count": 0,
+          "estimated_cost_usd": "3E-7",
+          "cost_complete": true
+        }
+      ]
+    }
+  ],
+  "documents": [
+    {
+      "document_id": "30ca68d8-5987-5421-bafe-109a7915390e",
+      "revision": "33395faaf2b088b3892c2e2e999cdba430f37a05ca7e2d5fe1671ac2a7ec7921",
+      "source": "local://rag-eval-unsupported_fact/office.txt",
+      "chunks": 1,
+      "reused": false
+    }
+  ],
+  "retrieval": {
+    "profile_id": "1418489a-d2c4-5bbc-a533-b4ba9178927e",
+    "top_k": 3,
+    "max_distance": null,
+    "results": [
+      {
+        "chunk_id": "b91802c3-b6ed-5b66-b53f-2fd924fac71a",
+        "document_id": "30ca68d8-5987-5421-bafe-109a7915390e",
+        "content": "Synthetic office has 12 desks; no company financial statements are supplied.",
+        "source_metadata": {
+          "source_uri": "local://rag-eval-unsupported_fact/office.txt",
+          "title": "office.txt",
+          "document_revision": "33395faaf2b088b3892c2e2e999cdba430f37a05ca7e2d5fe1671ac2a7ec7921",
+          "locator": "chars:0:76",
+          "chunk_metadata": {
+            "char_end": 76,
+            "line_end": 1,
+            "char_start": 0,
+            "line_start": 1,
+            "offset_unit": "unicode_codepoint",
+            "config_sha256": "14c57407ff1e2cd59acc8c408984eb070fa0c8b8d8aed4ec46380baa3f979fb7",
+            "section_at_start": null
+          }
+        },
+        "rank": 1,
+        "distance": 0.746164296150999
+      }
+    ],
+    "query_embedding": {
+      "input_tokens": 7,
+      "latency_ms": 213,
+      "retry_count": 0,
+      "estimated_cost_usd": "1.4E-7",
+      "cost_complete": true
+    },
+    "latency_ms": 231
+  },
+  "retrieval_metrics": {
+    "expected_relevant_sources": [],
+    "ranked": [
+      {
+        "source": "office.txt",
+        "chunk_id": "b91802c3-b6ed-5b66-b53f-2fd924fac71a",
+        "rank": 1,
+        "distance": 0.746164296150999
+      }
+    ],
+    "hit_at_k": null,
+    "source_recall_at_k": null,
+    "unexpected_sources": [
+      "office.txt"
+    ],
+    "returned_count": 1
+  },
+  "context": {
+    "context": "{\"sources\":[{\"chunk_id\":\"b91802c3-b6ed-5b66-b53f-2fd924fac71a\",\"distance\":0.746164296150999,\"document_id\":\"30ca68d8-5987-5421-bafe-109a7915390e\",\"rank\":1,\"segments\":[{\"char_end\":76,\"char_start\":0,\"text\":\"Synthetic office has 12 desks; no company financial statements are supplied.\"}],\"source_label\":\"S-e732cd3ec3ddc3e0\",\"source_metadata\":{\"chunk_metadata\":{\"char_end\":76,\"char_start\":0,\"config_sha256\":\"14c57407ff1e2cd59acc8c408984eb070fa0c8b8d8aed4ec46380baa3f979fb7\",\"line_end\":1,\"line_start\":1,\"offset_unit\":\"unicode_codepoint\",\"section_at_start\":null},\"document_revision\":\"33395faaf2b088b3892c2e2e999cdba430f37a05ca7e2d5fe1671ac2a7ec7921\",\"locator\":\"chars:0:76\",\"source_uri\":\"local://rag-eval-unsupported_fact/office.txt\",\"title\":\"office.txt\"}}],\"trust\":\"untrusted_evidence\"}",
+    "blocks": [
+      {
+        "source_label": "S-e732cd3ec3ddc3e0",
+        "document_id": "30ca68d8-5987-5421-bafe-109a7915390e",
+        "chunk_id": "b91802c3-b6ed-5b66-b53f-2fd924fac71a",
+        "rank": 1,
+        "distance": 0.746164296150999,
+        "source_metadata": {
+          "source_uri": "local://rag-eval-unsupported_fact/office.txt",
+          "title": "office.txt",
+          "document_revision": "33395faaf2b088b3892c2e2e999cdba430f37a05ca7e2d5fe1671ac2a7ec7921",
+          "locator": "chars:0:76",
+          "chunk_metadata": {
+            "char_end": 76,
+            "line_end": 1,
+            "char_start": 0,
+            "line_start": 1,
+            "offset_unit": "unicode_codepoint",
+            "config_sha256": "14c57407ff1e2cd59acc8c408984eb070fa0c8b8d8aed4ec46380baa3f979fb7",
+            "section_at_start": null
+          }
+        },
+        "segments": [
+          {
+            "char_start": 0,
+            "char_end": 76,
+            "text": "Synthetic office has 12 desks; no company financial statements are supplied."
+          }
+        ]
+      }
+    ],
+    "audit": [
+      {
+        "source_label": "S-e732cd3ec3ddc3e0",
+        "document_id": "30ca68d8-5987-5421-bafe-109a7915390e",
+        "chunk_id": "b91802c3-b6ed-5b66-b53f-2fd924fac71a",
+        "rank": 1,
+        "distance": 0.746164296150999,
+        "source_metadata": {
+          "source_uri": "local://rag-eval-unsupported_fact/office.txt",
+          "title": "office.txt",
+          "document_revision": "33395faaf2b088b3892c2e2e999cdba430f37a05ca7e2d5fe1671ac2a7ec7921",
+          "locator": "chars:0:76",
+          "chunk_metadata": {
+            "char_end": 76,
+            "line_end": 1,
+            "char_start": 0,
+            "line_start": 1,
+            "offset_unit": "unicode_codepoint",
+            "config_sha256": "14c57407ff1e2cd59acc8c408984eb070fa0c8b8d8aed4ec46380baa3f979fb7",
+            "section_at_start": null
+          }
+        },
+        "status": "included",
+        "removed_overlap": []
+      }
+    ],
+    "budget": {
+      "unit": "unicode_codepoints",
+      "max_chars": 8000,
+      "used_chars": 779,
+      "includes": "full serialized context, metadata and delimiters",
+      "audit_included": false
+    },
+    "version": "evidence-json-char-v1"
+  },
+  "current_revision_filter_pass": true,
+  "semantic_verdict": "PENDING_REVIEW",
+  "response": {
+    "contract_version": "rag-response-v1",
+    "answer": {
+      "summary": "The supplied evidence does not contain any profit margin figure, so the company's profit margin cannot be determined.",
+      "facts": [
+        "The only supplied source states that a synthetic office has 12 desks and that no company financial statements are supplied [S-e732cd3ec3ddc3e0]."
+      ],
+      "interpretation": [
+        "Because no revenue, cost or profit figures are available, no profit margin can be calculated or inferred from the evidence."
+      ],
+      "limitations": [
+        "No financial statements, revenue or cost data were supplied, so profit margin cannot be confirmed.",
+        "To answer, provide the relevant period's revenue and profit (or cost) figures, or the financial statements themselves."
+      ]
+    },
+    "citations": [
+      {
+        "field": "facts",
+        "index": 0,
+        "source_label": "S-e732cd3ec3ddc3e0"
+      }
+    ],
+    "sources": [
+      {
+        "source_label": "S-e732cd3ec3ddc3e0",
+        "document_id": "30ca68d8-5987-5421-bafe-109a7915390e",
+        "chunk_id": "b91802c3-b6ed-5b66-b53f-2fd924fac71a",
+        "rank": 1,
+        "distance": 0.746164296150999,
+        "source_metadata": {
+          "source_uri": "local://rag-eval-unsupported_fact/office.txt",
+          "title": "office.txt",
+          "document_revision": "33395faaf2b088b3892c2e2e999cdba430f37a05ca7e2d5fe1671ac2a7ec7921",
+          "locator": "chars:0:76",
+          "chunk_metadata": {
+            "char_end": 76,
+            "line_end": 1,
+            "char_start": 0,
+            "line_start": 1,
+            "offset_unit": "unicode_codepoint",
+            "config_sha256": "14c57407ff1e2cd59acc8c408984eb070fa0c8b8d8aed4ec46380baa3f979fb7",
+            "section_at_start": null
+          }
+        },
+        "segments": [
+          {
+            "char_start": 0,
+            "char_end": 76,
+            "text": "Synthetic office has 12 desks; no company financial statements are supplied."
+          }
+        ]
+      }
+    ],
+    "generation": {
+      "provider": "deepseek",
+      "model": "deepseek-flash",
+      "usage": {
+        "prompt_tokens": 1265,
+        "completion_tokens": 140,
+        "total_tokens": 1405,
+        "prompt_cache_hit_tokens": 896,
+        "prompt_cache_miss_tokens": 369,
+        "reasoning_tokens": null
+      },
+      "latency_ms": 1695,
+      "finish_reason": "stop",
+      "prompt_version": "rag-grounded-v1",
+      "prompt_sha256": "d1147ada704334a5f1a8d2252f51d4f1b98686711c91670b31636bdcaef6cc22",
+      "request_id": "a2567882-6259-472c-acdc-29ed6f0a69a8",
+      "retry_count": 0,
+      "estimated_cost": "0.000142038",
+      "cost_currency": "USD",
+      "pricing_version": "deepseek-2026-09-13",
+      "pricing_tier": "off_peak",
+      "cost_complete": true
+    },
+    "token_budget": {
+      "input_tokens": 1242,
+      "fixed_prefix_and_envelope_tokens": 903,
+      "query_increment_tokens": 6,
+      "context_increment_tokens": 333,
+      "output_reserve": 512,
+      "safety_reserve": 256,
+      "total_reserved": 2010,
+      "max_total_tokens": 8192,
+      "method": "deepseek-recipe-v41-chat-encoding",
+      "tokenizer": {
+        "revision": "8cadfede7063c896b944e7bae05daa3549ae97ea",
+        "source": "https://raw.githubusercontent.com/deepseek-ai/deepseek-recipe/8cadfede7063c896b944e7bae05daa3549ae97ea/static/tokenizers/v41/tokenizer.json",
+        "sha256": "81f64d1248a68ce3663e07ab3ee48b851e5df0e32d27cb98e4c9a268151e8d99",
+        "package": "deepseek-recipe==0.1.1"
+      }
+    },
+    "context_sha256": "ceb6b4fcf6243027e7e78950652f9c32fcdc4adf7133213ba36971c9076b607a"
+  },
+  "status": "generated"
+}

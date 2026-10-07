@@ -1,0 +1,15 @@
+[
+  {
+    "case_id": "fabricated_label",
+    "kind": "offline forced output on real context",
+    "server": "rejected",
+    "error_code": "rag_invalid_citation"
+  },
+  {
+    "case_id": "valid_label_unsupported",
+    "kind": "offline forced output on real context",
+    "server": "accepted",
+    "semantic_grounding": false,
+    "reason": "Count source cannot support injected $9m revenue."
+  }
+]

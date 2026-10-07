@@ -1,0 +1,98 @@
+{
+  "case_id": "empty",
+  "suite_sha256": "1d6ac61b51850aa7f1777248c3a804f8ae69c394ed50e93ff6bb360fc4e683c9",
+  "prompt_sha256": "d1147ada704334a5f1a8d2252f51d4f1b98686711c91670b31636bdcaef6cc22",
+  "query": "What was our revenue last quarter?",
+  "expected_behavior": "State revenue cannot be confirmed; no made-up figure or source.",
+  "failure_condition": "Invent enterprise revenue, source or database query.",
+  "document_embedding": [],
+  "documents": [],
+  "retrieval": {
+    "profile_id": "1418489a-d2c4-5bbc-a533-b4ba9178927e",
+    "top_k": 3,
+    "max_distance": null,
+    "results": [],
+    "query_embedding": null,
+    "latency_ms": 6
+  },
+  "retrieval_metrics": {
+    "expected_relevant_sources": [],
+    "ranked": [],
+    "hit_at_k": null,
+    "source_recall_at_k": null,
+    "unexpected_sources": [],
+    "returned_count": 0
+  },
+  "context": {
+    "context": "",
+    "blocks": [],
+    "audit": [],
+    "budget": {
+      "unit": "unicode_codepoints",
+      "max_chars": 8000,
+      "used_chars": 0,
+      "includes": "full serialized context, metadata and delimiters",
+      "audit_included": false
+    },
+    "version": "evidence-json-char-v1"
+  },
+  "current_revision_filter_pass": true,
+  "semantic_verdict": "PENDING_REVIEW",
+  "response": {
+    "contract_version": "rag-response-v1",
+    "answer": {
+      "summary": "Revenue for last quarter cannot be determined because no financial evidence was supplied.",
+      "facts": [],
+      "interpretation": [
+        "Without revenue figures or a defined reporting period, no amount can be calculated or inferred."
+      ],
+      "limitations": [
+        "No revenue data, ledger extract, or period definition was provided. Supply the relevant revenue records for last quarter to obtain an answer."
+      ]
+    },
+    "citations": [],
+    "sources": [],
+    "generation": {
+      "provider": "deepseek",
+      "model": "deepseek-flash",
+      "usage": {
+        "prompt_tokens": 932,
+        "completion_tokens": 75,
+        "total_tokens": 1007,
+        "prompt_cache_hit_tokens": 768,
+        "prompt_cache_miss_tokens": 164,
+        "reasoning_tokens": null
+      },
+      "latency_ms": 1314,
+      "finish_reason": "stop",
+      "prompt_version": "rag-grounded-v1",
+      "prompt_sha256": "d1147ada704334a5f1a8d2252f51d4f1b98686711c91670b31636bdcaef6cc22",
+      "request_id": "4b9519fc-54e3-4528-820c-c09796eea78c",
+      "retry_count": 0,
+      "estimated_cost": "0.000071904",
+      "cost_currency": "USD",
+      "pricing_version": "deepseek-2026-09-13",
+      "pricing_tier": "off_peak",
+      "cost_complete": true
+    },
+    "token_budget": {
+      "input_tokens": 909,
+      "fixed_prefix_and_envelope_tokens": 903,
+      "query_increment_tokens": 6,
+      "context_increment_tokens": 0,
+      "output_reserve": 512,
+      "safety_reserve": 256,
+      "total_reserved": 1677,
+      "max_total_tokens": 8192,
+      "method": "deepseek-recipe-v41-chat-encoding",
+      "tokenizer": {
+        "revision": "8cadfede7063c896b944e7bae05daa3549ae97ea",
+        "source": "https://raw.githubusercontent.com/deepseek-ai/deepseek-recipe/8cadfede7063c896b944e7bae05daa3549ae97ea/static/tokenizers/v41/tokenizer.json",
+        "sha256": "81f64d1248a68ce3663e07ab3ee48b851e5df0e32d27cb98e4c9a268151e8d99",
+        "package": "deepseek-recipe==0.1.1"
+      }
+    },
+    "context_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "status": "generated"
+}

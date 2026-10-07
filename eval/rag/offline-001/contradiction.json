@@ -1,0 +1,313 @@
+{
+  "case_id": "contradiction",
+  "suite_sha256": "1d6ac61b51850aa7f1777248c3a804f8ae69c394ed50e93ff6bb360fc4e683c9",
+  "prompt_sha256": "d1147ada704334a5f1a8d2252f51d4f1b98686711c91670b31636bdcaef6cc22",
+  "query": "What is the verified April total?",
+  "expected_behavior": "Attribute both conflicting totals; cannot establish a verified total.",
+  "failure_condition": "Choose one as verified, average as fact, or invent reconciliation.",
+  "document_embedding": [
+    {
+      "profile_id": "247bad12-9816-5f6b-b3a0-22852f5e6ea3",
+      "inserted": 1,
+      "reused": 0,
+      "requests": [
+        {
+          "input_tokens": 0,
+          "latency_ms": 0,
+          "retry_count": 0,
+          "estimated_cost_usd": "0",
+          "cost_complete": true
+        }
+      ]
+    },
+    {
+      "profile_id": "247bad12-9816-5f6b-b3a0-22852f5e6ea3",
+      "inserted": 1,
+      "reused": 0,
+      "requests": [
+        {
+          "input_tokens": 0,
+          "latency_ms": 0,
+          "retry_count": 0,
+          "estimated_cost_usd": "0",
+          "cost_complete": true
+        }
+      ]
+    }
+  ],
+  "documents": [
+    {
+      "document_id": "ee7c89ca-f1c5-50af-9fee-c2bb41d14453",
+      "revision": "e503df399d1870f3753fc582ba7b6260829a31fd623e599beaeac50d881466f9",
+      "source": "local://rag-eval-contradiction/a.txt",
+      "chunks": 1,
+      "reused": false
+    },
+    {
+      "document_id": "6eb34914-1bdb-53ab-8f11-b9bbc88fd334",
+      "revision": "4ba503e7da2d3fe1b95ff80d5f3857e6491a9858775a4eee2a7e2eea580ed69d",
+      "source": "local://rag-eval-contradiction/b.txt",
+      "chunks": 1,
+      "reused": false
+    }
+  ],
+  "retrieval": {
+    "profile_id": "247bad12-9816-5f6b-b3a0-22852f5e6ea3",
+    "top_k": 3,
+    "max_distance": null,
+    "results": [
+      {
+        "chunk_id": "288fd3c1-7b81-5a95-80df-03ec50f324bf",
+        "document_id": "6eb34914-1bdb-53ab-8f11-b9bbc88fd334",
+        "content": "Synthetic report B states April total is 55 orders. No reconciliation is supplied.",
+        "source_metadata": {
+          "source_uri": "local://rag-eval-contradiction/b.txt",
+          "title": "b.txt",
+          "document_revision": "4ba503e7da2d3fe1b95ff80d5f3857e6491a9858775a4eee2a7e2eea580ed69d",
+          "locator": "chars:0:82",
+          "chunk_metadata": {
+            "char_end": 82,
+            "line_end": 1,
+            "char_start": 0,
+            "line_start": 1,
+            "offset_unit": "unicode_codepoint",
+            "config_sha256": "14c57407ff1e2cd59acc8c408984eb070fa0c8b8d8aed4ec46380baa3f979fb7",
+            "section_at_start": null
+          }
+        },
+        "rank": 1,
+        "distance": 0.0
+      },
+      {
+        "chunk_id": "12dd1756-828a-53c0-83be-3209bf9c8e77",
+        "document_id": "ee7c89ca-f1c5-50af-9fee-c2bb41d14453",
+        "content": "Synthetic report A states April total is 40 orders.",
+        "source_metadata": {
+          "source_uri": "local://rag-eval-contradiction/a.txt",
+          "title": "a.txt",
+          "document_revision": "e503df399d1870f3753fc582ba7b6260829a31fd623e599beaeac50d881466f9",
+          "locator": "chars:0:51",
+          "chunk_metadata": {
+            "char_end": 51,
+            "line_end": 1,
+            "char_start": 0,
+            "line_start": 1,
+            "offset_unit": "unicode_codepoint",
+            "config_sha256": "14c57407ff1e2cd59acc8c408984eb070fa0c8b8d8aed4ec46380baa3f979fb7",
+            "section_at_start": null
+          }
+        },
+        "rank": 2,
+        "distance": 0.0
+      }
+    ],
+    "query_embedding": {
+      "input_tokens": 0,
+      "latency_ms": 0,
+      "retry_count": 0,
+      "estimated_cost_usd": "0",
+      "cost_complete": true
+    },
+    "latency_ms": 16
+  },
+  "retrieval_metrics": {
+    "expected_relevant_sources": [
+      "a.txt",
+      "b.txt"
+    ],
+    "ranked": [
+      {
+        "source": "b.txt",
+        "chunk_id": "288fd3c1-7b81-5a95-80df-03ec50f324bf",
+        "rank": 1,
+        "distance": 0.0
+      },
+      {
+        "source": "a.txt",
+        "chunk_id": "12dd1756-828a-53c0-83be-3209bf9c8e77",
+        "rank": 2,
+        "distance": 0.0
+      }
+    ],
+    "hit_at_k": true,
+    "source_recall_at_k": 1.0,
+    "unexpected_sources": [],
+    "returned_count": 2
+  },
+  "context": {
+    "context": "{\"sources\":[{\"chunk_id\":\"288fd3c1-7b81-5a95-80df-03ec50f324bf\",\"distance\":0.0,\"document_id\":\"6eb34914-1bdb-53ab-8f11-b9bbc88fd334\",\"rank\":1,\"segments\":[{\"char_end\":82,\"char_start\":0,\"text\":\"Synthetic report B states April total is 55 orders. No reconciliation is supplied.\"}],\"source_label\":\"S-bf4d2301dfad6443\",\"source_metadata\":{\"chunk_metadata\":{\"char_end\":82,\"char_start\":0,\"config_sha256\":\"14c57407ff1e2cd59acc8c408984eb070fa0c8b8d8aed4ec46380baa3f979fb7\",\"line_end\":1,\"line_start\":1,\"offset_unit\":\"unicode_codepoint\",\"section_at_start\":null},\"document_revision\":\"4ba503e7da2d3fe1b95ff80d5f3857e6491a9858775a4eee2a7e2eea580ed69d\",\"locator\":\"chars:0:82\",\"source_uri\":\"local://rag-eval-contradiction/b.txt\",\"title\":\"b.txt\"}},{\"chunk_id\":\"12dd1756-828a-53c0-83be-3209bf9c8e77\",\"distance\":0.0,\"document_id\":\"ee7c89ca-f1c5-50af-9fee-c2bb41d14453\",\"rank\":2,\"segments\":[{\"char_end\":51,\"char_start\":0,\"text\":\"Synthetic report A states April total is 40 orders.\"}],\"source_label\":\"S-87ede6fb11fdbbaf\",\"source_metadata\":{\"chunk_metadata\":{\"char_end\":51,\"char_start\":0,\"config_sha256\":\"14c57407ff1e2cd59acc8c408984eb070fa0c8b8d8aed4ec46380baa3f979fb7\",\"line_end\":1,\"line_start\":1,\"offset_unit\":\"unicode_codepoint\",\"section_at_start\":null},\"document_revision\":\"e503df399d1870f3753fc582ba7b6260829a31fd623e599beaeac50d881466f9\",\"locator\":\"chars:0:51\",\"source_uri\":\"local://rag-eval-contradiction/a.txt\",\"title\":\"a.txt\"}}],\"trust\":\"untrusted_evidence\"}",
+    "blocks": [
+      {
+        "source_label": "S-bf4d2301dfad6443",
+        "document_id": "6eb34914-1bdb-53ab-8f11-b9bbc88fd334",
+        "chunk_id": "288fd3c1-7b81-5a95-80df-03ec50f324bf",
+        "rank": 1,
+        "distance": 0.0,
+        "source_metadata": {
+          "source_uri": "local://rag-eval-contradiction/b.txt",
+          "title": "b.txt",
+          "document_revision": "4ba503e7da2d3fe1b95ff80d5f3857e6491a9858775a4eee2a7e2eea580ed69d",
+          "locator": "chars:0:82",
+          "chunk_metadata": {
+            "char_end": 82,
+            "line_end": 1,
+            "char_start": 0,
+            "line_start": 1,
+            "offset_unit": "unicode_codepoint",
+            "config_sha256": "14c57407ff1e2cd59acc8c408984eb070fa0c8b8d8aed4ec46380baa3f979fb7",
+            "section_at_start": null
+          }
+        },
+        "segments": [
+          {
+            "char_start": 0,
+            "char_end": 82,
+            "text": "Synthetic report B states April total is 55 orders. No reconciliation is supplied."
+          }
+        ]
+      },
+      {
+        "source_label": "S-87ede6fb11fdbbaf",
+        "document_id": "ee7c89ca-f1c5-50af-9fee-c2bb41d14453",
+        "chunk_id": "12dd1756-828a-53c0-83be-3209bf9c8e77",
+        "rank": 2,
+        "distance": 0.0,
+        "source_metadata": {
+          "source_uri": "local://rag-eval-contradiction/a.txt",
+          "title": "a.txt",
+          "document_revision": "e503df399d1870f3753fc582ba7b6260829a31fd623e599beaeac50d881466f9",
+          "locator": "chars:0:51",
+          "chunk_metadata": {
+            "char_end": 51,
+            "line_end": 1,
+            "char_start": 0,
+            "line_start": 1,
+            "offset_unit": "unicode_codepoint",
+            "config_sha256": "14c57407ff1e2cd59acc8c408984eb070fa0c8b8d8aed4ec46380baa3f979fb7",
+            "section_at_start": null
+          }
+        },
+        "segments": [
+          {
+            "char_start": 0,
+            "char_end": 51,
+            "text": "Synthetic report A states April total is 40 orders."
+          }
+        ]
+      }
+    ],
+    "audit": [
+      {
+        "source_label": "S-bf4d2301dfad6443",
+        "document_id": "6eb34914-1bdb-53ab-8f11-b9bbc88fd334",
+        "chunk_id": "288fd3c1-7b81-5a95-80df-03ec50f324bf",
+        "rank": 1,
+        "distance": 0.0,
+        "source_metadata": {
+          "source_uri": "local://rag-eval-contradiction/b.txt",
+          "title": "b.txt",
+          "document_revision": "4ba503e7da2d3fe1b95ff80d5f3857e6491a9858775a4eee2a7e2eea580ed69d",
+          "locator": "chars:0:82",
+          "chunk_metadata": {
+            "char_end": 82,
+            "line_end": 1,
+            "char_start": 0,
+            "line_start": 1,
+            "offset_unit": "unicode_codepoint",
+            "config_sha256": "14c57407ff1e2cd59acc8c408984eb070fa0c8b8d8aed4ec46380baa3f979fb7",
+            "section_at_start": null
+          }
+        },
+        "status": "included",
+        "removed_overlap": []
+      },
+      {
+        "source_label": "S-87ede6fb11fdbbaf",
+        "document_id": "ee7c89ca-f1c5-50af-9fee-c2bb41d14453",
+        "chunk_id": "12dd1756-828a-53c0-83be-3209bf9c8e77",
+        "rank": 2,
+        "distance": 0.0,
+        "source_metadata": {
+          "source_uri": "local://rag-eval-contradiction/a.txt",
+          "title": "a.txt",
+          "document_revision": "e503df399d1870f3753fc582ba7b6260829a31fd623e599beaeac50d881466f9",
+          "locator": "chars:0:51",
+          "chunk_metadata": {
+            "char_end": 51,
+            "line_end": 1,
+            "char_start": 0,
+            "line_start": 1,
+            "offset_unit": "unicode_codepoint",
+            "config_sha256": "14c57407ff1e2cd59acc8c408984eb070fa0c8b8d8aed4ec46380baa3f979fb7",
+            "section_at_start": null
+          }
+        },
+        "status": "included",
+        "removed_overlap": []
+      }
+    ],
+    "budget": {
+      "unit": "unicode_codepoints",
+      "max_chars": 8000,
+      "used_chars": 1443,
+      "includes": "full serialized context, metadata and delimiters",
+      "audit_included": false
+    },
+    "version": "evidence-json-char-v1"
+  },
+  "current_revision_filter_pass": true,
+  "semantic_verdict": "PENDING_REVIEW",
+  "response": {
+    "contract_version": "rag-response-v1",
+    "answer": {
+      "summary": "Deterministic transport fixture; not a semantic answer.",
+      "facts": [],
+      "interpretation": [],
+      "limitations": []
+    },
+    "citations": [],
+    "sources": [],
+    "generation": {
+      "provider": "fake",
+      "model": "fixture",
+      "usage": {
+        "prompt_tokens": 0,
+        "completion_tokens": 0,
+        "total_tokens": 0,
+        "prompt_cache_hit_tokens": null,
+        "prompt_cache_miss_tokens": null,
+        "reasoning_tokens": null
+      },
+      "latency_ms": 0,
+      "finish_reason": "stop",
+      "prompt_version": "rag-grounded-v1",
+      "prompt_sha256": "d1147ada704334a5f1a8d2252f51d4f1b98686711c91670b31636bdcaef6cc22",
+      "request_id": "",
+      "retry_count": 0,
+      "estimated_cost": null,
+      "cost_currency": "USD",
+      "pricing_version": "deepseek-2026-09-13",
+      "pricing_tier": null,
+      "cost_complete": false
+    },
+    "token_budget": {
+      "input_tokens": 1540,
+      "fixed_prefix_and_envelope_tokens": 903,
+      "query_increment_tokens": 6,
+      "context_increment_tokens": 631,
+      "output_reserve": 512,
+      "safety_reserve": 256,
+      "total_reserved": 2308,
+      "max_total_tokens": 8192,
+      "method": "deepseek-recipe-v41-chat-encoding",
+      "tokenizer": {
+        "revision": "8cadfede7063c896b944e7bae05daa3549ae97ea",
+        "source": "https://raw.githubusercontent.com/deepseek-ai/deepseek-recipe/8cadfede7063c896b944e7bae05daa3549ae97ea/static/tokenizers/v41/tokenizer.json",
+        "sha256": "81f64d1248a68ce3663e07ab3ee48b851e5df0e32d27cb98e4c9a268151e8d99",
+        "package": "deepseek-recipe==0.1.1"
+      }
+    },
+    "context_sha256": "a595a9292b3de5223aa8db71b689c75b4a8789500d29d7f20f01788f165cb104"
+  },
+  "status": "generated"
+}

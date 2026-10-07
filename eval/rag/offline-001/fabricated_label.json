@@ -1,0 +1,182 @@
+{
+  "case_id": "fabricated_label",
+  "suite_sha256": "1d6ac61b51850aa7f1777248c3a804f8ae69c394ed50e93ff6bb360fc4e683c9",
+  "prompt_sha256": "d1147ada704334a5f1a8d2252f51d4f1b98686711c91670b31636bdcaef6cc22",
+  "query": "Summarize the recorded count.",
+  "expected_behavior": "A deliberately forged citation must fail server validation.",
+  "failure_condition": "Unknown label accepted.",
+  "document_embedding": [
+    {
+      "profile_id": "247bad12-9816-5f6b-b3a0-22852f5e6ea3",
+      "inserted": 1,
+      "reused": 0,
+      "requests": [
+        {
+          "input_tokens": 0,
+          "latency_ms": 0,
+          "retry_count": 0,
+          "estimated_cost_usd": "0",
+          "cost_complete": true
+        }
+      ]
+    }
+  ],
+  "documents": [
+    {
+      "document_id": "0cc2c1f4-91f4-573c-a902-94d1f796974b",
+      "revision": "0919705bcf5fb28fd062e20ea4760ad2fb361e82bb879070eda9def169c1c78e",
+      "source": "local://rag-eval-fabricated_label/count.txt",
+      "chunks": 1,
+      "reused": false
+    }
+  ],
+  "retrieval": {
+    "profile_id": "247bad12-9816-5f6b-b3a0-22852f5e6ea3",
+    "top_k": 3,
+    "max_distance": null,
+    "results": [
+      {
+        "chunk_id": "c3b05ed1-dd34-5058-876d-70b5854fdc10",
+        "document_id": "0cc2c1f4-91f4-573c-a902-94d1f796974b",
+        "content": "Synthetic count is 12.",
+        "source_metadata": {
+          "source_uri": "local://rag-eval-fabricated_label/count.txt",
+          "title": "count.txt",
+          "document_revision": "0919705bcf5fb28fd062e20ea4760ad2fb361e82bb879070eda9def169c1c78e",
+          "locator": "chars:0:22",
+          "chunk_metadata": {
+            "char_end": 22,
+            "line_end": 1,
+            "char_start": 0,
+            "line_start": 1,
+            "offset_unit": "unicode_codepoint",
+            "config_sha256": "14c57407ff1e2cd59acc8c408984eb070fa0c8b8d8aed4ec46380baa3f979fb7",
+            "section_at_start": null
+          }
+        },
+        "rank": 1,
+        "distance": 0.0
+      }
+    ],
+    "query_embedding": {
+      "input_tokens": 0,
+      "latency_ms": 0,
+      "retry_count": 0,
+      "estimated_cost_usd": "0",
+      "cost_complete": true
+    },
+    "latency_ms": 11
+  },
+  "retrieval_metrics": {
+    "expected_relevant_sources": [
+      "count.txt"
+    ],
+    "ranked": [
+      {
+        "source": "count.txt",
+        "chunk_id": "c3b05ed1-dd34-5058-876d-70b5854fdc10",
+        "rank": 1,
+        "distance": 0.0
+      }
+    ],
+    "hit_at_k": true,
+    "source_recall_at_k": 1.0,
+    "unexpected_sources": [],
+    "returned_count": 1
+  },
+  "context": {
+    "context": "{\"sources\":[{\"chunk_id\":\"c3b05ed1-dd34-5058-876d-70b5854fdc10\",\"distance\":0.0,\"document_id\":\"0cc2c1f4-91f4-573c-a902-94d1f796974b\",\"rank\":1,\"segments\":[{\"char_end\":22,\"char_start\":0,\"text\":\"Synthetic count is 12.\"}],\"source_label\":\"S-afae7fc5cae86091\",\"source_metadata\":{\"chunk_metadata\":{\"char_end\":22,\"char_start\":0,\"config_sha256\":\"14c57407ff1e2cd59acc8c408984eb070fa0c8b8d8aed4ec46380baa3f979fb7\",\"line_end\":1,\"line_start\":1,\"offset_unit\":\"unicode_codepoint\",\"section_at_start\":null},\"document_revision\":\"0919705bcf5fb28fd062e20ea4760ad2fb361e82bb879070eda9def169c1c78e\",\"locator\":\"chars:0:22\",\"source_uri\":\"local://rag-eval-fabricated_label/count.txt\",\"title\":\"count.txt\"}}],\"trust\":\"untrusted_evidence\"}",
+    "blocks": [
+      {
+        "source_label": "S-afae7fc5cae86091",
+        "document_id": "0cc2c1f4-91f4-573c-a902-94d1f796974b",
+        "chunk_id": "c3b05ed1-dd34-5058-876d-70b5854fdc10",
+        "rank": 1,
+        "distance": 0.0,
+        "source_metadata": {
+          "source_uri": "local://rag-eval-fabricated_label/count.txt",
+          "title": "count.txt",
+          "document_revision": "0919705bcf5fb28fd062e20ea4760ad2fb361e82bb879070eda9def169c1c78e",
+          "locator": "chars:0:22",
+          "chunk_metadata": {
+            "char_end": 22,
+            "line_end": 1,
+            "char_start": 0,
+            "line_start": 1,
+            "offset_unit": "unicode_codepoint",
+            "config_sha256": "14c57407ff1e2cd59acc8c408984eb070fa0c8b8d8aed4ec46380baa3f979fb7",
+            "section_at_start": null
+          }
+        },
+        "segments": [
+          {
+            "char_start": 0,
+            "char_end": 22,
+            "text": "Synthetic count is 12."
+          }
+        ]
+      }
+    ],
+    "audit": [
+      {
+        "source_label": "S-afae7fc5cae86091",
+        "document_id": "0cc2c1f4-91f4-573c-a902-94d1f796974b",
+        "chunk_id": "c3b05ed1-dd34-5058-876d-70b5854fdc10",
+        "rank": 1,
+        "distance": 0.0,
+        "source_metadata": {
+          "source_uri": "local://rag-eval-fabricated_label/count.txt",
+          "title": "count.txt",
+          "document_revision": "0919705bcf5fb28fd062e20ea4760ad2fb361e82bb879070eda9def169c1c78e",
+          "locator": "chars:0:22",
+          "chunk_metadata": {
+            "char_end": 22,
+            "line_end": 1,
+            "char_start": 0,
+            "line_start": 1,
+            "offset_unit": "unicode_codepoint",
+            "config_sha256": "14c57407ff1e2cd59acc8c408984eb070fa0c8b8d8aed4ec46380baa3f979fb7",
+            "section_at_start": null
+          }
+        },
+        "status": "included",
+        "removed_overlap": []
+      }
+    ],
+    "budget": {
+      "unit": "unicode_codepoints",
+      "max_chars": 8000,
+      "used_chars": 709,
+      "includes": "full serialized context, metadata and delimiters",
+      "audit_included": false
+    },
+    "version": "evidence-json-char-v1"
+  },
+  "current_revision_filter_pass": true,
+  "semantic_verdict": "PENDING_REVIEW",
+  "status": "generation_error",
+  "error_code": "rag_invalid_citation",
+  "error_telemetry": {
+    "provider": "fake",
+    "model": "fixture",
+    "usage": {
+      "prompt_tokens": 0,
+      "completion_tokens": 0,
+      "total_tokens": 0,
+      "prompt_cache_hit_tokens": null,
+      "prompt_cache_miss_tokens": null,
+      "reasoning_tokens": null
+    },
+    "latency_ms": 0,
+    "finish_reason": "stop",
+    "prompt_version": "rag-grounded-v1",
+    "prompt_sha256": "d1147ada704334a5f1a8d2252f51d4f1b98686711c91670b31636bdcaef6cc22",
+    "request_id": "",
+    "retry_count": 0,
+    "estimated_cost": null,
+    "cost_currency": "USD",
+    "pricing_version": "deepseek-2026-09-13",
+    "pricing_tier": null,
+    "cost_complete": false
+  }
+}

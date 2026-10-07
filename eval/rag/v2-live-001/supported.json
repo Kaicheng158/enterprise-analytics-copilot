@@ -1,0 +1,262 @@
+{
+  "case_id": "supported",
+  "suite_sha256": "1d6ac61b51850aa7f1777248c3a804f8ae69c394ed50e93ff6bb360fc4e683c9",
+  "prompt_sha256": "8d23068130bfe7ed4916fb4ce2a54cd374f038f16b677239159142a73c342889",
+  "query": "Compute the absolute and percentage change in completed orders.",
+  "expected_behavior": "Report +10 orders and +25%, attribute supplied values, no invented causes.",
+  "failure_condition": "Wrong calculation, unsupported cause, or missing calculation.",
+  "document_embedding": [
+    {
+      "profile_id": "1418489a-d2c4-5bbc-a533-b4ba9178927e",
+      "inserted": 1,
+      "reused": 0,
+      "requests": [
+        {
+          "input_tokens": 24,
+          "latency_ms": 3731,
+          "retry_count": 0,
+          "estimated_cost_usd": "4.8E-7",
+          "cost_complete": true
+        }
+      ]
+    }
+  ],
+  "documents": [
+    {
+      "document_id": "f2212cb4-09fc-5643-af40-99921e6ff321",
+      "revision": "986d42feae288d12aaa7de56a1174b89be949ef41f69a715ca6c6975dafe20f6",
+      "source": "local://rag-eval-supported/orders.txt",
+      "chunks": 1,
+      "reused": false
+    }
+  ],
+  "retrieval": {
+    "profile_id": "1418489a-d2c4-5bbc-a533-b4ba9178927e",
+    "top_k": 3,
+    "max_distance": null,
+    "results": [
+      {
+        "chunk_id": "b0019b4f-8eb7-5de7-8ed5-d0632385b816",
+        "document_id": "f2212cb4-09fc-5643-af40-99921e6ff321",
+        "content": "Synthetic fixture: completed orders were 40 in period A and 50 in period B, using the same definition.",
+        "source_metadata": {
+          "source_uri": "local://rag-eval-supported/orders.txt",
+          "title": "orders.txt",
+          "document_revision": "986d42feae288d12aaa7de56a1174b89be949ef41f69a715ca6c6975dafe20f6",
+          "locator": "chars:0:102",
+          "chunk_metadata": {
+            "char_end": 102,
+            "line_end": 1,
+            "char_start": 0,
+            "line_start": 1,
+            "offset_unit": "unicode_codepoint",
+            "config_sha256": "14c57407ff1e2cd59acc8c408984eb070fa0c8b8d8aed4ec46380baa3f979fb7",
+            "section_at_start": null
+          }
+        },
+        "rank": 1,
+        "distance": 0.6095630735784067
+      }
+    ],
+    "query_embedding": {
+      "input_tokens": 10,
+      "latency_ms": 746,
+      "retry_count": 0,
+      "estimated_cost_usd": "2E-7",
+      "cost_complete": true
+    },
+    "latency_ms": 763
+  },
+  "retrieval_metrics": {
+    "expected_relevant_sources": [
+      "orders.txt"
+    ],
+    "ranked": [
+      {
+        "source": "orders.txt",
+        "chunk_id": "b0019b4f-8eb7-5de7-8ed5-d0632385b816",
+        "rank": 1,
+        "distance": 0.6095630735784067
+      }
+    ],
+    "hit_at_k": true,
+    "source_recall_at_k": 1.0,
+    "unexpected_sources": [],
+    "returned_count": 1
+  },
+  "context": {
+    "context": "{\"sources\":[{\"chunk_id\":\"b0019b4f-8eb7-5de7-8ed5-d0632385b816\",\"distance\":0.6095630735784067,\"document_id\":\"f2212cb4-09fc-5643-af40-99921e6ff321\",\"rank\":1,\"segments\":[{\"char_end\":102,\"char_start\":0,\"text\":\"Synthetic fixture: completed orders were 40 in period A and 50 in period B, using the same definition.\"}],\"source_label\":\"S-f18c601ebfefd082\",\"source_metadata\":{\"chunk_metadata\":{\"char_end\":102,\"char_start\":0,\"config_sha256\":\"14c57407ff1e2cd59acc8c408984eb070fa0c8b8d8aed4ec46380baa3f979fb7\",\"line_end\":1,\"line_start\":1,\"offset_unit\":\"unicode_codepoint\",\"section_at_start\":null},\"document_revision\":\"986d42feae288d12aaa7de56a1174b89be949ef41f69a715ca6c6975dafe20f6\",\"locator\":\"chars:0:102\",\"source_uri\":\"local://rag-eval-supported/orders.txt\",\"title\":\"orders.txt\"}}],\"trust\":\"untrusted_evidence\"}",
+    "blocks": [
+      {
+        "source_label": "S-f18c601ebfefd082",
+        "document_id": "f2212cb4-09fc-5643-af40-99921e6ff321",
+        "chunk_id": "b0019b4f-8eb7-5de7-8ed5-d0632385b816",
+        "rank": 1,
+        "distance": 0.6095630735784067,
+        "source_metadata": {
+          "source_uri": "local://rag-eval-supported/orders.txt",
+          "title": "orders.txt",
+          "document_revision": "986d42feae288d12aaa7de56a1174b89be949ef41f69a715ca6c6975dafe20f6",
+          "locator": "chars:0:102",
+          "chunk_metadata": {
+            "char_end": 102,
+            "line_end": 1,
+            "char_start": 0,
+            "line_start": 1,
+            "offset_unit": "unicode_codepoint",
+            "config_sha256": "14c57407ff1e2cd59acc8c408984eb070fa0c8b8d8aed4ec46380baa3f979fb7",
+            "section_at_start": null
+          }
+        },
+        "segments": [
+          {
+            "char_start": 0,
+            "char_end": 102,
+            "text": "Synthetic fixture: completed orders were 40 in period A and 50 in period B, using the same definition."
+          }
+        ]
+      }
+    ],
+    "audit": [
+      {
+        "source_label": "S-f18c601ebfefd082",
+        "document_id": "f2212cb4-09fc-5643-af40-99921e6ff321",
+        "chunk_id": "b0019b4f-8eb7-5de7-8ed5-d0632385b816",
+        "rank": 1,
+        "distance": 0.6095630735784067,
+        "source_metadata": {
+          "source_uri": "local://rag-eval-supported/orders.txt",
+          "title": "orders.txt",
+          "document_revision": "986d42feae288d12aaa7de56a1174b89be949ef41f69a715ca6c6975dafe20f6",
+          "locator": "chars:0:102",
+          "chunk_metadata": {
+            "char_end": 102,
+            "line_end": 1,
+            "char_start": 0,
+            "line_start": 1,
+            "offset_unit": "unicode_codepoint",
+            "config_sha256": "14c57407ff1e2cd59acc8c408984eb070fa0c8b8d8aed4ec46380baa3f979fb7",
+            "section_at_start": null
+          }
+        },
+        "status": "included",
+        "removed_overlap": []
+      }
+    ],
+    "budget": {
+      "unit": "unicode_codepoints",
+      "max_chars": 8000,
+      "used_chars": 802,
+      "includes": "full serialized context, metadata and delimiters",
+      "audit_included": false
+    },
+    "version": "evidence-json-char-v1"
+  },
+  "current_revision_filter_pass": true,
+  "semantic_verdict": "PENDING_REVIEW",
+  "response": {
+    "contract_version": "rag-response-v1",
+    "answer": {
+      "summary": "Completed orders rose from 40 in period A to 50 in period B, an absolute change of +10 orders and a percentage change of +25%.",
+      "facts": [
+        "Completed orders were 40 in period A and 50 in period B under the same definition [S-f18c601ebfefd082].",
+        "Absolute change = 50 - 40 = +10 orders [S-f18c601ebfefd082].",
+        "Percentage change = (50 - 40) / 40 × 100 = +25% [S-f18c601ebfefd082]."
+      ],
+      "interpretation": [
+        "The increase is a descriptive comparison of the two supplied periods; no cause is assessed."
+      ],
+      "limitations": []
+    },
+    "citations": [
+      {
+        "field": "facts",
+        "index": 0,
+        "source_label": "S-f18c601ebfefd082"
+      },
+      {
+        "field": "facts",
+        "index": 1,
+        "source_label": "S-f18c601ebfefd082"
+      },
+      {
+        "field": "facts",
+        "index": 2,
+        "source_label": "S-f18c601ebfefd082"
+      }
+    ],
+    "sources": [
+      {
+        "source_label": "S-f18c601ebfefd082",
+        "document_id": "f2212cb4-09fc-5643-af40-99921e6ff321",
+        "chunk_id": "b0019b4f-8eb7-5de7-8ed5-d0632385b816",
+        "rank": 1,
+        "distance": 0.6095630735784067,
+        "source_metadata": {
+          "source_uri": "local://rag-eval-supported/orders.txt",
+          "title": "orders.txt",
+          "document_revision": "986d42feae288d12aaa7de56a1174b89be949ef41f69a715ca6c6975dafe20f6",
+          "locator": "chars:0:102",
+          "chunk_metadata": {
+            "char_end": 102,
+            "line_end": 1,
+            "char_start": 0,
+            "line_start": 1,
+            "offset_unit": "unicode_codepoint",
+            "config_sha256": "14c57407ff1e2cd59acc8c408984eb070fa0c8b8d8aed4ec46380baa3f979fb7",
+            "section_at_start": null
+          }
+        },
+        "segments": [
+          {
+            "char_start": 0,
+            "char_end": 102,
+            "text": "Synthetic fixture: completed orders were 40 in period A and 50 in period B, using the same definition."
+          }
+        ]
+      }
+    ],
+    "generation": {
+      "provider": "deepseek",
+      "model": "deepseek-flash",
+      "usage": {
+        "prompt_tokens": 1380,
+        "completion_tokens": 154,
+        "total_tokens": 1534,
+        "prompt_cache_hit_tokens": 768,
+        "prompt_cache_miss_tokens": 612,
+        "reasoning_tokens": null
+      },
+      "latency_ms": 1501,
+      "finish_reason": "stop",
+      "prompt_version": "rag-grounded-v2",
+      "prompt_sha256": "8d23068130bfe7ed4916fb4ce2a54cd374f038f16b677239159142a73c342889",
+      "request_id": "e52081dc-a8d1-4206-a195-8e8798aa2b8c",
+      "retry_count": 0,
+      "estimated_cost": "0.000186504",
+      "cost_currency": "USD",
+      "pricing_version": "deepseek-2026-09-13",
+      "pricing_tier": "off_peak",
+      "cost_complete": true
+    },
+    "token_budget": {
+      "input_tokens": 1357,
+      "fixed_prefix_and_envelope_tokens": 1012,
+      "query_increment_tokens": 9,
+      "context_increment_tokens": 336,
+      "output_reserve": 512,
+      "safety_reserve": 256,
+      "total_reserved": 2125,
+      "max_total_tokens": 8192,
+      "method": "deepseek-recipe-v41-chat-encoding",
+      "tokenizer": {
+        "revision": "8cadfede7063c896b944e7bae05daa3549ae97ea",
+        "source": "https://raw.githubusercontent.com/deepseek-ai/deepseek-recipe/8cadfede7063c896b944e7bae05daa3549ae97ea/static/tokenizers/v41/tokenizer.json",
+        "sha256": "81f64d1248a68ce3663e07ab3ee48b851e5df0e32d27cb98e4c9a268151e8d99",
+        "package": "deepseek-recipe==0.1.1"
+      }
+    },
+    "context_sha256": "acef68ab8300eef6f16ff3a4def685ddb1da91cb58d6fe901825212435da911f"
+  },
+  "status": "generated"
+}

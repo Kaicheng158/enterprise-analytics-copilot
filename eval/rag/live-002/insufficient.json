@@ -1,0 +1,264 @@
+{
+  "case_id": "insufficient",
+  "suite_sha256": "1d6ac61b51850aa7f1777248c3a804f8ae69c394ed50e93ff6bb360fc4e683c9",
+  "prompt_sha256": "d1147ada704334a5f1a8d2252f51d4f1b98686711c91670b31636bdcaef6cc22",
+  "query": "Why did retention fall?",
+  "expected_behavior": "Cannot determine cause; distinguish observed change from explanation.",
+  "failure_condition": "Invent a cause or assert evidence proves a causal claim.",
+  "document_embedding": [
+    {
+      "profile_id": "1418489a-d2c4-5bbc-a533-b4ba9178927e",
+      "inserted": 1,
+      "reused": 0,
+      "requests": [
+        {
+          "input_tokens": 22,
+          "latency_ms": 846,
+          "retry_count": 0,
+          "estimated_cost_usd": "4.4E-7",
+          "cost_complete": true
+        }
+      ]
+    }
+  ],
+  "documents": [
+    {
+      "document_id": "dd57639d-ed5d-5898-ae87-96a097193a3a",
+      "revision": "6cc4df433d11811b0daae76dac88da95ae74f0feae9432bebc3f48b4cee518fd",
+      "source": "local://rag-eval-insufficient/retention.txt",
+      "chunks": 1,
+      "reused": false
+    }
+  ],
+  "retrieval": {
+    "profile_id": "1418489a-d2c4-5bbc-a533-b4ba9178927e",
+    "top_k": 3,
+    "max_distance": null,
+    "results": [
+      {
+        "chunk_id": "c229d39b-7bd8-5182-a7c9-3b8ac6cda681",
+        "document_id": "dd57639d-ed5d-5898-ae87-96a097193a3a",
+        "content": "Synthetic fixture: retention was 80% then 70%. No causal investigation or intervention history is supplied.",
+        "source_metadata": {
+          "source_uri": "local://rag-eval-insufficient/retention.txt",
+          "title": "retention.txt",
+          "document_revision": "6cc4df433d11811b0daae76dac88da95ae74f0feae9432bebc3f48b4cee518fd",
+          "locator": "chars:0:107",
+          "chunk_metadata": {
+            "char_end": 107,
+            "line_end": 1,
+            "char_start": 0,
+            "line_start": 1,
+            "offset_unit": "unicode_codepoint",
+            "config_sha256": "14c57407ff1e2cd59acc8c408984eb070fa0c8b8d8aed4ec46380baa3f979fb7",
+            "section_at_start": null
+          }
+        },
+        "rank": 1,
+        "distance": 0.5399797399051416
+      }
+    ],
+    "query_embedding": {
+      "input_tokens": 5,
+      "latency_ms": 260,
+      "retry_count": 0,
+      "estimated_cost_usd": "1E-7",
+      "cost_complete": true
+    },
+    "latency_ms": 284
+  },
+  "retrieval_metrics": {
+    "expected_relevant_sources": [
+      "retention.txt"
+    ],
+    "ranked": [
+      {
+        "source": "retention.txt",
+        "chunk_id": "c229d39b-7bd8-5182-a7c9-3b8ac6cda681",
+        "rank": 1,
+        "distance": 0.5399797399051416
+      }
+    ],
+    "hit_at_k": true,
+    "source_recall_at_k": 1.0,
+    "unexpected_sources": [],
+    "returned_count": 1
+  },
+  "context": {
+    "context": "{\"sources\":[{\"chunk_id\":\"c229d39b-7bd8-5182-a7c9-3b8ac6cda681\",\"distance\":0.5399797399051416,\"document_id\":\"dd57639d-ed5d-5898-ae87-96a097193a3a\",\"rank\":1,\"segments\":[{\"char_end\":107,\"char_start\":0,\"text\":\"Synthetic fixture: retention was 80% then 70%. No causal investigation or intervention history is supplied.\"}],\"source_label\":\"S-5cdb62937ed13b08\",\"source_metadata\":{\"chunk_metadata\":{\"char_end\":107,\"char_start\":0,\"config_sha256\":\"14c57407ff1e2cd59acc8c408984eb070fa0c8b8d8aed4ec46380baa3f979fb7\",\"line_end\":1,\"line_start\":1,\"offset_unit\":\"unicode_codepoint\",\"section_at_start\":null},\"document_revision\":\"6cc4df433d11811b0daae76dac88da95ae74f0feae9432bebc3f48b4cee518fd\",\"locator\":\"chars:0:107\",\"source_uri\":\"local://rag-eval-insufficient/retention.txt\",\"title\":\"retention.txt\"}}],\"trust\":\"untrusted_evidence\"}",
+    "blocks": [
+      {
+        "source_label": "S-5cdb62937ed13b08",
+        "document_id": "dd57639d-ed5d-5898-ae87-96a097193a3a",
+        "chunk_id": "c229d39b-7bd8-5182-a7c9-3b8ac6cda681",
+        "rank": 1,
+        "distance": 0.5399797399051416,
+        "source_metadata": {
+          "source_uri": "local://rag-eval-insufficient/retention.txt",
+          "title": "retention.txt",
+          "document_revision": "6cc4df433d11811b0daae76dac88da95ae74f0feae9432bebc3f48b4cee518fd",
+          "locator": "chars:0:107",
+          "chunk_metadata": {
+            "char_end": 107,
+            "line_end": 1,
+            "char_start": 0,
+            "line_start": 1,
+            "offset_unit": "unicode_codepoint",
+            "config_sha256": "14c57407ff1e2cd59acc8c408984eb070fa0c8b8d8aed4ec46380baa3f979fb7",
+            "section_at_start": null
+          }
+        },
+        "segments": [
+          {
+            "char_start": 0,
+            "char_end": 107,
+            "text": "Synthetic fixture: retention was 80% then 70%. No causal investigation or intervention history is supplied."
+          }
+        ]
+      }
+    ],
+    "audit": [
+      {
+        "source_label": "S-5cdb62937ed13b08",
+        "document_id": "dd57639d-ed5d-5898-ae87-96a097193a3a",
+        "chunk_id": "c229d39b-7bd8-5182-a7c9-3b8ac6cda681",
+        "rank": 1,
+        "distance": 0.5399797399051416,
+        "source_metadata": {
+          "source_uri": "local://rag-eval-insufficient/retention.txt",
+          "title": "retention.txt",
+          "document_revision": "6cc4df433d11811b0daae76dac88da95ae74f0feae9432bebc3f48b4cee518fd",
+          "locator": "chars:0:107",
+          "chunk_metadata": {
+            "char_end": 107,
+            "line_end": 1,
+            "char_start": 0,
+            "line_start": 1,
+            "offset_unit": "unicode_codepoint",
+            "config_sha256": "14c57407ff1e2cd59acc8c408984eb070fa0c8b8d8aed4ec46380baa3f979fb7",
+            "section_at_start": null
+          }
+        },
+        "status": "included",
+        "removed_overlap": []
+      }
+    ],
+    "budget": {
+      "unit": "unicode_codepoints",
+      "max_chars": 8000,
+      "used_chars": 816,
+      "includes": "full serialized context, metadata and delimiters",
+      "audit_included": false
+    },
+    "version": "evidence-json-char-v1"
+  },
+  "current_revision_filter_pass": true,
+  "semantic_verdict": "PENDING_REVIEW",
+  "response": {
+    "contract_version": "rag-response-v1",
+    "answer": {
+      "summary": "Retention fell from 80% to 70%, a 10 percentage point decline; the cause is not established by the supplied evidence.",
+      "facts": [
+        "Retention was 80% then 70% [S-5cdb62937ed13b08].",
+        "Change = 70% - 80% = -10 percentage points [S-5cdb62937ed13b08].",
+        "No causal investigation or intervention history is supplied [S-5cdb62937ed13b08]."
+      ],
+      "interpretation": [
+        "The evidence documents a decline but provides no basis to attribute it to any specific cause; any causal explanation would be speculation."
+      ],
+      "limitations": [
+        "No cohort, segment, timing, product, pricing, or intervention data is supplied, so drivers of the decline cannot be identified."
+      ]
+    },
+    "citations": [
+      {
+        "field": "facts",
+        "index": 0,
+        "source_label": "S-5cdb62937ed13b08"
+      },
+      {
+        "field": "facts",
+        "index": 1,
+        "source_label": "S-5cdb62937ed13b08"
+      },
+      {
+        "field": "facts",
+        "index": 2,
+        "source_label": "S-5cdb62937ed13b08"
+      }
+    ],
+    "sources": [
+      {
+        "source_label": "S-5cdb62937ed13b08",
+        "document_id": "dd57639d-ed5d-5898-ae87-96a097193a3a",
+        "chunk_id": "c229d39b-7bd8-5182-a7c9-3b8ac6cda681",
+        "rank": 1,
+        "distance": 0.5399797399051416,
+        "source_metadata": {
+          "source_uri": "local://rag-eval-insufficient/retention.txt",
+          "title": "retention.txt",
+          "document_revision": "6cc4df433d11811b0daae76dac88da95ae74f0feae9432bebc3f48b4cee518fd",
+          "locator": "chars:0:107",
+          "chunk_metadata": {
+            "char_end": 107,
+            "line_end": 1,
+            "char_start": 0,
+            "line_start": 1,
+            "offset_unit": "unicode_codepoint",
+            "config_sha256": "14c57407ff1e2cd59acc8c408984eb070fa0c8b8d8aed4ec46380baa3f979fb7",
+            "section_at_start": null
+          }
+        },
+        "segments": [
+          {
+            "char_start": 0,
+            "char_end": 107,
+            "text": "Synthetic fixture: retention was 80% then 70%. No causal investigation or intervention history is supplied."
+          }
+        ]
+      }
+    ],
+    "generation": {
+      "provider": "deepseek",
+      "model": "deepseek-flash",
+      "usage": {
+        "prompt_tokens": 1272,
+        "completion_tokens": 170,
+        "total_tokens": 1442,
+        "prompt_cache_hit_tokens": 768,
+        "prompt_cache_miss_tokens": 504,
+        "reasoning_tokens": null
+      },
+      "latency_ms": 1728,
+      "finish_reason": "stop",
+      "prompt_version": "rag-grounded-v1",
+      "prompt_sha256": "d1147ada704334a5f1a8d2252f51d4f1b98686711c91670b31636bdcaef6cc22",
+      "request_id": "391f3eaa-ba1a-445d-91bb-9cbf5849aa9d",
+      "retry_count": 0,
+      "estimated_cost": "0.000179904",
+      "cost_currency": "USD",
+      "pricing_version": "deepseek-2026-09-13",
+      "pricing_tier": "off_peak",
+      "cost_complete": true
+    },
+    "token_budget": {
+      "input_tokens": 1249,
+      "fixed_prefix_and_envelope_tokens": 903,
+      "query_increment_tokens": 4,
+      "context_increment_tokens": 342,
+      "output_reserve": 512,
+      "safety_reserve": 256,
+      "total_reserved": 2017,
+      "max_total_tokens": 8192,
+      "method": "deepseek-recipe-v41-chat-encoding",
+      "tokenizer": {
+        "revision": "8cadfede7063c896b944e7bae05daa3549ae97ea",
+        "source": "https://raw.githubusercontent.com/deepseek-ai/deepseek-recipe/8cadfede7063c896b944e7bae05daa3549ae97ea/static/tokenizers/v41/tokenizer.json",
+        "sha256": "81f64d1248a68ce3663e07ab3ee48b851e5df0e32d27cb98e4c9a268151e8d99",
+        "package": "deepseek-recipe==0.1.1"
+      }
+    },
+    "context_sha256": "5b37fa9066c1c2f5f65fe08e9b988b8ae050e5d2756cd5f0c0013f5b65e3355b"
+  },
+  "status": "generated"
+}

@@ -1,0 +1,15 @@
+[
+  {
+    "case_id": "fabricated_label",
+    "kind": "offline forced answer on live context",
+    "server": "rejected",
+    "code": "rag_invalid_citation"
+  },
+  {
+    "case_id": "valid_label_unsupported",
+    "kind": "offline forced answer on live context",
+    "server": "accepted",
+    "grounding": false,
+    "reason": "Injected revenue absent from cited evidence."
+  }
+]

@@ -1,0 +1,399 @@
+{
+  "case_id": "multi_source",
+  "suite_sha256": "1d6ac61b51850aa7f1777248c3a804f8ae69c394ed50e93ff6bb360fc4e683c9",
+  "prompt_sha256": "8d23068130bfe7ed4916fb4ce2a54cd374f038f16b677239159142a73c342889",
+  "query": "Compare the recorded regional orders and calculate the combined total.",
+  "expected_behavior": "Compare 30 vs 20, total 50; cite both; no added trend/cause.",
+  "failure_condition": "Wrong total, absent comparison, or missing source support.",
+  "document_embedding": [
+    {
+      "profile_id": "1418489a-d2c4-5bbc-a533-b4ba9178927e",
+      "inserted": 1,
+      "reused": 0,
+      "requests": [
+        {
+          "input_tokens": 9,
+          "latency_ms": 208,
+          "retry_count": 0,
+          "estimated_cost_usd": "1.8E-7",
+          "cost_complete": true
+        }
+      ]
+    },
+    {
+      "profile_id": "1418489a-d2c4-5bbc-a533-b4ba9178927e",
+      "inserted": 1,
+      "reused": 0,
+      "requests": [
+        {
+          "input_tokens": 14,
+          "latency_ms": 210,
+          "retry_count": 0,
+          "estimated_cost_usd": "2.8E-7",
+          "cost_complete": true
+        }
+      ]
+    }
+  ],
+  "documents": [
+    {
+      "document_id": "9f59beca-d143-5243-b332-6159acd69ace",
+      "revision": "6987094cf6ca669f055d12861220a11ddb00e375cbb908a3984eabbde9dfe009",
+      "source": "local://rag-eval-multi_source/east.txt",
+      "chunks": 1,
+      "reused": false
+    },
+    {
+      "document_id": "5c74cdc8-7726-5b09-bd98-84b20f8bf5c9",
+      "revision": "495d10ecf85ac9323f1a52cd4f7826c84bf56c1fbe931b9096b01f47e2a2d205",
+      "source": "local://rag-eval-multi_source/west.txt",
+      "chunks": 1,
+      "reused": false
+    }
+  ],
+  "retrieval": {
+    "profile_id": "1418489a-d2c4-5bbc-a533-b4ba9178927e",
+    "top_k": 3,
+    "max_distance": null,
+    "results": [
+      {
+        "chunk_id": "d0c59ec7-16b3-5df7-b6c8-2d69ebb441a9",
+        "document_id": "9f59beca-d143-5243-b332-6159acd69ace",
+        "content": "Synthetic East region completed 30 orders.",
+        "source_metadata": {
+          "source_uri": "local://rag-eval-multi_source/east.txt",
+          "title": "east.txt",
+          "document_revision": "6987094cf6ca669f055d12861220a11ddb00e375cbb908a3984eabbde9dfe009",
+          "locator": "chars:0:42",
+          "chunk_metadata": {
+            "char_end": 42,
+            "line_end": 1,
+            "char_start": 0,
+            "line_start": 1,
+            "offset_unit": "unicode_codepoint",
+            "config_sha256": "14c57407ff1e2cd59acc8c408984eb070fa0c8b8d8aed4ec46380baa3f979fb7",
+            "section_at_start": null
+          }
+        },
+        "rank": 1,
+        "distance": 0.5021374089866678
+      },
+      {
+        "chunk_id": "eff3d19b-1dbc-567e-949d-45b0910ea75e",
+        "document_id": "5c74cdc8-7726-5b09-bd98-84b20f8bf5c9",
+        "content": "Synthetic West region completed 20 orders. Regions do not overlap.",
+        "source_metadata": {
+          "source_uri": "local://rag-eval-multi_source/west.txt",
+          "title": "west.txt",
+          "document_revision": "495d10ecf85ac9323f1a52cd4f7826c84bf56c1fbe931b9096b01f47e2a2d205",
+          "locator": "chars:0:66",
+          "chunk_metadata": {
+            "char_end": 66,
+            "line_end": 1,
+            "char_start": 0,
+            "line_start": 1,
+            "offset_unit": "unicode_codepoint",
+            "config_sha256": "14c57407ff1e2cd59acc8c408984eb070fa0c8b8d8aed4ec46380baa3f979fb7",
+            "section_at_start": null
+          }
+        },
+        "rank": 2,
+        "distance": 0.5079223180407548
+      }
+    ],
+    "query_embedding": {
+      "input_tokens": 11,
+      "latency_ms": 234,
+      "retry_count": 0,
+      "estimated_cost_usd": "2.2E-7",
+      "cost_complete": true
+    },
+    "latency_ms": 252
+  },
+  "retrieval_metrics": {
+    "expected_relevant_sources": [
+      "east.txt",
+      "west.txt"
+    ],
+    "ranked": [
+      {
+        "source": "east.txt",
+        "chunk_id": "d0c59ec7-16b3-5df7-b6c8-2d69ebb441a9",
+        "rank": 1,
+        "distance": 0.5021374089866678
+      },
+      {
+        "source": "west.txt",
+        "chunk_id": "eff3d19b-1dbc-567e-949d-45b0910ea75e",
+        "rank": 2,
+        "distance": 0.5079223180407548
+      }
+    ],
+    "hit_at_k": true,
+    "source_recall_at_k": 1.0,
+    "unexpected_sources": [],
+    "returned_count": 2
+  },
+  "context": {
+    "context": "{\"sources\":[{\"chunk_id\":\"d0c59ec7-16b3-5df7-b6c8-2d69ebb441a9\",\"distance\":0.5021374089866678,\"document_id\":\"9f59beca-d143-5243-b332-6159acd69ace\",\"rank\":1,\"segments\":[{\"char_end\":42,\"char_start\":0,\"text\":\"Synthetic East region completed 30 orders.\"}],\"source_label\":\"S-93eb5eb5e1287be1\",\"source_metadata\":{\"chunk_metadata\":{\"char_end\":42,\"char_start\":0,\"config_sha256\":\"14c57407ff1e2cd59acc8c408984eb070fa0c8b8d8aed4ec46380baa3f979fb7\",\"line_end\":1,\"line_start\":1,\"offset_unit\":\"unicode_codepoint\",\"section_at_start\":null},\"document_revision\":\"6987094cf6ca669f055d12861220a11ddb00e375cbb908a3984eabbde9dfe009\",\"locator\":\"chars:0:42\",\"source_uri\":\"local://rag-eval-multi_source/east.txt\",\"title\":\"east.txt\"}},{\"chunk_id\":\"eff3d19b-1dbc-567e-949d-45b0910ea75e\",\"distance\":0.5079223180407548,\"document_id\":\"5c74cdc8-7726-5b09-bd98-84b20f8bf5c9\",\"rank\":2,\"segments\":[{\"char_end\":66,\"char_start\":0,\"text\":\"Synthetic West region completed 20 orders. Regions do not overlap.\"}],\"source_label\":\"S-5f535410a4d6f7d9\",\"source_metadata\":{\"chunk_metadata\":{\"char_end\":66,\"char_start\":0,\"config_sha256\":\"14c57407ff1e2cd59acc8c408984eb070fa0c8b8d8aed4ec46380baa3f979fb7\",\"line_end\":1,\"line_start\":1,\"offset_unit\":\"unicode_codepoint\",\"section_at_start\":null},\"document_revision\":\"495d10ecf85ac9323f1a52cd4f7826c84bf56c1fbe931b9096b01f47e2a2d205\",\"locator\":\"chars:0:66\",\"source_uri\":\"local://rag-eval-multi_source/west.txt\",\"title\":\"west.txt\"}}],\"trust\":\"untrusted_evidence\"}",
+    "blocks": [
+      {
+        "source_label": "S-93eb5eb5e1287be1",
+        "document_id": "9f59beca-d143-5243-b332-6159acd69ace",
+        "chunk_id": "d0c59ec7-16b3-5df7-b6c8-2d69ebb441a9",
+        "rank": 1,
+        "distance": 0.5021374089866678,
+        "source_metadata": {
+          "source_uri": "local://rag-eval-multi_source/east.txt",
+          "title": "east.txt",
+          "document_revision": "6987094cf6ca669f055d12861220a11ddb00e375cbb908a3984eabbde9dfe009",
+          "locator": "chars:0:42",
+          "chunk_metadata": {
+            "char_end": 42,
+            "line_end": 1,
+            "char_start": 0,
+            "line_start": 1,
+            "offset_unit": "unicode_codepoint",
+            "config_sha256": "14c57407ff1e2cd59acc8c408984eb070fa0c8b8d8aed4ec46380baa3f979fb7",
+            "section_at_start": null
+          }
+        },
+        "segments": [
+          {
+            "char_start": 0,
+            "char_end": 42,
+            "text": "Synthetic East region completed 30 orders."
+          }
+        ]
+      },
+      {
+        "source_label": "S-5f535410a4d6f7d9",
+        "document_id": "5c74cdc8-7726-5b09-bd98-84b20f8bf5c9",
+        "chunk_id": "eff3d19b-1dbc-567e-949d-45b0910ea75e",
+        "rank": 2,
+        "distance": 0.5079223180407548,
+        "source_metadata": {
+          "source_uri": "local://rag-eval-multi_source/west.txt",
+          "title": "west.txt",
+          "document_revision": "495d10ecf85ac9323f1a52cd4f7826c84bf56c1fbe931b9096b01f47e2a2d205",
+          "locator": "chars:0:66",
+          "chunk_metadata": {
+            "char_end": 66,
+            "line_end": 1,
+            "char_start": 0,
+            "line_start": 1,
+            "offset_unit": "unicode_codepoint",
+            "config_sha256": "14c57407ff1e2cd59acc8c408984eb070fa0c8b8d8aed4ec46380baa3f979fb7",
+            "section_at_start": null
+          }
+        },
+        "segments": [
+          {
+            "char_start": 0,
+            "char_end": 66,
+            "text": "Synthetic West region completed 20 orders. Regions do not overlap."
+          }
+        ]
+      }
+    ],
+    "audit": [
+      {
+        "source_label": "S-93eb5eb5e1287be1",
+        "document_id": "9f59beca-d143-5243-b332-6159acd69ace",
+        "chunk_id": "d0c59ec7-16b3-5df7-b6c8-2d69ebb441a9",
+        "rank": 1,
+        "distance": 0.5021374089866678,
+        "source_metadata": {
+          "source_uri": "local://rag-eval-multi_source/east.txt",
+          "title": "east.txt",
+          "document_revision": "6987094cf6ca669f055d12861220a11ddb00e375cbb908a3984eabbde9dfe009",
+          "locator": "chars:0:42",
+          "chunk_metadata": {
+            "char_end": 42,
+            "line_end": 1,
+            "char_start": 0,
+            "line_start": 1,
+            "offset_unit": "unicode_codepoint",
+            "config_sha256": "14c57407ff1e2cd59acc8c408984eb070fa0c8b8d8aed4ec46380baa3f979fb7",
+            "section_at_start": null
+          }
+        },
+        "status": "included",
+        "removed_overlap": []
+      },
+      {
+        "source_label": "S-5f535410a4d6f7d9",
+        "document_id": "5c74cdc8-7726-5b09-bd98-84b20f8bf5c9",
+        "chunk_id": "eff3d19b-1dbc-567e-949d-45b0910ea75e",
+        "rank": 2,
+        "distance": 0.5079223180407548,
+        "source_metadata": {
+          "source_uri": "local://rag-eval-multi_source/west.txt",
+          "title": "west.txt",
+          "document_revision": "495d10ecf85ac9323f1a52cd4f7826c84bf56c1fbe931b9096b01f47e2a2d205",
+          "locator": "chars:0:66",
+          "chunk_metadata": {
+            "char_end": 66,
+            "line_end": 1,
+            "char_start": 0,
+            "line_start": 1,
+            "offset_unit": "unicode_codepoint",
+            "config_sha256": "14c57407ff1e2cd59acc8c408984eb070fa0c8b8d8aed4ec46380baa3f979fb7",
+            "section_at_start": null
+          }
+        },
+        "status": "included",
+        "removed_overlap": []
+      }
+    ],
+    "budget": {
+      "unit": "unicode_codepoints",
+      "max_chars": 8000,
+      "used_chars": 1458,
+      "includes": "full serialized context, metadata and delimiters",
+      "audit_included": false
+    },
+    "version": "evidence-json-char-v1"
+  },
+  "current_revision_filter_pass": true,
+  "semantic_verdict": "PENDING_REVIEW",
+  "response": {
+    "contract_version": "rag-response-v1",
+    "answer": {
+      "summary": "The evidence records 30 orders in the East region and 20 in the West region, which are non-overlapping, giving a combined total of 50 orders.",
+      "facts": [
+        "The East region completed 30 orders [S-93eb5eb5e1287be1].",
+        "The West region completed 20 orders, and the regions do not overlap [S-5f535410a4d6f7d9].",
+        "Combined total = 30 + 20 = 50 orders, valid because the regions do not overlap [S-93eb5eb5e1287be1][S-5f535410a4d6f7d9]."
+      ],
+      "interpretation": [
+        "The non-overlap statement supports summing the two regional counts without double-counting; this is an arithmetic aggregation of the supplied figures, not an independently verified total."
+      ],
+      "limitations": []
+    },
+    "citations": [
+      {
+        "field": "facts",
+        "index": 0,
+        "source_label": "S-93eb5eb5e1287be1"
+      },
+      {
+        "field": "facts",
+        "index": 1,
+        "source_label": "S-5f535410a4d6f7d9"
+      },
+      {
+        "field": "facts",
+        "index": 2,
+        "source_label": "S-93eb5eb5e1287be1"
+      },
+      {
+        "field": "facts",
+        "index": 2,
+        "source_label": "S-5f535410a4d6f7d9"
+      }
+    ],
+    "sources": [
+      {
+        "source_label": "S-93eb5eb5e1287be1",
+        "document_id": "9f59beca-d143-5243-b332-6159acd69ace",
+        "chunk_id": "d0c59ec7-16b3-5df7-b6c8-2d69ebb441a9",
+        "rank": 1,
+        "distance": 0.5021374089866678,
+        "source_metadata": {
+          "source_uri": "local://rag-eval-multi_source/east.txt",
+          "title": "east.txt",
+          "document_revision": "6987094cf6ca669f055d12861220a11ddb00e375cbb908a3984eabbde9dfe009",
+          "locator": "chars:0:42",
+          "chunk_metadata": {
+            "char_end": 42,
+            "line_end": 1,
+            "char_start": 0,
+            "line_start": 1,
+            "offset_unit": "unicode_codepoint",
+            "config_sha256": "14c57407ff1e2cd59acc8c408984eb070fa0c8b8d8aed4ec46380baa3f979fb7",
+            "section_at_start": null
+          }
+        },
+        "segments": [
+          {
+            "char_start": 0,
+            "char_end": 42,
+            "text": "Synthetic East region completed 30 orders."
+          }
+        ]
+      },
+      {
+        "source_label": "S-5f535410a4d6f7d9",
+        "document_id": "5c74cdc8-7726-5b09-bd98-84b20f8bf5c9",
+        "chunk_id": "eff3d19b-1dbc-567e-949d-45b0910ea75e",
+        "rank": 2,
+        "distance": 0.5079223180407548,
+        "source_metadata": {
+          "source_uri": "local://rag-eval-multi_source/west.txt",
+          "title": "west.txt",
+          "document_revision": "495d10ecf85ac9323f1a52cd4f7826c84bf56c1fbe931b9096b01f47e2a2d205",
+          "locator": "chars:0:66",
+          "chunk_metadata": {
+            "char_end": 66,
+            "line_end": 1,
+            "char_start": 0,
+            "line_start": 1,
+            "offset_unit": "unicode_codepoint",
+            "config_sha256": "14c57407ff1e2cd59acc8c408984eb070fa0c8b8d8aed4ec46380baa3f979fb7",
+            "section_at_start": null
+          }
+        },
+        "segments": [
+          {
+            "char_start": 0,
+            "char_end": 66,
+            "text": "Synthetic West region completed 20 orders. Regions do not overlap."
+          }
+        ]
+      }
+    ],
+    "generation": {
+      "provider": "deepseek",
+      "model": "deepseek-flash",
+      "usage": {
+        "prompt_tokens": 1691,
+        "completion_tokens": 187,
+        "total_tokens": 1878,
+        "prompt_cache_hit_tokens": 1024,
+        "prompt_cache_miss_tokens": 667,
+        "reasoning_tokens": null
+      },
+      "latency_ms": 1332,
+      "finish_reason": "stop",
+      "prompt_version": "rag-grounded-v2",
+      "prompt_sha256": "8d23068130bfe7ed4916fb4ce2a54cd374f038f16b677239159142a73c342889",
+      "request_id": "85db69fa-6420-49b5-a003-37399d9a1a1c",
+      "retry_count": 0,
+      "estimated_cost": "0.000215322",
+      "cost_currency": "USD",
+      "pricing_version": "deepseek-2026-09-13",
+      "pricing_tier": "off_peak",
+      "cost_complete": true
+    },
+    "token_budget": {
+      "input_tokens": 1668,
+      "fixed_prefix_and_envelope_tokens": 1012,
+      "query_increment_tokens": 10,
+      "context_increment_tokens": 646,
+      "output_reserve": 512,
+      "safety_reserve": 256,
+      "total_reserved": 2436,
+      "max_total_tokens": 8192,
+      "method": "deepseek-recipe-v41-chat-encoding",
+      "tokenizer": {
+        "revision": "8cadfede7063c896b944e7bae05daa3549ae97ea",
+        "source": "https://raw.githubusercontent.com/deepseek-ai/deepseek-recipe/8cadfede7063c896b944e7bae05daa3549ae97ea/static/tokenizers/v41/tokenizer.json",
+        "sha256": "81f64d1248a68ce3663e07ab3ee48b851e5df0e32d27cb98e4c9a268151e8d99",
+        "package": "deepseek-recipe==0.1.1"
+      }
+    },
+    "context_sha256": "ed8fce31ccbcdf49bf5611512780956927d20b00350dc5f2d3a25bcb330fab50"
+  },
+  "status": "generated"
+}

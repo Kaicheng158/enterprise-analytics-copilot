@@ -1,0 +1,262 @@
+{
+  "case_id": "current_revision",
+  "suite_sha256": "1d6ac61b51850aa7f1777248c3a804f8ae69c394ed50e93ff6bb360fc4e683c9",
+  "prompt_sha256": "8d23068130bfe7ed4916fb4ce2a54cd374f038f16b677239159142a73c342889",
+  "query": "What is the current recorded count?",
+  "expected_behavior": "Return current 20 and exclude old revision count 10 from retrieval.",
+  "failure_condition": "Old revision returned or stale 10 used as current.",
+  "document_embedding": [
+    {
+      "profile_id": "1418489a-d2c4-5bbc-a533-b4ba9178927e",
+      "inserted": 1,
+      "reused": 0,
+      "requests": [
+        {
+          "input_tokens": 8,
+          "latency_ms": 281,
+          "retry_count": 0,
+          "estimated_cost_usd": "1.6E-7",
+          "cost_complete": true
+        }
+      ]
+    },
+    {
+      "profile_id": "1418489a-d2c4-5bbc-a533-b4ba9178927e",
+      "inserted": 1,
+      "reused": 0,
+      "requests": [
+        {
+          "input_tokens": 8,
+          "latency_ms": 284,
+          "retry_count": 0,
+          "estimated_cost_usd": "1.6E-7",
+          "cost_complete": true
+        }
+      ]
+    }
+  ],
+  "documents": [
+    {
+      "document_id": "8122547d-71b2-5b74-b715-2a9b089ac3c7",
+      "revision": "24827139a164b46a30b9ccd24af38f5b55bc8312eb8d37f6f87b92b73fdd5925",
+      "source": "local://rag-eval-current_revision/revision.txt",
+      "chunks": 1,
+      "reused": false
+    }
+  ],
+  "retrieval": {
+    "profile_id": "1418489a-d2c4-5bbc-a533-b4ba9178927e",
+    "top_k": 3,
+    "max_distance": null,
+    "results": [
+      {
+        "chunk_id": "509efe55-6239-5329-96a2-2e2a0c21a74b",
+        "document_id": "8122547d-71b2-5b74-b715-2a9b089ac3c7",
+        "content": "Synthetic current count is 20.",
+        "source_metadata": {
+          "source_uri": "local://rag-eval-current_revision/revision.txt",
+          "title": "revision.txt",
+          "document_revision": "24827139a164b46a30b9ccd24af38f5b55bc8312eb8d37f6f87b92b73fdd5925",
+          "locator": "chars:0:30",
+          "chunk_metadata": {
+            "char_end": 30,
+            "line_end": 1,
+            "char_start": 0,
+            "line_start": 1,
+            "offset_unit": "unicode_codepoint",
+            "config_sha256": "14c57407ff1e2cd59acc8c408984eb070fa0c8b8d8aed4ec46380baa3f979fb7",
+            "section_at_start": null
+          }
+        },
+        "rank": 1,
+        "distance": 0.4456636625590822
+      }
+    ],
+    "query_embedding": {
+      "input_tokens": 7,
+      "latency_ms": 213,
+      "retry_count": 0,
+      "estimated_cost_usd": "1.4E-7",
+      "cost_complete": true
+    },
+    "latency_ms": 231
+  },
+  "retrieval_metrics": {
+    "expected_relevant_sources": [
+      "revision.txt"
+    ],
+    "ranked": [
+      {
+        "source": "revision.txt",
+        "chunk_id": "509efe55-6239-5329-96a2-2e2a0c21a74b",
+        "rank": 1,
+        "distance": 0.4456636625590822
+      }
+    ],
+    "hit_at_k": true,
+    "source_recall_at_k": 1.0,
+    "unexpected_sources": [],
+    "returned_count": 1
+  },
+  "context": {
+    "context": "{\"sources\":[{\"chunk_id\":\"509efe55-6239-5329-96a2-2e2a0c21a74b\",\"distance\":0.4456636625590822,\"document_id\":\"8122547d-71b2-5b74-b715-2a9b089ac3c7\",\"rank\":1,\"segments\":[{\"char_end\":30,\"char_start\":0,\"text\":\"Synthetic current count is 20.\"}],\"source_label\":\"S-4411db5da9888111\",\"source_metadata\":{\"chunk_metadata\":{\"char_end\":30,\"char_start\":0,\"config_sha256\":\"14c57407ff1e2cd59acc8c408984eb070fa0c8b8d8aed4ec46380baa3f979fb7\",\"line_end\":1,\"line_start\":1,\"offset_unit\":\"unicode_codepoint\",\"section_at_start\":null},\"document_revision\":\"24827139a164b46a30b9ccd24af38f5b55bc8312eb8d37f6f87b92b73fdd5925\",\"locator\":\"chars:0:30\",\"source_uri\":\"local://rag-eval-current_revision/revision.txt\",\"title\":\"revision.txt\"}}],\"trust\":\"untrusted_evidence\"}",
+    "blocks": [
+      {
+        "source_label": "S-4411db5da9888111",
+        "document_id": "8122547d-71b2-5b74-b715-2a9b089ac3c7",
+        "chunk_id": "509efe55-6239-5329-96a2-2e2a0c21a74b",
+        "rank": 1,
+        "distance": 0.4456636625590822,
+        "source_metadata": {
+          "source_uri": "local://rag-eval-current_revision/revision.txt",
+          "title": "revision.txt",
+          "document_revision": "24827139a164b46a30b9ccd24af38f5b55bc8312eb8d37f6f87b92b73fdd5925",
+          "locator": "chars:0:30",
+          "chunk_metadata": {
+            "char_end": 30,
+            "line_end": 1,
+            "char_start": 0,
+            "line_start": 1,
+            "offset_unit": "unicode_codepoint",
+            "config_sha256": "14c57407ff1e2cd59acc8c408984eb070fa0c8b8d8aed4ec46380baa3f979fb7",
+            "section_at_start": null
+          }
+        },
+        "segments": [
+          {
+            "char_start": 0,
+            "char_end": 30,
+            "text": "Synthetic current count is 20."
+          }
+        ]
+      }
+    ],
+    "audit": [
+      {
+        "source_label": "S-4411db5da9888111",
+        "document_id": "8122547d-71b2-5b74-b715-2a9b089ac3c7",
+        "chunk_id": "509efe55-6239-5329-96a2-2e2a0c21a74b",
+        "rank": 1,
+        "distance": 0.4456636625590822,
+        "source_metadata": {
+          "source_uri": "local://rag-eval-current_revision/revision.txt",
+          "title": "revision.txt",
+          "document_revision": "24827139a164b46a30b9ccd24af38f5b55bc8312eb8d37f6f87b92b73fdd5925",
+          "locator": "chars:0:30",
+          "chunk_metadata": {
+            "char_end": 30,
+            "line_end": 1,
+            "char_start": 0,
+            "line_start": 1,
+            "offset_unit": "unicode_codepoint",
+            "config_sha256": "14c57407ff1e2cd59acc8c408984eb070fa0c8b8d8aed4ec46380baa3f979fb7",
+            "section_at_start": null
+          }
+        },
+        "status": "included",
+        "removed_overlap": []
+      }
+    ],
+    "budget": {
+      "unit": "unicode_codepoints",
+      "max_chars": 8000,
+      "used_chars": 738,
+      "includes": "full serialized context, metadata and delimiters",
+      "audit_included": false
+    },
+    "version": "evidence-json-char-v1"
+  },
+  "current_revision_filter_pass": true,
+  "semantic_verdict": "PENDING_REVIEW",
+  "response": {
+    "contract_version": "rag-response-v1",
+    "answer": {
+      "summary": "The current recorded count is 20, per the supplied evidence.",
+      "facts": [
+        "The current recorded count is 20 [S-4411db5da9888111]."
+      ],
+      "interpretation": [],
+      "limitations": []
+    },
+    "citations": [
+      {
+        "field": "facts",
+        "index": 0,
+        "source_label": "S-4411db5da9888111"
+      }
+    ],
+    "sources": [
+      {
+        "source_label": "S-4411db5da9888111",
+        "document_id": "8122547d-71b2-5b74-b715-2a9b089ac3c7",
+        "chunk_id": "509efe55-6239-5329-96a2-2e2a0c21a74b",
+        "rank": 1,
+        "distance": 0.4456636625590822,
+        "source_metadata": {
+          "source_uri": "local://rag-eval-current_revision/revision.txt",
+          "title": "revision.txt",
+          "document_revision": "24827139a164b46a30b9ccd24af38f5b55bc8312eb8d37f6f87b92b73fdd5925",
+          "locator": "chars:0:30",
+          "chunk_metadata": {
+            "char_end": 30,
+            "line_end": 1,
+            "char_start": 0,
+            "line_start": 1,
+            "offset_unit": "unicode_codepoint",
+            "config_sha256": "14c57407ff1e2cd59acc8c408984eb070fa0c8b8d8aed4ec46380baa3f979fb7",
+            "section_at_start": null
+          }
+        },
+        "segments": [
+          {
+            "char_start": 0,
+            "char_end": 30,
+            "text": "Synthetic current count is 20."
+          }
+        ]
+      }
+    ],
+    "generation": {
+      "provider": "deepseek",
+      "model": "deepseek-flash",
+      "usage": {
+        "prompt_tokens": 1371,
+        "completion_tokens": 51,
+        "total_tokens": 1422,
+        "prompt_cache_hit_tokens": 1024,
+        "prompt_cache_miss_tokens": 347,
+        "reasoning_tokens": null
+      },
+      "latency_ms": 1041,
+      "finish_reason": "stop",
+      "prompt_version": "rag-grounded-v2",
+      "prompt_sha256": "8d23068130bfe7ed4916fb4ce2a54cd374f038f16b677239159142a73c342889",
+      "request_id": "42b14469-b6e5-49b4-b16e-827d7c56d391",
+      "retry_count": 0,
+      "estimated_cost": "0.000085722",
+      "cost_currency": "USD",
+      "pricing_version": "deepseek-2026-09-13",
+      "pricing_tier": "off_peak",
+      "cost_complete": true
+    },
+    "token_budget": {
+      "input_tokens": 1348,
+      "fixed_prefix_and_envelope_tokens": 1012,
+      "query_increment_tokens": 6,
+      "context_increment_tokens": 330,
+      "output_reserve": 512,
+      "safety_reserve": 256,
+      "total_reserved": 2116,
+      "max_total_tokens": 8192,
+      "method": "deepseek-recipe-v41-chat-encoding",
+      "tokenizer": {
+        "revision": "8cadfede7063c896b944e7bae05daa3549ae97ea",
+        "source": "https://raw.githubusercontent.com/deepseek-ai/deepseek-recipe/8cadfede7063c896b944e7bae05daa3549ae97ea/static/tokenizers/v41/tokenizer.json",
+        "sha256": "81f64d1248a68ce3663e07ab3ee48b851e5df0e32d27cb98e4c9a268151e8d99",
+        "package": "deepseek-recipe==0.1.1"
+      }
+    },
+    "context_sha256": "ae99d3c93359b2c8715d479b71ec777d18293845e720e71a39e3b14de21df14d"
+  },
+  "status": "generated"
+}

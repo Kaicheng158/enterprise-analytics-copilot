@@ -1,0 +1,265 @@
+{
+  "case_id": "deliverables",
+  "suite_sha256": "1d6ac61b51850aa7f1777248c3a804f8ae69c394ed50e93ff6bb360fc4e683c9",
+  "prompt_sha256": "f98b847fce3139b0ad0e70dbab01737a030220f737f03c34aaf8a3049db308ce",
+  "query": "State what we can conclude and give one actionable next step to investigate the reported delay.",
+  "expected_behavior": "Report observed +1 day; cause unknown; explicit relevant executable next step, multiple reasonable options allowed.",
+  "failure_condition": "Invent cause, omit conclusion or requested actionable next step; missing-data list alone is insufficient.",
+  "document_embedding": [
+    {
+      "profile_id": "1418489a-d2c4-5bbc-a533-b4ba9178927e",
+      "inserted": 1,
+      "reused": 0,
+      "requests": [
+        {
+          "input_tokens": 29,
+          "latency_ms": 306,
+          "retry_count": 0,
+          "estimated_cost_usd": "5.8E-7",
+          "cost_complete": true
+        }
+      ]
+    }
+  ],
+  "documents": [
+    {
+      "document_id": "cf74348a-fd98-5f16-9750-0b70acfd4be7",
+      "revision": "f1a70c124cb0242e28be8944f1f1369522d488097ea7189e45ecc32d5d41e52c",
+      "source": "local://rag-eval-deliverables/delay.txt",
+      "chunks": 1,
+      "reused": false
+    }
+  ],
+  "retrieval": {
+    "profile_id": "1418489a-d2c4-5bbc-a533-b4ba9178927e",
+    "top_k": 3,
+    "max_distance": null,
+    "results": [
+      {
+        "chunk_id": "6fb0eac1-030f-5380-a96e-93ef9ad7a19e",
+        "document_id": "cf74348a-fd98-5f16-9750-0b70acfd4be7",
+        "content": "Synthetic log: the median completion time increased from 2 days to 3 days. No cause, segment breakdown or event history is available.",
+        "source_metadata": {
+          "source_uri": "local://rag-eval-deliverables/delay.txt",
+          "title": "delay.txt",
+          "document_revision": "f1a70c124cb0242e28be8944f1f1369522d488097ea7189e45ecc32d5d41e52c",
+          "locator": "chars:0:133",
+          "chunk_metadata": {
+            "char_end": 133,
+            "line_end": 1,
+            "char_start": 0,
+            "line_start": 1,
+            "offset_unit": "unicode_codepoint",
+            "config_sha256": "14c57407ff1e2cd59acc8c408984eb070fa0c8b8d8aed4ec46380baa3f979fb7",
+            "section_at_start": null
+          }
+        },
+        "rank": 1,
+        "distance": 0.6723634516615631
+      }
+    ],
+    "query_embedding": {
+      "input_tokens": 17,
+      "latency_ms": 329,
+      "retry_count": 0,
+      "estimated_cost_usd": "3.4E-7",
+      "cost_complete": true
+    },
+    "latency_ms": 345
+  },
+  "retrieval_metrics": {
+    "expected_relevant_sources": [
+      "delay.txt"
+    ],
+    "ranked": [
+      {
+        "source": "delay.txt",
+        "chunk_id": "6fb0eac1-030f-5380-a96e-93ef9ad7a19e",
+        "rank": 1,
+        "distance": 0.6723634516615631
+      }
+    ],
+    "hit_at_k": true,
+    "source_recall_at_k": 1.0,
+    "unexpected_sources": [],
+    "returned_count": 1
+  },
+  "context": {
+    "context": "{\"sources\":[{\"chunk_id\":\"6fb0eac1-030f-5380-a96e-93ef9ad7a19e\",\"distance\":0.6723634516615631,\"document_id\":\"cf74348a-fd98-5f16-9750-0b70acfd4be7\",\"rank\":1,\"segments\":[{\"char_end\":133,\"char_start\":0,\"text\":\"Synthetic log: the median completion time increased from 2 days to 3 days. No cause, segment breakdown or event history is available.\"}],\"source_label\":\"S-741497b1ef7ad9b1\",\"source_metadata\":{\"chunk_metadata\":{\"char_end\":133,\"char_start\":0,\"config_sha256\":\"14c57407ff1e2cd59acc8c408984eb070fa0c8b8d8aed4ec46380baa3f979fb7\",\"line_end\":1,\"line_start\":1,\"offset_unit\":\"unicode_codepoint\",\"section_at_start\":null},\"document_revision\":\"f1a70c124cb0242e28be8944f1f1369522d488097ea7189e45ecc32d5d41e52c\",\"locator\":\"chars:0:133\",\"source_uri\":\"local://rag-eval-deliverables/delay.txt\",\"title\":\"delay.txt\"}}],\"trust\":\"untrusted_evidence\"}",
+    "blocks": [
+      {
+        "source_label": "S-741497b1ef7ad9b1",
+        "document_id": "cf74348a-fd98-5f16-9750-0b70acfd4be7",
+        "chunk_id": "6fb0eac1-030f-5380-a96e-93ef9ad7a19e",
+        "rank": 1,
+        "distance": 0.6723634516615631,
+        "source_metadata": {
+          "source_uri": "local://rag-eval-deliverables/delay.txt",
+          "title": "delay.txt",
+          "document_revision": "f1a70c124cb0242e28be8944f1f1369522d488097ea7189e45ecc32d5d41e52c",
+          "locator": "chars:0:133",
+          "chunk_metadata": {
+            "char_end": 133,
+            "line_end": 1,
+            "char_start": 0,
+            "line_start": 1,
+            "offset_unit": "unicode_codepoint",
+            "config_sha256": "14c57407ff1e2cd59acc8c408984eb070fa0c8b8d8aed4ec46380baa3f979fb7",
+            "section_at_start": null
+          }
+        },
+        "segments": [
+          {
+            "char_start": 0,
+            "char_end": 133,
+            "text": "Synthetic log: the median completion time increased from 2 days to 3 days. No cause, segment breakdown or event history is available."
+          }
+        ]
+      }
+    ],
+    "audit": [
+      {
+        "source_label": "S-741497b1ef7ad9b1",
+        "document_id": "cf74348a-fd98-5f16-9750-0b70acfd4be7",
+        "chunk_id": "6fb0eac1-030f-5380-a96e-93ef9ad7a19e",
+        "rank": 1,
+        "distance": 0.6723634516615631,
+        "source_metadata": {
+          "source_uri": "local://rag-eval-deliverables/delay.txt",
+          "title": "delay.txt",
+          "document_revision": "f1a70c124cb0242e28be8944f1f1369522d488097ea7189e45ecc32d5d41e52c",
+          "locator": "chars:0:133",
+          "chunk_metadata": {
+            "char_end": 133,
+            "line_end": 1,
+            "char_start": 0,
+            "line_start": 1,
+            "offset_unit": "unicode_codepoint",
+            "config_sha256": "14c57407ff1e2cd59acc8c408984eb070fa0c8b8d8aed4ec46380baa3f979fb7",
+            "section_at_start": null
+          }
+        },
+        "status": "included",
+        "removed_overlap": []
+      }
+    ],
+    "budget": {
+      "unit": "unicode_codepoints",
+      "max_chars": 8000,
+      "used_chars": 834,
+      "includes": "full serialized context, metadata and delimiters",
+      "audit_included": false
+    },
+    "version": "evidence-json-char-v1"
+  },
+  "current_revision_filter_pass": true,
+  "semantic_verdict": "PENDING_REVIEW",
+  "response": {
+    "contract_version": "rag-response-v1",
+    "answer": {
+      "summary": "The supplied log reports a median completion time increase from 2 to 3 days, with no cause, segment breakdown or event history available.",
+      "facts": [
+        "The synthetic log reports the median completion time increased from 2 days to 3 days [S-741497b1ef7ad9b1].",
+        "The same source states no cause, segment breakdown or event history is available [S-741497b1ef7ad9b1].",
+        "Reported increase = 3 - 2 = 1 day; relative increase = 1 / 2 = 50% [S-741497b1ef7ad9b1]."
+      ],
+      "interpretation": [
+        "The reported delay is a median shift of one day, but the evidence does not identify what drove it; any causal explanation would be speculation.",
+        "Because no segment breakdown exists, it is also unknown whether the shift is broad-based or concentrated in particular segments."
+      ],
+      "limitations": [
+        "No cause, segment breakdown or event history is supplied, so the driver of the reported delay cannot be determined from the current evidence."
+      ]
+    },
+    "citations": [
+      {
+        "field": "facts",
+        "index": 0,
+        "source_label": "S-741497b1ef7ad9b1"
+      },
+      {
+        "field": "facts",
+        "index": 1,
+        "source_label": "S-741497b1ef7ad9b1"
+      },
+      {
+        "field": "facts",
+        "index": 2,
+        "source_label": "S-741497b1ef7ad9b1"
+      }
+    ],
+    "sources": [
+      {
+        "source_label": "S-741497b1ef7ad9b1",
+        "document_id": "cf74348a-fd98-5f16-9750-0b70acfd4be7",
+        "chunk_id": "6fb0eac1-030f-5380-a96e-93ef9ad7a19e",
+        "rank": 1,
+        "distance": 0.6723634516615631,
+        "source_metadata": {
+          "source_uri": "local://rag-eval-deliverables/delay.txt",
+          "title": "delay.txt",
+          "document_revision": "f1a70c124cb0242e28be8944f1f1369522d488097ea7189e45ecc32d5d41e52c",
+          "locator": "chars:0:133",
+          "chunk_metadata": {
+            "char_end": 133,
+            "line_end": 1,
+            "char_start": 0,
+            "line_start": 1,
+            "offset_unit": "unicode_codepoint",
+            "config_sha256": "14c57407ff1e2cd59acc8c408984eb070fa0c8b8d8aed4ec46380baa3f979fb7",
+            "section_at_start": null
+          }
+        },
+        "segments": [
+          {
+            "char_start": 0,
+            "char_end": 133,
+            "text": "Synthetic log: the median completion time increased from 2 days to 3 days. No cause, segment breakdown or event history is available."
+          }
+        ]
+      }
+    ],
+    "generation": {
+      "provider": "deepseek",
+      "model": "deepseek-flash",
+      "usage": {
+        "prompt_tokens": 1516,
+        "completion_tokens": 225,
+        "total_tokens": 1741,
+        "prompt_cache_hit_tokens": 1024,
+        "prompt_cache_miss_tokens": 492,
+        "reasoning_tokens": null
+      },
+      "latency_ms": 1608,
+      "finish_reason": "stop",
+      "prompt_version": "rag-grounded-v3",
+      "prompt_sha256": "f98b847fce3139b0ad0e70dbab01737a030220f737f03c34aaf8a3049db308ce",
+      "request_id": "319bc64d-cc6f-4b7c-8f29-0217f21dadcb",
+      "retry_count": 0,
+      "estimated_cost": "0.000211872",
+      "cost_currency": "USD",
+      "pricing_version": "deepseek-2026-09-13",
+      "pricing_tier": "off_peak",
+      "cost_complete": true
+    },
+    "token_budget": {
+      "input_tokens": 1493,
+      "fixed_prefix_and_envelope_tokens": 1127,
+      "query_increment_tokens": 16,
+      "context_increment_tokens": 350,
+      "output_reserve": 512,
+      "safety_reserve": 256,
+      "total_reserved": 2261,
+      "max_total_tokens": 8192,
+      "method": "deepseek-recipe-v41-chat-encoding",
+      "tokenizer": {
+        "revision": "8cadfede7063c896b944e7bae05daa3549ae97ea",
+        "source": "https://raw.githubusercontent.com/deepseek-ai/deepseek-recipe/8cadfede7063c896b944e7bae05daa3549ae97ea/static/tokenizers/v41/tokenizer.json",
+        "sha256": "81f64d1248a68ce3663e07ab3ee48b851e5df0e32d27cb98e4c9a268151e8d99",
+        "package": "deepseek-recipe==0.1.1"
+      }
+    },
+    "context_sha256": "412011a0fbd50b596ab342bafe9aea02819c34a6df775258e319da0d992a22d5"
+  },
+  "status": "generated"
+}

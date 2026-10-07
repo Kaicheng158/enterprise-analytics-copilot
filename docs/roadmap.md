@@ -51,3 +51,7 @@ Phase 2 remains accepted and released. Phase 3 is now RAG; 3.1–3.6 foundation 
 ## Phase 3.7 — Grounded generation implemented
 
 Independent `rag-grounded-v1` and `rag-response-v1`, current-context source-label checks, real local DeepSeek token counting plus output/safety reserves. Existing /chat, analytics-v2 and retrieval/context remain unchanged. 134 offline + 31 database tests passed; one synthetic live response has a correct core answer and a documented limitation-relevance concern. No endpoint integration or ANN. See [generation verification and Phase 3.8 recommendations](phase3-generation.md).
+
+## Phase 3.8 — RAG evaluation baseline
+
+Independent frozen 15-case suite and layered rubric, deterministic DB pipeline and six real synthetic runs. 141 offline + 31 DB tests pass. Live subset: no observed hard/core blockers, 91.67% descriptive quality, unnecessary limitations in 3/6 answers. No release claim, prompt/config tuning or endpoint integration. See [evaluation evidence and limitations](phase3-evaluation.md).

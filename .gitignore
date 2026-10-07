@@ -11,3 +11,9 @@ __pycache__/
 
 # Private database backups (may contain data and role credentials)
 backups/
+
+# Local synthetic rejected-response diagnostic evidence
+eval/rag/diagnostics-offline-*/
+
+# Personal local orchestration record
+eval/rag/continuation-orchestration.txt
