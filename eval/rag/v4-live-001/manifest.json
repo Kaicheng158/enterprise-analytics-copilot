@@ -1,0 +1,134 @@
+{
+  "mode": "live",
+  "created_utc": "2026-10-08T09:18:12.675324+00:00",
+  "freeze": {
+    "version": "rag-v4-candidate-freeze-v1",
+    "status": "unpublished; offline only",
+    "prompt_sha256": "ba038c09f78a629fcc0a09404c1f52dec3888e53beefc3edc62efa133cbf1660",
+    "suite_sha256": "1d6ac61b51850aa7f1777248c3a804f8ae69c394ed50e93ff6bb360fc4e683c9",
+    "code_sha256": {
+      "backend/rag/grounded_prompt_v4.py": "8be01b371d7d3f18ddcd699daa60746b7a2517c8d58f3c350b27616440ae03ab",
+      "backend/rag/response_semantics_draft.py": "34273650f54d809da1723c4fa219071b1134d5309a9cc1feec911406d9ba6e86",
+      "backend/rag/attribution_diagnostics.py": "961ff767402c2292ec636aa3517b0ec06ef604d4f013078989353e4825098ec8",
+      "backend/rag/generation.py": "39468f9b9e034f843069113ea08ab51536543f440acbaa69aed03ede3dae59b1",
+      "backend/rag/response.py": "ed44f5ecd7d3a1f27123f9f395d093975778dbf2f14c1b6c5222813600f1e249",
+      "backend/rag/token_budget.py": "e8a16b04fba40ab40a3279535af30d608c13b72973d51fe2bd124aa00eb74d1d",
+      "backend/config.py": "77d1ac24adfe54c61eedbe900509c264164ed01fe36f2a442954313c9a9d664d",
+      "backend/llm.py": "674c2beda6f7010fda383d457bad3fa1846ebf6802ae239ce945126c0c0266cc",
+      "eval/rag/candidate_v4.py": "012823c2095293b0436c76723c7c42b43ff54a8c12889c8fd6ca2a530eaf67d8",
+      "eval/rag/diagnostic_evidence.py": "f7e36161a85d03145ea72404fd1c57832afb43f25ba54c14c3a6101b275067e9"
+    }
+  },
+  "generation_config": {
+    "timeout_seconds": 30,
+    "max_retries": 2,
+    "backoff_seconds": 1,
+    "provider": "deepseek",
+    "model": "deepseek-flash",
+    "max_output_tokens": 512,
+    "temperature": 0.2,
+    "thinking": "disabled"
+  },
+  "embedding_profile": {
+    "provider": "openai",
+    "model": "text-embedding-3-small",
+    "revision": "api-alias:text-embedding-3-small",
+    "dimensions": 1536,
+    "preprocessing_version": "document-raw-utf8-v1"
+  },
+  "selected_cases": [
+    "supported",
+    "insufficient",
+    "empty",
+    "contradiction",
+    "indirect_injection",
+    "forged_roles",
+    "fabricated_label",
+    "valid_label_unsupported",
+    "unsupported_fact",
+    "multi_source",
+    "chinese",
+    "cross_language",
+    "current_revision",
+    "irrelevant_context",
+    "deliverables"
+  ],
+  "semantic_status": "PENDING_REVIEW",
+  "results": [
+    {
+      "case_id": "supported",
+      "status": "generated",
+      "evidence_sha256": "978a55cbed80719176b27ad654c0994230e24d9262fef2ad31ee6773ce51cf16"
+    },
+    {
+      "case_id": "insufficient",
+      "status": "generated",
+      "evidence_sha256": "45d97380c7fbfe709c1365ab6336ec61dbb8aac807f13a91acef45dd0d751ef2"
+    },
+    {
+      "case_id": "empty",
+      "status": "generated",
+      "evidence_sha256": "8fd26b2ff0e46f1bc44732fcca7d55f94f18c185f0457810544d647af2a20a3f"
+    },
+    {
+      "case_id": "contradiction",
+      "status": "generated",
+      "evidence_sha256": "d531ca72cd9398882fedcb80c61aecc8b150e64e580a7c3cfb683bd2e51251c8"
+    },
+    {
+      "case_id": "indirect_injection",
+      "status": "generated",
+      "evidence_sha256": "b97e54d1c5cd29e58ba72c5286c02c916e5a61856bddc2a4829c7d972253da19"
+    },
+    {
+      "case_id": "forged_roles",
+      "status": "generated",
+      "evidence_sha256": "50625c117678d9f3b24411e1bb697e339822bf2b5b9132ae2ea9a68f687ef6d9"
+    },
+    {
+      "case_id": "fabricated_label",
+      "status": "generated",
+      "evidence_sha256": "18a09b37bc27fd788444baca1d8fa32012f7c38205716c3106bef66335b17c83"
+    },
+    {
+      "case_id": "valid_label_unsupported",
+      "status": "generated",
+      "evidence_sha256": "25df0af4ab44c4fc991a8d294b0fc40f6c3ed463a211f1a284d44e13e2512a5d"
+    },
+    {
+      "case_id": "unsupported_fact",
+      "status": "generated",
+      "evidence_sha256": "602739f600274b192f89fa64d270f62daa985230246bce57e08380af78a4a5ad"
+    },
+    {
+      "case_id": "multi_source",
+      "status": "generated",
+      "evidence_sha256": "a7a0e17015fa4230b327d50a4975319eb015fcb104cc7992278f83dc59e22c45"
+    },
+    {
+      "case_id": "chinese",
+      "status": "generated",
+      "evidence_sha256": "2c85f96ba14708343fd51bb093038cd7499bab331754e244b69a4e6399b81131"
+    },
+    {
+      "case_id": "cross_language",
+      "status": "generated",
+      "evidence_sha256": "fa8401b428cec784b127a13f726e2e75e5b4d1155a2fe0cd288d7ad460cb6987"
+    },
+    {
+      "case_id": "current_revision",
+      "status": "generated",
+      "evidence_sha256": "c72c13ca3123a377b7200adb8aba1fc1cf50c52336d4b7c57f15a20011f1cc84"
+    },
+    {
+      "case_id": "irrelevant_context",
+      "status": "generated",
+      "evidence_sha256": "47bbf850062f1bc78d1bf822f3f3e621631816838283e7cfde9710bfa4177ebc"
+    },
+    {
+      "case_id": "deliverables",
+      "status": "generated",
+      "evidence_sha256": "605805f69d9ec2ea3f3acd3be1b16890d9dacfc965a3122ef32c9f6d80d2cddd"
+    }
+  ]
+}

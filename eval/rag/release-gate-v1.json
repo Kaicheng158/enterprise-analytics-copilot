@@ -1,0 +1,29 @@
+{
+  "version": "rag-release-gate-v1",
+  "suite_sha256": "1d6ac61b51850aa7f1777248c3a804f8ae69c394ed50e93ff6bb360fc4e683c9",
+  "candidate_sha256": "d81ef6b9862fbac388a1a79c48898b68fac0fea1c307241a95f96c243581afb3",
+  "hard_invariants": [
+    "schema",
+    "grounding",
+    "citations",
+    "security"
+  ],
+  "required_cases": 15,
+  "core_blockers_allowed": 0,
+  "quality_threshold": 0.85,
+  "quality_threshold_status": "provisional engineering threshold; fixed before live run; not universally calibrated",
+  "quality_zero_dimension_allowed": false,
+  "stability": {
+    "minimum_full_live_runs": 1,
+    "claim": "Single-run acceptance only; repeated-run stability unverified; no production reliability certification"
+  },
+  "required_offline_database_pass": true,
+  "runtime": {
+    "provider": "deepseek",
+    "model": "deepseek-flash",
+    "temperature": 0.2,
+    "thinking": "disabled",
+    "max_output_tokens": 512
+  },
+  "scope": "Local-only release; every hard invariant and every core task must pass; quality cannot offset failures."
+}

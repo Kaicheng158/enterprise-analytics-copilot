@@ -1,0 +1,15 @@
+{
+  "gate_version": "rag-release-gate-v1",
+  "policy_sha256": "ba0f11d6f4cba962f97055dcc9201c48cbaffc6d20d3cb774af04e8c58427441",
+  "prompt_sha256": "d81ef6b9862fbac388a1a79c48898b68fac0fea1c307241a95f96c243581afb3",
+  "suite_sha256": "1d6ac61b51850aa7f1777248c3a804f8ae69c394ed50e93ff6bb360fc4e683c9",
+  "verdict": "PASS",
+  "blockers": [],
+  "quality_normalized": 0.9555555555555556,
+  "stability": "one run; repeated-run stability not established",
+  "offline_pass": true,
+  "database_pass": true,
+  "records_sha256": "d440bc92d3f6c5d43ebc2068598bfb3d33c42cc8187023cb46257ccfef7ce059",
+  "decisions_sha256": "e173d1196bf39eb5462d17f1dac3ac50301c00bd12e25a7d0ac7477717cd5d16",
+  "manifest_sha256": "6b6505efef1f21f161c576fc0bcbbdb7930ff725078ae50f81d84b7dbda52e9f"
+}

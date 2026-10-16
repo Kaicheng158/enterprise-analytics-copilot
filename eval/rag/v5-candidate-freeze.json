@@ -1,0 +1,18 @@
+{
+  "version": "rag-v5-candidate-freeze-v1",
+  "status": "unpublished candidate; single live regression authorized",
+  "prompt_sha256": "d81ef6b9862fbac388a1a79c48898b68fac0fea1c307241a95f96c243581afb3",
+  "suite_sha256": "1d6ac61b51850aa7f1777248c3a804f8ae69c394ed50e93ff6bb360fc4e683c9",
+  "code_sha256": {
+    "backend/rag/grounded_prompt_v5.py": "ef97ca174e376c329da83e222431bb1fccfe186fd5fe5c1f1952f5424b2dd00f",
+    "backend/rag/response_semantics_draft.py": "34273650f54d809da1723c4fa219071b1134d5309a9cc1feec911406d9ba6e86",
+    "backend/rag/attribution_diagnostics.py": "961ff767402c2292ec636aa3517b0ec06ef604d4f013078989353e4825098ec8",
+    "backend/rag/generation.py": "39468f9b9e034f843069113ea08ab51536543f440acbaa69aed03ede3dae59b1",
+    "backend/rag/response.py": "ed44f5ecd7d3a1f27123f9f395d093975778dbf2f14c1b6c5222813600f1e249",
+    "backend/rag/token_budget.py": "e8a16b04fba40ab40a3279535af30d608c13b72973d51fe2bd124aa00eb74d1d",
+    "backend/config.py": "77d1ac24adfe54c61eedbe900509c264164ed01fe36f2a442954313c9a9d664d",
+    "backend/llm.py": "674c2beda6f7010fda383d457bad3fa1846ebf6802ae239ce945126c0c0266cc",
+    "eval/rag/candidate_v5.py": "1e8e7fe40d57ff31b3d1ec6c10bb9db0282800c736a8bad7792af90b73e7a6b2",
+    "eval/rag/diagnostic_evidence.py": "f7e36161a85d03145ea72404fd1c57832afb43f25ba54c14c3a6101b275067e9"
+  }
+}

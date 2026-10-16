@@ -1,6 +1,7 @@
 services:
   api:
     build: .
+    command: ["python", "-m", "uvicorn", "backend.rag_app:app", "--host", "0.0.0.0", "--port", "8000"]
     environment:
       POSTGRES_USER: ${POSTGRES_USER:?required}
       POSTGRES_DB: ${POSTGRES_DB:?required}
@@ -14,6 +15,13 @@ services:
       LLM_TEMPERATURE: ${LLM_TEMPERATURE:-}
       LLM_MAX_OUTPUT_TOKENS: ${LLM_MAX_OUTPUT_TOKENS:-}
       DEEPSEEK_MODEL: ${DEEPSEEK_MODEL:-}
+      OPENAI_API_KEY: ${OPENAI_API_KEY:-}
+      OPENAI_EMBEDDING_MODEL: ${OPENAI_EMBEDDING_MODEL:-text-embedding-3-small}
+      OPENAI_EMBEDDING_DIMENSIONS: ${OPENAI_EMBEDDING_DIMENSIONS:-1536}
+      RAG_ENABLED: ${RAG_ENABLED:-false}
+      RAG_RELEASE_SHA256: ${RAG_RELEASE_SHA256:-}
+      RAG_TENANT_ID: ${RAG_TENANT_ID:-}
+      RAG_ALLOWED_DOCUMENT_IDS: ${RAG_ALLOWED_DOCUMENT_IDS:-[]}
       POSTGRES_HOST: postgres
       POSTGRES_PORT: "5432"
     ports:

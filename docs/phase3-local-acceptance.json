@@ -1,0 +1,187 @@
+{
+  "scope": "isolated synthetic database; no fixture rows in application database",
+  "prompt_sha256": "d81ef6b9862fbac388a1a79c48898b68fac0fea1c307241a95f96c243581afb3",
+  "local_release_receipt_sha256": "e40a0ace62ea63976f9b609d3b1cc4a5276cd18422ead52fea080b6b52caf14e",
+  "disabled_status": 503,
+  "document_embedding": {
+    "profile_id": "1418489a-d2c4-5bbc-a533-b4ba9178927e",
+    "inserted": 1,
+    "reused": 0,
+    "requests": [
+      {
+        "input_tokens": 23,
+        "latency_ms": 537,
+        "retry_count": 0,
+        "estimated_cost_usd": "4.6E-7",
+        "cost_complete": true
+      }
+    ]
+  },
+  "health": [
+    200,
+    {
+      "status": "ok"
+    }
+  ],
+  "health_db": [
+    200,
+    {
+      "status": "ok",
+      "database": "connected",
+      "result": 1
+    }
+  ],
+  "rag_status": 200,
+  "query": "Compare completed orders between the two periods; calculate absolute and percentage change.",
+  "response": {
+    "contract_version": "rag-response-v1",
+    "answer": {
+      "summary": "Completed orders rose from 40 in period A to 50 in period B, an absolute increase of 10 orders and a 25% increase.",
+      "facts": [
+        "Completed orders were 40 in period A and 50 in period B under the same counting definition. [S-1d12817812206d49]",
+        "Absolute change = 50 − 40 = +10 completed orders. [S-1d12817812206d49]",
+        "Percentage change = (50 − 40) / 40 × 100 = +25%. [S-1d12817812206d49]"
+      ],
+      "interpretation": [
+        "The two periods are directly comparable because the same counting definition was used, so the +10 order and +25% figures are consistent with the supplied counts.",
+        "The evidence does not explain why orders changed; any cause would require additional data beyond these counts."
+      ],
+      "limitations": []
+    },
+    "citations": [
+      {
+        "field": "facts",
+        "index": 0,
+        "source_label": "S-1d12817812206d49"
+      },
+      {
+        "field": "facts",
+        "index": 1,
+        "source_label": "S-1d12817812206d49"
+      },
+      {
+        "field": "facts",
+        "index": 2,
+        "source_label": "S-1d12817812206d49"
+      }
+    ],
+    "sources": [
+      {
+        "source_label": "S-1d12817812206d49",
+        "document_id": "cce1c58b-49ca-58c9-9065-7caaa1f37804",
+        "chunk_id": "5c94a7e5-32f4-56f2-9d84-dbc2ab61ee33",
+        "rank": 1,
+        "distance": 0.5050278489147901,
+        "source_metadata": {
+          "source_uri": "local://rag-acceptance/orders.md",
+          "title": "orders.md",
+          "document_revision": "f59579f6424a585e3fda3975f53165b18ef2c20feb4aee5efc565ff355596538",
+          "locator": "chars:0:102",
+          "chunk_metadata": {
+            "char_end": 102,
+            "line_end": 1,
+            "char_start": 0,
+            "line_start": 1,
+            "offset_unit": "unicode_codepoint",
+            "config_sha256": "14c57407ff1e2cd59acc8c408984eb070fa0c8b8d8aed4ec46380baa3f979fb7",
+            "section_at_start": null
+          }
+        },
+        "segments": [
+          {
+            "char_start": 0,
+            "char_end": 102,
+            "text": "Synthetic completed orders were 40 in period A and 50 in period B, using the same counting definition."
+          }
+        ]
+      }
+    ],
+    "generation": {
+      "provider": "deepseek",
+      "model": "deepseek-flash",
+      "usage": {
+        "prompt_tokens": 1871,
+        "completion_tokens": 191,
+        "total_tokens": 2062,
+        "prompt_cache_hit_tokens": 1408,
+        "prompt_cache_miss_tokens": 463,
+        "reasoning_tokens": null
+      },
+      "latency_ms": 1669,
+      "finish_reason": "stop",
+      "prompt_version": "rag-grounded-v5",
+      "prompt_sha256": "d81ef6b9862fbac388a1a79c48898b68fac0fea1c307241a95f96c243581afb3",
+      "request_id": "c4589101-19bd-411e-996e-cb023a832c3f",
+      "retry_count": 0,
+      "estimated_cost": "0.000188274",
+      "cost_currency": "USD",
+      "pricing_version": "deepseek-2026-09-13",
+      "pricing_tier": "off_peak",
+      "cost_complete": true
+    },
+    "token_budget": {
+      "input_tokens": 1849,
+      "fixed_prefix_and_envelope_tokens": 1495,
+      "query_increment_tokens": 13,
+      "context_increment_tokens": 341,
+      "output_reserve": 512,
+      "safety_reserve": 256,
+      "total_reserved": 2617,
+      "max_total_tokens": 8192,
+      "method": "deepseek-recipe-v41-chat-encoding",
+      "tokenizer": {
+        "revision": "8cadfede7063c896b944e7bae05daa3549ae97ea",
+        "source": "https://raw.githubusercontent.com/deepseek-ai/deepseek-recipe/8cadfede7063c896b944e7bae05daa3549ae97ea/static/tokenizers/v41/tokenizer.json",
+        "sha256": "81f64d1248a68ce3663e07ab3ee48b851e5df0e32d27cb98e4c9a268151e8d99",
+        "package": "deepseek-recipe==0.1.1"
+      }
+    },
+    "context_sha256": "d896597d328e9f3c66e7bb07ae8557de6c116e0b0af861b2260da0f5f522de18"
+  },
+  "client_boundaries": {
+    "prompt_version": 422,
+    "context": 422,
+    "system_message": 422,
+    "temperature": 422,
+    "tenant_id": 422,
+    "allowed_document_ids": 422
+  },
+  "openapi_schema": {
+    "$ref": "#/components/schemas/RagResponse"
+  },
+  "safe_telemetry": [
+    {
+      "status": "success",
+      "request_id": "c4589101-19bd-411e-996e-cb023a832c3f",
+      "prompt_version": "rag-grounded-v5",
+      "prompt_sha256": "d81ef6b9862fbac388a1a79c48898b68fac0fea1c307241a95f96c243581afb3",
+      "context_sha256": "d896597d328e9f3c66e7bb07ae8557de6c116e0b0af861b2260da0f5f522de18",
+      "provider": "deepseek",
+      "model": "deepseek-flash",
+      "retrieved_chunks": 1,
+      "source_labels": [
+        "S-1d12817812206d49"
+      ],
+      "generation_usage": {
+        "prompt_tokens": 1871,
+        "completion_tokens": 191,
+        "total_tokens": 2062,
+        "prompt_cache_hit_tokens": 1408,
+        "prompt_cache_miss_tokens": 463,
+        "reasoning_tokens": null
+      },
+      "embedding_usage": {
+        "input_tokens": 14,
+        "latency_ms": 194,
+        "retry_count": 0,
+        "estimated_cost_usd": "2.8E-7",
+        "cost_complete": true
+      },
+      "retry_count": 0,
+      "latency_ms": 2233,
+      "estimated_total_usd": "0.000188554"
+    }
+  ],
+  "isolated_database_cleaned": true,
+  "local_runtime": "enabled on loopback only; server allowlist empty; existing database restored"
+}

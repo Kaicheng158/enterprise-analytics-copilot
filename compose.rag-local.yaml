@@ -1,0 +1,7 @@
+services:
+  api:
+    environment:
+      RAG_ENABLED: "true"
+      RAG_RELEASE_SHA256: "e40a0ace62ea63976f9b609d3b1cc4a5276cd18422ead52fea080b6b52caf14e"
+      RAG_TENANT_ID: "local-rag"
+      RAG_ALLOWED_DOCUMENT_IDS: "[]"

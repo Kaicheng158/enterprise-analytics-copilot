@@ -3,3 +3,5 @@
 !requirements.txt
 !backend/
 !backend/*.py
+!backend/rag/
+!backend/rag/**

@@ -1,6 +1,6 @@
 # Enterprise Analytics Copilot
 
-Phase 1: a single-provider DeepSeek chat API, with FastAPI and PostgreSQL running in Docker Compose.
+Phase 3 has completed its first local acceptance: document ingestion, OpenAI embeddings, exact pgvector retrieval, bounded context and grounded DeepSeek generation, with an independent release gate and local `/rag/chat`. Existing `/chat` remains on analytics-v2. Repeated-run RAG stability has not been verified; this is not a public production release.
 
 ## Start
 
@@ -48,11 +48,11 @@ The named database volume is preserved. Do not add `--volumes` unless intentiona
 
 ## Development
 
-The API image installs pinned dependencies from requirements.txt and runs as a non-root user. Only backend Python files and requirements are included in its build context; .env and the local virtual environment are excluded.
+The API image installs pinned dependencies from requirements.txt and runs as a non-root user. The build includes backend code and the pinned RAG tokenizer assets; .env, evaluation evidence and the local virtual environment are excluded.
 
 For optional host development, use Python 3.12 with analytics-agent-env and install requirements.txt there. Stop the Compose API first (`docker compose stop api`), then run `python -m uvicorn backend.main:app --host 127.0.0.1 --port 8765`. The host uses POSTGRES_HOST/PORT from .env; Compose overrides them with postgres:5432 inside the API container.
 
-Documentation lives in docs/. RAG, Tool Calling and Agent features are not implemented. The database role is for isolated local development; production permissions are a later milestone.
+Documentation lives in docs/. RAG local integration is complete; Tool Calling and Agent features are not implemented. The database role is for isolated local development; production permissions are a later milestone.
 
 ## Phase 1: DeepSeek chat
 
@@ -144,7 +144,7 @@ curl -X POST http://127.0.0.1:8765/chat -H 'Content-Type: application/json' \
 
 The server assembles the active immutable prompt release, including server-owned instructions and examples, followed by the real user message. Legacy message remains a supported alias for user_message. Unknown fields and ambiguous aliases are rejected. Model and retry settings remain server configuration.
 
-See [prompt architecture](docs/prompt-architecture.md). JSON output is validated locally; two server-owned synthetic few-shot examples guide analytics responses. RAG and Agent are not implemented.
+See [prompt architecture](docs/prompt-architecture.md). JSON output is validated locally; two server-owned synthetic few-shot examples guide analytics responses. RAG is exposed separately through `/rag/chat`; Agent is not implemented.
 
 ## Phase 1 acceptance
 
@@ -182,6 +182,46 @@ The unified runner reuses uncertainty/injection cases and adds three positive ca
 
 Docker /chat, typed output, version metadata, logging, client boundaries and OpenAPI integration are verified. Integration passing does not clear the existing analytics-v1 semantic gate (14/15, blocked). See [integration checks](docs/phase2-integration.md).
 
-### Phase 2.12 in progress
+### Phase 2.12 complete
 
-analytics-v2 is published unchanged from the accepted candidate and is active. Three phase2-release-gate-v2 rounds passed; 87 offline tests and Docker smoke checks passed. See [final acceptance](docs/phase2-acceptance.md). Earlier failures and original gate verdicts are preserved. No RAG work has started.
+analytics-v2 is published unchanged from the accepted candidate and is active. Three phase2-release-gate-v2 rounds passed; 87 offline tests and Docker smoke checks passed. See [final acceptance](docs/phase2-acceptance.md). Earlier failures and original gate verdicts are preserved. The Phase 3 RAG layer preserves these immutable Phase 2 artifacts.
+
+
+## Phase 3: first local RAG acceptance
+
+Phase 3.8–3.11 completed local acceptance on 2026-10-15; closeout tests rechecked on 2026-10-16. The single full v5 live regression returned 15/15 valid answers, no schema/grounding/citation/security failures and no core blockers. Quality was 95.56%; minor relevance limitations remain. The independent gate was fixed before that run (hard/core conditions plus a provisional 85% quality threshold). **Repeated-run stability is unverified**; no new paid regression was run for closeout.
+
+- Prompt: `rag-grounded-v5`, SHA `d81ef6b9862fbac388a1a79c48898b68fac0fea1c307241a95f96c243581afb3`.
+- Embedding: OpenAI `text-embedding-3-small`, 1536 dimensions. Retrieval uses exact cosine, Top-K 3 and no calibrated distance cutoff.
+- Generation: DeepSeek Flash, temperature 0.2, thinking disabled, output reserve 512. Structured output and attribution are validated locally without repair.
+- Tests: 174 offline and 31 isolated database tests. Recorded Docker smoke verified health/db/RAG HTTP 200, sources/version/SHA, token/cost logging and client override rejection.
+- Historical v1–v4 prompts, SHAs, failed verdicts and frozen evaluation evidence remain intact. No Phase 4 implementation is included.
+
+### Local startup and access scope
+
+Base `docker compose up -d --build --wait` leaves RAG disabled (HTTP 503). To use the accepted local RAG release:
+
+```sh
+docker compose -f compose.yaml -f compose.rag-local.yaml up -d --build --wait
+```
+
+Keep `OPENAI_API_KEY` and `DEEPSEEK_API_KEY` only in local `.env`. The embedding model/dimensions must match the existing document profile. On a fresh database, run the versioned migrations from the project virtual environment before using RAG:
+
+```sh
+python -m scripts.migrate
+```
+
+The local override pins a passing release receipt and binds the existing service to `127.0.0.1:8765`. Its server-owned tenant is `local-rag` and document allowlist is **empty by default**. Configure `RAG_TENANT_ID` and `RAG_ALLOWED_DOCUMENT_IDS` in the operator-controlled Compose override for approved, ingested/embedded documents. The endpoint cannot ingest files or grant itself document access. This is not a multiuser authentication/authorization deployment.
+
+POST `/rag/chat` accepts only `{"query":"..."}`. It returns the separate `rag-response-v1` contract: structured answer, citations, source metadata, generation usage/version/cost, token budget and context SHA. An empty authorized corpus yields no retrieved evidence, rather than unrestricted access. Generation still incurs API usage; run live requests deliberately. `/docs` documents both endpoints. For host RAG development, use `backend.rag_app:app`; the original `backend.main:app` remains the unchanged chat entrypoint.
+
+### Non-paid verification and evidence
+
+```sh
+python -m unittest discover -s tests -v
+python -m unittest discover -s tests/db -v
+```
+
+Database tests require local PostgreSQL and create/drop only uniquely named temporary databases. These commands do not call paid embedding/generation APIs. Live regression runners require separate deliberate execution and must not be used as routine tests.
+
+See [Phase 3 roadmap](docs/phase3-roadmap.md), [final local acceptance](docs/phase3-final-acceptance.md), [Docker smoke evidence](docs/phase3-local-acceptance.json), and [gate result](eval/rag/v5-release-gate-result.json). Full raw/reviewed v5 evidence is under `eval/rag/`; private rejected-response diagnostics, backups, credentials and caches are excluded from Git.

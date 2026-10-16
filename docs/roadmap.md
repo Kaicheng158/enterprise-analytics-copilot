@@ -55,3 +55,13 @@ Independent `rag-grounded-v1` and `rag-response-v1`, current-context source-labe
 ## Phase 3.8 — RAG evaluation baseline
 
 Independent frozen 15-case suite and layered rubric, deterministic DB pipeline and six real synthetic runs. 141 offline + 31 DB tests pass. Live subset: no observed hard/core blockers, 91.67% descriptive quality, unnecessary limitations in 3/6 answers. No release claim, prompt/config tuning or endpoint integration. See [evaluation evidence and limitations](phase3-evaluation.md).
+
+
+## Phase 3 local acceptance — 2026-10-15
+
+Phase3.8–3.11 completed locally with rag-grounded-v5, preserved historical artifacts, independent gate PASS,174 offline/31 database tests and Docker real API smoke. Base RAG endpoint remains default-disabled; explicit loopback-only override enables it with empty authorization scope. No public release, repeated-run stability claim or commit/push. See [acceptance](phase3-final-acceptance.md).
+
+
+### Phase 3 closeout — 2026-10-16
+
+First local acceptance is complete, not repeated-run stability verification or public production certification. README now documents the disabled default, explicit local enablement, empty server-owned document allowlist and non-paid test commands. Preserve all historical prompt SHAs, frozen cases/rubrics and raw/reviewed evidence. No new paid regression or Phase 4 development in closeout.
