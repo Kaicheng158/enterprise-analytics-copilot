@@ -52,7 +52,7 @@ The API image installs pinned dependencies from requirements.txt and runs as a n
 
 For optional host development, use Python 3.12 with analytics-agent-env and install requirements.txt there. Stop the Compose API first (`docker compose stop api`), then run `python -m uvicorn backend.main:app --host 127.0.0.1 --port 8765`. The host uses POSTGRES_HOST/PORT from .env; Compose overrides them with postgres:5432 inside the API container.
 
-Documentation lives in docs/. RAG local integration is complete; Tool Calling and Agent features are not implemented. The database role is for isolated local development; production permissions are a later milestone.
+Documentation lives in docs/. RAG local integration is complete. Phase 4.1 adds an internal Tool Calling registry/executor and one synthetic deterministic tool; it is not connected to an LLM or public endpoint. Agent features are not implemented. The database role is for isolated local development; production permissions are a later milestone.
 
 ## Phase 1: DeepSeek chat
 
@@ -225,3 +225,9 @@ python -m unittest discover -s tests/db -v
 Database tests require local PostgreSQL and create/drop only uniquely named temporary databases. These commands do not call paid embedding/generation APIs. Live regression runners require separate deliberate execution and must not be used as routine tests.
 
 See [Phase 3 roadmap](docs/phase3-roadmap.md), [final local acceptance](docs/phase3-final-acceptance.md), [Docker smoke evidence](docs/phase3-local-acceptance.json), and [gate result](eval/rag/v5-release-gate-result.json). Full raw/reviewed v5 evidence is under `eval/rag/`; private rejected-response diagnostics, backups, credentials and caches are excluded from Git.
+
+## Phase 4.1: internal Tool Calling foundation
+
+Phase 4.1 defines strict Pydantic call/result contracts, a server-owned tool registry and authorization policy, and a fail-closed executor with safe metadata logs. The first registered tool, `get_sales_summary`, calculates totals, order count and average order value from fixed synthetic data using exact decimal arithmetic.
+
+There is no Tool API, LLM tool selection, SQL execution, arbitrary code execution or agent loop. Calls are possible only from trusted application code using the `analytics-copilot` principal. See the [architecture and Phase 4.2–4.5 roadmap](docs/phase4-tool-calling.md).
