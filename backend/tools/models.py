@@ -34,6 +34,7 @@ class ToolError(StrictModel):
         "tool_not_authorized",
         "tool_input_invalid",
         "tool_output_invalid",
+        "tool_database_error",
         "tool_execution_failed",
     ]
     message: str

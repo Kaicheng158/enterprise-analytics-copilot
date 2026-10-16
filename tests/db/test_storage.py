@@ -40,12 +40,17 @@ class StorageTests(unittest.TestCase):
 
     def test_failed_migration_rolls_back(self):
         with tempfile.TemporaryDirectory() as directory:
-            for p in (ROOT/'migrations').glob('*.sql'):
+            migrations = sorted((ROOT/'migrations').glob('*.sql'))
+            for p in migrations:
                 (Path(directory)/p.name).write_bytes(p.read_bytes())
-            (Path(directory)/'004_failure.sql').write_text('CREATE TABLE rag.rollback_probe(id int); SELECT 1/0;')
+            failure = f'{len(migrations) + 1:03d}_failure.sql'
+            (Path(directory)/failure).write_text('CREATE TABLE rag.rollback_probe(id int); SELECT 1/0;')
             with self.assertRaises(psycopg.errors.DivisionByZero): apply_migrations(self.db,directory)
         self.assertIsNone(self.db.execute("SELECT to_regclass('rag.rollback_probe')").fetchone()[0])
-        self.assertEqual(self.db.execute('SELECT count(*) FROM app_migrations.applied').fetchone()[0],3)
+        self.assertEqual(
+            self.db.execute('SELECT count(*) FROM app_migrations.applied').fetchone()[0],
+            len(migrations),
+        )
 
     def test_vector_storage_constraints_and_cascade(self):
         doc,chunk,profile=[uuid.uuid4() for _ in range(3)]

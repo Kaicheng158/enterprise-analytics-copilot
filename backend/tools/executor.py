@@ -17,6 +17,7 @@ SAFE_MESSAGES = {
     "tool_not_authorized": "Tool is not authorized",
     "tool_input_invalid": "Tool input is invalid",
     "tool_output_invalid": "Tool output is invalid",
+    "tool_database_error": "Tool database query failed",
     "tool_execution_failed": "Tool execution failed",
 }
 
@@ -37,6 +38,8 @@ class ToolExecutor:
                 raise ToolRegistryError("tool_input_invalid") from error
             try:
                 raw_output = definition.handler(validated_input)
+            except ToolRegistryError:
+                raise
             except Exception as error:
                 raise ToolRegistryError("tool_execution_failed") from error
             try:

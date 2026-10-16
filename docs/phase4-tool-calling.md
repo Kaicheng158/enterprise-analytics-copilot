@@ -26,11 +26,15 @@ result = build_tool_executor().execute(
 )
 ```
 
+## Phase 4.2 extension
+
+Phase 4.2 preserves the original deterministic tool and adds separately registered `get_postgres_sales_summary`. It reads only the versioned synthetic `analytics.sales_orders` table through a fixed parameterized query and a verified read-only transaction. See [storage, seed and SQL boundary](phase4-postgres-tools.md).
+
 ## Roadmap
 
-- 4.2: provider-independent tool-call request/response parsing and a deterministic orchestration loop, with bounded call count and no automatic SQL.
-- 4.3: connect the LLM to server-approved schemas behind an internal feature flag; add tool-choice, injection, malformed-call, retry/idempotency and accounting tests.
-- 4.4: add narrowly scoped business data tools. SQL requires a separate read-only design, allowlisted data scope, parser/validator, statement timeout and audit policy before any execution path exists.
+- 4.2: complete — PostgreSQL synthetic storage, idempotent seed and a narrowly scoped read-only summary tool.
+- 4.3: provider-independent tool-call parsing and a deterministic orchestration loop with bounded call count.
+- 4.4: connect the LLM to server-approved schemas behind an internal feature flag; add tool-choice, injection, malformed-call, retry/idempotency and accounting tests.
 - 4.5: integrate a separate tool-enabled API only after an evaluation/release gate, Docker verification and human-in-the-loop policy. Existing `/chat` and `/rag/chat` remain stable contracts.
 
 Phase 4.1 does not establish agent autonomy, safe arbitrary SQL, multi-tenant authorization, durable audit storage or exactly-once side effects.

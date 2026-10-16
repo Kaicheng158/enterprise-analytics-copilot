@@ -8,7 +8,7 @@
 3. RAG — 3.1–3.11 first local acceptance complete; repeated-run stability and public deployment remain future work. See [Phase 3 roadmap](phase3-roadmap.md).
 
 Later-stage SQL/tool/agent numbering below is provisional and will be revised separately.
-4. Analysis tools and controlled agent — 4.1 foundation complete; no LLM tool selection or agent loop yet.
+4. Analysis tools and controlled agent — 4.1–4.2 local execution and PostgreSQL read-only tool complete; no LLM tool selection or agent loop yet.
 5. LangGraph workflows — not started.
 6. Evaluation — not started.
 7. Deployment — not started.
@@ -46,7 +46,7 @@ Multiple providers/models and quality/latency/cost comparisons; platform-managed
 - [x] 2.11 Phase 2 integration: 66 offline tests and real Docker /chat/log/OpenAPI verification passed; analytics-v1 remains 14/15, release gate blocked.
 - [x] 2.12 Phase 2 final verification: analytics-v2 published at its accepted SHA; three unchanged gate-v2 rounds PASS, 87 offline tests pass, Docker health/database/chat/logging/OpenAPI/client boundaries verified. Historical v1 14/15 blocked remains preserved. See [final acceptance](phase2-acceptance.md).
 
-Phase 2 remains accepted and released. Phase 3 completed first local acceptance through 3.11. See [design](phase3-rag-design.md) and [acceptance](phase3-final-acceptance.md). Phase 4.1 now provides internal Tool Calling foundations; SQL execution, LLM tool selection, Agent and LangGraph remain unstarted.
+Phase 2 remains accepted and released. Phase 3 completed first local acceptance through 3.11. See [design](phase3-rag-design.md) and [acceptance](phase3-final-acceptance.md). Phase 4.1–4.2 now provides internal Tool Calling foundations and one fixed-query PostgreSQL read-only tool; arbitrary SQL, LLM tool selection, Agent and LangGraph remain unstarted.
 
 ## Phase 3.7 — Grounded generation implemented
 
@@ -69,7 +69,7 @@ First local acceptance is complete, not repeated-run stability verification or p
 ## Phase 4 — Tool Calling
 
 - [x] 4.1 Tool Calling foundation: strict provider-independent call/result schemas, server-owned registry and authorization, fail-closed executor, safe metadata logging, and deterministic synthetic `get_sales_summary`. No public API, LLM selection, SQL or arbitrary code execution. See [design](phase4-tool-calling.md).
-- [ ] 4.2 Deterministic orchestration and provider-independent tool-call parsing.
-- [ ] 4.3 LLM tool selection behind an internal flag plus security/evaluation coverage.
-- [ ] 4.4 Narrowly scoped business data tools; design and gate any read-only SQL separately.
+- [x] 4.2 PostgreSQL read-only data tool: versioned table migration, idempotent synthetic seed, fixed parameterized query, verified read-only transaction, source metadata and database security/error tests. The Phase 4.1 in-memory tool remains available. See [design](phase4-postgres-tools.md).
+- [ ] 4.3 Deterministic orchestration and provider-independent tool-call parsing.
+- [ ] 4.4 LLM tool selection behind an internal flag plus security/evaluation coverage.
 - [ ] 4.5 Separate tool-enabled API, release gate, Docker verification and human-in-the-loop policy.

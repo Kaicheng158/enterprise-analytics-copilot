@@ -119,10 +119,13 @@ class ToolCallingFoundationTests(unittest.TestCase):
         registry = build_tool_registry()
         self.assertEqual(registry.schemas_for("untrusted-caller"), ())
         schemas = registry.schemas_for(INTERNAL_PRINCIPAL)
-        self.assertEqual(len(schemas), 1)
-        self.assertEqual(schemas[0]["name"], "get_sales_summary")
-        self.assertFalse(schemas[0]["input_schema"]["additionalProperties"])
-        self.assertFalse(schemas[0]["output_schema"]["additionalProperties"])
+        self.assertEqual(
+            {schema["name"] for schema in schemas},
+            {"get_sales_summary", "get_postgres_sales_summary"},
+        )
+        for schema in schemas:
+            self.assertFalse(schema["input_schema"]["additionalProperties"])
+            self.assertFalse(schema["output_schema"]["additionalProperties"])
 
     def test_duplicate_or_unknown_policy_registration_rejected(self):
         definition = ToolDefinition(
