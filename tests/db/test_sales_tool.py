@@ -1,7 +1,9 @@
 import json
+import io
 import unittest
 import uuid
 from unittest.mock import Mock
+from unittest.mock import patch
 
 import psycopg
 from psycopg import sql
@@ -12,6 +14,10 @@ from backend.tools.orchestration import (
     ToolOrchestrationInput,
     ToolOrchestrator,
     ToolProviderRequest,
+)
+from backend.tools.deepseek_adapter import (
+    DeepSeekToolDecisionProvider,
+    DeepSeekToolSettings,
 )
 from scripts.migrate import apply_migrations, connect_kwargs
 from scripts.seed_sales import seed_sales
@@ -261,6 +267,93 @@ class PostgresSalesToolTests(unittest.TestCase):
             "Q2 north sales were USD 300.00 across 2 orders.",
         )
         self.assertEqual(provider.requests[1].prior_tool_result.authority, "untrusted_data")
+
+    def test_mock_deepseek_api_orchestrates_real_postgres_tool(self):
+        def response(message, finish_reason, prompt, completion):
+            return io.BytesIO(
+                json.dumps(
+                    {
+                        "model": "deepseek-flash",
+                        "choices": [
+                            {
+                                "message": message,
+                                "finish_reason": finish_reason,
+                            }
+                        ],
+                        "usage": {
+                            "prompt_tokens": prompt,
+                            "completion_tokens": completion,
+                            "total_tokens": prompt + completion,
+                            "prompt_cache_hit_tokens": 0,
+                            "prompt_cache_miss_tokens": prompt,
+                        },
+                    }
+                ).encode()
+            )
+
+        provider = DeepSeekToolDecisionProvider(
+            DeepSeekToolSettings(
+                enabled=True,
+                api_key="mock-only-key",
+                tool_choice="required",
+            )
+        )
+        registry = build_tool_registry(self.connection_factory)
+        orchestrator = ToolOrchestrator(
+            registry, build_tool_executor(self.connection_factory), provider
+        )
+        calls = [
+            response(
+                {
+                    "role": "assistant",
+                    "content": None,
+                    "tool_calls": [
+                        {
+                            "id": "call_postgres_mock_001",
+                            "type": "function",
+                            "function": {
+                                "name": "get_postgres_sales_summary",
+                                "arguments": json.dumps(
+                                    {"period": "2026-Q2", "region": "north"}
+                                ),
+                            },
+                        }
+                    ],
+                },
+                "tool_calls",
+                120,
+                12,
+            ),
+            response(
+                {
+                    "role": "assistant",
+                    "content": "Q2 north sales were USD 300.00 across 2 orders.",
+                },
+                "stop",
+                180,
+                18,
+            ),
+        ]
+        with patch(
+            "backend.tools.deepseek_adapter.urlopen", side_effect=calls
+        ) as mocked:
+            result = orchestrator.run(
+                ToolOrchestrationInput(
+                    user_message="Summarize Q2 north sales from PostgreSQL."
+                ),
+                self.context,
+            )
+        self.assertEqual(mocked.call_count, 2)
+        self.assertEqual(result.status, "completed")
+        self.assertEqual(result.tool_result.output["total_sales"], "300.00")
+        self.assertEqual(result.tool_result.output["average_order_value"], "150.00")
+        second_body = json.loads(mocked.call_args_list[1].args[0].data)
+        self.assertEqual(second_body["messages"][-1]["role"], "tool")
+        self.assertEqual(
+            second_body["messages"][-1]["tool_call_id"],
+            "call_postgres_mock_001",
+        )
+        self.assertEqual(provider.telemetry_summary().api_calls, 2)
 
 
 if __name__ == "__main__":

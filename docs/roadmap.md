@@ -8,7 +8,7 @@
 3. RAG — 3.1–3.11 first local acceptance complete; repeated-run stability and public deployment remain future work. See [Phase 3 roadmap](phase3-roadmap.md).
 
 Later-stage SQL/tool/agent numbering below is provisional and will be revised separately.
-4. Analysis tools and controlled agent — 4.1–4.3 local execution, PostgreSQL read-only tool and bounded Fake-Provider orchestration complete; no live LLM tool selection or agent loop yet.
+4. Analysis tools and controlled agent — 4.1–4.4 local execution, PostgreSQL read-only tool, bounded orchestration and disabled-by-default DeepSeek Tool Calls adapter complete; no public tool API or agent loop yet.
 5. LangGraph workflows — not started.
 6. Evaluation — not started.
 7. Deployment — not started.
@@ -46,7 +46,7 @@ Multiple providers/models and quality/latency/cost comparisons; platform-managed
 - [x] 2.11 Phase 2 integration: 66 offline tests and real Docker /chat/log/OpenAPI verification passed; analytics-v1 remains 14/15, release gate blocked.
 - [x] 2.12 Phase 2 final verification: analytics-v2 published at its accepted SHA; three unchanged gate-v2 rounds PASS, 87 offline tests pass, Docker health/database/chat/logging/OpenAPI/client boundaries verified. Historical v1 14/15 blocked remains preserved. See [final acceptance](phase2-acceptance.md).
 
-Phase 2 remains accepted and released. Phase 3 completed first local acceptance through 3.11. See [design](phase3-rag-design.md) and [acceptance](phase3-final-acceptance.md). Phase 4.1–4.3 now provides internal Tool Calling foundations, one fixed-query PostgreSQL read-only tool and deterministic single-call orchestration tested with a Fake Provider; arbitrary SQL, live LLM tool selection, Agent and LangGraph remain unstarted.
+Phase 2 remains accepted and released. Phase 3 completed first local acceptance through 3.11. See [design](phase3-rag-design.md) and [acceptance](phase3-final-acceptance.md). Phase 4.1–4.4 now provides internal Tool Calling foundations, one fixed-query PostgreSQL read-only tool, deterministic single-call orchestration and a disabled-by-default DeepSeek adapter. Arbitrary SQL, public tool access, Agent and LangGraph remain unstarted.
 
 ## Phase 3.7 — Grounded generation implemented
 
@@ -71,5 +71,5 @@ First local acceptance is complete, not repeated-run stability verification or p
 - [x] 4.1 Tool Calling foundation: strict provider-independent call/result schemas, server-owned registry and authorization, fail-closed executor, safe metadata logging, and deterministic synthetic `get_sales_summary`. No public API, LLM selection, SQL or arbitrary code execution. See [design](phase4-tool-calling.md).
 - [x] 4.2 PostgreSQL read-only data tool: versioned table migration, idempotent synthetic seed, fixed parameterized query, verified read-only transaction, source metadata and database security/error tests. The Phase 4.1 in-memory tool remains available. See [design](phase4-postgres-tools.md).
 - [x] 4.3 Deterministic orchestration and provider-independent tool-call parsing: strict decision/result contracts, authorized schema exposure, one-call/two-turn bounds, untrusted tool evidence, sanitized logs and offline Fake Provider coverage. See [design](phase4-orchestration.md).
-- [ ] 4.4 LLM tool selection behind an internal flag plus security/evaluation coverage.
+- [x] 4.4 DeepSeek Tool Calling local integration: official `tool_calls`/`tool_call_id` adapter, disabled internal feature flag, one-call/two-request bound, no retry, safe token/latency/cost telemetry, Fake/Mock/error coverage and one synthetic live smoke test. Repeated-run stability and a release gate remain Phase 4.5 work. See [design](phase4-deepseek-tool-calling.md).
 - [ ] 4.5 Separate tool-enabled API, release gate, Docker verification and human-in-the-loop policy.

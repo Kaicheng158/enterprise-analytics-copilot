@@ -1,6 +1,6 @@
 # Phase 4.1 — Tool Calling foundation
 
-Phase 4.1 adds an internal, provider-independent execution boundary. Phase 4.3 now adds a bounded orchestration layer using only an offline Fake Provider; no live LLM or public tool endpoint is connected.
+Phase 4.1 adds an internal, provider-independent execution boundary. Phase 4.3 adds bounded orchestration, and Phase 4.4 adds a disabled-by-default DeepSeek Tool Calls adapter. No public tool endpoint is connected.
 
 ## Architecture
 
@@ -34,11 +34,15 @@ Phase 4.2 preserves the original deterministic tool and adds separately register
 
 Phase 4.3 adds strict provider-decision and orchestration-result contracts, authorized schema exposure, a maximum of one tool execution, and an explicit untrusted-data envelope for tool results. All decision tests use a Fake Provider with no external API calls. See [orchestration architecture and security boundaries](phase4-orchestration.md).
 
+## Phase 4.4 extension
+
+Phase 4.4 maps the authorized registry schemas and orchestration decisions to DeepSeek's official `tool_calls` / `tool_call_id` Chat Completions protocol. It records safe token, latency and estimated-cost telemetry, performs no automatic retries, and remains inaccessible from public routes with `TOOL_CALLING_ENABLED=false` by default. Fake, mocked API, PostgreSQL integration and one live synthetic smoke test pass. See [DeepSeek adapter design and verification](phase4-deepseek-tool-calling.md).
+
 ## Roadmap
 
 - 4.2: complete — PostgreSQL synthetic storage, idempotent seed and a narrowly scoped read-only summary tool.
 - 4.3: complete — provider-independent decision parsing and deterministic one-call orchestration using an offline Fake Provider.
-- 4.4: connect the LLM to server-approved schemas behind an internal feature flag; add tool-choice, injection, malformed-call, retry/idempotency and accounting tests.
+- 4.4: local implementation complete — DeepSeek Tool Calls adapter behind a disabled feature flag, official call-ID round trip, failure/security tests, safe accounting and one synthetic smoke test. No release gate or public route.
 - 4.5: integrate a separate tool-enabled API only after an evaluation/release gate, Docker verification and human-in-the-loop policy. Existing `/chat` and `/rag/chat` remain stable contracts.
 
 Phase 4.1–4.3 does not establish agent autonomy, safe arbitrary SQL, multi-tenant authorization, durable audit storage or exactly-once side effects.

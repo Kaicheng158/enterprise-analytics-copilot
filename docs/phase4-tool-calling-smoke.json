@@ -1,0 +1,70 @@
+{
+  "observed_at_utc": "2026-10-17T07:20:20Z",
+  "scope": "single local synthetic DeepSeek Tool Calling smoke test",
+  "feature_flag": {
+    "default_before": false,
+    "process_local_override": true,
+    "default_after": false
+  },
+  "provider": "deepseek",
+  "model": "deepseek-flash",
+  "prompt_version": "deepseek-tool-decision-v1",
+  "prompt_sha256": "af1574d65979199045b6ab2cb8267fae23a3bb1887e48d1a53e51ee9ec682dfb",
+  "generation_config": {
+    "thinking": "disabled",
+    "temperature": 0.2,
+    "max_output_tokens": 512,
+    "initial_tool_choice": "get_postgres_sales_summary",
+    "final_tool_choice": "none",
+    "automatic_retries": 0
+  },
+  "native_tool_call": {
+    "tool_call_id": "call_00_FysSgL7mNMoUfRokaBPO2378",
+    "name": "get_postgres_sales_summary",
+    "arguments": {
+      "period": "2026-Q2",
+      "region": "north"
+    }
+  },
+  "tool_result": {
+    "status": "success",
+    "tool_name": "get_postgres_sales_summary",
+    "tool_version": "1.0.0",
+    "output": {
+      "period": "2026-Q2",
+      "region": "north",
+      "currency": "USD",
+      "order_count": 2,
+      "total_sales": "300.00",
+      "average_order_value": "150.00",
+      "data_source": {
+        "kind": "postgresql",
+        "relation": "analytics.sales_orders",
+        "dataset_version": "synthetic-sales-db-v1",
+        "read_only": true
+      }
+    },
+    "latency_ms": 47
+  },
+  "final_answer": "North region — 2026-Q2 sales summary: total sales USD 300.00; 2 orders; average order value USD 150.00; source synthetic-sales-db-v1 in read-only PostgreSQL relation analytics.sales_orders. The model also noted the small synthetic sample size.",
+  "orchestration": {
+    "status": "completed",
+    "provider_turns": 2,
+    "tool_calls_executed": 1
+  },
+  "usage": {
+    "api_calls": 2,
+    "input_tokens": 899,
+    "output_tokens": 163,
+    "total_tokens": 1062,
+    "summed_model_latency_ms": 2790,
+    "estimated_cost_usd": "0.00023265",
+    "pricing_version": "deepseek-2026-09-13",
+    "pricing_tier": "off_peak",
+    "cost_complete": true
+  },
+  "limitations": [
+    "This is one protocol smoke test, not repeated-run stability evidence or a release gate.",
+    "The tool-enabled runtime remains disconnected from public API routes."
+  ]
+}
