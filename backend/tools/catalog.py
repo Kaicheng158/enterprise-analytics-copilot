@@ -1,6 +1,7 @@
 """Single composition root for the server-owned tool catalog."""
 
 from .executor import ToolExecutor
+from .orchestration import ToolDecisionProvider, ToolOrchestrator
 from .registry import ToolAuthorizationPolicy, ToolDefinition, ToolRegistry
 from .sales import SalesSummaryInput, SalesSummaryOutput, get_sales_summary
 from .sales_db import (
@@ -47,3 +48,11 @@ def build_tool_executor(
     connection_factory: ConnectionFactory = open_sales_connection,
 ) -> ToolExecutor:
     return ToolExecutor(build_tool_registry(connection_factory))
+
+
+def build_tool_orchestrator(
+    provider: ToolDecisionProvider,
+    connection_factory: ConnectionFactory = open_sales_connection,
+) -> ToolOrchestrator:
+    registry = build_tool_registry(connection_factory)
+    return ToolOrchestrator(registry, ToolExecutor(registry), provider)

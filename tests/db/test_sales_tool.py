@@ -6,8 +6,13 @@ from unittest.mock import Mock
 import psycopg
 from psycopg import sql
 
-from backend.tools.catalog import INTERNAL_PRINCIPAL, build_tool_executor
+from backend.tools.catalog import INTERNAL_PRINCIPAL, build_tool_executor, build_tool_registry
 from backend.tools.models import ToolCall, ToolExecutionContext
+from backend.tools.orchestration import (
+    ToolOrchestrationInput,
+    ToolOrchestrator,
+    ToolProviderRequest,
+)
 from scripts.migrate import apply_migrations, connect_kwargs
 from scripts.seed_sales import seed_sales
 
@@ -203,6 +208,59 @@ class PostgresSalesToolTests(unittest.TestCase):
         self.assertEqual(result.error.message, "Tool database query failed")
         self.assertNotIn("private database detail", json.dumps(result.model_dump(mode="json")))
         self.assertNotIn("private database detail", str(logs.output))
+
+    def test_fake_provider_orchestrates_real_postgres_tool(self):
+        class DatabaseFakeProvider:
+            def __init__(self):
+                self.requests: list[ToolProviderRequest] = []
+
+            def decide(self, request):
+                self.requests.append(request)
+                if request.prior_tool_result is None:
+                    return json.dumps(
+                        {
+                            "action": "tool_call",
+                            "final_response": None,
+                            "tool_call": {
+                                "name": "get_postgres_sales_summary",
+                                "arguments": {
+                                    "period": "2026-Q2",
+                                    "region": "north",
+                                },
+                            },
+                        }
+                    )
+                output = request.prior_tool_result.result.output
+                return json.dumps(
+                    {
+                        "action": "final",
+                        "final_response": (
+                            f"Q2 north sales were USD {output['total_sales']} "
+                            f"across {output['order_count']} orders."
+                        ),
+                        "tool_call": None,
+                    }
+                )
+
+        provider = DatabaseFakeProvider()
+        registry = build_tool_registry(self.connection_factory)
+        result = ToolOrchestrator(
+            registry, build_tool_executor(self.connection_factory), provider
+        ).run(
+            ToolOrchestrationInput(
+                user_message="Summarize Q2 north sales from PostgreSQL."
+            ),
+            self.context,
+        )
+        self.assertEqual(result.status, "completed")
+        self.assertEqual(result.tool_result.status, "success")
+        self.assertEqual(result.tool_result.output["total_sales"], "300.00")
+        self.assertEqual(result.tool_result.output["order_count"], 2)
+        self.assertEqual(
+            result.final_response,
+            "Q2 north sales were USD 300.00 across 2 orders.",
+        )
+        self.assertEqual(provider.requests[1].prior_tool_result.authority, "untrusted_data")
 
 
 if __name__ == "__main__":

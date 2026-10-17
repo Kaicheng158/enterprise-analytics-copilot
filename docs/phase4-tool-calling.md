@@ -1,6 +1,6 @@
 # Phase 4.1 — Tool Calling foundation
 
-Phase 4.1 adds an internal, provider-independent execution boundary. It does not connect tools to an LLM and does not expose a public tool endpoint.
+Phase 4.1 adds an internal, provider-independent execution boundary. Phase 4.3 now adds a bounded orchestration layer using only an offline Fake Provider; no live LLM or public tool endpoint is connected.
 
 ## Architecture
 
@@ -30,11 +30,15 @@ result = build_tool_executor().execute(
 
 Phase 4.2 preserves the original deterministic tool and adds separately registered `get_postgres_sales_summary`. It reads only the versioned synthetic `analytics.sales_orders` table through a fixed parameterized query and a verified read-only transaction. See [storage, seed and SQL boundary](phase4-postgres-tools.md).
 
+## Phase 4.3 extension
+
+Phase 4.3 adds strict provider-decision and orchestration-result contracts, authorized schema exposure, a maximum of one tool execution, and an explicit untrusted-data envelope for tool results. All decision tests use a Fake Provider with no external API calls. See [orchestration architecture and security boundaries](phase4-orchestration.md).
+
 ## Roadmap
 
 - 4.2: complete — PostgreSQL synthetic storage, idempotent seed and a narrowly scoped read-only summary tool.
-- 4.3: provider-independent tool-call parsing and a deterministic orchestration loop with bounded call count.
+- 4.3: complete — provider-independent decision parsing and deterministic one-call orchestration using an offline Fake Provider.
 - 4.4: connect the LLM to server-approved schemas behind an internal feature flag; add tool-choice, injection, malformed-call, retry/idempotency and accounting tests.
 - 4.5: integrate a separate tool-enabled API only after an evaluation/release gate, Docker verification and human-in-the-loop policy. Existing `/chat` and `/rag/chat` remain stable contracts.
 
-Phase 4.1 does not establish agent autonomy, safe arbitrary SQL, multi-tenant authorization, durable audit storage or exactly-once side effects.
+Phase 4.1–4.3 does not establish agent autonomy, safe arbitrary SQL, multi-tenant authorization, durable audit storage or exactly-once side effects.

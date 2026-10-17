@@ -15,7 +15,7 @@ Provider selection is wired by get_provider; routes do not construct provider-sp
 
 Future direction (not implemented): provider/model switching and quality/latency/cost comparisons; platform-managed keys or BYOK; usage persistence, user quotas and billing. A future key resolver belongs at provider construction, rather than the business route. Current usage counters are provider-reported counts; versioned price configuration provides estimates, not billed charges.
 
-No RAG, Tool Calling, Agent or LangGraph is implemented.
+RAG is implemented behind its separate local release boundary. Internal Tool Calling now includes a server-owned registry, validated executor, fixed read-only PostgreSQL tool and bounded Fake-Provider orchestration. It is not connected to a live LLM or public Tool API. Agent autonomy and LangGraph are not implemented.
 
 The provider emits correlated attempt and request-summary logs. A bounded HTTP retry loop surrounds each call. Request latency includes backoff; successful-attempt token usage and cost remain separate from unknown failed-attempt charges.
 
