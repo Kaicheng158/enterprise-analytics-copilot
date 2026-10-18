@@ -15,7 +15,26 @@ Provider selection is wired by get_provider; routes do not construct provider-sp
 
 Future direction (not implemented): provider/model switching and quality/latency/cost comparisons; platform-managed keys or BYOK; usage persistence, user quotas and billing. A future key resolver belongs at provider construction, rather than the business route. Current usage counters are provider-reported counts; versioned price configuration provides estimates, not billed charges.
 
-RAG is implemented behind its separate local release boundary. Internal Tool Calling now includes a server-owned registry, validated executor, fixed read-only PostgreSQL tool, bounded orchestration and a disabled-by-default DeepSeek Tool Calls adapter. It is not connected to a public Tool API. Agent autonomy and LangGraph are not implemented.
+RAG is implemented behind its separate local release boundary. Internal Tool Calling now includes a server-owned registry, validated executor, fixed read-only PostgreSQL tool, bounded orchestration, source-exposure policy and a disabled-by-default DeepSeek Tool Calls adapter. It is not connected to a public Tool API. Agent autonomy and LangGraph are not implemented.
+
+## Phase 4 Tool Calling boundary
+
+Internal trusted caller -> server-owned exposure profile -> Tool Registry -> Tool Executor -> registered deterministic handler.
+
+For DeepSeek-assisted selection, the bounded flow is:
+
+1. expose at most the tools allowed by the server-owned profile;
+2. request one strict tool decision from DeepSeek;
+3. validate tool name and arguments, then authorize independently in the registry/executor;
+4. execute at most one registered tool;
+5. wrap the result as untrusted evidence;
+6. permit one final model response and stop.
+
+The runtime allows no arbitrary SQL, code execution, dynamic tool registration or model-selected exposure profile. The production profile exposes only `get_postgres_sales_summary`; the evaluation fixture profile exposes only `get_sales_summary`. The PostgreSQL tool uses a fixed parameterized query, an explicit read-only transaction and exact monetary arithmetic. Tool logs contain correlation and status metadata without prompt bodies, database credentials or API keys.
+
+Phase 4.5 evaluation assets are versioned separately. Historical v1/v2/v3 failures and raw evidence remain immutable. The final guarded recovery reused the frozen v3 Suite, Evaluator, Gate, Prompt, source binding and DeepSeek config. It passed three independent nine-case rounds. A separate database runtime guard checks `SELECT 1`, the sales relation, expected synthetic dataset and the real PostgreSQL tool before each PostgreSQL-dependent paid interaction; failure stops the remaining live run before another provider request.
+
+Tool Calling remains an internal, default-off local capability. There is no HTTP Tool endpoint, user authentication/RBAC, production least-privilege database role, durable audit ledger, quota/billing enforcement, secret-manager integration, distributed availability control, consequential-action approval flow or production deployment. The current gate covers synthetic read-only analytics behavior; it does not certify production security, reliability or business correctness.
 
 The provider emits correlated attempt and request-summary logs. A bounded HTTP retry loop surrounds each call. Request latency includes backoff; successful-attempt token usage and cost remain separate from unknown failed-attempt charges.
 

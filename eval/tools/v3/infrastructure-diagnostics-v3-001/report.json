@@ -1,0 +1,44 @@
+{
+  "agent_database_runtime": {
+    "dataset_rows": 8,
+    "error_code": null,
+    "failed_stage": null,
+    "guard_version": "tool-calling-database-runtime-guard-v1",
+    "sales_relation": true,
+    "select_1": true,
+    "status": "healthy",
+    "tool_status": "success"
+  },
+  "database_tests": {
+    "exit_code": 0,
+    "summary": "OK"
+  },
+  "docker": {
+    "daemon_reachable": true,
+    "postgres_health": "healthy",
+    "postgres_inspect_ok": true,
+    "postgres_state": "running",
+    "server_version": "29.7.2"
+  },
+  "evidence_sha256": "c7d6847d22f102e2a085325ef11361d84a7b6da188cbe9e457c9527bf018414f",
+  "frozen_v3": "PASS",
+  "future_paid_execution_rule": "check at run start and immediately before every case whose server-owned exposure profile is production; stop before provider call",
+  "gate_sha256": "ce548ce798b5c2f3ad9fc2e14c483b2adc4d4c91b304375c4970dbf0ee49d497",
+  "guard_sha256": "467671589c1905839305387837f7e5eb3ad59f691334f7b823695bdb84f912fe",
+  "guard_version": "tool-calling-database-runtime-guard-v1",
+  "historical_live_v3": {
+    "changed_files": [],
+    "manifest_sha256": "f582d8e5b22aff01149e8edb9f16cd4e8429860853d59f1f2a0e2c8c821a2112",
+    "protected_files": 15
+  },
+  "live_guard_default": "disabled",
+  "offline_tests": {
+    "exit_code": 0,
+    "summary": "OK"
+  },
+  "paid_api_calls": 0,
+  "report_id": "infrastructure-diagnostics-v3-001",
+  "report_version": "tool-calling-infrastructure-diagnostics-v3-v1",
+  "status": "PASS",
+  "suite_sha256": "78035ed0e09499eb2dbb2fbe9c52cac56476db414c3446b44927891980b3df3f"
+}

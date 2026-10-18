@@ -17,3 +17,6 @@ eval/rag/diagnostics-offline-*/
 
 # Personal local orchestration record
 eval/rag/continuation-orchestration.txt
+
+# Local export copies; canonical evaluation packages stay as directories
+eval/tools/*.zip

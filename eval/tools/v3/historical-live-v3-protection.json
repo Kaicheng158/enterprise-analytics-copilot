@@ -1,0 +1,21 @@
+{
+  "files": {
+    "eval/tools/v3/cases-v3.json": "3b20f7d49178ac13f81b2e1eff058134f3e18664307a735c7bb274973bf3485b",
+    "eval/tools/v3/evaluator_v3.py": "2e1ddaaf6703ad467ea470fd23047101edb94838e4d1b4d055bf33bfb8ab8aed",
+    "eval/tools/v3/freeze-v3.json": "ec19b780a23e1dc95ba9d38be99d1c690dcb6c3136f172312672b3925545d020",
+    "eval/tools/v3/live-regression-summary-v3.json": "5c932a5d3e5dbfc303311323c33807a9c1b0fe7810eea94c0786f70abdefcfea",
+    "eval/tools/v3/live-v3-001/decisions.json": "cf5e3fa0ef8d5ec3b1946365ba44aa9c8c39be815b33b3ac3efc51a12eceefc8",
+    "eval/tools/v3/live-v3-001/raw.json": "6cb140915efd3595ebaea1260c89c31b8ec638f47f7cb2587d2698e135032400",
+    "eval/tools/v3/live-v3-001/reviewed.json": "70efdddf12ac1093f7eb16ee628ede2d17449ef9c725ac7ab14813bf5cfdfe96",
+    "eval/tools/v3/live-v3-002/decisions.json": "d053cb8f6235b2d14b8191582e30a6deeabb2c337e090d0849f947990fa71a28",
+    "eval/tools/v3/live-v3-002/raw.json": "7e5f81adecb32a3a712a343a28e04757e002c60c85dfe293e10d2f365fa67c2d",
+    "eval/tools/v3/live-v3-002/reviewed.json": "f52efffac43b8757bda27ea30ab76d83b0d0c14539381482b7f2806167cf1220",
+    "eval/tools/v3/live-v3-003/decisions.json": "ad7ae35c7530b2c00d5c62d06d970335a940262e3525be004652bb1971d0e4ed",
+    "eval/tools/v3/live-v3-003/raw.json": "89a7d6594a618311ea91372b5b6296fdc30282f08b3e07c6dff23ada0d3c9093",
+    "eval/tools/v3/live-v3-003/reviewed.json": "f6f1f2a8bedb05f02dad7bac414b196d11052fd75aa91a282e3b1c9d7d6e7fd3",
+    "eval/tools/v3/policy-v3.json": "4ed048a028432aad37dae4e6c2e055f1a7677dfdfed4f3676b119b1cf65e57b4",
+    "eval/tools/v3/release-gate-v3.json": "f86fa691380cb8fe872e4f64b12af57cc7d71ac885b3b7a6931c9d4ddcc7ad2d"
+  },
+  "manifest_version": "historical-live-v3-protection-v1",
+  "purpose": "Preserve the executed Evaluator v3 frozen rules, FAIL verdict, and raw/reviewed evidence during infrastructure remediation."
+}

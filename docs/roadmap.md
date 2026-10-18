@@ -8,7 +8,7 @@
 3. RAG — 3.1–3.11 first local acceptance complete; repeated-run stability and public deployment remain future work. See [Phase 3 roadmap](phase3-roadmap.md).
 
 Later-stage SQL/tool/agent numbering below is provisional and will be revised separately.
-4. Analysis tools and controlled agent — 4.1–4.4 local execution, PostgreSQL read-only tool, bounded orchestration and disabled-by-default DeepSeek Tool Calls adapter complete; no public tool API or agent loop yet.
+4. Analysis tools and controlled agent — Phase 4 local acceptance complete through 4.5: registered read-only tools, bounded orchestration, default-off DeepSeek Tool Calls, versioned evaluation and frozen v3 Gate PASS. No public tool API or open-ended agent loop.
 5. LangGraph workflows — not started.
 6. Evaluation — not started.
 7. Deployment — not started.
@@ -72,4 +72,9 @@ First local acceptance is complete, not repeated-run stability verification or p
 - [x] 4.2 PostgreSQL read-only data tool: versioned table migration, idempotent synthetic seed, fixed parameterized query, verified read-only transaction, source metadata and database security/error tests. The Phase 4.1 in-memory tool remains available. See [design](phase4-postgres-tools.md).
 - [x] 4.3 Deterministic orchestration and provider-independent tool-call parsing: strict decision/result contracts, authorized schema exposure, one-call/two-turn bounds, untrusted tool evidence, sanitized logs and offline Fake Provider coverage. See [design](phase4-orchestration.md).
 - [x] 4.4 DeepSeek Tool Calling local integration: official `tool_calls`/`tool_call_id` adapter, disabled internal feature flag, one-call/two-request bound, no retry, safe token/latency/cost telemetry, Fake/Mock/error coverage and one synthetic live smoke test. Repeated-run stability and a release gate remain Phase 4.5 work. See [design](phase4-deepseek-tool-calling.md).
-- [ ] 4.5 Separate tool-enabled API, release gate, Docker verification and human-in-the-loop policy.
+- [x] 4.5a Tool Calling evaluation foundation: frozen 16-case synthetic suite, evidence-bound review, strict telemetry contract, Fake/Mock/PostgreSQL coverage and preregistered release gate. Seven deterministic controls pass. See [evaluation design](phase4-tool-calling-evaluation.md).
+- [x] 4.5b Versioned evaluator correction and source exposure: v1/v2/v3 artifacts preserve their own suites, policies, SHAs, raw evidence and verdicts. Evaluator v3 separates authorization/source policy and validates business metrics without confusing period/version/telemetry values. Production and in-memory evaluation tool catalogs are server-bound. See [Evaluator v3](phase4-tool-calling-evaluator-v3.md) and [exposure policy](phase4-tool-exposure-policy.md).
+- [x] 4.5c Frozen v3 live evaluation history: the first three rounds remain FAIL because local Docker/PostgreSQL was unavailable for six tool executions. Infrastructure diagnostics and the original evidence remain preserved. See [historical acceptance](phase4-tool-calling-live-v3-acceptance.md) and [diagnostics](phase4-tool-calling-v3-infrastructure-diagnostics.md).
+- [x] 4.5d Final guarded recovery: unchanged frozen v3 Suite/Evaluator/Gate/Prompt/config completed three new independent 9-case rounds at 27/27 PASS; 12/12 database guards were healthy, Gate PASS, zero retries, cost USD 0.003135582. Final verification: 285 offline and 44 database tests. See [acceptance](phase4-tool-calling-live-v3-recovery-acceptance.md).
+
+Phase 4 is complete for local engineering acceptance. Tool Calling remains default-off with no public API. Production readiness is deferred: identity/RBAC, least-privilege production database access, durable audit/usage storage, secrets management, service availability/SLOs, deployment controls and human approval for consequential tools are not implemented. Phase 5 has not started.

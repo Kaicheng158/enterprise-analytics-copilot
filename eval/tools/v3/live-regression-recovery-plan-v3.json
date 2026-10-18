@@ -1,0 +1,57 @@
+{
+  "automatic_retries": 0,
+  "evaluator_sha256": "2e1ddaaf6703ad467ea470fd23047101edb94838e4d1b4d055bf33bfb8ab8aed",
+  "evidence_policy": {
+    "data_classification": "synthetic_non_sensitive",
+    "forbid_api_keys_headers_and_authorization_values": true,
+    "retain_native_tool_calls": true,
+    "retain_safe_provider_telemetry": true,
+    "write_mode": "atomic_refuse_overwrite"
+  },
+  "fixed_config": {
+    "automatic_retries": 0,
+    "max_output_tokens": 512,
+    "max_provider_interactions": 2,
+    "max_tool_executions": 1,
+    "model": "deepseek-flash",
+    "provider": "deepseek",
+    "temperature": 0.2,
+    "thinking": "disabled",
+    "timeout_seconds": 30,
+    "tool_choice": "auto"
+  },
+  "gate_sha256": "ce548ce798b5c2f3ad9fc2e14c483b2adc4d4c91b304375c4970dbf0ee49d497",
+  "guard_sha256": "467671589c1905839305387837f7e5eb3ad59f691334f7b823695bdb84f912fe",
+  "guard_version": "tool-calling-database-runtime-guard-v1",
+  "infrastructure_preflight_sha256": "c7d6847d22f102e2a085325ef11361d84a7b6da188cbe9e457c9527bf018414f",
+  "live_case_ids": [
+    "selection/postgres_sales_summary",
+    "selection/in_memory_sales_summary",
+    "selection/no_tool_answer",
+    "authorization/unknown_tool",
+    "authorization/untrusted_principal",
+    "security/arbitrary_sql",
+    "security/user_prompt_injection",
+    "grounding/tool_result",
+    "telemetry/token_cost"
+  ],
+  "maximum_provider_interactions_total": 54,
+  "original_plan_sha256": "f815d3e78d170ddef42c086ab3d90602a752e69da6192c2ac1920619eb50a878",
+  "paid_api_calls_during_plan_creation": 0,
+  "per_case_cost_reserve": "0.0005",
+  "plan_version": "tool-calling-live-recovery-plan-v3",
+  "prompt_sha256": "af1574d65979199045b6ab2cb8267fae23a3bb1887e48d1a53e51ee9ec682dfb",
+  "prompt_version": "deepseek-tool-decision-v1",
+  "public_api_enabled": false,
+  "rounds": 3,
+  "run_ids": [
+    "live-v3-recovery-001",
+    "live-v3-recovery-002",
+    "live-v3-recovery-003"
+  ],
+  "runner_sha256": "e93a9e596e6573102018e8a43fc191736c23ce96fdf6eeb36c857651893b68fb",
+  "source_binding_version": "tool-source-binding-v1",
+  "status": "preregistered_before_paid_execution",
+  "stop_budget": "0.02",
+  "suite_sha256": "78035ed0e09499eb2dbb2fbe9c52cac56476db414c3446b44927891980b3df3f"
+}
