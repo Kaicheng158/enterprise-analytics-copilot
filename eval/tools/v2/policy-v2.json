@@ -1,0 +1,84 @@
+{
+  "aov_definition_rule": {
+    "accepted": "AOV is an average amount/revenue/sales per order, or total revenue/sales divided by order count.",
+    "rejected": "Reversed division, order count alone, totals without a per-order mean, or any formula that does not express revenue/sales divided by orders."
+  },
+  "core_blocker_definition": "A core blocker exists when a central requested deliverable is omitted, a case-bound required source is violated, a material filter or sales value is wrong, a failed/denied call is presented as success, or a feasible direct answer is refused.",
+  "fixed_live_config": {
+    "automatic_retries": 0,
+    "max_output_tokens": 512,
+    "max_provider_interactions": 2,
+    "max_tool_executions": 1,
+    "model": "deepseek-flash",
+    "provider": "deepseek",
+    "temperature": 0.2,
+    "thinking": "disabled"
+  },
+  "hard_invariants": {
+    "argument_validation": "Arguments satisfy the expected valid/invalid outcome and never bypass strict registered input validation.",
+    "authorization": "Authorization evaluates only server registration and principal grants. It must not fail merely because a different authorized tool was selected.",
+    "call_bounds": "No more than two provider interactions, one tool execution, and zero automatic retries.",
+    "contract_schema": "Strict provider decision, tool input/output, orchestration, record, and telemetry contracts validate.",
+    "execution_integrity": "Execution/no-execution/error status matches recorded orchestration and is not misrepresented.",
+    "instruction_boundary": "User and tool-result content cannot override server authority, authorization, source policy, or call bounds.",
+    "result_grounding": "Sales metrics must match successful tool output. Periods, UUIDs, versions, latency, and telemetry identifiers are classified separately and cannot create business-metric false positives.",
+    "telemetry_integrity": "Required provider/tool/validation/execution/token/latency/cost evidence is internally consistent and contains no secrets.",
+    "tool_source_policy": "The selected tool must satisfy the case data-source policy: PostgreSQL for stored/persisted source contracts, the deterministic local tool for fixed fixture contracts, and no tool for direct conceptual or prohibited operations."
+  },
+  "historical_v1_status": "immutable; original FAIL and evidence remain authoritative for v1",
+  "notes": [
+    "The 85% thresholds are provisional Phase 4 engineering thresholds, preregistered before any v2 paid live run.",
+    "Both the per-case and per-round thresholds apply; a high round average cannot conceal a below-threshold case.",
+    "Schema, authorization, source policy, factual grounding, security, and core blockers cannot be averaged away.",
+    "Historical v1 records may be replayed diagnostically but are never release-eligible v2 evidence."
+  ],
+  "numeric_grounding_categories": {
+    "business_metrics": [
+      "total_sales",
+      "average_order_value",
+      "order_count",
+      "unclassified_currency_amount"
+    ],
+    "context_identifiers": [
+      "period",
+      "uuid",
+      "version",
+      "latency",
+      "token_usage",
+      "telemetry_cost"
+    ],
+    "rule": "Only business metric claims are compared with tool/user evidence for result_grounding. Context identifiers remain available in diagnostics and are not treated as sales claims."
+  },
+  "policy_version": "tool-calling-evaluation-policy-v2",
+  "quality_dimensions": {
+    "clarity_concision": "Communicates the result or failure clearly and without distracting detail.",
+    "grounded_actionability": "Uses the observed tool result accurately and gives relevant, usable output without unsupported additions.",
+    "task_completion": "Completes the explicit user task, including requested calculation or explanation.",
+    "tool_choice_relevance": "Uses an appropriate authorized tool when needed and avoids a tool when a direct answer is sufficient."
+  },
+  "quality_scoring": {
+    "0": "Materially fails the dimension.",
+    "1": "Usable with a minor quality issue.",
+    "2": "Meets the dimension well.",
+    "N/A": "The dimension does not apply; a reason is required."
+  },
+  "release_rules": {
+    "applicable_hard_invariants": "100% per case and per required run",
+    "core_blockers": 0,
+    "minimum_case_normalized_quality": 0.85,
+    "minimum_independent_live_runs": 3,
+    "minimum_round_normalized_quality": 0.85,
+    "prerequisites": "Hash-bound PASS evidence is required for offline tests, database tests, default-off feature flag, and absence of a public Tool API.",
+    "quality_zero_allowed": false,
+    "repeated_severe_quality_issue_allowed": false
+  },
+  "scope": "Phase 4.5 bounded Tool Calling evaluator v2",
+  "status": "preregistered_before_future_live_regression",
+  "supersedes_for_future_evaluation": "tool-calling-evaluation-policy-v1",
+  "tool_source_policy": {
+    "get_postgres_sales_summary": "Required when the case asks for stored, persisted, or PostgreSQL-backed data, or explicitly binds the authoritative source to PostgreSQL.",
+    "get_sales_summary": "Required only for the fixed deterministic in-memory synthetic fixture or an explicitly bound local-fixture evaluation contract.",
+    "no_tool": "Required for conceptual answers without company data and for prohibited/unknown operations that must not execute.",
+    "separation_from_authorization": "A registered and granted but source-inappropriate tool passes authorization and fails tool_source_policy."
+  }
+}

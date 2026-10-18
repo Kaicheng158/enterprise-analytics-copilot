@@ -1,0 +1,19 @@
+{
+  "blockers": [
+    "minimum_live_runs_not_met"
+  ],
+  "control_result": {
+    "blockers": [],
+    "core_blockers": 0,
+    "hard_invariants_pass": true,
+    "normalized_quality": 1.0,
+    "repeated_severe_quality_issue": false,
+    "run_id": "deterministic-controls-001",
+    "verdict": "PASS"
+  },
+  "gate_version": "tool-calling-release-gate-v1",
+  "live_runs_received": 0,
+  "run_results": [],
+  "suite_sha256": "4f0c8dcfe75dae98d06deac25fff6a2ce1cb743a5f3d5f7d0bd1f2553ad20958",
+  "verdict": "NOT_RUN"
+}

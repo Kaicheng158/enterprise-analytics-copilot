@@ -1,0 +1,10 @@
+{
+  "feature_flag": {
+    "default_value": false,
+    "effective_enabled": false,
+    "setting": "TOOL_CALLING_ENABLED"
+  },
+  "route_surface": {
+    "public_tool_routes": []
+  }
+}

@@ -1,0 +1,2321 @@
+{
+  "entries": [
+    {
+      "case_id": "selection/no_tool_answer",
+      "diagnostic_v2": {
+        "decision": {
+          "case_id": "selection/no_tool_answer",
+          "core_blocker": false,
+          "decision_version": "tool-eval-decision-v2",
+          "diagnostics": {
+            "aov_definition_pass": true,
+            "authorization_pass": true,
+            "classification_notes": [
+              "Authorization is based on registry/grant outcome only.",
+              "Tool source selection is evaluated independently.",
+              "Only classified business metrics participate in numeric grounding."
+            ],
+            "completion_pass": true,
+            "grounding": {
+              "business_claims": [],
+              "ignored_numeric_context": [],
+              "unsupported_business_claims": []
+            },
+            "tool_source_policy_pass": true
+          },
+          "evaluator_suite_sha256": "a7830d318bc2a51aa7bb6b23ea36b06f63ac45dc0b1914a031f744d67cf7396a",
+          "evidence_sha256": "5ea5aa672c0469c9f8e0de00ab8dcae7d6428d5790ad59e6d33b06a42b61a93a",
+          "hard_invariants": {
+            "call_bounds": true,
+            "contract_schema": true,
+            "execution_integrity": true,
+            "result_grounding": true,
+            "telemetry_integrity": true,
+            "tool_source_policy": true
+          },
+          "purpose": "historical_diagnostic_replay",
+          "quality": {
+            "clarity_concision": {
+              "rationale": "Meets the v2 dimension rule.",
+              "score": 2
+            },
+            "task_completion": {
+              "rationale": "Meets the v2 dimension rule.",
+              "score": 2
+            },
+            "tool_choice_relevance": {
+              "rationale": "Meets the v2 dimension rule.",
+              "score": 2
+            }
+          },
+          "rationale": "All v2 hard/core criteria passed.",
+          "repeated_severe_quality_issue": false,
+          "reviewer": "tool-live-review-v2",
+          "source_suite_sha256": "4f0c8dcfe75dae98d06deac25fff6a2ce1cb743a5f3d5f7d0bd1f2553ad20958"
+        },
+        "hard_pass": true,
+        "normalized_quality": 1.0,
+        "quality_pass": true,
+        "record": {
+          "case_id": "selection/no_tool_answer",
+          "evidence_sha256": "5ea5aa672c0469c9f8e0de00ab8dcae7d6428d5790ad59e6d33b06a42b61a93a",
+          "mode": "live",
+          "prompt_sha256": "af1574d65979199045b6ab2cb8267fae23a3bb1887e48d1a53e51ee9ec682dfb",
+          "prompt_version": "deepseek-tool-decision-v1",
+          "result": {
+            "native_tool_calls": [],
+            "orchestration": {
+              "correlation_id": "live-001-selection-no_tool_answer",
+              "error": null,
+              "final_decision": null,
+              "final_response": "Average order value (AOV) is the average amount of money spent per order, calculated by dividing total revenue by the number of orders in a given period.",
+              "initial_decision": {
+                "action": "final",
+                "final_response": "Average order value (AOV) is the average amount of money spent per order, calculated by dividing total revenue by the number of orders in a given period.",
+                "tool_call": null
+              },
+              "provider_turns": 1,
+              "status": "completed",
+              "tool_calls_executed": 0,
+              "tool_result": null
+            },
+            "provider_calls": [
+              {
+                "call_index": 1,
+                "cost_complete": true,
+                "cost_currency": "USD",
+                "error_code": null,
+                "estimated_cost": "0.000051552",
+                "finish_reason": "stop",
+                "generation_config": {
+                  "max_output_tokens": 512,
+                  "temperature": 0.2,
+                  "thinking": "disabled",
+                  "tool_choice": "auto"
+                },
+                "latency_ms": 909,
+                "model": "deepseek-flash",
+                "phase": "initial",
+                "pricing_tier": "off_peak",
+                "pricing_version": "deepseek-2026-09-13",
+                "prompt_sha256": "af1574d65979199045b6ab2cb8267fae23a3bb1887e48d1a53e51ee9ec682dfb",
+                "prompt_version": "deepseek-tool-decision-v1",
+                "provider": "deepseek",
+                "request_id": "7e25e0b3-922b-45d7-bb9e-756cbea72e77",
+                "retry_count": 0,
+                "status": "success",
+                "usage": {
+                  "completion_tokens": 32,
+                  "prompt_cache_hit_tokens": 384,
+                  "prompt_cache_miss_tokens": 208,
+                  "prompt_tokens": 592,
+                  "reasoning_tokens": null,
+                  "total_tokens": 624
+                }
+              }
+            ]
+          },
+          "run_id": "live-001",
+          "suite_sha256": "4f0c8dcfe75dae98d06deac25fff6a2ce1cb743a5f3d5f7d0bd1f2553ad20958",
+          "telemetry": {
+            "arguments_valid": null,
+            "authorization": "not_applicable",
+            "cost_complete": true,
+            "error_code": null,
+            "estimated_cost": "0.000051552",
+            "execution_status": "not_executed",
+            "generation_config": {
+              "automatic_retries": 0,
+              "max_output_tokens": 512,
+              "max_provider_interactions": 2,
+              "max_tool_executions": 1,
+              "temperature": 0.2,
+              "thinking": "disabled"
+            },
+            "input_tokens": 592,
+            "latency_ms": 909,
+            "model": "deepseek-flash",
+            "output_tokens": 32,
+            "provider": "deepseek",
+            "provider_interactions": 1,
+            "retry_count": 0,
+            "selected_tool": null,
+            "tool_executions": 0,
+            "total_tokens": 624
+          },
+          "user_message_sha256": "c4ed36a17099e19933a1516c37024a5f3d2566c9439536ca53562dbaeacda5fd"
+        },
+        "release_eligible": false,
+        "verdict": "PASS"
+      },
+      "difference": {
+        "authorization_v1": null,
+        "authorization_v2": null,
+        "result_grounding_v1": true,
+        "result_grounding_v2": true,
+        "tool_source_policy_v2": true,
+        "verdict_changed": true
+      },
+      "evidence_sha256": "5ea5aa672c0469c9f8e0de00ab8dcae7d6428d5790ad59e6d33b06a42b61a93a",
+      "original_v1": {
+        "core_blocker": true,
+        "decision_sha256": "b389905f417ce3a60427004270daafde7ad592d8eb1a7d3ee1a691c05bade019",
+        "hard_invariants": {
+          "call_bounds": true,
+          "contract_schema": true,
+          "execution_integrity": true,
+          "result_grounding": true,
+          "telemetry_integrity": true
+        },
+        "quality_scores": {
+          "clarity_concision": 2,
+          "task_completion": 0,
+          "tool_choice_relevance": 2
+        },
+        "unsupported_numeric_claims": [],
+        "verdict": "FAIL"
+      },
+      "run_id": "live-001",
+      "source_references": {
+        "decision": "eval/tools/live-001/decisions.json",
+        "raw": "eval/tools/live-001/raw.json",
+        "reviewed": "eval/tools/live-001/reviewed.json"
+      }
+    },
+    {
+      "case_id": "grounding/tool_result",
+      "diagnostic_v2": {
+        "decision": {
+          "case_id": "grounding/tool_result",
+          "core_blocker": true,
+          "decision_version": "tool-eval-decision-v2",
+          "diagnostics": {
+            "aov_definition_pass": null,
+            "authorization_pass": true,
+            "classification_notes": [
+              "Authorization is based on registry/grant outcome only.",
+              "Tool source selection is evaluated independently.",
+              "Only classified business metrics participate in numeric grounding."
+            ],
+            "completion_pass": false,
+            "grounding": {
+              "business_claims": [
+                {
+                  "category": "unclassified_currency_amount",
+                  "text": "$300.00",
+                  "value": "3E+2"
+                },
+                {
+                  "category": "unclassified_currency_amount",
+                  "text": "$150.00",
+                  "value": "1.5E+2"
+                }
+              ],
+              "ignored_numeric_context": [
+                {
+                  "category": "period",
+                  "text": "2026-Q2"
+                },
+                {
+                  "category": "version",
+                  "text": "synthetic-sales-v1"
+                }
+              ],
+              "unsupported_business_claims": []
+            },
+            "tool_source_policy_pass": false
+          },
+          "evaluator_suite_sha256": "a7830d318bc2a51aa7bb6b23ea36b06f63ac45dc0b1914a031f744d67cf7396a",
+          "evidence_sha256": "1c901d50c18c143d649dea6d9e6a5aaa4cf4dc45330921ccadfb45bfa2587a6f",
+          "hard_invariants": {
+            "argument_validation": true,
+            "authorization": true,
+            "call_bounds": true,
+            "contract_schema": true,
+            "execution_integrity": true,
+            "result_grounding": true,
+            "telemetry_integrity": true,
+            "tool_source_policy": false
+          },
+          "purpose": "historical_diagnostic_replay",
+          "quality": {
+            "clarity_concision": {
+              "rationale": "Meets the v2 dimension rule.",
+              "score": 2
+            },
+            "grounded_actionability": {
+              "rationale": "Does not fully meet the v2 dimension rule.",
+              "score": 1
+            },
+            "task_completion": {
+              "rationale": "Does not fully meet the v2 dimension rule.",
+              "score": 0
+            },
+            "tool_choice_relevance": {
+              "rationale": "Does not fully meet the v2 dimension rule.",
+              "score": 0
+            }
+          },
+          "rationale": "Failures: tool_source_policy, core_task",
+          "repeated_severe_quality_issue": false,
+          "reviewer": "tool-live-review-v2",
+          "source_suite_sha256": "4f0c8dcfe75dae98d06deac25fff6a2ce1cb743a5f3d5f7d0bd1f2553ad20958"
+        },
+        "hard_pass": false,
+        "normalized_quality": 0.375,
+        "quality_pass": false,
+        "record": {
+          "case_id": "grounding/tool_result",
+          "evidence_sha256": "1c901d50c18c143d649dea6d9e6a5aaa4cf4dc45330921ccadfb45bfa2587a6f",
+          "mode": "live",
+          "prompt_sha256": "af1574d65979199045b6ab2cb8267fae23a3bb1887e48d1a53e51ee9ec682dfb",
+          "prompt_version": "deepseek-tool-decision-v1",
+          "result": {
+            "native_tool_calls": [
+              {
+                "arguments": {
+                  "period": "2026-Q2",
+                  "region": "north"
+                },
+                "name": "get_sales_summary",
+                "tool_call_id": "call_00_Kn8VEyZUXJKDTKmcKn233159"
+              }
+            ],
+            "orchestration": {
+              "correlation_id": "live-001-grounding-tool_result",
+              "error": null,
+              "final_decision": {
+                "action": "final",
+                "final_response": "Q2 north region results (2026-Q2, USD):\n\n- **Order count:** 2\n- **Total sales:** $300.00\n- **Average order value:** $150.00\n\nSource: `get_sales_summary` (data version: synthetic-sales-v1).",
+                "tool_call": null
+              },
+              "final_response": "Q2 north region results (2026-Q2, USD):\n\n- **Order count:** 2\n- **Total sales:** $300.00\n- **Average order value:** $150.00\n\nSource: `get_sales_summary` (data version: synthetic-sales-v1).",
+              "initial_decision": {
+                "action": "tool_call",
+                "final_response": null,
+                "tool_call": {
+                  "arguments": {
+                    "period": "2026-Q2",
+                    "region": "north"
+                  },
+                  "name": "get_sales_summary"
+                }
+              },
+              "provider_turns": 2,
+              "status": "completed",
+              "tool_calls_executed": 1,
+              "tool_result": {
+                "call_id": "5352a161-b4d5-4d74-be78-74a57b3fefeb",
+                "error": null,
+                "latency_ms": 0,
+                "output": {
+                  "average_order_value": "150.00",
+                  "currency": "USD",
+                  "data_version": "synthetic-sales-v1",
+                  "order_count": 2,
+                  "period": "2026-Q2",
+                  "region": "north",
+                  "total_sales": "300.00"
+                },
+                "status": "success",
+                "tool_name": "get_sales_summary",
+                "tool_version": "1.0.0"
+              }
+            },
+            "provider_calls": [
+              {
+                "call_index": 1,
+                "cost_complete": true,
+                "cost_currency": "USD",
+                "error_code": null,
+                "estimated_cost": "0.000068502",
+                "finish_reason": "tool_calls",
+                "generation_config": {
+                  "max_output_tokens": 512,
+                  "temperature": 0.2,
+                  "thinking": "disabled",
+                  "tool_choice": "auto"
+                },
+                "latency_ms": 898,
+                "model": "deepseek-flash",
+                "phase": "initial",
+                "pricing_tier": "off_peak",
+                "pricing_version": "deepseek-2026-09-13",
+                "prompt_sha256": "af1574d65979199045b6ab2cb8267fae23a3bb1887e48d1a53e51ee9ec682dfb",
+                "prompt_version": "deepseek-tool-decision-v1",
+                "provider": "deepseek",
+                "request_id": "4b30a15b-808c-4f0f-913e-dcf5b4d17cbc",
+                "retry_count": 0,
+                "status": "success",
+                "usage": {
+                  "completion_tokens": 60,
+                  "prompt_cache_hit_tokens": 384,
+                  "prompt_cache_miss_tokens": 209,
+                  "prompt_tokens": 593,
+                  "reasoning_tokens": null,
+                  "total_tokens": 653
+                }
+              },
+              {
+                "call_index": 2,
+                "cost_complete": true,
+                "cost_currency": "USD",
+                "error_code": null,
+                "estimated_cost": "0.0000888",
+                "finish_reason": "stop",
+                "generation_config": {
+                  "max_output_tokens": 512,
+                  "temperature": 0.2,
+                  "thinking": "disabled",
+                  "tool_choice": "none"
+                },
+                "latency_ms": 953,
+                "model": "deepseek-flash",
+                "phase": "final",
+                "pricing_tier": "off_peak",
+                "pricing_version": "deepseek-2026-09-13",
+                "prompt_sha256": "af1574d65979199045b6ab2cb8267fae23a3bb1887e48d1a53e51ee9ec682dfb",
+                "prompt_version": "deepseek-tool-decision-v1",
+                "provider": "deepseek",
+                "request_id": "4b30a15b-808c-4f0f-913e-dcf5b4d17cbc",
+                "retry_count": 0,
+                "status": "success",
+                "usage": {
+                  "completion_tokens": 61,
+                  "prompt_cache_hit_tokens": 0,
+                  "prompt_cache_miss_tokens": 348,
+                  "prompt_tokens": 348,
+                  "reasoning_tokens": null,
+                  "total_tokens": 409
+                }
+              }
+            ]
+          },
+          "run_id": "live-001",
+          "suite_sha256": "4f0c8dcfe75dae98d06deac25fff6a2ce1cb743a5f3d5f7d0bd1f2553ad20958",
+          "telemetry": {
+            "arguments_valid": true,
+            "authorization": "allowed",
+            "cost_complete": true,
+            "error_code": null,
+            "estimated_cost": "0.000157302",
+            "execution_status": "success",
+            "generation_config": {
+              "automatic_retries": 0,
+              "max_output_tokens": 512,
+              "max_provider_interactions": 2,
+              "max_tool_executions": 1,
+              "temperature": 0.2,
+              "thinking": "disabled"
+            },
+            "input_tokens": 941,
+            "latency_ms": 1851,
+            "model": "deepseek-flash",
+            "output_tokens": 121,
+            "provider": "deepseek",
+            "provider_interactions": 2,
+            "retry_count": 0,
+            "selected_tool": "get_sales_summary",
+            "tool_executions": 1,
+            "total_tokens": 1062
+          },
+          "user_message_sha256": "05c582771810296d111d8429e1edfa38f18092fcee91406b18df26446b612beb"
+        },
+        "release_eligible": false,
+        "verdict": "FAIL"
+      },
+      "difference": {
+        "authorization_v1": false,
+        "authorization_v2": true,
+        "result_grounding_v1": false,
+        "result_grounding_v2": true,
+        "tool_source_policy_v2": false,
+        "verdict_changed": false
+      },
+      "evidence_sha256": "1c901d50c18c143d649dea6d9e6a5aaa4cf4dc45330921ccadfb45bfa2587a6f",
+      "original_v1": {
+        "core_blocker": false,
+        "decision_sha256": "87fb7c330bdf75308a6d16f80dd5fcfa5caed5f3d1543e08396c3b46939f2081",
+        "hard_invariants": {
+          "argument_validation": true,
+          "authorization": false,
+          "call_bounds": true,
+          "contract_schema": true,
+          "execution_integrity": true,
+          "result_grounding": false,
+          "telemetry_integrity": true
+        },
+        "quality_scores": {
+          "clarity_concision": 2,
+          "grounded_actionability": 0,
+          "task_completion": 2,
+          "tool_choice_relevance": 0
+        },
+        "unsupported_numeric_claims": [
+          "2026"
+        ],
+        "verdict": "FAIL"
+      },
+      "run_id": "live-001",
+      "source_references": {
+        "decision": "eval/tools/live-001/decisions.json",
+        "raw": "eval/tools/live-001/raw.json",
+        "reviewed": "eval/tools/live-001/reviewed.json"
+      }
+    },
+    {
+      "case_id": "telemetry/token_cost",
+      "diagnostic_v2": {
+        "decision": {
+          "case_id": "telemetry/token_cost",
+          "core_blocker": false,
+          "decision_version": "tool-eval-decision-v2",
+          "diagnostics": {
+            "aov_definition_pass": null,
+            "authorization_pass": true,
+            "classification_notes": [
+              "Authorization is based on registry/grant outcome only.",
+              "Tool source selection is evaluated independently.",
+              "Only classified business metrics participate in numeric grounding."
+            ],
+            "completion_pass": true,
+            "grounding": {
+              "business_claims": [
+                {
+                  "category": "average_order_value",
+                  "text": "Average order value: $100.00",
+                  "value": "1E+2"
+                },
+                {
+                  "category": "total_sales",
+                  "text": "Total sales: $400.00",
+                  "value": "4E+2"
+                },
+                {
+                  "category": "order_count",
+                  "text": "Orders: 4",
+                  "value": "4"
+                }
+              ],
+              "ignored_numeric_context": [
+                {
+                  "category": "uuid",
+                  "text": "0bbe3e5f-33b8-4ccb-8f69-258bc5706240"
+                },
+                {
+                  "category": "period",
+                  "text": "Q1 2026"
+                },
+                {
+                  "category": "version",
+                  "text": "synthetic-sales-v1"
+                },
+                {
+                  "category": "version",
+                  "text": "v1.0.0"
+                },
+                {
+                  "category": "latency",
+                  "text": "0 ms"
+                }
+              ],
+              "unsupported_business_claims": []
+            },
+            "tool_source_policy_pass": true
+          },
+          "evaluator_suite_sha256": "a7830d318bc2a51aa7bb6b23ea36b06f63ac45dc0b1914a031f744d67cf7396a",
+          "evidence_sha256": "c8ce41de08ab3fd562968fe30b6ec8d4e7e46b8ec8760f6e380d82118491364a",
+          "hard_invariants": {
+            "argument_validation": true,
+            "authorization": true,
+            "call_bounds": true,
+            "contract_schema": true,
+            "execution_integrity": true,
+            "result_grounding": true,
+            "telemetry_integrity": true,
+            "tool_source_policy": true
+          },
+          "purpose": "historical_diagnostic_replay",
+          "quality": {
+            "clarity_concision": {
+              "rationale": "Meets the v2 dimension rule.",
+              "score": 2
+            },
+            "grounded_actionability": {
+              "rationale": "Meets the v2 dimension rule.",
+              "score": 2
+            },
+            "task_completion": {
+              "rationale": "Meets the v2 dimension rule.",
+              "score": 2
+            }
+          },
+          "rationale": "All v2 hard/core criteria passed.",
+          "repeated_severe_quality_issue": false,
+          "reviewer": "tool-live-review-v2",
+          "source_suite_sha256": "4f0c8dcfe75dae98d06deac25fff6a2ce1cb743a5f3d5f7d0bd1f2553ad20958"
+        },
+        "hard_pass": true,
+        "normalized_quality": 1.0,
+        "quality_pass": true,
+        "record": {
+          "case_id": "telemetry/token_cost",
+          "evidence_sha256": "c8ce41de08ab3fd562968fe30b6ec8d4e7e46b8ec8760f6e380d82118491364a",
+          "mode": "live",
+          "prompt_sha256": "af1574d65979199045b6ab2cb8267fae23a3bb1887e48d1a53e51ee9ec682dfb",
+          "prompt_version": "deepseek-tool-decision-v1",
+          "result": {
+            "native_tool_calls": [
+              {
+                "arguments": {
+                  "period": "2026-Q1",
+                  "region": "all"
+                },
+                "name": "get_sales_summary",
+                "tool_call_id": "call_00_SYVqtRdzmzMjx1R6Eg1U8783"
+              }
+            ],
+            "orchestration": {
+              "correlation_id": "live-001-telemetry-token_cost",
+              "error": null,
+              "final_decision": {
+                "action": "final",
+                "final_response": "**Q1 2026 Sales Summary (all regions, USD)**\n\n- Total sales: $400.00\n- Orders: 4\n- Average order value: $100.00\n- Data version: synthetic-sales-v1\n\n**Usage metadata:** call ID `0bbe3e5f-33b8-4ccb-8f69-258bc5706240`, tool `get_sales_summary` v1.0.0, status success, latency 0 ms.\n\nNote: the figures come from a dataset labeled \"synthetic,\" so they may not reflect real sales. I can't record or persist metadata myself — the details above are provided for you to log.",
+                "tool_call": null
+              },
+              "final_response": "**Q1 2026 Sales Summary (all regions, USD)**\n\n- Total sales: $400.00\n- Orders: 4\n- Average order value: $100.00\n- Data version: synthetic-sales-v1\n\n**Usage metadata:** call ID `0bbe3e5f-33b8-4ccb-8f69-258bc5706240`, tool `get_sales_summary` v1.0.0, status success, latency 0 ms.\n\nNote: the figures come from a dataset labeled \"synthetic,\" so they may not reflect real sales. I can't record or persist metadata myself — the details above are provided for you to log.",
+              "initial_decision": {
+                "action": "tool_call",
+                "final_response": null,
+                "tool_call": {
+                  "arguments": {
+                    "period": "2026-Q1",
+                    "region": "all"
+                  },
+                  "name": "get_sales_summary"
+                }
+              },
+              "provider_turns": 2,
+              "status": "completed",
+              "tool_calls_executed": 1,
+              "tool_result": {
+                "call_id": "0bbe3e5f-33b8-4ccb-8f69-258bc5706240",
+                "error": null,
+                "latency_ms": 0,
+                "output": {
+                  "average_order_value": "100.00",
+                  "currency": "USD",
+                  "data_version": "synthetic-sales-v1",
+                  "order_count": 4,
+                  "period": "2026-Q1",
+                  "region": "all",
+                  "total_sales": "400.00"
+                },
+                "status": "success",
+                "tool_name": "get_sales_summary",
+                "tool_version": "1.0.0"
+              }
+            },
+            "provider_calls": [
+              {
+                "call_index": 1,
+                "cost_complete": true,
+                "cost_currency": "USD",
+                "error_code": null,
+                "estimated_cost": "0.000072402",
+                "finish_reason": "tool_calls",
+                "generation_config": {
+                  "max_output_tokens": 512,
+                  "temperature": 0.2,
+                  "thinking": "disabled",
+                  "tool_choice": "auto"
+                },
+                "latency_ms": 1003,
+                "model": "deepseek-flash",
+                "phase": "initial",
+                "pricing_tier": "off_peak",
+                "pricing_version": "deepseek-2026-09-13",
+                "prompt_sha256": "af1574d65979199045b6ab2cb8267fae23a3bb1887e48d1a53e51ee9ec682dfb",
+                "prompt_version": "deepseek-tool-decision-v1",
+                "provider": "deepseek",
+                "request_id": "30119f40-6690-4a49-bd84-d18e0668ab73",
+                "retry_count": 0,
+                "status": "success",
+                "usage": {
+                  "completion_tokens": 68,
+                  "prompt_cache_hit_tokens": 384,
+                  "prompt_cache_miss_tokens": 203,
+                  "prompt_tokens": 587,
+                  "reasoning_tokens": null,
+                  "total_tokens": 655
+                }
+              },
+              {
+                "call_index": 2,
+                "cost_complete": true,
+                "cost_currency": "USD",
+                "error_code": null,
+                "estimated_cost": "0.0001389",
+                "finish_reason": "stop",
+                "generation_config": {
+                  "max_output_tokens": 512,
+                  "temperature": 0.2,
+                  "thinking": "disabled",
+                  "tool_choice": "none"
+                },
+                "latency_ms": 1488,
+                "model": "deepseek-flash",
+                "phase": "final",
+                "pricing_tier": "off_peak",
+                "pricing_version": "deepseek-2026-09-13",
+                "prompt_sha256": "af1574d65979199045b6ab2cb8267fae23a3bb1887e48d1a53e51ee9ec682dfb",
+                "prompt_version": "deepseek-tool-decision-v1",
+                "provider": "deepseek",
+                "request_id": "30119f40-6690-4a49-bd84-d18e0668ab73",
+                "retry_count": 0,
+                "status": "success",
+                "usage": {
+                  "completion_tokens": 144,
+                  "prompt_cache_hit_tokens": 0,
+                  "prompt_cache_miss_tokens": 350,
+                  "prompt_tokens": 350,
+                  "reasoning_tokens": null,
+                  "total_tokens": 494
+                }
+              }
+            ]
+          },
+          "run_id": "live-001",
+          "suite_sha256": "4f0c8dcfe75dae98d06deac25fff6a2ce1cb743a5f3d5f7d0bd1f2553ad20958",
+          "telemetry": {
+            "arguments_valid": true,
+            "authorization": "allowed",
+            "cost_complete": true,
+            "error_code": null,
+            "estimated_cost": "0.000211302",
+            "execution_status": "success",
+            "generation_config": {
+              "automatic_retries": 0,
+              "max_output_tokens": 512,
+              "max_provider_interactions": 2,
+              "max_tool_executions": 1,
+              "temperature": 0.2,
+              "thinking": "disabled"
+            },
+            "input_tokens": 937,
+            "latency_ms": 2491,
+            "model": "deepseek-flash",
+            "output_tokens": 212,
+            "provider": "deepseek",
+            "provider_interactions": 2,
+            "retry_count": 0,
+            "selected_tool": "get_sales_summary",
+            "tool_executions": 1,
+            "total_tokens": 1149
+          },
+          "user_message_sha256": "f8d9ea4e8e05f4af033f3555a56d05ca03c14e5bf1a6e36fb9861b0897d2efce"
+        },
+        "release_eligible": false,
+        "verdict": "PASS"
+      },
+      "difference": {
+        "authorization_v1": true,
+        "authorization_v2": true,
+        "result_grounding_v1": false,
+        "result_grounding_v2": true,
+        "tool_source_policy_v2": true,
+        "verdict_changed": true
+      },
+      "evidence_sha256": "c8ce41de08ab3fd562968fe30b6ec8d4e7e46b8ec8760f6e380d82118491364a",
+      "original_v1": {
+        "core_blocker": false,
+        "decision_sha256": "2d7567190a4bd78319d3d09b64d08e94bcf9feb646e519c530550fcb901e2f6e",
+        "hard_invariants": {
+          "argument_validation": true,
+          "authorization": true,
+          "call_bounds": true,
+          "contract_schema": true,
+          "execution_integrity": true,
+          "result_grounding": false,
+          "telemetry_integrity": true
+        },
+        "quality_scores": {
+          "clarity_concision": 2,
+          "grounded_actionability": 0,
+          "task_completion": 2
+        },
+        "unsupported_numeric_claims": [
+          "0",
+          "8",
+          "9",
+          "33",
+          "258",
+          "2026",
+          "7.0624E+5"
+        ],
+        "verdict": "FAIL"
+      },
+      "run_id": "live-001",
+      "source_references": {
+        "decision": "eval/tools/live-001/decisions.json",
+        "raw": "eval/tools/live-001/raw.json",
+        "reviewed": "eval/tools/live-001/reviewed.json"
+      }
+    },
+    {
+      "case_id": "selection/no_tool_answer",
+      "diagnostic_v2": {
+        "decision": {
+          "case_id": "selection/no_tool_answer",
+          "core_blocker": false,
+          "decision_version": "tool-eval-decision-v2",
+          "diagnostics": {
+            "aov_definition_pass": true,
+            "authorization_pass": true,
+            "classification_notes": [
+              "Authorization is based on registry/grant outcome only.",
+              "Tool source selection is evaluated independently.",
+              "Only classified business metrics participate in numeric grounding."
+            ],
+            "completion_pass": true,
+            "grounding": {
+              "business_claims": [],
+              "ignored_numeric_context": [],
+              "unsupported_business_claims": []
+            },
+            "tool_source_policy_pass": true
+          },
+          "evaluator_suite_sha256": "a7830d318bc2a51aa7bb6b23ea36b06f63ac45dc0b1914a031f744d67cf7396a",
+          "evidence_sha256": "79a7500928ad5d46aee61139eac31efaf7e78f11721a9d7bc43de43dcf628ccf",
+          "hard_invariants": {
+            "call_bounds": true,
+            "contract_schema": true,
+            "execution_integrity": true,
+            "result_grounding": true,
+            "telemetry_integrity": true,
+            "tool_source_policy": true
+          },
+          "purpose": "historical_diagnostic_replay",
+          "quality": {
+            "clarity_concision": {
+              "rationale": "Meets the v2 dimension rule.",
+              "score": 2
+            },
+            "task_completion": {
+              "rationale": "Meets the v2 dimension rule.",
+              "score": 2
+            },
+            "tool_choice_relevance": {
+              "rationale": "Meets the v2 dimension rule.",
+              "score": 2
+            }
+          },
+          "rationale": "All v2 hard/core criteria passed.",
+          "repeated_severe_quality_issue": false,
+          "reviewer": "tool-live-review-v2",
+          "source_suite_sha256": "4f0c8dcfe75dae98d06deac25fff6a2ce1cb743a5f3d5f7d0bd1f2553ad20958"
+        },
+        "hard_pass": true,
+        "normalized_quality": 1.0,
+        "quality_pass": true,
+        "record": {
+          "case_id": "selection/no_tool_answer",
+          "evidence_sha256": "79a7500928ad5d46aee61139eac31efaf7e78f11721a9d7bc43de43dcf628ccf",
+          "mode": "live",
+          "prompt_sha256": "af1574d65979199045b6ab2cb8267fae23a3bb1887e48d1a53e51ee9ec682dfb",
+          "prompt_version": "deepseek-tool-decision-v1",
+          "result": {
+            "native_tool_calls": [],
+            "orchestration": {
+              "correlation_id": "live-002-selection-no_tool_answer",
+              "error": null,
+              "final_decision": null,
+              "final_response": "Average order value (AOV) is the average amount of money a customer spends per order, calculated by dividing total revenue by the number of orders in a given period.",
+              "initial_decision": {
+                "action": "final",
+                "final_response": "Average order value (AOV) is the average amount of money a customer spends per order, calculated by dividing total revenue by the number of orders in a given period.",
+                "tool_call": null
+              },
+              "provider_turns": 1,
+              "status": "completed",
+              "tool_calls_executed": 0,
+              "tool_result": null
+            },
+            "provider_calls": [
+              {
+                "call_index": 1,
+                "cost_complete": true,
+                "cost_currency": "USD",
+                "error_code": null,
+                "estimated_cost": "0.000052752",
+                "finish_reason": "stop",
+                "generation_config": {
+                  "max_output_tokens": 512,
+                  "temperature": 0.2,
+                  "thinking": "disabled",
+                  "tool_choice": "auto"
+                },
+                "latency_ms": 1639,
+                "model": "deepseek-flash",
+                "phase": "initial",
+                "pricing_tier": "off_peak",
+                "pricing_version": "deepseek-2026-09-13",
+                "prompt_sha256": "af1574d65979199045b6ab2cb8267fae23a3bb1887e48d1a53e51ee9ec682dfb",
+                "prompt_version": "deepseek-tool-decision-v1",
+                "provider": "deepseek",
+                "request_id": "3d01b0a7-42ef-464f-973c-197e0e2f14d5",
+                "retry_count": 0,
+                "status": "success",
+                "usage": {
+                  "completion_tokens": 34,
+                  "prompt_cache_hit_tokens": 384,
+                  "prompt_cache_miss_tokens": 208,
+                  "prompt_tokens": 592,
+                  "reasoning_tokens": null,
+                  "total_tokens": 626
+                }
+              }
+            ]
+          },
+          "run_id": "live-002",
+          "suite_sha256": "4f0c8dcfe75dae98d06deac25fff6a2ce1cb743a5f3d5f7d0bd1f2553ad20958",
+          "telemetry": {
+            "arguments_valid": null,
+            "authorization": "not_applicable",
+            "cost_complete": true,
+            "error_code": null,
+            "estimated_cost": "0.000052752",
+            "execution_status": "not_executed",
+            "generation_config": {
+              "automatic_retries": 0,
+              "max_output_tokens": 512,
+              "max_provider_interactions": 2,
+              "max_tool_executions": 1,
+              "temperature": 0.2,
+              "thinking": "disabled"
+            },
+            "input_tokens": 592,
+            "latency_ms": 1639,
+            "model": "deepseek-flash",
+            "output_tokens": 34,
+            "provider": "deepseek",
+            "provider_interactions": 1,
+            "retry_count": 0,
+            "selected_tool": null,
+            "tool_executions": 0,
+            "total_tokens": 626
+          },
+          "user_message_sha256": "c4ed36a17099e19933a1516c37024a5f3d2566c9439536ca53562dbaeacda5fd"
+        },
+        "release_eligible": false,
+        "verdict": "PASS"
+      },
+      "difference": {
+        "authorization_v1": null,
+        "authorization_v2": null,
+        "result_grounding_v1": true,
+        "result_grounding_v2": true,
+        "tool_source_policy_v2": true,
+        "verdict_changed": true
+      },
+      "evidence_sha256": "79a7500928ad5d46aee61139eac31efaf7e78f11721a9d7bc43de43dcf628ccf",
+      "original_v1": {
+        "core_blocker": true,
+        "decision_sha256": "9c3e8d8e28afb73fad5dce6e2832f45e4e57e5b5817f2ad9220ff87be8d974ce",
+        "hard_invariants": {
+          "call_bounds": true,
+          "contract_schema": true,
+          "execution_integrity": true,
+          "result_grounding": true,
+          "telemetry_integrity": true
+        },
+        "quality_scores": {
+          "clarity_concision": 2,
+          "task_completion": 0,
+          "tool_choice_relevance": 2
+        },
+        "unsupported_numeric_claims": [],
+        "verdict": "FAIL"
+      },
+      "run_id": "live-002",
+      "source_references": {
+        "decision": "eval/tools/live-002/decisions.json",
+        "raw": "eval/tools/live-002/raw.json",
+        "reviewed": "eval/tools/live-002/reviewed.json"
+      }
+    },
+    {
+      "case_id": "grounding/tool_result",
+      "diagnostic_v2": {
+        "decision": {
+          "case_id": "grounding/tool_result",
+          "core_blocker": true,
+          "decision_version": "tool-eval-decision-v2",
+          "diagnostics": {
+            "aov_definition_pass": null,
+            "authorization_pass": true,
+            "classification_notes": [
+              "Authorization is based on registry/grant outcome only.",
+              "Tool source selection is evaluated independently.",
+              "Only classified business metrics participate in numeric grounding."
+            ],
+            "completion_pass": false,
+            "grounding": {
+              "business_claims": [
+                {
+                  "category": "unclassified_currency_amount",
+                  "text": "$300.00",
+                  "value": "3E+2"
+                },
+                {
+                  "category": "unclassified_currency_amount",
+                  "text": "$150.00",
+                  "value": "1.5E+2"
+                }
+              ],
+              "ignored_numeric_context": [
+                {
+                  "category": "period",
+                  "text": "2026-Q2"
+                },
+                {
+                  "category": "version",
+                  "text": "synthetic-sales-v1"
+                }
+              ],
+              "unsupported_business_claims": []
+            },
+            "tool_source_policy_pass": false
+          },
+          "evaluator_suite_sha256": "a7830d318bc2a51aa7bb6b23ea36b06f63ac45dc0b1914a031f744d67cf7396a",
+          "evidence_sha256": "df1e6bfb716c274e2a29d7d9cfc94807c3f62af891d18f452561b924d333342f",
+          "hard_invariants": {
+            "argument_validation": true,
+            "authorization": true,
+            "call_bounds": true,
+            "contract_schema": true,
+            "execution_integrity": true,
+            "result_grounding": true,
+            "telemetry_integrity": true,
+            "tool_source_policy": false
+          },
+          "purpose": "historical_diagnostic_replay",
+          "quality": {
+            "clarity_concision": {
+              "rationale": "Meets the v2 dimension rule.",
+              "score": 2
+            },
+            "grounded_actionability": {
+              "rationale": "Does not fully meet the v2 dimension rule.",
+              "score": 1
+            },
+            "task_completion": {
+              "rationale": "Does not fully meet the v2 dimension rule.",
+              "score": 0
+            },
+            "tool_choice_relevance": {
+              "rationale": "Does not fully meet the v2 dimension rule.",
+              "score": 0
+            }
+          },
+          "rationale": "Failures: tool_source_policy, core_task",
+          "repeated_severe_quality_issue": false,
+          "reviewer": "tool-live-review-v2",
+          "source_suite_sha256": "4f0c8dcfe75dae98d06deac25fff6a2ce1cb743a5f3d5f7d0bd1f2553ad20958"
+        },
+        "hard_pass": false,
+        "normalized_quality": 0.375,
+        "quality_pass": false,
+        "record": {
+          "case_id": "grounding/tool_result",
+          "evidence_sha256": "df1e6bfb716c274e2a29d7d9cfc94807c3f62af891d18f452561b924d333342f",
+          "mode": "live",
+          "prompt_sha256": "af1574d65979199045b6ab2cb8267fae23a3bb1887e48d1a53e51ee9ec682dfb",
+          "prompt_version": "deepseek-tool-decision-v1",
+          "result": {
+            "native_tool_calls": [
+              {
+                "arguments": {
+                  "period": "2026-Q2",
+                  "region": "north"
+                },
+                "name": "get_sales_summary",
+                "tool_call_id": "call_00_IWifkXBQsFIbtqgKXMMr7766"
+              }
+            ],
+            "orchestration": {
+              "correlation_id": "live-002-grounding-tool_result",
+              "error": null,
+              "final_decision": {
+                "action": "final",
+                "final_response": "Q2 (2026-Q2) North region results:\n\n- **Order count:** 2\n- **Total sales:** $300.00 USD\n- **Average order value:** $150.00 USD\n\nSource: `get_sales_summary` (data version: synthetic-sales-v1).",
+                "tool_call": null
+              },
+              "final_response": "Q2 (2026-Q2) North region results:\n\n- **Order count:** 2\n- **Total sales:** $300.00 USD\n- **Average order value:** $150.00 USD\n\nSource: `get_sales_summary` (data version: synthetic-sales-v1).",
+              "initial_decision": {
+                "action": "tool_call",
+                "final_response": null,
+                "tool_call": {
+                  "arguments": {
+                    "period": "2026-Q2",
+                    "region": "north"
+                  },
+                  "name": "get_sales_summary"
+                }
+              },
+              "provider_turns": 2,
+              "status": "completed",
+              "tool_calls_executed": 1,
+              "tool_result": {
+                "call_id": "463016cd-f06d-4d25-9a0e-e5cbbf541ddb",
+                "error": null,
+                "latency_ms": 0,
+                "output": {
+                  "average_order_value": "150.00",
+                  "currency": "USD",
+                  "data_version": "synthetic-sales-v1",
+                  "order_count": 2,
+                  "period": "2026-Q2",
+                  "region": "north",
+                  "total_sales": "300.00"
+                },
+                "status": "success",
+                "tool_name": "get_sales_summary",
+                "tool_version": "1.0.0"
+              }
+            },
+            "provider_calls": [
+              {
+                "call_index": 1,
+                "cost_complete": true,
+                "cost_currency": "USD",
+                "error_code": null,
+                "estimated_cost": "0.000068502",
+                "finish_reason": "tool_calls",
+                "generation_config": {
+                  "max_output_tokens": 512,
+                  "temperature": 0.2,
+                  "thinking": "disabled",
+                  "tool_choice": "auto"
+                },
+                "latency_ms": 813,
+                "model": "deepseek-flash",
+                "phase": "initial",
+                "pricing_tier": "off_peak",
+                "pricing_version": "deepseek-2026-09-13",
+                "prompt_sha256": "af1574d65979199045b6ab2cb8267fae23a3bb1887e48d1a53e51ee9ec682dfb",
+                "prompt_version": "deepseek-tool-decision-v1",
+                "provider": "deepseek",
+                "request_id": "df2a8e41-414c-45de-bea6-625135d2a196",
+                "retry_count": 0,
+                "status": "success",
+                "usage": {
+                  "completion_tokens": 60,
+                  "prompt_cache_hit_tokens": 384,
+                  "prompt_cache_miss_tokens": 209,
+                  "prompt_tokens": 593,
+                  "reasoning_tokens": null,
+                  "total_tokens": 653
+                }
+              },
+              {
+                "call_index": 2,
+                "cost_complete": true,
+                "cost_currency": "USD",
+                "error_code": null,
+                "estimated_cost": "0.0000894",
+                "finish_reason": "stop",
+                "generation_config": {
+                  "max_output_tokens": 512,
+                  "temperature": 0.2,
+                  "thinking": "disabled",
+                  "tool_choice": "none"
+                },
+                "latency_ms": 1435,
+                "model": "deepseek-flash",
+                "phase": "final",
+                "pricing_tier": "off_peak",
+                "pricing_version": "deepseek-2026-09-13",
+                "prompt_sha256": "af1574d65979199045b6ab2cb8267fae23a3bb1887e48d1a53e51ee9ec682dfb",
+                "prompt_version": "deepseek-tool-decision-v1",
+                "provider": "deepseek",
+                "request_id": "df2a8e41-414c-45de-bea6-625135d2a196",
+                "retry_count": 0,
+                "status": "success",
+                "usage": {
+                  "completion_tokens": 62,
+                  "prompt_cache_hit_tokens": 0,
+                  "prompt_cache_miss_tokens": 348,
+                  "prompt_tokens": 348,
+                  "reasoning_tokens": null,
+                  "total_tokens": 410
+                }
+              }
+            ]
+          },
+          "run_id": "live-002",
+          "suite_sha256": "4f0c8dcfe75dae98d06deac25fff6a2ce1cb743a5f3d5f7d0bd1f2553ad20958",
+          "telemetry": {
+            "arguments_valid": true,
+            "authorization": "allowed",
+            "cost_complete": true,
+            "error_code": null,
+            "estimated_cost": "0.000157902",
+            "execution_status": "success",
+            "generation_config": {
+              "automatic_retries": 0,
+              "max_output_tokens": 512,
+              "max_provider_interactions": 2,
+              "max_tool_executions": 1,
+              "temperature": 0.2,
+              "thinking": "disabled"
+            },
+            "input_tokens": 941,
+            "latency_ms": 2248,
+            "model": "deepseek-flash",
+            "output_tokens": 122,
+            "provider": "deepseek",
+            "provider_interactions": 2,
+            "retry_count": 0,
+            "selected_tool": "get_sales_summary",
+            "tool_executions": 1,
+            "total_tokens": 1063
+          },
+          "user_message_sha256": "05c582771810296d111d8429e1edfa38f18092fcee91406b18df26446b612beb"
+        },
+        "release_eligible": false,
+        "verdict": "FAIL"
+      },
+      "difference": {
+        "authorization_v1": false,
+        "authorization_v2": true,
+        "result_grounding_v1": false,
+        "result_grounding_v2": true,
+        "tool_source_policy_v2": false,
+        "verdict_changed": false
+      },
+      "evidence_sha256": "df1e6bfb716c274e2a29d7d9cfc94807c3f62af891d18f452561b924d333342f",
+      "original_v1": {
+        "core_blocker": false,
+        "decision_sha256": "efe1772051a8c70cba4a13a7f1ed863b1b89f0005f89ff2a7c0d470c285d02ac",
+        "hard_invariants": {
+          "argument_validation": true,
+          "authorization": false,
+          "call_bounds": true,
+          "contract_schema": true,
+          "execution_integrity": true,
+          "result_grounding": false,
+          "telemetry_integrity": true
+        },
+        "quality_scores": {
+          "clarity_concision": 2,
+          "grounded_actionability": 0,
+          "task_completion": 2,
+          "tool_choice_relevance": 0
+        },
+        "unsupported_numeric_claims": [
+          "2026"
+        ],
+        "verdict": "FAIL"
+      },
+      "run_id": "live-002",
+      "source_references": {
+        "decision": "eval/tools/live-002/decisions.json",
+        "raw": "eval/tools/live-002/raw.json",
+        "reviewed": "eval/tools/live-002/reviewed.json"
+      }
+    },
+    {
+      "case_id": "telemetry/token_cost",
+      "diagnostic_v2": {
+        "decision": {
+          "case_id": "telemetry/token_cost",
+          "core_blocker": false,
+          "decision_version": "tool-eval-decision-v2",
+          "diagnostics": {
+            "aov_definition_pass": null,
+            "authorization_pass": true,
+            "classification_notes": [
+              "Authorization is based on registry/grant outcome only.",
+              "Tool source selection is evaluated independently.",
+              "Only classified business metrics participate in numeric grounding."
+            ],
+            "completion_pass": true,
+            "grounding": {
+              "business_claims": [
+                {
+                  "category": "average_order_value",
+                  "text": "Average order value: $100.00",
+                  "value": "1E+2"
+                },
+                {
+                  "category": "total_sales",
+                  "text": "Total sales: $400.00",
+                  "value": "4E+2"
+                },
+                {
+                  "category": "order_count",
+                  "text": "Orders: 4",
+                  "value": "4"
+                }
+              ],
+              "ignored_numeric_context": [
+                {
+                  "category": "uuid",
+                  "text": "6c3647a6-4639-4a65-9557-1763a89291eb"
+                },
+                {
+                  "category": "period",
+                  "text": "Q1 2026"
+                },
+                {
+                  "category": "version",
+                  "text": "synthetic-sales-v1"
+                },
+                {
+                  "category": "version",
+                  "text": "v1.0.0"
+                },
+                {
+                  "category": "latency",
+                  "text": "0 ms"
+                }
+              ],
+              "unsupported_business_claims": []
+            },
+            "tool_source_policy_pass": true
+          },
+          "evaluator_suite_sha256": "a7830d318bc2a51aa7bb6b23ea36b06f63ac45dc0b1914a031f744d67cf7396a",
+          "evidence_sha256": "1921efda6aba86fa89630ec594e7b62277957053c1c3f2513ff629a0fc3bc8e2",
+          "hard_invariants": {
+            "argument_validation": true,
+            "authorization": true,
+            "call_bounds": true,
+            "contract_schema": true,
+            "execution_integrity": true,
+            "result_grounding": true,
+            "telemetry_integrity": true,
+            "tool_source_policy": true
+          },
+          "purpose": "historical_diagnostic_replay",
+          "quality": {
+            "clarity_concision": {
+              "rationale": "Meets the v2 dimension rule.",
+              "score": 2
+            },
+            "grounded_actionability": {
+              "rationale": "Meets the v2 dimension rule.",
+              "score": 2
+            },
+            "task_completion": {
+              "rationale": "Meets the v2 dimension rule.",
+              "score": 2
+            }
+          },
+          "rationale": "All v2 hard/core criteria passed.",
+          "repeated_severe_quality_issue": false,
+          "reviewer": "tool-live-review-v2",
+          "source_suite_sha256": "4f0c8dcfe75dae98d06deac25fff6a2ce1cb743a5f3d5f7d0bd1f2553ad20958"
+        },
+        "hard_pass": true,
+        "normalized_quality": 1.0,
+        "quality_pass": true,
+        "record": {
+          "case_id": "telemetry/token_cost",
+          "evidence_sha256": "1921efda6aba86fa89630ec594e7b62277957053c1c3f2513ff629a0fc3bc8e2",
+          "mode": "live",
+          "prompt_sha256": "af1574d65979199045b6ab2cb8267fae23a3bb1887e48d1a53e51ee9ec682dfb",
+          "prompt_version": "deepseek-tool-decision-v1",
+          "result": {
+            "native_tool_calls": [
+              {
+                "arguments": {
+                  "period": "2026-Q1",
+                  "region": "all"
+                },
+                "name": "get_sales_summary",
+                "tool_call_id": "call_00_wolNQrSgu1T9oPHa7afn5448"
+              }
+            ],
+            "orchestration": {
+              "correlation_id": "live-002-telemetry-token_cost",
+              "error": null,
+              "final_decision": {
+                "action": "final",
+                "final_response": "**Q1 2026 Sales Summary (all regions, USD)**\n\n- Total sales: $400.00\n- Orders: 4\n- Average order value: $100.00\n- Data source: synthetic-sales-v1\n\n**Usage metadata:** call ID `6c3647a6-4639-4a65-9557-1763a89291eb`, tool `get_sales_summary` v1.0.0, status success, latency 0 ms.\n\nNote: the figures come from a synthetic dataset, so they aren't real business results. I can't record or persist this metadata anywhere — I have no write/logging tool available, so the details above are just reported back to you.",
+                "tool_call": null
+              },
+              "final_response": "**Q1 2026 Sales Summary (all regions, USD)**\n\n- Total sales: $400.00\n- Orders: 4\n- Average order value: $100.00\n- Data source: synthetic-sales-v1\n\n**Usage metadata:** call ID `6c3647a6-4639-4a65-9557-1763a89291eb`, tool `get_sales_summary` v1.0.0, status success, latency 0 ms.\n\nNote: the figures come from a synthetic dataset, so they aren't real business results. I can't record or persist this metadata anywhere — I have no write/logging tool available, so the details above are just reported back to you.",
+              "initial_decision": {
+                "action": "tool_call",
+                "final_response": null,
+                "tool_call": {
+                  "arguments": {
+                    "period": "2026-Q1",
+                    "region": "all"
+                  },
+                  "name": "get_sales_summary"
+                }
+              },
+              "provider_turns": 2,
+              "status": "completed",
+              "tool_calls_executed": 1,
+              "tool_result": {
+                "call_id": "6c3647a6-4639-4a65-9557-1763a89291eb",
+                "error": null,
+                "latency_ms": 0,
+                "output": {
+                  "average_order_value": "100.00",
+                  "currency": "USD",
+                  "data_version": "synthetic-sales-v1",
+                  "order_count": 4,
+                  "period": "2026-Q1",
+                  "region": "all",
+                  "total_sales": "400.00"
+                },
+                "status": "success",
+                "tool_name": "get_sales_summary",
+                "tool_version": "1.0.0"
+              }
+            },
+            "provider_calls": [
+              {
+                "call_index": 1,
+                "cost_complete": true,
+                "cost_currency": "USD",
+                "error_code": null,
+                "estimated_cost": "0.000072402",
+                "finish_reason": "tool_calls",
+                "generation_config": {
+                  "max_output_tokens": 512,
+                  "temperature": 0.2,
+                  "thinking": "disabled",
+                  "tool_choice": "auto"
+                },
+                "latency_ms": 977,
+                "model": "deepseek-flash",
+                "phase": "initial",
+                "pricing_tier": "off_peak",
+                "pricing_version": "deepseek-2026-09-13",
+                "prompt_sha256": "af1574d65979199045b6ab2cb8267fae23a3bb1887e48d1a53e51ee9ec682dfb",
+                "prompt_version": "deepseek-tool-decision-v1",
+                "provider": "deepseek",
+                "request_id": "7d0e4258-7510-4f86-8afe-d1d463c14dc2",
+                "retry_count": 0,
+                "status": "success",
+                "usage": {
+                  "completion_tokens": 68,
+                  "prompt_cache_hit_tokens": 384,
+                  "prompt_cache_miss_tokens": 203,
+                  "prompt_tokens": 587,
+                  "reasoning_tokens": null,
+                  "total_tokens": 655
+                }
+              },
+              {
+                "call_index": 2,
+                "cost_complete": true,
+                "cost_currency": "USD",
+                "error_code": null,
+                "estimated_cost": "0.00014295",
+                "finish_reason": "stop",
+                "generation_config": {
+                  "max_output_tokens": 512,
+                  "temperature": 0.2,
+                  "thinking": "disabled",
+                  "tool_choice": "none"
+                },
+                "latency_ms": 1676,
+                "model": "deepseek-flash",
+                "phase": "final",
+                "pricing_tier": "off_peak",
+                "pricing_version": "deepseek-2026-09-13",
+                "prompt_sha256": "af1574d65979199045b6ab2cb8267fae23a3bb1887e48d1a53e51ee9ec682dfb",
+                "prompt_version": "deepseek-tool-decision-v1",
+                "provider": "deepseek",
+                "request_id": "7d0e4258-7510-4f86-8afe-d1d463c14dc2",
+                "retry_count": 0,
+                "status": "success",
+                "usage": {
+                  "completion_tokens": 151,
+                  "prompt_cache_hit_tokens": 0,
+                  "prompt_cache_miss_tokens": 349,
+                  "prompt_tokens": 349,
+                  "reasoning_tokens": null,
+                  "total_tokens": 500
+                }
+              }
+            ]
+          },
+          "run_id": "live-002",
+          "suite_sha256": "4f0c8dcfe75dae98d06deac25fff6a2ce1cb743a5f3d5f7d0bd1f2553ad20958",
+          "telemetry": {
+            "arguments_valid": true,
+            "authorization": "allowed",
+            "cost_complete": true,
+            "error_code": null,
+            "estimated_cost": "0.000215352",
+            "execution_status": "success",
+            "generation_config": {
+              "automatic_retries": 0,
+              "max_output_tokens": 512,
+              "max_provider_interactions": 2,
+              "max_tool_executions": 1,
+              "temperature": 0.2,
+              "thinking": "disabled"
+            },
+            "input_tokens": 936,
+            "latency_ms": 2653,
+            "model": "deepseek-flash",
+            "output_tokens": 219,
+            "provider": "deepseek",
+            "provider_interactions": 2,
+            "retry_count": 0,
+            "selected_tool": "get_sales_summary",
+            "tool_executions": 1,
+            "total_tokens": 1155
+          },
+          "user_message_sha256": "f8d9ea4e8e05f4af033f3555a56d05ca03c14e5bf1a6e36fb9861b0897d2efce"
+        },
+        "release_eligible": false,
+        "verdict": "PASS"
+      },
+      "difference": {
+        "authorization_v1": true,
+        "authorization_v2": true,
+        "result_grounding_v1": false,
+        "result_grounding_v2": true,
+        "tool_source_policy_v2": true,
+        "verdict_changed": true
+      },
+      "evidence_sha256": "1921efda6aba86fa89630ec594e7b62277957053c1c3f2513ff629a0fc3bc8e2",
+      "original_v1": {
+        "core_blocker": false,
+        "decision_sha256": "385ede50c9243d63b175b8fd3c026b573298087afae6befce32ad76f71c9574f",
+        "hard_invariants": {
+          "argument_validation": true,
+          "authorization": true,
+          "call_bounds": true,
+          "contract_schema": true,
+          "execution_integrity": true,
+          "result_grounding": false,
+          "telemetry_integrity": true
+        },
+        "quality_scores": {
+          "clarity_concision": 2,
+          "grounded_actionability": 0,
+          "task_completion": 2
+        },
+        "unsupported_numeric_claims": [
+          "0",
+          "5",
+          "6",
+          "647",
+          "1763",
+          "2026",
+          "4639",
+          "9291",
+          "9557"
+        ],
+        "verdict": "FAIL"
+      },
+      "run_id": "live-002",
+      "source_references": {
+        "decision": "eval/tools/live-002/decisions.json",
+        "raw": "eval/tools/live-002/raw.json",
+        "reviewed": "eval/tools/live-002/reviewed.json"
+      }
+    },
+    {
+      "case_id": "selection/no_tool_answer",
+      "diagnostic_v2": {
+        "decision": {
+          "case_id": "selection/no_tool_answer",
+          "core_blocker": false,
+          "decision_version": "tool-eval-decision-v2",
+          "diagnostics": {
+            "aov_definition_pass": true,
+            "authorization_pass": true,
+            "classification_notes": [
+              "Authorization is based on registry/grant outcome only.",
+              "Tool source selection is evaluated independently.",
+              "Only classified business metrics participate in numeric grounding."
+            ],
+            "completion_pass": true,
+            "grounding": {
+              "business_claims": [],
+              "ignored_numeric_context": [],
+              "unsupported_business_claims": []
+            },
+            "tool_source_policy_pass": true
+          },
+          "evaluator_suite_sha256": "a7830d318bc2a51aa7bb6b23ea36b06f63ac45dc0b1914a031f744d67cf7396a",
+          "evidence_sha256": "91bdf33307aeaf287ef8d96f5fc45c46ee6575778445deaed8a024777a124ba1",
+          "hard_invariants": {
+            "call_bounds": true,
+            "contract_schema": true,
+            "execution_integrity": true,
+            "result_grounding": true,
+            "telemetry_integrity": true,
+            "tool_source_policy": true
+          },
+          "purpose": "historical_diagnostic_replay",
+          "quality": {
+            "clarity_concision": {
+              "rationale": "Meets the v2 dimension rule.",
+              "score": 2
+            },
+            "task_completion": {
+              "rationale": "Meets the v2 dimension rule.",
+              "score": 2
+            },
+            "tool_choice_relevance": {
+              "rationale": "Meets the v2 dimension rule.",
+              "score": 2
+            }
+          },
+          "rationale": "All v2 hard/core criteria passed.",
+          "repeated_severe_quality_issue": false,
+          "reviewer": "tool-live-review-v2",
+          "source_suite_sha256": "4f0c8dcfe75dae98d06deac25fff6a2ce1cb743a5f3d5f7d0bd1f2553ad20958"
+        },
+        "hard_pass": true,
+        "normalized_quality": 1.0,
+        "quality_pass": true,
+        "record": {
+          "case_id": "selection/no_tool_answer",
+          "evidence_sha256": "91bdf33307aeaf287ef8d96f5fc45c46ee6575778445deaed8a024777a124ba1",
+          "mode": "live",
+          "prompt_sha256": "af1574d65979199045b6ab2cb8267fae23a3bb1887e48d1a53e51ee9ec682dfb",
+          "prompt_version": "deepseek-tool-decision-v1",
+          "result": {
+            "native_tool_calls": [],
+            "orchestration": {
+              "correlation_id": "live-003-selection-no_tool_answer",
+              "error": null,
+              "final_decision": null,
+              "final_response": "Average order value is the average amount of money spent per order, calculated by dividing total revenue by the number of orders in a given period.",
+              "initial_decision": {
+                "action": "final",
+                "final_response": "Average order value is the average amount of money spent per order, calculated by dividing total revenue by the number of orders in a given period.",
+                "tool_call": null
+              },
+              "provider_turns": 1,
+              "status": "completed",
+              "tool_calls_executed": 0,
+              "tool_result": null
+            },
+            "provider_calls": [
+              {
+                "call_index": 1,
+                "cost_complete": true,
+                "cost_currency": "USD",
+                "error_code": null,
+                "estimated_cost": "0.000049152",
+                "finish_reason": "stop",
+                "generation_config": {
+                  "max_output_tokens": 512,
+                  "temperature": 0.2,
+                  "thinking": "disabled",
+                  "tool_choice": "auto"
+                },
+                "latency_ms": 806,
+                "model": "deepseek-flash",
+                "phase": "initial",
+                "pricing_tier": "off_peak",
+                "pricing_version": "deepseek-2026-09-13",
+                "prompt_sha256": "af1574d65979199045b6ab2cb8267fae23a3bb1887e48d1a53e51ee9ec682dfb",
+                "prompt_version": "deepseek-tool-decision-v1",
+                "provider": "deepseek",
+                "request_id": "37463315-c8c3-4c65-9aff-b18afc793734",
+                "retry_count": 0,
+                "status": "success",
+                "usage": {
+                  "completion_tokens": 28,
+                  "prompt_cache_hit_tokens": 384,
+                  "prompt_cache_miss_tokens": 208,
+                  "prompt_tokens": 592,
+                  "reasoning_tokens": null,
+                  "total_tokens": 620
+                }
+              }
+            ]
+          },
+          "run_id": "live-003",
+          "suite_sha256": "4f0c8dcfe75dae98d06deac25fff6a2ce1cb743a5f3d5f7d0bd1f2553ad20958",
+          "telemetry": {
+            "arguments_valid": null,
+            "authorization": "not_applicable",
+            "cost_complete": true,
+            "error_code": null,
+            "estimated_cost": "0.000049152",
+            "execution_status": "not_executed",
+            "generation_config": {
+              "automatic_retries": 0,
+              "max_output_tokens": 512,
+              "max_provider_interactions": 2,
+              "max_tool_executions": 1,
+              "temperature": 0.2,
+              "thinking": "disabled"
+            },
+            "input_tokens": 592,
+            "latency_ms": 806,
+            "model": "deepseek-flash",
+            "output_tokens": 28,
+            "provider": "deepseek",
+            "provider_interactions": 1,
+            "retry_count": 0,
+            "selected_tool": null,
+            "tool_executions": 0,
+            "total_tokens": 620
+          },
+          "user_message_sha256": "c4ed36a17099e19933a1516c37024a5f3d2566c9439536ca53562dbaeacda5fd"
+        },
+        "release_eligible": false,
+        "verdict": "PASS"
+      },
+      "difference": {
+        "authorization_v1": null,
+        "authorization_v2": null,
+        "result_grounding_v1": true,
+        "result_grounding_v2": true,
+        "tool_source_policy_v2": true,
+        "verdict_changed": true
+      },
+      "evidence_sha256": "91bdf33307aeaf287ef8d96f5fc45c46ee6575778445deaed8a024777a124ba1",
+      "original_v1": {
+        "core_blocker": true,
+        "decision_sha256": "3116de2a12f53f2f81897f02f1f15800b828120ee375011a7f52419ea96e5091",
+        "hard_invariants": {
+          "call_bounds": true,
+          "contract_schema": true,
+          "execution_integrity": true,
+          "result_grounding": true,
+          "telemetry_integrity": true
+        },
+        "quality_scores": {
+          "clarity_concision": 2,
+          "task_completion": 0,
+          "tool_choice_relevance": 2
+        },
+        "unsupported_numeric_claims": [],
+        "verdict": "FAIL"
+      },
+      "run_id": "live-003",
+      "source_references": {
+        "decision": "eval/tools/live-003/decisions.json",
+        "raw": "eval/tools/live-003/raw.json",
+        "reviewed": "eval/tools/live-003/reviewed.json"
+      }
+    },
+    {
+      "case_id": "grounding/tool_result",
+      "diagnostic_v2": {
+        "decision": {
+          "case_id": "grounding/tool_result",
+          "core_blocker": true,
+          "decision_version": "tool-eval-decision-v2",
+          "diagnostics": {
+            "aov_definition_pass": null,
+            "authorization_pass": true,
+            "classification_notes": [
+              "Authorization is based on registry/grant outcome only.",
+              "Tool source selection is evaluated independently.",
+              "Only classified business metrics participate in numeric grounding."
+            ],
+            "completion_pass": false,
+            "grounding": {
+              "business_claims": [
+                {
+                  "category": "unclassified_currency_amount",
+                  "text": "$300.00",
+                  "value": "3E+2"
+                },
+                {
+                  "category": "unclassified_currency_amount",
+                  "text": "$150.00",
+                  "value": "1.5E+2"
+                }
+              ],
+              "ignored_numeric_context": [
+                {
+                  "category": "version",
+                  "text": "synthetic-sales-v1"
+                }
+              ],
+              "unsupported_business_claims": []
+            },
+            "tool_source_policy_pass": false
+          },
+          "evaluator_suite_sha256": "a7830d318bc2a51aa7bb6b23ea36b06f63ac45dc0b1914a031f744d67cf7396a",
+          "evidence_sha256": "6b7995f1207d324543489faf62229cf35bb865256ca1f9e526b6e9127740ede0",
+          "hard_invariants": {
+            "argument_validation": true,
+            "authorization": true,
+            "call_bounds": true,
+            "contract_schema": true,
+            "execution_integrity": true,
+            "result_grounding": true,
+            "telemetry_integrity": true,
+            "tool_source_policy": false
+          },
+          "purpose": "historical_diagnostic_replay",
+          "quality": {
+            "clarity_concision": {
+              "rationale": "Meets the v2 dimension rule.",
+              "score": 2
+            },
+            "grounded_actionability": {
+              "rationale": "Does not fully meet the v2 dimension rule.",
+              "score": 1
+            },
+            "task_completion": {
+              "rationale": "Does not fully meet the v2 dimension rule.",
+              "score": 0
+            },
+            "tool_choice_relevance": {
+              "rationale": "Does not fully meet the v2 dimension rule.",
+              "score": 0
+            }
+          },
+          "rationale": "Failures: tool_source_policy, core_task",
+          "repeated_severe_quality_issue": false,
+          "reviewer": "tool-live-review-v2",
+          "source_suite_sha256": "4f0c8dcfe75dae98d06deac25fff6a2ce1cb743a5f3d5f7d0bd1f2553ad20958"
+        },
+        "hard_pass": false,
+        "normalized_quality": 0.375,
+        "quality_pass": false,
+        "record": {
+          "case_id": "grounding/tool_result",
+          "evidence_sha256": "6b7995f1207d324543489faf62229cf35bb865256ca1f9e526b6e9127740ede0",
+          "mode": "live",
+          "prompt_sha256": "af1574d65979199045b6ab2cb8267fae23a3bb1887e48d1a53e51ee9ec682dfb",
+          "prompt_version": "deepseek-tool-decision-v1",
+          "result": {
+            "native_tool_calls": [
+              {
+                "arguments": {
+                  "period": "2026-Q2",
+                  "region": "north"
+                },
+                "name": "get_sales_summary",
+                "tool_call_id": "call_00_5hSp2hyNKQGvwioiZbwF2485"
+              }
+            ],
+            "orchestration": {
+              "correlation_id": "live-003-grounding-tool_result",
+              "error": null,
+              "final_decision": {
+                "action": "final",
+                "final_response": "Q2 north region results (USD):\n\n- **Order count:** 2\n- **Total sales:** $300.00\n- **Average order value:** $150.00\n\nSource: `get_sales_summary` (data version: synthetic-sales-v1).",
+                "tool_call": null
+              },
+              "final_response": "Q2 north region results (USD):\n\n- **Order count:** 2\n- **Total sales:** $300.00\n- **Average order value:** $150.00\n\nSource: `get_sales_summary` (data version: synthetic-sales-v1).",
+              "initial_decision": {
+                "action": "tool_call",
+                "final_response": null,
+                "tool_call": {
+                  "arguments": {
+                    "period": "2026-Q2",
+                    "region": "north"
+                  },
+                  "name": "get_sales_summary"
+                }
+              },
+              "provider_turns": 2,
+              "status": "completed",
+              "tool_calls_executed": 1,
+              "tool_result": {
+                "call_id": "dbe0ca81-bb34-4258-9077-be24e9c704fe",
+                "error": null,
+                "latency_ms": 0,
+                "output": {
+                  "average_order_value": "150.00",
+                  "currency": "USD",
+                  "data_version": "synthetic-sales-v1",
+                  "order_count": 2,
+                  "period": "2026-Q2",
+                  "region": "north",
+                  "total_sales": "300.00"
+                },
+                "status": "success",
+                "tool_name": "get_sales_summary",
+                "tool_version": "1.0.0"
+              }
+            },
+            "provider_calls": [
+              {
+                "call_index": 1,
+                "cost_complete": true,
+                "cost_currency": "USD",
+                "error_code": null,
+                "estimated_cost": "0.000068502",
+                "finish_reason": "tool_calls",
+                "generation_config": {
+                  "max_output_tokens": 512,
+                  "temperature": 0.2,
+                  "thinking": "disabled",
+                  "tool_choice": "auto"
+                },
+                "latency_ms": 1017,
+                "model": "deepseek-flash",
+                "phase": "initial",
+                "pricing_tier": "off_peak",
+                "pricing_version": "deepseek-2026-09-13",
+                "prompt_sha256": "af1574d65979199045b6ab2cb8267fae23a3bb1887e48d1a53e51ee9ec682dfb",
+                "prompt_version": "deepseek-tool-decision-v1",
+                "provider": "deepseek",
+                "request_id": "64e9533b-a3a5-40c6-a4c5-457274d3f9f6",
+                "retry_count": 0,
+                "status": "success",
+                "usage": {
+                  "completion_tokens": 60,
+                  "prompt_cache_hit_tokens": 384,
+                  "prompt_cache_miss_tokens": 209,
+                  "prompt_tokens": 593,
+                  "reasoning_tokens": null,
+                  "total_tokens": 653
+                }
+              },
+              {
+                "call_index": 2,
+                "cost_complete": true,
+                "cost_currency": "USD",
+                "error_code": null,
+                "estimated_cost": "0.0000855",
+                "finish_reason": "stop",
+                "generation_config": {
+                  "max_output_tokens": 512,
+                  "temperature": 0.2,
+                  "thinking": "disabled",
+                  "tool_choice": "none"
+                },
+                "latency_ms": 1124,
+                "model": "deepseek-flash",
+                "phase": "final",
+                "pricing_tier": "off_peak",
+                "pricing_version": "deepseek-2026-09-13",
+                "prompt_sha256": "af1574d65979199045b6ab2cb8267fae23a3bb1887e48d1a53e51ee9ec682dfb",
+                "prompt_version": "deepseek-tool-decision-v1",
+                "provider": "deepseek",
+                "request_id": "64e9533b-a3a5-40c6-a4c5-457274d3f9f6",
+                "retry_count": 0,
+                "status": "success",
+                "usage": {
+                  "completion_tokens": 56,
+                  "prompt_cache_hit_tokens": 0,
+                  "prompt_cache_miss_tokens": 346,
+                  "prompt_tokens": 346,
+                  "reasoning_tokens": null,
+                  "total_tokens": 402
+                }
+              }
+            ]
+          },
+          "run_id": "live-003",
+          "suite_sha256": "4f0c8dcfe75dae98d06deac25fff6a2ce1cb743a5f3d5f7d0bd1f2553ad20958",
+          "telemetry": {
+            "arguments_valid": true,
+            "authorization": "allowed",
+            "cost_complete": true,
+            "error_code": null,
+            "estimated_cost": "0.000154002",
+            "execution_status": "success",
+            "generation_config": {
+              "automatic_retries": 0,
+              "max_output_tokens": 512,
+              "max_provider_interactions": 2,
+              "max_tool_executions": 1,
+              "temperature": 0.2,
+              "thinking": "disabled"
+            },
+            "input_tokens": 939,
+            "latency_ms": 2141,
+            "model": "deepseek-flash",
+            "output_tokens": 116,
+            "provider": "deepseek",
+            "provider_interactions": 2,
+            "retry_count": 0,
+            "selected_tool": "get_sales_summary",
+            "tool_executions": 1,
+            "total_tokens": 1055
+          },
+          "user_message_sha256": "05c582771810296d111d8429e1edfa38f18092fcee91406b18df26446b612beb"
+        },
+        "release_eligible": false,
+        "verdict": "FAIL"
+      },
+      "difference": {
+        "authorization_v1": false,
+        "authorization_v2": true,
+        "result_grounding_v1": true,
+        "result_grounding_v2": true,
+        "tool_source_policy_v2": false,
+        "verdict_changed": false
+      },
+      "evidence_sha256": "6b7995f1207d324543489faf62229cf35bb865256ca1f9e526b6e9127740ede0",
+      "original_v1": {
+        "core_blocker": false,
+        "decision_sha256": "52246abd4a81880e511b6667e8554acddf027508a76db60a5865ef39c59b36fa",
+        "hard_invariants": {
+          "argument_validation": true,
+          "authorization": false,
+          "call_bounds": true,
+          "contract_schema": true,
+          "execution_integrity": true,
+          "result_grounding": true,
+          "telemetry_integrity": true
+        },
+        "quality_scores": {
+          "clarity_concision": 2,
+          "grounded_actionability": 2,
+          "task_completion": 2,
+          "tool_choice_relevance": 0
+        },
+        "unsupported_numeric_claims": [],
+        "verdict": "FAIL"
+      },
+      "run_id": "live-003",
+      "source_references": {
+        "decision": "eval/tools/live-003/decisions.json",
+        "raw": "eval/tools/live-003/raw.json",
+        "reviewed": "eval/tools/live-003/reviewed.json"
+      }
+    },
+    {
+      "case_id": "telemetry/token_cost",
+      "diagnostic_v2": {
+        "decision": {
+          "case_id": "telemetry/token_cost",
+          "core_blocker": false,
+          "decision_version": "tool-eval-decision-v2",
+          "diagnostics": {
+            "aov_definition_pass": null,
+            "authorization_pass": true,
+            "classification_notes": [
+              "Authorization is based on registry/grant outcome only.",
+              "Tool source selection is evaluated independently.",
+              "Only classified business metrics participate in numeric grounding."
+            ],
+            "completion_pass": true,
+            "grounding": {
+              "business_claims": [
+                {
+                  "category": "average_order_value",
+                  "text": "Average order value: $100.00",
+                  "value": "1E+2"
+                },
+                {
+                  "category": "total_sales",
+                  "text": "Total sales: $400.00",
+                  "value": "4E+2"
+                },
+                {
+                  "category": "order_count",
+                  "text": "Orders: 4",
+                  "value": "4"
+                }
+              ],
+              "ignored_numeric_context": [
+                {
+                  "category": "uuid",
+                  "text": "a7741e20-17e1-4e8c-b426-90f65ce92e81"
+                },
+                {
+                  "category": "period",
+                  "text": "Q1 2026"
+                },
+                {
+                  "category": "period",
+                  "text": "2026-Q1"
+                },
+                {
+                  "category": "version",
+                  "text": "synthetic-sales-v1"
+                },
+                {
+                  "category": "version",
+                  "text": "v1.0.0"
+                },
+                {
+                  "category": "version",
+                  "text": "v1.0.0"
+                },
+                {
+                  "category": "latency",
+                  "text": "0 ms"
+                }
+              ],
+              "unsupported_business_claims": []
+            },
+            "tool_source_policy_pass": true
+          },
+          "evaluator_suite_sha256": "a7830d318bc2a51aa7bb6b23ea36b06f63ac45dc0b1914a031f744d67cf7396a",
+          "evidence_sha256": "118c4f1bd70769453f113f64e4db2f08f15117138e915fb32de1c1714121e7e7",
+          "hard_invariants": {
+            "argument_validation": true,
+            "authorization": true,
+            "call_bounds": true,
+            "contract_schema": true,
+            "execution_integrity": true,
+            "result_grounding": true,
+            "telemetry_integrity": true,
+            "tool_source_policy": true
+          },
+          "purpose": "historical_diagnostic_replay",
+          "quality": {
+            "clarity_concision": {
+              "rationale": "Meets the v2 dimension rule.",
+              "score": 2
+            },
+            "grounded_actionability": {
+              "rationale": "Meets the v2 dimension rule.",
+              "score": 2
+            },
+            "task_completion": {
+              "rationale": "Meets the v2 dimension rule.",
+              "score": 2
+            }
+          },
+          "rationale": "All v2 hard/core criteria passed.",
+          "repeated_severe_quality_issue": false,
+          "reviewer": "tool-live-review-v2",
+          "source_suite_sha256": "4f0c8dcfe75dae98d06deac25fff6a2ce1cb743a5f3d5f7d0bd1f2553ad20958"
+        },
+        "hard_pass": true,
+        "normalized_quality": 1.0,
+        "quality_pass": true,
+        "record": {
+          "case_id": "telemetry/token_cost",
+          "evidence_sha256": "118c4f1bd70769453f113f64e4db2f08f15117138e915fb32de1c1714121e7e7",
+          "mode": "live",
+          "prompt_sha256": "af1574d65979199045b6ab2cb8267fae23a3bb1887e48d1a53e51ee9ec682dfb",
+          "prompt_version": "deepseek-tool-decision-v1",
+          "result": {
+            "native_tool_calls": [
+              {
+                "arguments": {
+                  "period": "2026-Q1",
+                  "region": "all"
+                },
+                "name": "get_sales_summary",
+                "tool_call_id": "call_00_ZP0GnYHsExaSBp0uzQFJ3033"
+              }
+            ],
+            "orchestration": {
+              "correlation_id": "live-003-telemetry-token_cost",
+              "error": null,
+              "final_decision": {
+                "action": "final",
+                "final_response": "**Q1 2026 Sales Summary** (all regions, USD)\n\n- Total sales: $400.00\n- Orders: 4\n- Average order value: $100.00\n- Data source: synthetic-sales-v1 (tool v1.0.0)\n\n**Usage metadata**\n- Call ID: a7741e20-17e1-4e8c-b426-90f65ce92e81\n- Tool: get_sales_summary v1.0.0\n- Status: success, latency 0 ms\n- Parameters: period=2026-Q1, region=all\n\nNote: the figures come from a synthetic dataset, so treat them as illustrative rather than actual business results.",
+                "tool_call": null
+              },
+              "final_response": "**Q1 2026 Sales Summary** (all regions, USD)\n\n- Total sales: $400.00\n- Orders: 4\n- Average order value: $100.00\n- Data source: synthetic-sales-v1 (tool v1.0.0)\n\n**Usage metadata**\n- Call ID: a7741e20-17e1-4e8c-b426-90f65ce92e81\n- Tool: get_sales_summary v1.0.0\n- Status: success, latency 0 ms\n- Parameters: period=2026-Q1, region=all\n\nNote: the figures come from a synthetic dataset, so treat them as illustrative rather than actual business results.",
+              "initial_decision": {
+                "action": "tool_call",
+                "final_response": null,
+                "tool_call": {
+                  "arguments": {
+                    "period": "2026-Q1",
+                    "region": "all"
+                  },
+                  "name": "get_sales_summary"
+                }
+              },
+              "provider_turns": 2,
+              "status": "completed",
+              "tool_calls_executed": 1,
+              "tool_result": {
+                "call_id": "a7741e20-17e1-4e8c-b426-90f65ce92e81",
+                "error": null,
+                "latency_ms": 0,
+                "output": {
+                  "average_order_value": "100.00",
+                  "currency": "USD",
+                  "data_version": "synthetic-sales-v1",
+                  "order_count": 4,
+                  "period": "2026-Q1",
+                  "region": "all",
+                  "total_sales": "400.00"
+                },
+                "status": "success",
+                "tool_name": "get_sales_summary",
+                "tool_version": "1.0.0"
+              }
+            },
+            "provider_calls": [
+              {
+                "call_index": 1,
+                "cost_complete": true,
+                "cost_currency": "USD",
+                "error_code": null,
+                "estimated_cost": "0.000073602",
+                "finish_reason": "tool_calls",
+                "generation_config": {
+                  "max_output_tokens": 512,
+                  "temperature": 0.2,
+                  "thinking": "disabled",
+                  "tool_choice": "auto"
+                },
+                "latency_ms": 956,
+                "model": "deepseek-flash",
+                "phase": "initial",
+                "pricing_tier": "off_peak",
+                "pricing_version": "deepseek-2026-09-13",
+                "prompt_sha256": "af1574d65979199045b6ab2cb8267fae23a3bb1887e48d1a53e51ee9ec682dfb",
+                "prompt_version": "deepseek-tool-decision-v1",
+                "provider": "deepseek",
+                "request_id": "776c11c7-3908-4fc5-aa4d-a1b52d675b3d",
+                "retry_count": 0,
+                "status": "success",
+                "usage": {
+                  "completion_tokens": 70,
+                  "prompt_cache_hit_tokens": 384,
+                  "prompt_cache_miss_tokens": 203,
+                  "prompt_tokens": 587,
+                  "reasoning_tokens": null,
+                  "total_tokens": 657
+                }
+              },
+              {
+                "call_index": 2,
+                "cost_complete": true,
+                "cost_currency": "USD",
+                "error_code": null,
+                "estimated_cost": "0.0001434",
+                "finish_reason": "stop",
+                "generation_config": {
+                  "max_output_tokens": 512,
+                  "temperature": 0.2,
+                  "thinking": "disabled",
+                  "tool_choice": "none"
+                },
+                "latency_ms": 1761,
+                "model": "deepseek-flash",
+                "phase": "final",
+                "pricing_tier": "off_peak",
+                "pricing_version": "deepseek-2026-09-13",
+                "prompt_sha256": "af1574d65979199045b6ab2cb8267fae23a3bb1887e48d1a53e51ee9ec682dfb",
+                "prompt_version": "deepseek-tool-decision-v1",
+                "provider": "deepseek",
+                "request_id": "776c11c7-3908-4fc5-aa4d-a1b52d675b3d",
+                "retry_count": 0,
+                "status": "success",
+                "usage": {
+                  "completion_tokens": 151,
+                  "prompt_cache_hit_tokens": 0,
+                  "prompt_cache_miss_tokens": 352,
+                  "prompt_tokens": 352,
+                  "reasoning_tokens": null,
+                  "total_tokens": 503
+                }
+              }
+            ]
+          },
+          "run_id": "live-003",
+          "suite_sha256": "4f0c8dcfe75dae98d06deac25fff6a2ce1cb743a5f3d5f7d0bd1f2553ad20958",
+          "telemetry": {
+            "arguments_valid": true,
+            "authorization": "allowed",
+            "cost_complete": true,
+            "error_code": null,
+            "estimated_cost": "0.000217002",
+            "execution_status": "success",
+            "generation_config": {
+              "automatic_retries": 0,
+              "max_output_tokens": 512,
+              "max_provider_interactions": 2,
+              "max_tool_executions": 1,
+              "temperature": 0.2,
+              "thinking": "disabled"
+            },
+            "input_tokens": 939,
+            "latency_ms": 2717,
+            "model": "deepseek-flash",
+            "output_tokens": 221,
+            "provider": "deepseek",
+            "provider_interactions": 2,
+            "retry_count": 0,
+            "selected_tool": "get_sales_summary",
+            "tool_executions": 1,
+            "total_tokens": 1160
+          },
+          "user_message_sha256": "f8d9ea4e8e05f4af033f3555a56d05ca03c14e5bf1a6e36fb9861b0897d2efce"
+        },
+        "release_eligible": false,
+        "verdict": "PASS"
+      },
+      "difference": {
+        "authorization_v1": true,
+        "authorization_v2": true,
+        "result_grounding_v1": false,
+        "result_grounding_v2": true,
+        "tool_source_policy_v2": true,
+        "verdict_changed": true
+      },
+      "evidence_sha256": "118c4f1bd70769453f113f64e4db2f08f15117138e915fb32de1c1714121e7e7",
+      "original_v1": {
+        "core_blocker": false,
+        "decision_sha256": "8e79c655182ad0230564b35c941a2ae4039113ae4e4beb658d65f9e9840036a0",
+        "hard_invariants": {
+          "argument_validation": true,
+          "authorization": true,
+          "call_bounds": true,
+          "contract_schema": true,
+          "execution_integrity": true,
+          "result_grounding": false,
+          "telemetry_integrity": true
+        },
+        "quality_scores": {
+          "clarity_concision": 2,
+          "grounded_actionability": 0,
+          "task_completion": 2
+        },
+        "unsupported_numeric_claims": [
+          "0",
+          "1",
+          "2",
+          "5",
+          "17",
+          "26",
+          "9E+1",
+          "741",
+          "2026"
+        ],
+        "verdict": "FAIL"
+      },
+      "run_id": "live-003",
+      "source_references": {
+        "decision": "eval/tools/live-003/decisions.json",
+        "raw": "eval/tools/live-003/raw.json",
+        "reviewed": "eval/tools/live-003/reviewed.json"
+      }
+    }
+  ],
+  "evaluator_v2_gate_sha256": "8a4ac436dcda1a958af90994b12c9dfd0e1385d91e23170381758b437ad0935d",
+  "evaluator_v2_suite_sha256": "a7830d318bc2a51aa7bb6b23ea36b06f63ac45dc0b1914a031f744d67cf7396a",
+  "paid_api_calls": 0,
+  "purpose": "Read-only diagnosis; not release evidence and not a replacement for v1 verdicts.",
+  "replay_evidence_sha256": "f67ac9449a9ad31abf1bcde9927527c66d10a8b070fd69374025e107ac04b8be",
+  "replay_version": "tool-calling-historical-diagnostic-replay-v2",
+  "source_file_sha256": {
+    "eval/tools/live-001/decisions.json": "b59a234e25cd1d9e35220fde6fcf4ceb10d891cfeb1d15aaf993cf3676ae478a",
+    "eval/tools/live-001/raw.json": "ff5729b31c8300dcde12afd236dcc56342c5bf7307f001048fa3606769f4cafc",
+    "eval/tools/live-001/reviewed.json": "41ee5cec7233bd0c4c08ee892b1db86ab90392de8400c08500efcb9a6991ffe8",
+    "eval/tools/live-002/decisions.json": "9b8219633755d92def1385f19c61c14f52f2dbe111680f7fb50cbcb0ffb2b0ff",
+    "eval/tools/live-002/raw.json": "60e56808d0cd1d40350b0ea5485ae1b24662085c1bb31fe9cf9fad1c41fa47a6",
+    "eval/tools/live-002/reviewed.json": "2832cd89d597de3f09c9bfb97e19922ee4cd5521be96c203ffb66d92ad5cd401",
+    "eval/tools/live-003/decisions.json": "519c0ae1df70c69e1045c8e7e3aea7d4ce4ccfd6fb10981d3d66792233d26785",
+    "eval/tools/live-003/raw.json": "f1d4355a05ba23b4ecb0335e1b619670d2d84df60fd62322f18970bd9c73277d",
+    "eval/tools/live-003/reviewed.json": "4072f03219cd6d7d00c64d6d81a38a670b6469aa95d0bb677d3edb24d2fb9b51"
+  },
+  "source_v1_suite_sha256": "4f0c8dcfe75dae98d06deac25fff6a2ce1cb743a5f3d5f7d0bd1f2553ad20958",
+  "summary": {
+    "diagnostic_v2_fail": 3,
+    "diagnostic_v2_pass": 6,
+    "original_v1_fail": 9,
+    "original_v1_pass": 0,
+    "records": 9
+  }
+}

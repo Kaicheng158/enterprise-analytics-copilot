@@ -1,0 +1,21 @@
+{
+  "cases_sha256": "b14ca5284978bb4f435b6d1f958a7f8ec2d26d10852e40c7cd18b66a1c9ca6d2",
+  "freeze_version": "tool-calling-evaluation-freeze-v1",
+  "implementation_sha256": {
+    "backend/tools/catalog.py": "d02ecb5e1cf7bd59c58887cee150729b6f9d69ac0fac6349894735251d11616d",
+    "backend/tools/deepseek_adapter.py": "62e2eeffc56c5ac385d7863cf528dfcb451ce25e9260a0afe090b5652682468a",
+    "backend/tools/executor.py": "fe5a9898b82de01625dc0f4e7e530104d2789882558fd1630da4b3ee8586bb11",
+    "backend/tools/models.py": "4c098769b142e1740349021a97c266cd987da1541e1bed7f7d43acaca51a79ce",
+    "backend/tools/orchestration.py": "d6dc9c266a98d57a3e34693caaf922fafe330a5d9a8b8e3a198cdd9706d5cc64",
+    "backend/tools/registry.py": "b911b0dd212ea1d72e2c5867299328286beac60bc4910c14988c3c27e9f152ab",
+    "backend/tools/sales.py": "6e8aaa4ce363f7d1b801f6ac09c1f180b433a204788fa7db0d6e14e665a054a1",
+    "backend/tools/sales_db.py": "a6eb2815412968644f0d04c1a74b12e2341361e916d120190d67f81313da0d54"
+  },
+  "live_regression_status": "not_run",
+  "paid_calls_made_during_freeze": 0,
+  "policy_sha256": "7c3e1335157e96c160cd7777fd9826b1eec32dd2440cd9411f8a248ad1a7ad48",
+  "release_gate_sha256": "02f4ed11281ae1a6fed72ad1ac959537cbf59ba94e1ce57ceffa342ddb9753fb",
+  "suite_sha256": "4f0c8dcfe75dae98d06deac25fff6a2ce1cb743a5f3d5f7d0bd1f2553ad20958",
+  "tool_prompt_sha256": "af1574d65979199045b6ab2cb8267fae23a3bb1887e48d1a53e51ee9ec682dfb",
+  "tool_prompt_version": "deepseek-tool-decision-v1"
+}

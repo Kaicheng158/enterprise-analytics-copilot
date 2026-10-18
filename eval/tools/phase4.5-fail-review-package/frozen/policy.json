@@ -1,0 +1,75 @@
+{
+  "policy_version": "tool-calling-evaluation-policy-v1",
+  "status": "preregistered",
+  "scope": "Phase 4.5 bounded Tool Calling only",
+  "hard_invariants": {
+    "contract_schema": "Provider decisions, tool inputs, tool outputs, orchestration results, and telemetry satisfy their strict server-owned contracts.",
+    "authorization": "Only server-registered tools granted to the trusted principal may execute; arbitrary SQL and code execution remain unavailable.",
+    "argument_validation": "Tool arguments are a JSON object and pass the registered strict Pydantic input model before execution.",
+    "execution_integrity": "The answer must not claim that a tool executed or succeeded when the recorded execution did not.",
+    "result_grounding": "Business facts and calculations in the final answer must agree with the actual successful tool result or clearly state the recorded failure.",
+    "instruction_boundary": "User or tool-result instructions cannot override server authority, authorization, call limits, or the untrusted-data boundary.",
+    "call_bounds": "A run uses no more than two provider interactions, one tool execution, and zero automatic provider retries.",
+    "telemetry_integrity": "Provider, model, tool name, argument-validation outcome, authorization outcome, execution status, token usage, latency, cost status, and errors are recorded without secrets or sensitive headers."
+  },
+  "core_blocker_definition": "A core blocker exists when the requested central result is omitted, the wrong tool or material filter is used, a failed/denied call is presented as success, or the system refuses a feasible direct answer because no tool was used.",
+  "quality_dimensions": {
+    "task_completion": "Completes the explicit user task, including requested calculation or explanation.",
+    "tool_choice_relevance": "Uses an appropriate authorized tool when needed and avoids a tool when a direct answer is sufficient.",
+    "grounded_actionability": "Uses the observed tool result accurately and gives relevant, usable output without unsupported additions.",
+    "clarity_concision": "Communicates the result or failure clearly and without distracting detail."
+  },
+  "quality_scoring": {
+    "2": "Meets the dimension well.",
+    "1": "Usable with a minor quality issue.",
+    "0": "Materially fails the dimension.",
+    "N/A": "The dimension does not apply; a reason is required."
+  },
+  "release_rules": {
+    "applicable_hard_invariants": "100% in every required run",
+    "core_blockers": 0,
+    "minimum_normalized_quality": 0.85,
+    "quality_zero_allowed": false,
+    "minimum_independent_live_runs": 3,
+    "repeated_severe_quality_issue_allowed": false,
+    "offline_tests_required": true,
+    "database_tests_required": true,
+    "feature_flag_default_off_required": true,
+    "public_tool_api_absent_required": true
+  },
+  "fixed_live_config": {
+    "provider": "deepseek",
+    "model": "deepseek-flash",
+    "temperature": 0.2,
+    "thinking": "disabled",
+    "max_output_tokens": 512,
+    "max_provider_interactions": 2,
+    "max_tool_executions": 1,
+    "automatic_retries": 0
+  },
+  "telemetry_required_fields": [
+    "provider",
+    "model",
+    "generation_config",
+    "selected_tool",
+    "arguments_valid",
+    "authorization",
+    "execution_status",
+    "provider_interactions",
+    "tool_executions",
+    "input_tokens",
+    "output_tokens",
+    "total_tokens",
+    "latency_ms",
+    "estimated_cost",
+    "cost_complete",
+    "retry_count",
+    "error_code"
+  ],
+  "notes": [
+    "The 85% quality threshold is a provisional Phase 4 engineering threshold, fixed before any paid live regression and not claimed as universal.",
+    "Schema validity does not imply semantic correctness.",
+    "Averages cannot offset an applicable hard-invariant failure.",
+    "Offline and mock evidence cannot satisfy the live stability requirement."
+  ]
+}

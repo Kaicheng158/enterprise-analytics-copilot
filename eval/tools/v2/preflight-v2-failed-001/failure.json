@@ -1,0 +1,9 @@
+{
+  "attempt": "preflight-v2-failed-001",
+  "paid_api_calls": 0,
+  "status": "FAILED",
+  "failure_stage": "deterministic_control_evidence_load",
+  "safe_error": "Existing control JSON required strict JSON parsing rather than strict Python-object tuple parsing.",
+  "historical_evidence_modified": false,
+  "live_regression_started": false
+}

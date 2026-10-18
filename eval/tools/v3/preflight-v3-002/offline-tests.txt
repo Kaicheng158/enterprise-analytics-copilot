@@ -1,0 +1,9 @@
+tool_exposure_rejection {"event":"hidden_tool_request_rejected","policy_version":"tool-exposure-policy-v1","tool_name":"get_sales_summary"}
+tool_exposure_rejection {"event":"hidden_tool_request_rejected","policy_version":"tool-exposure-policy-v1","tool_name":"get_sales_summary"}
+tool_exposure_rejection {"event":"hidden_tool_request_rejected","policy_version":"tool-exposure-policy-v1","tool_name":"get_sales_summary"}
+tool_exposure_rejection {"event":"hidden_tool_request_rejected","policy_version":"tool-exposure-policy-v1","tool_name":"get_sales_summary"}
+tool_exposure_rejection {"event":"hidden_tool_request_rejected","policy_version":"tool-exposure-policy-v1","tool_name":"get_sales_summary"}
+----------------------------------------------------------------------
+Ran 277 tests in 11.245s
+
+OK

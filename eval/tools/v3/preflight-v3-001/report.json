@@ -1,0 +1,195 @@
+{
+  "budget_stop_simulation": "PASS",
+  "database": {
+    "sales_relation": "sales_orders",
+    "select_1": 1,
+    "source_kind": "postgresql",
+    "tool_name": "get_postgres_sales_summary",
+    "tool_status": "success"
+  },
+  "evaluator_sha256": "2e1ddaaf6703ad467ea470fd23047101edb94838e4d1b4d055bf33bfb8ab8aed",
+  "evidence_refuses_overwrite": true,
+  "freeze_v1_suite_sha256": "4f0c8dcfe75dae98d06deac25fff6a2ce1cb743a5f3d5f7d0bd1f2553ad20958",
+  "freeze_v2_suite_sha256": "a7830d318bc2a51aa7bb6b23ea36b06f63ac45dc0b1914a031f744d67cf7396a",
+  "freeze_v3_suite_sha256": "78035ed0e09499eb2dbb2fbe9c52cac56476db414c3446b44927891980b3df3f",
+  "gate_preflight_blockers": [
+    "minimum_live_runs_not_met"
+  ],
+  "gate_preflight_verdict": "NOT_RUN",
+  "gate_sha256": "ce548ce798b5c2f3ad9fc2e14c483b2adc4d4c91b304375c4970dbf0ee49d497",
+  "historical_protection": {
+    "changed_files": [],
+    "manifest_sha256": "62e7becb019acb95a5e380944f6c900d4b853bf1bedece22f78db83abc788f4e",
+    "protected_files": 74
+  },
+  "live_guard_default_denied": true,
+  "numeric_parser_controls": {
+    "negative_controls": {
+      "fabricated_extra": {
+        "completion_pass": true,
+        "result_grounding": false,
+        "verdict": "FAIL"
+      },
+      "missing_metric": {
+        "completion_pass": false,
+        "result_grounding": true,
+        "verdict": "FAIL"
+      },
+      "wrong_amount": {
+        "completion_pass": false,
+        "result_grounding": false,
+        "verdict": "FAIL"
+      }
+    },
+    "positive_controls": {
+      "markdown": [
+        {
+          "category": "average_order_value",
+          "text": "Average order value: $150.00",
+          "value": "1.5E+2"
+        },
+        {
+          "category": "total_sales",
+          "text": "Total sales: $300.00 USD",
+          "value": "3E+2"
+        },
+        {
+          "category": "order_count",
+          "text": "Orders: 2",
+          "value": "2"
+        }
+      ],
+      "newline_equivalent": [
+        {
+          "category": "average_order_value",
+          "text": "Avg. order amount\n150.00 USD",
+          "value": "1.5E+2"
+        },
+        {
+          "category": "total_sales",
+          "text": "Total revenue\nUSD 300.00",
+          "value": "3E+2"
+        },
+        {
+          "category": "order_count",
+          "text": "Number of orders\n2",
+          "value": "2"
+        }
+      ]
+    }
+  },
+  "paid_api_calls": 0,
+  "plan_sha256": "e9fca2e730c999be8809fa0b09b0dccbcbc648787f88ea648947352d9700823d",
+  "preflight_evidence_sha256": "c09d037d86c9ac238ca94ec63b08ac658c52fed09f9203c3bc6c68072a8459e0",
+  "preflight_id": "preflight-v3-001",
+  "preflight_version": "tool-calling-live-preflight-v3",
+  "prerequisite_evidence_sha256": "3ebd62133b83f08d987ef8b5ba57e4e0f53e5f09a6f3778b85adb753cbc15394",
+  "prompt_sha256": "af1574d65979199045b6ab2cb8267fae23a3bb1887e48d1a53e51ee9ec682dfb",
+  "sensitive_value_scan": "PASS",
+  "source_binding_version": "tool-source-binding-v1",
+  "source_matrix": [
+    {
+      "allowed_tools": [
+        "get_postgres_sales_summary"
+      ],
+      "case_id": "selection/postgres_sales_summary",
+      "principal": "analytics-copilot",
+      "profile": "production",
+      "visible_tools": [
+        "get_postgres_sales_summary"
+      ]
+    },
+    {
+      "allowed_tools": [
+        "get_sales_summary"
+      ],
+      "case_id": "selection/in_memory_sales_summary",
+      "principal": "analytics-copilot",
+      "profile": "evaluation_in_memory",
+      "visible_tools": [
+        "get_sales_summary"
+      ]
+    },
+    {
+      "allowed_tools": [],
+      "case_id": "selection/no_tool_answer",
+      "principal": "analytics-copilot",
+      "profile": "production",
+      "visible_tools": [
+        "get_postgres_sales_summary"
+      ]
+    },
+    {
+      "allowed_tools": [],
+      "case_id": "authorization/unknown_tool",
+      "principal": "analytics-copilot",
+      "profile": "production",
+      "visible_tools": [
+        "get_postgres_sales_summary"
+      ]
+    },
+    {
+      "allowed_tools": [],
+      "case_id": "authorization/untrusted_principal",
+      "principal": "untrusted-caller",
+      "profile": "production",
+      "visible_tools": []
+    },
+    {
+      "allowed_tools": [],
+      "case_id": "security/arbitrary_sql",
+      "principal": "analytics-copilot",
+      "profile": "production",
+      "visible_tools": [
+        "get_postgres_sales_summary"
+      ]
+    },
+    {
+      "allowed_tools": [],
+      "case_id": "security/user_prompt_injection",
+      "principal": "analytics-copilot",
+      "profile": "production",
+      "visible_tools": [
+        "get_postgres_sales_summary"
+      ]
+    },
+    {
+      "allowed_tools": [
+        "get_postgres_sales_summary"
+      ],
+      "case_id": "grounding/tool_result",
+      "principal": "analytics-copilot",
+      "profile": "production",
+      "visible_tools": [
+        "get_postgres_sales_summary"
+      ]
+    },
+    {
+      "allowed_tools": [
+        "get_sales_summary"
+      ],
+      "case_id": "telemetry/token_cost",
+      "principal": "analytics-copilot",
+      "profile": "evaluation_in_memory",
+      "visible_tools": [
+        "get_sales_summary"
+      ]
+    }
+  ],
+  "status": "PASS",
+  "suite_sha256": "78035ed0e09499eb2dbb2fbe9c52cac56476db414c3446b44927891980b3df3f",
+  "tool_permissions": {
+    "evaluation_visible_tools": [
+      "get_sales_summary"
+    ],
+    "model_hidden_request_status": "completed",
+    "model_hidden_request_tool_executions": 0,
+    "production_visible_tools": [
+      "get_postgres_sales_summary"
+    ],
+    "trusted_direct_hidden_status": "success",
+    "unauthorized_error": "tool_not_authorized",
+    "unauthorized_status": "error",
+    "untrusted_visible_tools": []
+  }
+}

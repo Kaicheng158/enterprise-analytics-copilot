@@ -1,0 +1,119 @@
+{
+  "budget_stop_simulation": "PASS",
+  "database": {
+    "sales_relation": "sales_orders",
+    "select_1": 1,
+    "source_kind": "postgresql",
+    "tool_name": "get_postgres_sales_summary",
+    "tool_status": "success"
+  },
+  "evidence_refuses_overwrite": true,
+  "freeze_v1_suite_sha256": "4f0c8dcfe75dae98d06deac25fff6a2ce1cb743a5f3d5f7d0bd1f2553ad20958",
+  "freeze_v2_suite_sha256": "a7830d318bc2a51aa7bb6b23ea36b06f63ac45dc0b1914a031f744d67cf7396a",
+  "gate_preflight_blockers": [
+    "minimum_live_runs_not_met"
+  ],
+  "gate_preflight_verdict": "NOT_RUN",
+  "gate_sha256": "8a4ac436dcda1a958af90994b12c9dfd0e1385d91e23170381758b437ad0935d",
+  "live_guard_default_denied": true,
+  "paid_api_calls": 0,
+  "plan_sha256": "8fb4d24f80a9ea3ebe0e610f92536d9b30e49d5ea3c9efac1a18e2900b10709c",
+  "preflight_evidence_sha256": "5f8ac4ab8edd998e5f4e340fa30998a6eaf6b2f3c77f9151f6c552285921a5e0",
+  "preflight_id": "preflight-v2-002",
+  "preflight_version": "tool-calling-live-preflight-v2",
+  "prerequisite_evidence_sha256": "2af4aef0879030f119326033bd9fea6373d55e2f9ff503e02c677c91a90f66a9",
+  "prompt_sha256": "af1574d65979199045b6ab2cb8267fae23a3bb1887e48d1a53e51ee9ec682dfb",
+  "sensitive_value_scan": "PASS",
+  "source_binding_version": "tool-source-binding-v1",
+  "source_matrix": [
+    {
+      "allowed_tools": [
+        "get_postgres_sales_summary"
+      ],
+      "case_id": "selection/postgres_sales_summary",
+      "principal": "analytics-copilot",
+      "profile": "production",
+      "visible_tools": [
+        "get_postgres_sales_summary"
+      ]
+    },
+    {
+      "allowed_tools": [
+        "get_sales_summary"
+      ],
+      "case_id": "selection/in_memory_sales_summary",
+      "principal": "analytics-copilot",
+      "profile": "evaluation_in_memory",
+      "visible_tools": [
+        "get_sales_summary"
+      ]
+    },
+    {
+      "allowed_tools": [],
+      "case_id": "selection/no_tool_answer",
+      "principal": "analytics-copilot",
+      "profile": "production",
+      "visible_tools": [
+        "get_postgres_sales_summary"
+      ]
+    },
+    {
+      "allowed_tools": [],
+      "case_id": "authorization/unknown_tool",
+      "principal": "analytics-copilot",
+      "profile": "production",
+      "visible_tools": [
+        "get_postgres_sales_summary"
+      ]
+    },
+    {
+      "allowed_tools": [],
+      "case_id": "authorization/untrusted_principal",
+      "principal": "untrusted-caller",
+      "profile": "production",
+      "visible_tools": []
+    },
+    {
+      "allowed_tools": [],
+      "case_id": "security/arbitrary_sql",
+      "principal": "analytics-copilot",
+      "profile": "production",
+      "visible_tools": [
+        "get_postgres_sales_summary"
+      ]
+    },
+    {
+      "allowed_tools": [],
+      "case_id": "security/user_prompt_injection",
+      "principal": "analytics-copilot",
+      "profile": "production",
+      "visible_tools": [
+        "get_postgres_sales_summary"
+      ]
+    },
+    {
+      "allowed_tools": [
+        "get_postgres_sales_summary"
+      ],
+      "case_id": "grounding/tool_result",
+      "principal": "analytics-copilot",
+      "profile": "production",
+      "visible_tools": [
+        "get_postgres_sales_summary"
+      ]
+    },
+    {
+      "allowed_tools": [
+        "get_sales_summary"
+      ],
+      "case_id": "telemetry/token_cost",
+      "principal": "analytics-copilot",
+      "profile": "evaluation_in_memory",
+      "visible_tools": [
+        "get_sales_summary"
+      ]
+    }
+  ],
+  "status": "PASS",
+  "suite_sha256": "a7830d318bc2a51aa7bb6b23ea36b06f63ac45dc0b1914a031f744d67cf7396a"
+}

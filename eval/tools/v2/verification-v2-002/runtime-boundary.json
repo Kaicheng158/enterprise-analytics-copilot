@@ -1,0 +1,23 @@
+{
+  "feature_flag": {
+    "default_value": false,
+    "effective_enabled": false,
+    "setting": "TOOL_CALLING_ENABLED",
+    "source": "backend/tools/deepseek_adapter.py",
+    "source_sha256": "62e2eeffc56c5ac385d7863cf528dfcb451ce25e9260a0afe090b5652682468a"
+  },
+  "route_surface": {
+    "main_source_sha256": "4ac79f8354ac3f96f716f24def963997584948277b53e69c4a3750212aee7fa7",
+    "public_tool_routes": [],
+    "rag_source_sha256": "9637ccba87be16537d371c03ebb313fb5e213f09522ab11cc0fb785dcb96f6bc",
+    "routes": [
+      "/chat",
+      "/docs",
+      "/docs/oauth2-redirect",
+      "/health",
+      "/health/db",
+      "/openapi.json",
+      "/redoc"
+    ]
+  }
+}

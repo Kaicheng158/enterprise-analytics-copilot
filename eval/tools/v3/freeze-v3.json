@@ -1,0 +1,26 @@
+{
+  "file_sha256": {
+    "eval/tools/v3/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "eval/tools/v3/cases-v3.json": "3b20f7d49178ac13f81b2e1eff058134f3e18664307a735c7bb274973bf3485b",
+    "eval/tools/v3/evaluator_v3.py": "2e1ddaaf6703ad467ea470fd23047101edb94838e4d1b4d055bf33bfb8ab8aed",
+    "eval/tools/v3/historical-live-v2-replay-v3.json": "8a0471a6b3c6c6c34d9c57cf54b42c53df444168e0bc7880afca33845f1f82e0",
+    "eval/tools/v3/historical-protection-v3.json": "62e7becb019acb95a5e380944f6c900d4b853bf1bedece22f78db83abc788f4e",
+    "eval/tools/v3/policy-v3.json": "4ed048a028432aad37dae4e6c2e055f1a7677dfdfed4f3676b119b1cf65e57b4",
+    "eval/tools/v3/release-gate-v3.json": "f86fa691380cb8fe872e4f64b12af57cc7d71ac885b3b7a6931c9d4ddcc7ad2d",
+    "eval/tools/v3/release_gate_v3.py": "8aaa6700da2fd1688991c16fd8e6e54988bf6eb8e4bca69aa2427f2ac2833b3e",
+    "eval/tools/v3/replay_live_v2_v3.py": "ed08d79a01946b18e10ae1f68147d36a36b545dfb3abb709913e8e7370640033",
+    "eval/tools/v3/suite_v3.py": "252949391645891c94abbe8669bbd5044fb0b461aca0fc078d2dad750b958bf4"
+  },
+  "freeze_version": "tool-calling-evaluator-freeze-v3",
+  "future_live_regression_status": "not_run",
+  "gate_canonical_sha256": "ce548ce798b5c2f3ad9fc2e14c483b2adc4d4c91b304375c4970dbf0ee49d497",
+  "historical_replay_purpose": "diagnostic_only_not_release_evidence",
+  "historical_replay_records": 27,
+  "historical_v2_gate_verdict": "FAIL (immutable historical result)",
+  "historical_v2_suite_sha256": "a7830d318bc2a51aa7bb6b23ea36b06f63ac45dc0b1914a031f744d67cf7396a",
+  "paid_calls_made_during_v3_creation": 0,
+  "prompt_sha256": "af1574d65979199045b6ab2cb8267fae23a3bb1887e48d1a53e51ee9ec682dfb",
+  "prompt_version": "deepseek-tool-decision-v1",
+  "status": "preregistered_before_future_live_regression",
+  "suite_sha256": "78035ed0e09499eb2dbb2fbe9c52cac56476db414c3446b44927891980b3df3f"
+}

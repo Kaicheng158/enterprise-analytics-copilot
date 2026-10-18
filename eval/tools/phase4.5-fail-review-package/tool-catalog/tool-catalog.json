@@ -1,0 +1,263 @@
+{
+  "principal": "analytics-copilot",
+  "authorization": "Both listed tools are registered and authorized for this internal principal.",
+  "catalog_generation": "Exported from build_tool_registry().schemas_for(INTERNAL_PRINCIPAL); no tool execution.",
+  "tools": [
+    {
+      "name": "get_postgres_sales_summary",
+      "version": "1.0.0",
+      "description": "Read a synthetic sales summary from the authorized PostgreSQL table.",
+      "input_schema": {
+        "additionalProperties": false,
+        "properties": {
+          "period": {
+            "enum": [
+              "2026-Q1",
+              "2026-Q2",
+              "2026-Q3"
+            ],
+            "title": "Period",
+            "type": "string"
+          },
+          "region": {
+            "default": "all",
+            "enum": [
+              "all",
+              "north",
+              "south"
+            ],
+            "title": "Region",
+            "type": "string"
+          }
+        },
+        "required": [
+          "period"
+        ],
+        "title": "PostgresSalesSummaryInput",
+        "type": "object"
+      },
+      "output_schema": {
+        "$defs": {
+          "SalesDataSource": {
+            "additionalProperties": false,
+            "properties": {
+              "kind": {
+                "const": "postgresql",
+                "default": "postgresql",
+                "title": "Kind",
+                "type": "string"
+              },
+              "relation": {
+                "const": "analytics.sales_orders",
+                "default": "analytics.sales_orders",
+                "title": "Relation",
+                "type": "string"
+              },
+              "dataset_version": {
+                "const": "synthetic-sales-db-v1",
+                "default": "synthetic-sales-db-v1",
+                "title": "Dataset Version",
+                "type": "string"
+              },
+              "read_only": {
+                "const": true,
+                "default": true,
+                "title": "Read Only",
+                "type": "boolean"
+              }
+            },
+            "title": "SalesDataSource",
+            "type": "object"
+          }
+        },
+        "additionalProperties": false,
+        "properties": {
+          "period": {
+            "enum": [
+              "2026-Q1",
+              "2026-Q2",
+              "2026-Q3"
+            ],
+            "title": "Period",
+            "type": "string"
+          },
+          "region": {
+            "enum": [
+              "all",
+              "north",
+              "south"
+            ],
+            "title": "Region",
+            "type": "string"
+          },
+          "currency": {
+            "const": "USD",
+            "default": "USD",
+            "title": "Currency",
+            "type": "string"
+          },
+          "order_count": {
+            "minimum": 0,
+            "title": "Order Count",
+            "type": "integer"
+          },
+          "total_sales": {
+            "anyOf": [
+              {
+                "minimum": 0.0,
+                "type": "number"
+              },
+              {
+                "pattern": "^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d{0,2}0*$",
+                "type": "string"
+              }
+            ],
+            "title": "Total Sales"
+          },
+          "average_order_value": {
+            "anyOf": [
+              {
+                "minimum": 0.0,
+                "type": "number"
+              },
+              {
+                "pattern": "^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d{0,2}0*$",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Average Order Value"
+          },
+          "data_source": {
+            "$ref": "#/$defs/SalesDataSource"
+          }
+        },
+        "required": [
+          "period",
+          "region",
+          "order_count",
+          "total_sales",
+          "data_source"
+        ],
+        "title": "PostgresSalesSummaryOutput",
+        "type": "object"
+      }
+    },
+    {
+      "name": "get_sales_summary",
+      "version": "1.0.0",
+      "description": "Aggregate deterministic synthetic sales for an allowed period and region.",
+      "input_schema": {
+        "additionalProperties": false,
+        "properties": {
+          "period": {
+            "enum": [
+              "2026-Q1",
+              "2026-Q2"
+            ],
+            "title": "Period",
+            "type": "string"
+          },
+          "region": {
+            "default": "all",
+            "enum": [
+              "all",
+              "north",
+              "south"
+            ],
+            "title": "Region",
+            "type": "string"
+          }
+        },
+        "required": [
+          "period"
+        ],
+        "title": "SalesSummaryInput",
+        "type": "object"
+      },
+      "output_schema": {
+        "additionalProperties": false,
+        "properties": {
+          "period": {
+            "enum": [
+              "2026-Q1",
+              "2026-Q2"
+            ],
+            "title": "Period",
+            "type": "string"
+          },
+          "region": {
+            "enum": [
+              "all",
+              "north",
+              "south"
+            ],
+            "title": "Region",
+            "type": "string"
+          },
+          "currency": {
+            "const": "USD",
+            "default": "USD",
+            "title": "Currency",
+            "type": "string"
+          },
+          "order_count": {
+            "minimum": 0,
+            "title": "Order Count",
+            "type": "integer"
+          },
+          "total_sales": {
+            "anyOf": [
+              {
+                "minimum": 0.0,
+                "type": "number"
+              },
+              {
+                "pattern": "^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d{0,2}0*$",
+                "type": "string"
+              }
+            ],
+            "title": "Total Sales"
+          },
+          "average_order_value": {
+            "anyOf": [
+              {
+                "minimum": 0.0,
+                "type": "number"
+              },
+              {
+                "pattern": "^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d{0,2}0*$",
+                "type": "string"
+              }
+            ],
+            "title": "Average Order Value"
+          },
+          "data_version": {
+            "const": "synthetic-sales-v1",
+            "default": "synthetic-sales-v1",
+            "title": "Data Version",
+            "type": "string"
+          }
+        },
+        "required": [
+          "period",
+          "region",
+          "order_count",
+          "total_sales",
+          "average_order_value"
+        ],
+        "title": "SalesSummaryOutput",
+        "type": "object"
+      }
+    }
+  ],
+  "source_files": [
+    "backend/tools/catalog.py",
+    "backend/tools/registry.py",
+    "backend/tools/sales.py",
+    "backend/tools/sales_db.py"
+  ]
+}

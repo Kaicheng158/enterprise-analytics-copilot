@@ -1,0 +1,70 @@
+{
+  "status_version": "tool-calling-offline-status-v1",
+  "suite_sha256": "4f0c8dcfe75dae98d06deac25fff6a2ce1cb743a5f3d5f7d0bd1f2553ad20958",
+  "prompt_sha256": "af1574d65979199045b6ab2cb8267fae23a3bb1887e48d1a53e51ee9ec682dfb",
+  "offline_tests": {
+    "passed": 231,
+    "failed": 0
+  },
+  "database_tests": {
+    "passed": 42,
+    "failed": 0
+  },
+  "fake_provider_verified": true,
+  "mock_api_verified": true,
+  "feature_flag_default_off": true,
+  "public_tool_api_absent": true,
+  "paid_live_regression": "not_run",
+  "release_gate_verdict": "FAIL",
+  "deterministic_controls": {
+    "run_id": "deterministic-controls-001",
+    "passed": 7,
+    "failed": 0,
+    "hard_invariants_pass": true,
+    "core_blockers": 0,
+    "normalized_quality": 1.0,
+    "reviewed_evidence_sha256": "14a424e052feb123f64e63597037229ae862e4bff29d317e823a47516c456fa5"
+  },
+  "release_gate_blockers": [
+    "one_or_more_live_runs_failed"
+  ],
+  "live_regression": {
+    "status": "completed",
+    "rounds": 3,
+    "cases_per_round": 9,
+    "round_results": [
+      {
+        "run_id": "live-001",
+        "pass": 6,
+        "fail": 3,
+        "gate_quality": 0.8620689655172413,
+        "tokens": 7217,
+        "latency_ms": 15158,
+        "estimated_cost": "0.001078182",
+        "verdict": "FAIL"
+      },
+      {
+        "run_id": "live-002",
+        "pass": 6,
+        "fail": 3,
+        "gate_quality": 0.8620689655172413,
+        "tokens": 7276,
+        "latency_ms": 16639,
+        "estimated_cost": "0.001095216",
+        "verdict": "FAIL"
+      },
+      {
+        "run_id": "live-003",
+        "pass": 6,
+        "fail": 3,
+        "gate_quality": 0.896551724137931,
+        "tokens": 7239,
+        "latency_ms": 15692,
+        "estimated_cost": "0.001073916",
+        "verdict": "FAIL"
+      }
+    ],
+    "cumulative_estimated_cost": "0.003247314",
+    "stop_reason": null
+  }
+}

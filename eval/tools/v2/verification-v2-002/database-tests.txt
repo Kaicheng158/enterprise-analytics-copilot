@@ -1,0 +1,47 @@
+test_database_failure_leaves_no_partial_vectors (test_embedding_storage.EmbeddingStorageTests.test_database_failure_leaves_no_partial_vectors) ... ok
+test_different_profiles_do_not_mix (test_embedding_storage.EmbeddingStorageTests.test_different_profiles_do_not_mix) ... ok
+test_invalid_vector_atomic_failure (test_embedding_storage.EmbeddingStorageTests.test_invalid_vector_atomic_failure) ... ok
+test_multiple_batches_and_later_failure_are_atomic (test_embedding_storage.EmbeddingStorageTests.test_multiple_batches_and_later_failure_are_atomic) ... ok
+test_persistence_idempotency_and_dimension (test_embedding_storage.EmbeddingStorageTests.test_persistence_idempotency_and_dimension) ... ok
+test_source_change_during_api_discards_vectors (test_embedding_storage.EmbeddingStorageTests.test_source_change_during_api_discards_vectors) ... ok
+test_source_new_revision_requires_new_vectors (test_embedding_storage.EmbeddingStorageTests.test_source_new_revision_requires_new_vectors) ... ok
+test_tenant_and_revision_scope_before_api (test_embedding_storage.EmbeddingStorageTests.test_tenant_and_revision_scope_before_api) ... ok
+test_concurrent_repeat_serializes (test_ingestion_storage.IngestionStorageTests.test_concurrent_repeat_serializes) ... ok
+test_config_change_and_current_unique (test_ingestion_storage.IngestionStorageTests.test_config_change_and_current_unique) ... ok
+test_corrupted_revision_rejected_and_delete_cascades (test_ingestion_storage.IngestionStorageTests.test_corrupted_revision_rejected_and_delete_cascades) ... ok
+test_empty_source_does_not_replace_current_revision (test_ingestion_storage.IngestionStorageTests.test_empty_source_does_not_replace_current_revision) ... ok
+test_failed_transaction_preserves_previous_current (test_ingestion_storage.IngestionStorageTests.test_failed_transaction_preserves_previous_current) ... ok
+test_repeated_changed_and_reverted_source (test_ingestion_storage.IngestionStorageTests.test_repeated_changed_and_reverted_source) ... ok
+test_corrupt_chunk_fails_closed (test_retrieval.ExactRetrievalTests.test_corrupt_chunk_fails_closed) ... ok
+test_errors_do_not_write_database (test_retrieval.ExactRetrievalTests.test_errors_do_not_write_database) ... ok
+test_invalid_query_before_provider (test_retrieval.ExactRetrievalTests.test_invalid_query_before_provider) ... ok
+test_missing_profile_no_fallback (test_retrieval.ExactRetrievalTests.test_missing_profile_no_fallback) ... ok
+test_old_revision_not_returned_even_if_embedded (test_retrieval.ExactRetrievalTests.test_old_revision_not_returned_even_if_embedded) ... ok
+test_query_profile_mismatch_rejected (test_retrieval.ExactRetrievalTests.test_query_profile_mismatch_rejected) ... ok
+test_relevant_multi_document_source_rank_and_distance (test_retrieval.ExactRetrievalTests.test_relevant_multi_document_source_rank_and_distance) ... ok
+test_scope_isolation_and_empty_no_api (test_retrieval.ExactRetrievalTests.test_scope_isolation_and_empty_no_api) ... ok
+test_source_changed_during_query_uses_current_snapshot (test_retrieval.ExactRetrievalTests.test_source_changed_during_query_uses_current_snapshot) ... ok
+test_stable_tie_order (test_retrieval.ExactRetrievalTests.test_stable_tie_order) ... ok
+test_stored_profile_mismatch_rejected_before_api (test_retrieval.ExactRetrievalTests.test_stored_profile_mismatch_rejected_before_api) ... ok
+test_top_k_and_threshold_inclusive (test_retrieval.ExactRetrievalTests.test_top_k_and_threshold_inclusive) ... ok
+test_unrelated_threshold_returns_empty (test_retrieval.ExactRetrievalTests.test_unrelated_threshold_returns_empty) ... ok
+test_database_failure_is_sanitized (test_sales_tool.PostgresSalesToolTests.test_database_failure_is_sanitized) ... ok
+test_different_filters_return_exact_results_and_source (test_sales_tool.PostgresSalesToolTests.test_different_filters_return_exact_results_and_source) ... ok
+test_fake_provider_orchestrates_real_postgres_tool (test_sales_tool.PostgresSalesToolTests.test_fake_provider_orchestrates_real_postgres_tool) ... ok
+test_illegal_parameters_and_sql_injection_fail_before_query (test_sales_tool.PostgresSalesToolTests.test_illegal_parameters_and_sql_injection_fail_before_query) ... ok
+test_matched_zero_value_order_has_zero_aov (test_sales_tool.PostgresSalesToolTests.test_matched_zero_value_order_has_zero_aov) ... ok
+test_migration_shape_constraints_and_index (test_sales_tool.PostgresSalesToolTests.test_migration_shape_constraints_and_index) ... ok
+test_mock_deepseek_api_orchestrates_real_postgres_tool (test_sales_tool.PostgresSalesToolTests.test_mock_deepseek_api_orchestrates_real_postgres_tool) ... ok
+test_no_data_returns_zero_summary (test_sales_tool.PostgresSalesToolTests.test_no_data_returns_zero_summary) ... ok
+test_seed_is_idempotent (test_sales_tool.PostgresSalesToolTests.test_seed_is_idempotent) ... ok
+test_unauthorized_access_does_not_query (test_sales_tool.PostgresSalesToolTests.test_unauthorized_access_does_not_query) ... ok
+test_changed_migration_rejected (test_storage.StorageTests.test_changed_migration_rejected) ... ok
+test_failed_migration_rolls_back (test_storage.StorageTests.test_failed_migration_rolls_back) ... ok
+test_repeat_is_noop_and_extension_version (test_storage.StorageTests.test_repeat_is_noop_and_extension_version) ... ok
+test_vector_storage_constraints_and_cascade (test_storage.StorageTests.test_vector_storage_constraints_and_cascade) ... ok
+test_fake_evaluation_record_uses_real_read_only_postgres_tool (test_tool_calling_evaluation.ToolCallingEvaluationDatabaseTests.test_fake_evaluation_record_uses_real_read_only_postgres_tool) ... ok
+
+----------------------------------------------------------------------
+Ran 42 tests in 3.097s
+
+OK

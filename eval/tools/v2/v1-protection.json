@@ -1,0 +1,27 @@
+{
+  "files": {
+    "eval/tools/cases.json": "b14ca5284978bb4f435b6d1f958a7f8ec2d26d10852e40c7cd18b66a1c9ca6d2",
+    "eval/tools/deterministic-controls-001/decisions.json": "520f07fd0ecff9d81fcb27ff80d30a8d13ba2c3e6a2eb76f9078f8b741b5c6f4",
+    "eval/tools/deterministic-controls-001/gate-status.json": "197eb5951acd281f142c6dede3982dafaab56e6c37cff105f3b6535a0991cdbc",
+    "eval/tools/deterministic-controls-001/raw.json": "4ea2cfa1ced08a2052c2c6819655fd4a6c1816a7a67695e3ab3f4f423dfe0fc3",
+    "eval/tools/deterministic-controls-001/reviewed.json": "9ad0fa5f70a3cc7dff9b8fc6a217a367351ce8f0eb723d6a6059028bdc154d62",
+    "eval/tools/freeze.json": "e62592ea959e9a0c1755c4b013052f21e3065d8964b26eabeda7e14f1f3a585d",
+    "eval/tools/live-001/decisions.json": "b59a234e25cd1d9e35220fde6fcf4ceb10d891cfeb1d15aaf993cf3676ae478a",
+    "eval/tools/live-001/raw.json": "ff5729b31c8300dcde12afd236dcc56342c5bf7307f001048fa3606769f4cafc",
+    "eval/tools/live-001/reviewed.json": "41ee5cec7233bd0c4c08ee892b1db86ab90392de8400c08500efcb9a6991ffe8",
+    "eval/tools/live-002/decisions.json": "9b8219633755d92def1385f19c61c14f52f2dbe111680f7fb50cbcb0ffb2b0ff",
+    "eval/tools/live-002/raw.json": "60e56808d0cd1d40350b0ea5485ae1b24662085c1bb31fe9cf9fad1c41fa47a6",
+    "eval/tools/live-002/reviewed.json": "2832cd89d597de3f09c9bfb97e19922ee4cd5521be96c203ffb66d92ad5cd401",
+    "eval/tools/live-003/decisions.json": "519c0ae1df70c69e1045c8e7e3aea7d4ce4ccfd6fb10981d3d66792233d26785",
+    "eval/tools/live-003/raw.json": "f1d4355a05ba23b4ecb0335e1b619670d2d84df60fd62322f18970bd9c73277d",
+    "eval/tools/live-003/reviewed.json": "4072f03219cd6d7d00c64d6d81a38a670b6469aa95d0bb677d3edb24d2fb9b51",
+    "eval/tools/policy.json": "7c3e1335157e96c160cd7777fd9826b1eec32dd2440cd9411f8a248ad1a7ad48",
+    "eval/tools/release-gate-v1.json": "02f4ed11281ae1a6fed72ad1ac959537cbf59ba94e1ce57ceffa342ddb9753fb",
+    "eval/tools/release_gate.py": "0b71974c22049682ddac1ab050de86285665df160530c742c753ddc32b573a59",
+    "eval/tools/run_live.py": "79cb6f57e3c4cd2f545b60093cca250a075b4f2b0115c47bbcb348fa7ddc4ebb",
+    "eval/tools/suite.py": "a5788948bba9377baeba8efd0f654bfb1ab3afe54933f37be5e8a41b33b712a4"
+  },
+  "protection_version": "tool-calling-v1-history-protection-v1",
+  "purpose": "Detect accidental changes; does not replace v1 freeze or verdicts.",
+  "suite_sha256": "4f0c8dcfe75dae98d06deac25fff6a2ce1cb743a5f3d5f7d0bd1f2553ad20958"
+}

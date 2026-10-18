@@ -1,0 +1,36 @@
+{
+  "deterministic_control_evidence_sha256": "aec178c714b969c530b4e8bd93dbaab4a392538088bc3b2f7d8ceadce84899d1",
+  "gate": {
+    "blockers": [
+      "minimum_live_runs_not_met"
+    ],
+    "control_result": {
+      "below_case_threshold": [],
+      "blockers": [],
+      "case_verdict_failures": [],
+      "core_blockers": 0,
+      "hard_invariants_pass": true,
+      "normalized_quality": 1.0,
+      "repeated_severe_quality_issue": false,
+      "run_id": "deterministic-controls-v2-001",
+      "verdict": "PASS"
+    },
+    "gate_version": "tool-calling-release-gate-v2",
+    "live_runs_received": 0,
+    "prerequisite_evidence_sha256": "180bbc2852cf7d77f62d512b133ad1a82a73d96396d17b1f3de165a475feddbc",
+    "prerequisite_pass": true,
+    "repeated_cross_run_failures": [],
+    "run_results": [],
+    "suite_sha256": "a7830d318bc2a51aa7bb6b23ea36b06f63ac45dc0b1914a031f744d67cf7396a",
+    "verdict": "NOT_RUN"
+  },
+  "gate_sha256": "8a4ac436dcda1a958af90994b12c9dfd0e1385d91e23170381758b437ad0935d",
+  "interpretation": "NOT_RUN is expected because no paid evaluator-v2 live regression was authorized or run. The only blocker is minimum_live_runs_not_met.",
+  "paid_api_calls": 0,
+  "prerequisite_blockers": [],
+  "prerequisite_evidence_sha256": "180bbc2852cf7d77f62d512b133ad1a82a73d96396d17b1f3de165a475feddbc",
+  "prerequisite_pass": true,
+  "status_evidence_sha256": "0f40a84f42ec9867f124602c00d8da5af9208c6287e125200775dcbcad302f64",
+  "status_version": "tool-calling-gate-v2-local-status-001",
+  "suite_sha256": "a7830d318bc2a51aa7bb6b23ea36b06f63ac45dc0b1914a031f744d67cf7396a"
+}

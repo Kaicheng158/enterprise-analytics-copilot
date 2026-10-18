@@ -1,0 +1,51 @@
+{
+  "evidence_version": "tool-gate-prerequisites-v3",
+  "suite_sha256": "78035ed0e09499eb2dbb2fbe9c52cac56476db414c3446b44927891980b3df3f",
+  "gate_sha256": "ce548ce798b5c2f3ad9fc2e14c483b2adc4d4c91b304375c4970dbf0ee49d497",
+  "checks": [
+    {
+      "name": "offline_tests",
+      "status": "PASS",
+      "artifact_path": "eval/tools/v3/preflight-v3-001/offline-tests.txt",
+      "artifact_sha256": "b986d30f78df3db7a6d668b111ca6316954e18a606b0af88dcc16042058a5e5a",
+      "details": {
+        "exit_code": 0,
+        "tests_run": 277,
+        "failures": 0,
+        "errors": 0
+      }
+    },
+    {
+      "name": "database_tests",
+      "status": "PASS",
+      "artifact_path": "eval/tools/v3/preflight-v3-001/database-tests.txt",
+      "artifact_sha256": "d6996a36dbb92e00d3da6a36c28e72bcbc0e322524fa69d12c317c3c4c621043",
+      "details": {
+        "exit_code": 0,
+        "tests_run": 43,
+        "failures": 0,
+        "errors": 0
+      }
+    },
+    {
+      "name": "feature_flag_default_off",
+      "status": "PASS",
+      "artifact_path": "eval/tools/v3/preflight-v3-001/runtime-boundary.json",
+      "artifact_sha256": "1aa6c03f5536e3d2ce534e2304456cfaa5603469306fd2d84c608aa777c8cacb",
+      "details": {
+        "setting": "TOOL_CALLING_ENABLED",
+        "default_value": false
+      }
+    },
+    {
+      "name": "public_tool_api_absent",
+      "status": "PASS",
+      "artifact_path": "eval/tools/v3/preflight-v3-001/runtime-boundary.json",
+      "artifact_sha256": "1aa6c03f5536e3d2ce534e2304456cfaa5603469306fd2d84c608aa777c8cacb",
+      "details": {
+        "public_tool_routes": []
+      }
+    }
+  ],
+  "evidence_sha256": "3ebd62133b83f08d987ef8b5ba57e4e0f53e5f09a6f3778b85adb753cbc15394"
+}

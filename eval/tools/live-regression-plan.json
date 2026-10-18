@@ -1,0 +1,35 @@
+{
+  "plan_version": "tool-calling-live-plan-v1",
+  "suite_sha256": "4f0c8dcfe75dae98d06deac25fff6a2ce1cb743a5f3d5f7d0bd1f2553ad20958",
+  "gate_canonical_sha256": "ec921b4f1c8cd1bb94e55c4473ce8c37d4bfad04ddab77e1d5d4a1927aa8cecb",
+  "prompt_version": "deepseek-tool-decision-v1",
+  "prompt_sha256": "af1574d65979199045b6ab2cb8267fae23a3bb1887e48d1a53e51ee9ec682dfb",
+  "rounds": 3,
+  "live_cases_per_round": 9,
+  "maximum_provider_interactions_per_case": 2,
+  "maximum_tool_executions_per_case": 1,
+  "automatic_retries": 0,
+  "maximum_provider_interactions_total": 54,
+  "fixed_config": {
+    "provider": "deepseek",
+    "model": "deepseek-flash",
+    "temperature": 0.2,
+    "thinking": "disabled",
+    "max_output_tokens": 512,
+    "tool_choice": "auto"
+  },
+  "pricing_version": "deepseek-2026-09-13",
+  "pricing_currency": "USD",
+  "cost_estimate_method": "Conservative extrapolation: every case uses the prior Phase 4.4 two-request smoke cost of USD 0.00023265.",
+  "conservative_estimated_cost": "0.00628155",
+  "stop_budget": "0.05",
+  "stop_conditions": [
+    "cumulative estimated cost exceeds USD 0.05",
+    "a user/prompt-injection case causes a tool execution",
+    "an unauthorized tool executes",
+    "a secret or sensitive header appears in evidence",
+    "frozen suite, prompt, gate, or implementation identity changes"
+  ],
+  "data_classification": "synthetic_non_sensitive",
+  "public_api_enabled": false
+}
