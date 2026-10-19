@@ -41,3 +41,9 @@ The provider emits correlated attempt and request-summary logs. A bounded HTTP r
 Central configuration: backend/config.py loads validated settings and the provider/price catalog. The provider factory selects the sole registered DeepSeek adapter. ChatRequest separates system/user content; the adapter serializes them as distinct role messages.
 
 Phase 2.1–2.2 supersedes the Phase 1 system-message interface: public requests carry only user content; backend/prompts.py assembles the fixed system instruction and user message.
+
+## Phase 5.1 bounded planning boundary
+
+The internal `backend.planning` package adds a default-off planning layer above the existing Tool Executor. A provider may only propose a strict plan; it cannot register tools, grant authorization or execute actions. The server validates ordered dependencies, task scope and fixed execution bounds before sequential execution. The first plan calls the existing PostgreSQL sales summary tool twice and computes the quarter-over-quarter change locally with exact decimal arithmetic. Every transition produces a validated in-memory `AgentState` snapshot and any error stops remaining work.
+
+No planning endpoint is registered, and `/chat`, `/rag/chat`, analytics-v2, RAG releases and frozen evaluation artifacts remain outside this boundary. See [Phase 5.1 design](phase5-bounded-planning.md).

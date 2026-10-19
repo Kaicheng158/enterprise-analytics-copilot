@@ -77,4 +77,12 @@ First local acceptance is complete, not repeated-run stability verification or p
 - [x] 4.5c Frozen v3 live evaluation history: the first three rounds remain FAIL because local Docker/PostgreSQL was unavailable for six tool executions. Infrastructure diagnostics and the original evidence remain preserved. See [historical acceptance](phase4-tool-calling-live-v3-acceptance.md) and [diagnostics](phase4-tool-calling-v3-infrastructure-diagnostics.md).
 - [x] 4.5d Final guarded recovery: unchanged frozen v3 Suite/Evaluator/Gate/Prompt/config completed three new independent 9-case rounds at 27/27 PASS; 12/12 database guards were healthy, Gate PASS, zero retries, cost USD 0.003135582. Final verification: 285 offline and 44 database tests. See [acceptance](phase4-tool-calling-live-v3-recovery-acceptance.md).
 
-Phase 4 is complete for local engineering acceptance. Tool Calling remains default-off with no public API. Production readiness is deferred: identity/RBAC, least-privilege production database access, durable audit/usage storage, secrets management, service availability/SLOs, deployment controls and human approval for consequential tools are not implemented. Phase 5 has not started.
+Phase 4 is complete for local engineering acceptance. Tool Calling remains default-off with no public API. Production readiness is deferred: identity/RBAC, least-privilege production database access, durable audit/usage storage, secrets management, service availability/SLOs, deployment controls and human approval for consequential tools are not implemented.
+
+## Phase 5 — Bounded Planning
+
+- [x] 5.1 Bounded multi-step planning foundation: strict provider-independent `Plan`, `PlanStep` and `AgentState` contracts; ordered dependencies; server-owned tool/computation policy; step, tool-call, timeout and execution-budget limits; fail-fast state transitions; default-off runtime; and a deterministic PostgreSQL Q1/Q2 comparison with local Decimal growth calculation. Local acceptance passed 297 offline and 46 database tests without paid API calls. Existing Phase 4 orchestration and `/chat`/`/rag/chat` behavior remain unchanged. See [design](phase5-bounded-planning.md).
+- [ ] 5.2 Deterministic planning evaluation and durable execution/checkpoint design.
+- [ ] 5.3 Controlled live planner integration behind a frozen gate and cost limits.
+- [ ] 5.4 Human-in-the-loop and consequential-action approval boundaries.
+- [ ] 5.5 Phase 5 integration and final verification.
