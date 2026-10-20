@@ -50,7 +50,7 @@ The executor remains fail-fast. A tool exception, malformed `ToolExecutionResult
 
 ## Checkpoint persistence design
 
-This section is a design for a later migration. Phase 5.2 creates no production database tables or migrations.
+This section was the Phase 5.2 design. Phase 5.3 now implements it in a disposable test-only PostgreSQL schema; there is still no production database table or migration. See [Phase 5.3](phase5-checkpoint-persistence.md).
 
 ### Execution record
 
@@ -120,14 +120,14 @@ Provider planning calls also need a recorded request hash and accepted-plan rece
 
 ## Remaining work and risks
 
-- No checkpoint store, migration, lease worker or resume API exists yet.
+- A test-isolated checkpoint store and crash simulator now exist; no production migration, lease service or resume API exists.
 - Intermediate results remain in memory and are not encrypted at rest.
 - Timeout enforcement is cooperative around steps; dependency-specific timeouts remain required.
 - There is no cancellation, paused/approval state, retention policy or operational reconciliation queue.
 - Canonical hashes detect identity changes but are not authenticity signatures.
 - The current executor supports one deterministic task and no live LLM planner.
 
-Recommended Phase 5.3 work is an isolated checkpoint repository and crash/recovery simulator using a temporary database schema. It should prove compare-and-swap, lease expiry, receipt uniqueness, replay prevention and request-hash conflicts before any production migration or live planner integration.
+Phase 5.3 completed the isolated checkpoint repository and crash/recovery simulator in a disposable database. It proves compare-and-swap, lease expiry, receipt uniqueness, completed-step replay prevention and request-hash conflicts before any production migration or live planner integration.
 
 ## Local verification
 
