@@ -90,4 +90,6 @@ Local acceptance on 2026-10-19 passed 297 offline tests and 46 isolated database
 
 The timeout is cooperative around step boundaries; a blocking dependency still needs its own network/database timeout. Plan and state history are in memory, so there is no restart recovery, durable checkpoint, idempotency ledger, concurrent scheduler or human approval pause. The budget is a simple unit counter. Only one deterministic task and one local computation are supported. Production identity/RBAC, durable audit storage and consequential-action approval remain unresolved Phase 4 production limits.
 
-Recommended Phase 5.2 work is deterministic plan evaluation and durable execution/checkpoint design before introducing a live LLM planner. It should add broader plan-policy tests, cancellation semantics, idempotency keys and resumable state while keeping tool authorization independent. A live provider should only be introduced after a frozen planning evaluation policy and cost/stop controls exist.
+Phase 5.1 identified deterministic validation and durable execution/checkpoint design as the next work before a live LLM planner.
+
+Phase 5.2 now adds deterministic dependency/cycle/order/action validation, guarded state transitions and bounded-exception tests. The checkpoint, recovery and idempotency mechanism remains a reviewed design only; no production database migration was created. See [Phase 5.2 design](phase5-plan-validation-and-recovery.md).

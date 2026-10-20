@@ -9,6 +9,7 @@ from pydantic import ValidationError
 from backend.planning import (
     BoundedPlanExecutor,
     BoundedPlanningOrchestrator,
+    PlanValidator,
     PlanningLimits,
     PlanningRequest,
     PlanningSettings,
@@ -55,12 +56,23 @@ class FakePlanProvider:
 
 
 class FakeToolExecutor:
-    def __init__(self, *, outputs=None, fail_at=None, clock=None, advance=0):
+    def __init__(
+        self,
+        *,
+        outputs=None,
+        fail_at=None,
+        raise_at=None,
+        invalid_result_at=None,
+        clock=None,
+        advance=0,
+    ):
         self.outputs = outputs or {
             "2026-Q1": sales_output("2026-Q1", total="400.00"),
             "2026-Q2": sales_output("2026-Q2", total="600.00"),
         }
         self.fail_at = fail_at
+        self.raise_at = raise_at
+        self.invalid_result_at = invalid_result_at
         self.clock = clock
         self.advance = advance
         self.calls = []
@@ -70,6 +82,10 @@ class FakeToolExecutor:
         if self.clock and self.advance:
             self.clock.advance(self.advance)
         index = len(self.calls)
+        if self.raise_at == index:
+            raise RuntimeError("private tool failure")
+        if self.invalid_result_at == index:
+            return {"private": "malformed result"}
         if self.fail_at == index:
             return ToolExecutionResult(
                 call_id=f"fake-{index}",
@@ -140,7 +156,7 @@ class BoundedPlanningTests(unittest.TestCase):
         ))
         self.assertGreaterEqual(len(result.state_history), 7)
 
-    def test_contracts_reject_extra_fields_and_forward_dependencies(self):
+    def test_contracts_reject_extra_fields_and_validator_rejects_forward_dependencies(self):
         payload = self.plan.model_dump(mode="python")
         payload["unexpected"] = True
         with self.assertRaises(ValidationError):
@@ -152,8 +168,10 @@ class BoundedPlanningTests(unittest.TestCase):
             {**first, "depends_on": ("load_comparison_sales",)},
             *payload["steps"][1:],
         )
-        with self.assertRaises(ValidationError):
-            Plan.model_validate(payload, strict=True)
+        plan = Plan.model_validate(payload, strict=True)
+        validation = PlanValidator().validate(plan)
+        self.assertEqual(validation.status, "invalid")
+        self.assertEqual(validation.error.code, "plan_dependency_order_invalid")
 
     def test_invalid_provider_json_and_request_mismatch_fail_before_tools(self):
         tool_executor = FakeToolExecutor()
@@ -205,6 +223,21 @@ class BoundedPlanningTests(unittest.TestCase):
         self.assertEqual(result.error.code, "action_not_authorized")
         self.assertEqual(tool_executor.calls, [])
 
+    def test_invalid_dependency_graph_is_rejected_before_tools(self):
+        payload = self.plan.model_dump(mode="python")
+        payload["steps"][0]["depends_on"] = ("load_comparison_sales",)
+        payload["steps"][1]["depends_on"] = ("load_baseline_sales",)
+        cyclic = Plan.model_validate(payload, strict=True)
+        tool_executor = FakeToolExecutor()
+        orchestrator, _ = self.orchestrator(tool_executor, plan=cyclic)
+        result = orchestrator.run(self.request, self.context)
+        self.assertEqual(result.status, "failed")
+        self.assertEqual(result.error.code, "plan_cycle_detected")
+        self.assertEqual(tool_executor.calls, [])
+        self.assertTrue(
+            all(step.status == "skipped" for step in result.state.step_states)
+        )
+
     def test_tool_failure_stops_and_skips_remaining_steps(self):
         tool_executor = FakeToolExecutor(fail_at=1)
         orchestrator, _ = self.orchestrator(tool_executor)
@@ -213,6 +246,38 @@ class BoundedPlanningTests(unittest.TestCase):
         self.assertEqual(len(tool_executor.calls), 1)
         statuses = [state.status for state in result.state.step_states]
         self.assertEqual(statuses, ["failed", "skipped", "skipped"])
+
+    def test_unexpected_or_malformed_tool_result_stops_safely(self):
+        for tool_executor in (
+            FakeToolExecutor(raise_at=1),
+            FakeToolExecutor(invalid_result_at=1),
+        ):
+            with self.subTest(executor=tool_executor):
+                orchestrator, _ = self.orchestrator(tool_executor)
+                result = orchestrator.run(self.request, self.context)
+                self.assertEqual(result.status, "failed")
+                self.assertEqual(result.error.code, "tool_execution_failed")
+                self.assertNotIn("private", result.error.message)
+                self.assertEqual(len(tool_executor.calls), 1)
+                self.assertEqual(
+                    [state.status for state in result.state.step_states],
+                    ["failed", "skipped", "skipped"],
+                )
+
+    def test_unexpected_compute_exception_is_sanitized(self):
+        tool_executor = FakeToolExecutor()
+        orchestrator, _ = self.orchestrator(tool_executor)
+        with patch.object(
+            BoundedPlanExecutor,
+            "_compute_growth",
+            side_effect=RuntimeError("private compute detail"),
+        ):
+            result = orchestrator.run(self.request, self.context)
+        self.assertEqual(result.status, "failed")
+        self.assertEqual(result.error.code, "state_consistency_error")
+        self.assertNotIn("private", result.error.message)
+        self.assertEqual(len(tool_executor.calls), 2)
+        self.assertEqual(result.state.step_states[-1].status, "failed")
 
     def test_timeout_stops_after_current_tool_and_before_next_call(self):
         clock = FakeClock()
@@ -225,6 +290,19 @@ class BoundedPlanningTests(unittest.TestCase):
         result = orchestrator.run(self.request, self.context)
         self.assertEqual(result.error.code, "plan_timeout")
         self.assertEqual(len(tool_executor.calls), 1)
+
+        boundary_clock = FakeClock()
+        boundary_executor = FakeToolExecutor(
+            clock=boundary_clock, advance=0.010
+        )
+        orchestrator, _ = self.orchestrator(
+            boundary_executor,
+            limits=PlanningLimits(timeout_ms=10),
+            clock=boundary_clock,
+        )
+        boundary = orchestrator.run(self.request, self.context)
+        self.assertEqual(boundary.error.code, "plan_timeout")
+        self.assertEqual(len(boundary_executor.calls), 1)
 
     def test_scope_mismatch_and_zero_baseline_fail_safely(self):
         mismatched = {
@@ -249,6 +327,18 @@ class BoundedPlanningTests(unittest.TestCase):
             "2026-Q2": sales_output("2026-Q2", total="600.00"),
         }
         orchestrator, _ = self.orchestrator(FakeToolExecutor(outputs=invalid_money))
+        result = orchestrator.run(self.request, self.context)
+        self.assertEqual(result.error.code, "intermediate_output_invalid")
+
+        excessive_money = {
+            "2026-Q1": sales_output(
+                "2026-Q1", total=f"{'9' * 40}.00"
+            ),
+            "2026-Q2": sales_output("2026-Q2", total="600.00"),
+        }
+        orchestrator, _ = self.orchestrator(
+            FakeToolExecutor(outputs=excessive_money)
+        )
         result = orchestrator.run(self.request, self.context)
         self.assertEqual(result.error.code, "intermediate_output_invalid")
 

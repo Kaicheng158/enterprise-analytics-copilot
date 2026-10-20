@@ -82,7 +82,8 @@ Phase 4 is complete for local engineering acceptance. Tool Calling remains defau
 ## Phase 5 — Bounded Planning
 
 - [x] 5.1 Bounded multi-step planning foundation: strict provider-independent `Plan`, `PlanStep` and `AgentState` contracts; ordered dependencies; server-owned tool/computation policy; step, tool-call, timeout and execution-budget limits; fail-fast state transitions; default-off runtime; and a deterministic PostgreSQL Q1/Q2 comparison with local Decimal growth calculation. Local acceptance passed 297 offline and 46 database tests without paid API calls. Existing Phase 4 orchestration and `/chat`/`/rag/chat` behavior remain unchanged. See [design](phase5-bounded-planning.md).
-- [ ] 5.2 Deterministic planning evaluation and durable execution/checkpoint design.
-- [ ] 5.3 Controlled live planner integration behind a frozen gate and cost limits.
-- [ ] 5.4 Human-in-the-loop and consequential-action approval boundaries.
-- [ ] 5.5 Phase 5 integration and final verification.
+- [x] 5.2 Deterministic plan validation and recovery design: canonical plan identity, unknown dependency and cycle detection, declared-order and server action binding, guarded step/agent transitions, safe bounded-execution exception handling, and a persistence/recovery/idempotency design without a production migration. Acceptance passed 311 offline and 46 database tests using Fake Provider/local services only. See [design](phase5-plan-validation-and-recovery.md).
+- [ ] 5.3 Isolated checkpoint repository and crash/recovery simulation, including leases, compare-and-swap and step receipt deduplication.
+- [ ] 5.4 Controlled live planner integration behind a frozen gate and cost limits.
+- [ ] 5.5 Human-in-the-loop and consequential-action approval boundaries.
+- [ ] 5.6 Phase 5 integration and final verification.

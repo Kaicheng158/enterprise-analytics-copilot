@@ -44,6 +44,12 @@ class CompareSalesGrowthSpec(StrictModel):
     comparison_period: Period
     region: Region
 
+    @model_validator(mode="after")
+    def source_steps_must_differ(self):
+        if self.baseline_step_id == self.comparison_step_id:
+            raise ValueError("comparison requires two distinct source steps")
+        return self
+
 
 class PlanStep(StrictModel):
     step_id: StepId = Field(pattern=r"^[a-z][a-z0-9_]{0,63}$")
@@ -62,8 +68,6 @@ class PlanStep(StrictModel):
 
     @model_validator(mode="after")
     def action_matches_kind(self):
-        if self.step_id in self.depends_on:
-            raise ValueError("step cannot depend on itself")
         if self.kind == "tool":
             if self.tool_call is None or self.computation is not None:
                 raise ValueError("tool step requires only tool_call")
@@ -82,16 +86,12 @@ class Plan(StrictModel):
     steps: tuple[PlanStep, ...] = Field(min_length=1, max_length=8)
 
     @model_validator(mode="after")
-    def graph_is_ordered_and_consistent(self):
+    def task_shape_is_consistent(self):
         if self.baseline_period == self.comparison_period:
             raise ValueError("comparison periods must differ")
-        seen: set[str] = set()
-        for step in self.steps:
-            if step.step_id in seen:
-                raise ValueError("step IDs must be unique")
-            if any(dependency not in seen for dependency in step.depends_on):
-                raise ValueError("dependencies must reference earlier steps")
-            seen.add(step.step_id)
+        ids = [step.step_id for step in self.steps]
+        if len(ids) != len(set(ids)):
+            raise ValueError("step IDs must be unique")
         compute_steps = [step for step in self.steps if step.kind == "compute"]
         if len(compute_steps) != 1 or compute_steps[0] != self.steps[-1]:
             raise ValueError("plan requires one final compute step")
@@ -112,6 +112,10 @@ class PlanningError(StrictModel):
         "plan_invalid",
         "plan_provider_error",
         "plan_request_mismatch",
+        "plan_dependency_unknown",
+        "plan_cycle_detected",
+        "plan_dependency_order_invalid",
+        "plan_action_mismatch",
         "step_limit_exceeded",
         "tool_call_limit_exceeded",
         "budget_limit_exceeded",
@@ -125,6 +129,23 @@ class PlanningError(StrictModel):
         "state_consistency_error",
     ]
     message: str = Field(min_length=1, max_length=200)
+
+
+class PlanValidationResult(StrictModel):
+    status: Literal["valid", "invalid"]
+    plan_sha256: str = Field(pattern=r"^[0-9a-f]{64}$")
+    execution_order: tuple[StepId, ...]
+    error: PlanningError | None = None
+
+    @model_validator(mode="after")
+    def fields_match_status(self):
+        if self.status == "valid" and (self.error is not None or not self.execution_order):
+            raise ValueError("valid plan requires execution order and no error")
+        if self.status == "invalid" and (
+            self.error is None or self.execution_order
+        ):
+            raise ValueError("invalid plan requires error and no execution order")
+        return self
 
 
 class StepExecutionState(StrictModel):

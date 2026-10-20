@@ -3,15 +3,14 @@
 from __future__ import annotations
 
 from copy import deepcopy
-from dataclasses import dataclass
-from decimal import Decimal, InvalidOperation, ROUND_HALF_UP
+from decimal import Decimal, DecimalException, InvalidOperation, ROUND_HALF_UP
 import time
 from typing import Callable, Literal, Mapping, Protocol
 
 from pydantic import Field, ValidationError, model_validator
 
 from backend.tools.executor import ToolExecutor
-from backend.tools.models import StrictModel, ToolExecutionContext
+from backend.tools.models import StrictModel, ToolExecutionContext, ToolExecutionResult
 
 from .models import (
     AgentState,
@@ -23,6 +22,10 @@ from .models import (
     SalesGrowthComparison,
     StepExecutionState,
 )
+from .transitions import validate_agent_transition, validate_step_transition
+from .validation import PlanValidator, PlanningPolicy
+
+
 SAFE_MESSAGES = {
     "step_limit_exceeded": "Plan step limit exceeded",
     "tool_call_limit_exceeded": "Plan tool call limit exceeded",
@@ -42,12 +45,6 @@ class ExecutableTool(Protocol):
     def execute(self, call, context): ...
 
 
-@dataclass(frozen=True)
-class PlanningPolicy:
-    allowed_tools: frozenset[str] = frozenset({"get_postgres_sales_summary"})
-    allowed_computations: frozenset[str] = frozenset({"compare_sales_growth"})
-
-
 class SalesSourceEvidence(StrictModel):
     kind: Literal["postgresql"]
     relation: Literal["analytics.sales_orders"]
@@ -60,8 +57,12 @@ class SalesSummaryEvidence(StrictModel):
     region: Literal["all", "north", "south"]
     currency: Literal["USD"]
     order_count: int = Field(ge=0)
-    total_sales: str = Field(pattern=r"^(0|[1-9][0-9]*)\.[0-9]{2}$")
+    total_sales: str = Field(
+        max_length=32,
+        pattern=r"^(0|[1-9][0-9]*)\.[0-9]{2}$",
+    )
     average_order_value: str | None = Field(
+        max_length=32,
         pattern=r"^(0|[1-9][0-9]*)\.[0-9]{2}$"
     )
     data_source: SalesSourceEvidence
@@ -91,6 +92,10 @@ class BoundedPlanExecutor:
         self._tool_executor = tool_executor
         self._limits = limits or PlanningLimits()
         self._policy = policy or PlanningPolicy()
+        self._plan_validator = PlanValidator(
+            limits=self._limits,
+            policy=self._policy,
+        )
         self._clock = clock
 
     def execute(
@@ -128,6 +133,8 @@ class BoundedPlanExecutor:
                 elapsed_ms=max(0, round((self._clock() - started) * 1000)),
                 error=error,
             )
+            if history:
+                validate_agent_transition(history[-1], state)
             history.append(state)
             return state
 
@@ -146,8 +153,9 @@ class BoundedPlanExecutor:
             )
         )
 
-        rejection = self._validate_plan(plan)
-        if rejection:
+        validation = self._plan_validator.validate(plan)
+        if validation.status == "invalid":
+            rejection = validation.error
             self._skip_pending(states)
             final = snapshot("failed", error=rejection)
             return self._failed(plan, final, history, rejection, provider_calls)
@@ -160,12 +168,15 @@ class BoundedPlanExecutor:
                 return self._failed(plan, final, history, timeout, provider_calls)
             if any(dependency not in completed for dependency in step.depends_on):
                 error = self._error("dependency_failed")
-                states[step.step_id] = StepExecutionState(
-                    step_id=step.step_id,
-                    kind=step.kind,
-                    status="failed",
-                    attempts=0,
-                    error=error,
+                self._transition(
+                    states,
+                    StepExecutionState(
+                        step_id=step.step_id,
+                        kind=step.kind,
+                        status="failed",
+                        attempts=0,
+                        error=error,
+                    ),
                 )
                 self._skip_pending(states)
                 final = snapshot("failed", error=error)
@@ -176,12 +187,15 @@ class BoundedPlanExecutor:
             )
             if budget + unit_cost > self._limits.max_budget_units:
                 error = self._error("budget_limit_exceeded")
-                states[step.step_id] = StepExecutionState(
-                    step_id=step.step_id,
-                    kind=step.kind,
-                    status="failed",
-                    attempts=0,
-                    error=error,
+                self._transition(
+                    states,
+                    StepExecutionState(
+                        step_id=step.step_id,
+                        kind=step.kind,
+                        status="failed",
+                        attempts=0,
+                        error=error,
+                    ),
                 )
                 self._skip_pending(states)
                 final = snapshot("failed", error=error)
@@ -190,26 +204,57 @@ class BoundedPlanExecutor:
             budget += unit_cost
             if step.kind == "tool":
                 tool_calls += 1
-            states[step.step_id] = StepExecutionState(
-                step_id=step.step_id,
-                kind=step.kind,
-                status="running",
-                attempts=1,
+            self._transition(
+                states,
+                StepExecutionState(
+                    step_id=step.step_id,
+                    kind=step.kind,
+                    status="running",
+                    attempts=1,
+                ),
             )
             snapshot("running", current=step.step_id)
             step_started = self._clock()
             if step.kind == "tool":
-                result = self._tool_executor.execute(step.tool_call, context)
+                try:
+                    result = self._tool_executor.execute(step.tool_call, context)
+                    if not isinstance(result, ToolExecutionResult):
+                        raise TypeError("invalid tool execution result")
+                except Exception:
+                    error = self._error("tool_execution_failed")
+                    self._transition(
+                        states,
+                        StepExecutionState(
+                            step_id=step.step_id,
+                            kind=step.kind,
+                            status="failed",
+                            attempts=1,
+                            error=error,
+                            latency_ms=max(
+                                0, round((self._clock() - step_started) * 1000)
+                            ),
+                        ),
+                    )
+                    self._skip_pending(states)
+                    final = snapshot("failed", error=error)
+                    return self._failed(
+                        plan, final, history, error, provider_calls
+                    )
                 if result.status != "success":
                     error = self._error("tool_execution_failed")
-                    states[step.step_id] = StepExecutionState(
-                        step_id=step.step_id,
-                        kind=step.kind,
-                        status="failed",
-                        attempts=1,
-                        error=error,
-                        latency_ms=max(0, round((self._clock() - step_started) * 1000)),
-                        tool_call_id=result.call_id,
+                    self._transition(
+                        states,
+                        StepExecutionState(
+                            step_id=step.step_id,
+                            kind=step.kind,
+                            status="failed",
+                            attempts=1,
+                            error=error,
+                            latency_ms=max(
+                                0, round((self._clock() - step_started) * 1000)
+                            ),
+                            tool_call_id=result.call_id,
+                        ),
                     )
                     self._skip_pending(states)
                     final = snapshot("failed", error=error)
@@ -220,44 +265,79 @@ class BoundedPlanExecutor:
                 try:
                     output = self._compute_growth(step.computation, states)
                 except _StepFailure as failure:
-                    states[step.step_id] = StepExecutionState(
-                        step_id=step.step_id,
-                        kind=step.kind,
-                        status="failed",
-                        attempts=1,
-                        error=failure.error,
-                        latency_ms=max(0, round((self._clock() - step_started) * 1000)),
+                    self._transition(
+                        states,
+                        StepExecutionState(
+                            step_id=step.step_id,
+                            kind=step.kind,
+                            status="failed",
+                            attempts=1,
+                            error=failure.error,
+                            latency_ms=max(
+                                0, round((self._clock() - step_started) * 1000)
+                            ),
+                        ),
                     )
                     self._skip_pending(states)
                     final = snapshot("failed", error=failure.error)
                     return self._failed(
                         plan, final, history, failure.error, provider_calls
                     )
+                except Exception:
+                    error = self._error("state_consistency_error")
+                    self._transition(
+                        states,
+                        StepExecutionState(
+                            step_id=step.step_id,
+                            kind=step.kind,
+                            status="failed",
+                            attempts=1,
+                            error=error,
+                            latency_ms=max(
+                                0, round((self._clock() - step_started) * 1000)
+                            ),
+                        ),
+                    )
+                    self._skip_pending(states)
+                    final = snapshot("failed", error=error)
+                    return self._failed(
+                        plan, final, history, error, provider_calls
+                    )
                 tool_call_id = None
 
             timeout = self._timeout_error(started)
             if timeout:
-                states[step.step_id] = StepExecutionState(
-                    step_id=step.step_id,
-                    kind=step.kind,
-                    status="failed",
-                    attempts=1,
-                    error=timeout,
-                    latency_ms=max(0, round((self._clock() - step_started) * 1000)),
-                    tool_call_id=tool_call_id,
+                self._transition(
+                    states,
+                    StepExecutionState(
+                        step_id=step.step_id,
+                        kind=step.kind,
+                        status="failed",
+                        attempts=1,
+                        error=timeout,
+                        latency_ms=max(
+                            0, round((self._clock() - step_started) * 1000)
+                        ),
+                        tool_call_id=tool_call_id,
+                    ),
                 )
                 self._skip_pending(states)
                 final = snapshot("failed", error=timeout)
                 return self._failed(plan, final, history, timeout, provider_calls)
 
-            states[step.step_id] = StepExecutionState(
-                step_id=step.step_id,
-                kind=step.kind,
-                status="completed",
-                attempts=1,
-                output=output,
-                latency_ms=max(0, round((self._clock() - step_started) * 1000)),
-                tool_call_id=tool_call_id,
+            self._transition(
+                states,
+                StepExecutionState(
+                    step_id=step.step_id,
+                    kind=step.kind,
+                    status="completed",
+                    attempts=1,
+                    output=output,
+                    latency_ms=max(
+                        0, round((self._clock() - step_started) * 1000)
+                    ),
+                    tool_call_id=tool_call_id,
+                ),
             )
             completed.append(step.step_id)
             snapshot("running")
@@ -280,24 +360,6 @@ class BoundedPlanExecutor:
             error=None,
             provider_calls=provider_calls,
         )
-
-    def _validate_plan(self, plan: Plan) -> PlanningError | None:
-        tool_steps = [step for step in plan.steps if step.kind == "tool"]
-        if len(plan.steps) > self._limits.max_steps:
-            return self._error("step_limit_exceeded")
-        if len(tool_steps) > self._limits.max_tool_calls:
-            return self._error("tool_call_limit_exceeded")
-        if len(plan.steps) > self._limits.max_budget_units:
-            return self._error("budget_limit_exceeded")
-        for step in plan.steps:
-            if step.kind == "tool" and step.tool_call.name not in self._policy.allowed_tools:
-                return self._error("action_not_authorized")
-            if (
-                step.kind == "compute"
-                and step.computation.operation not in self._policy.allowed_computations
-            ):
-                return self._error("action_not_authorized")
-        return None
 
     def _compute_growth(
         self,
@@ -324,12 +386,15 @@ class BoundedPlanExecutor:
             or baseline.data_source != comparison.data_source
         ):
             raise _StepFailure(self._error("comparison_scope_mismatch"))
-        if baseline_total == 0:
-            raise _StepFailure(self._error("growth_rate_undefined"))
-        change = (comparison_total - baseline_total).quantize(Decimal("0.01"))
-        growth = (
-            change / baseline_total * Decimal(100)
-        ).quantize(Decimal("0.01"), rounding=ROUND_HALF_UP)
+        try:
+            if baseline_total == 0:
+                raise _StepFailure(self._error("growth_rate_undefined"))
+            change = (comparison_total - baseline_total).quantize(Decimal("0.01"))
+            growth = (
+                change / baseline_total * Decimal(100)
+            ).quantize(Decimal("0.01"), rounding=ROUND_HALF_UP)
+        except DecimalException:
+            raise _StepFailure(self._error("intermediate_output_invalid")) from None
         return SalesGrowthComparison(
             baseline_period=baseline.period,
             comparison_period=comparison.period,
@@ -344,7 +409,7 @@ class BoundedPlanExecutor:
         ).model_dump(mode="python")
 
     def _timeout_error(self, started: float) -> PlanningError | None:
-        if (self._clock() - started) * 1000 > self._limits.timeout_ms:
+        if (self._clock() - started) * 1000 >= self._limits.timeout_ms:
             return self._error("plan_timeout")
         return None
 
@@ -352,12 +417,23 @@ class BoundedPlanExecutor:
     def _skip_pending(states: dict[str, StepExecutionState]) -> None:
         for step_id, state in tuple(states.items()):
             if state.status == "pending":
-                states[step_id] = StepExecutionState(
-                    step_id=step_id,
-                    kind=state.kind,
-                    status="skipped",
-                    attempts=0,
+                BoundedPlanExecutor._transition(
+                    states,
+                    StepExecutionState(
+                        step_id=step_id,
+                        kind=state.kind,
+                        status="skipped",
+                        attempts=0,
+                    ),
                 )
+
+    @staticmethod
+    def _transition(
+        states: dict[str, StepExecutionState],
+        current: StepExecutionState,
+    ) -> None:
+        validate_step_transition(states[current.step_id], current)
+        states[current.step_id] = current
 
     @staticmethod
     def _error(code: str) -> PlanningError:
