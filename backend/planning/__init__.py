@@ -24,6 +24,12 @@ from .deepseek_planner_adapter import (
     DeepSeekStructuredPlannerTransport,
     load_deepseek_planner_settings,
 )
+from .durable_controlled_runtime import (
+    DurableControlledPlanner,
+    DurableControlledPlannerSettings,
+    DurablePlannerError,
+    load_durable_controlled_planner_settings,
+)
 from .planner_safety import PlannerCostGuard, PlannerSafetyStop
 from .structured_provider import (
     PLAN_RESPONSE_SCHEMA_SHA256,
@@ -34,6 +40,7 @@ from .structured_provider import (
     PlannerGenerationResponse,
     PlannerProviderError,
     PlannerTransport,
+    PlannerUsage,
     StructuredPlanProvider,
     build_planner_generation_request,
 )
@@ -55,6 +62,9 @@ __all__ = [
     "ControlledPlannerSettings",
     "DeepSeekPlannerSettings",
     "DeepSeekStructuredPlannerTransport",
+    "DurableControlledPlanner",
+    "DurableControlledPlannerSettings",
+    "DurablePlannerError",
     "PLAN_RESPONSE_SCHEMA_SHA256",
     "PLANNER_PROMPT_SHA256",
     "PLANNER_PROMPT_VERSION",
@@ -65,6 +75,7 @@ __all__ = [
     "PlannerProviderError",
     "PlannerSafetyStop",
     "PlannerTransport",
+    "PlannerUsage",
     "StructuredPlanProvider",
     "Plan",
     "PlanExecutionResult",
@@ -86,6 +97,7 @@ __all__ = [
     "load_planning_settings",
     "load_controlled_planner_settings",
     "load_deepseek_planner_settings",
+    "load_durable_controlled_planner_settings",
     "validate_agent_transition",
     "validate_step_transition",
 ]

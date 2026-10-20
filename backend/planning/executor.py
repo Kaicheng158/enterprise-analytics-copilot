@@ -408,6 +408,15 @@ class BoundedPlanExecutor:
             dataset_version=baseline.data_source.dataset_version,
         ).model_dump(mode="python")
 
+    def compute_growth(
+        self,
+        spec: CompareSalesGrowthSpec,
+        states: Mapping[str, StepExecutionState],
+    ) -> dict:
+        """Reuse the validated local computation in durable step execution."""
+
+        return self._compute_growth(spec, states)
+
     def _timeout_error(self, started: float) -> PlanningError | None:
         if (self._clock() - started) * 1000 >= self._limits.timeout_ms:
             return self._error("plan_timeout")

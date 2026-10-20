@@ -190,6 +190,48 @@ class PostgresCheckpointStore:
             created=created,
         )
 
+    def find_execution_by_idempotency(
+        self,
+        *,
+        scope_key: str,
+        idempotency_key: str,
+        request_sha256: str,
+    ) -> ExecutionCreation | None:
+        """Find a prior submission before asking a planner to generate again.
+
+        The raw idempotency key is HMACed exactly as it is during creation and
+        never leaves this repository. A reused key with a different request
+        fails closed before another provider call.
+        """
+
+        self._validate_hash(request_sha256)
+        if not 1 <= len(scope_key) <= 160:
+            raise ValueError("invalid execution scope")
+        if not 8 <= len(idempotency_key) <= 200:
+            raise ValueError("invalid idempotency key")
+        key_hash = self._idempotency_hash(scope_key, idempotency_key)
+        with self._connection_factory() as connection:
+            row = connection.execute(
+                sql.SQL(
+                    "SELECT {} FROM {} WHERE scope_key=%s AND idempotency_key_hash=%s"
+                ).format(
+                    sql.SQL(self._execution_columns()),
+                    self._table("executions"),
+                ),
+                (scope_key, key_hash),
+            ).fetchone()
+            if row is None:
+                return None
+            execution = self._execution_from_row(row)
+            if execution.request_sha256 != request_sha256:
+                raise IdempotencyConflict("idempotency_key_conflict")
+            checkpoint = self._latest_checkpoint(connection, execution.execution_id)
+        return ExecutionCreation(
+            execution=execution,
+            checkpoint=checkpoint,
+            created=False,
+        )
+
     def get_execution(self, execution_id: UUID) -> PersistentExecution:
         with self._connection_factory() as connection:
             row = connection.execute(
