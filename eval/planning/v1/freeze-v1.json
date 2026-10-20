@@ -1,0 +1,23 @@
+{
+  "file_sha256": {
+    "backend/planning/deepseek_planner_adapter.py": "8c014162ff3b3da7893116e21e9b243b2f17eec72ed0661871f53f3e67fc4c7e",
+    "backend/planning/planner_safety.py": "a9f20a3d938629c1b5cd8142e4b40cc3183f71996b5484d4678fae2a3d8679fe",
+    "backend/planning/structured_provider.py": "5084404c33c78b9eee22cf4d13d5a8131cab5adcc7e544e17afe9aa2923cf84e",
+    "eval/planning/v1/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "eval/planning/v1/cases-v1.json": "b5012e078d72a72951eb52bea757a9a77cc8532b0c0126d719de03bddec714c3",
+    "eval/planning/v1/live-plan-v1.json": "2b8690ec65683e89fc3e67a116c17c06865ed022bfb7355f198c68f0586a5cf0",
+    "eval/planning/v1/policy-v1.json": "8ba76680b66f898397f7a5388bec142348090556fc47093cd6ec7c461b97bdf5",
+    "eval/planning/v1/release-gate-v1.json": "ebe033057e2f5a73c3723c6811e2f68ed86b8bdcf35df83e82875035dab4155c",
+    "eval/planning/v1/release_gate_v1.py": "aee915212c0b18ffbf682189335671fd9ed13b2652814aee7d05968cf3a9a3b4",
+    "eval/planning/v1/suite_v1.py": "ce76a5d5c51462442a172c5c4672facbab867479c9e432da517f6b49e7657779"
+  },
+  "freeze_version": "planner-evaluator-freeze-v1",
+  "gate_sha256": "164d0985b5e05159f1b26d1d0befad5002ccbaabecb37f54483fa861d69b40f7",
+  "historical_phase2_5_artifacts_modified": false,
+  "paid_api_calls_during_freeze": 0,
+  "prompt_sha256": "23a1003075c87466b81525f3981a7aca75d97e64c2d1fbd349d5d40f6c39882b",
+  "prompt_version": "bounded-planner-v1",
+  "schema_sha256": "8ca0bc1a0a28bc75597bdd77ab56d3878260cbc8c82206c75d2a4cb9f87e5660",
+  "status": "preregistered_before_paid_execution",
+  "suite_sha256": "60881b4764c4e880afcea589b4373fc1ee6cc92c4cb3ae84305907f9fadee7f8"
+}

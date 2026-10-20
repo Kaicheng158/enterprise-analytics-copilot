@@ -1,0 +1,12 @@
+{
+  "blockers": [
+    "minimum_live_rounds_not_met"
+  ],
+  "control_cases": 10,
+  "control_passes": 10,
+  "gate_sha256": "164d0985b5e05159f1b26d1d0befad5002ccbaabecb37f54483fa861d69b40f7",
+  "gate_version": "planner-release-gate-v1",
+  "live_rounds_received": 0,
+  "suite_sha256": "60881b4764c4e880afcea589b4373fc1ee6cc92c4cb3ae84305907f9fadee7f8",
+  "verdict": "BLOCKED"
+}

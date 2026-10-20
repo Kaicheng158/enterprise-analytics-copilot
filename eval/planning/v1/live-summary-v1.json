@@ -1,0 +1,77 @@
+{
+  "estimated_cost_usd": "0.0057585",
+  "gate": {
+    "blockers": [],
+    "control_cases": 10,
+    "control_passes": 10,
+    "gate_sha256": "164d0985b5e05159f1b26d1d0befad5002ccbaabecb37f54483fa861d69b40f7",
+    "gate_version": "planner-release-gate-v1",
+    "live_rounds_received": 3,
+    "suite_sha256": "60881b4764c4e880afcea589b4373fc1ee6cc92c4cb3ae84305907f9fadee7f8",
+    "verdict": "PASS"
+  },
+  "gate_sha256": "164d0985b5e05159f1b26d1d0befad5002ccbaabecb37f54483fa861d69b40f7",
+  "latency_ms": 14299,
+  "live_plan_sha256": "a167e55944768d461db733cad93e707a9a7dc31395452150d1d540d1cecf5d3a",
+  "paid_api_calls": 9,
+  "rounds": [
+    {
+      "estimated_cost_usd": "0.0018963",
+      "latency_ms": 4664,
+      "result": {
+        "core_blockers": 0,
+        "normalized_quality": 1.0,
+        "schema_plan_authorization_100_percent": true,
+        "verdict": "PASS"
+      },
+      "run_id": "live-v1-001",
+      "tokens": {
+        "input": 2753,
+        "output": 892,
+        "total": 3645
+      }
+    },
+    {
+      "estimated_cost_usd": "0.0019527",
+      "latency_ms": 4879,
+      "result": {
+        "core_blockers": 0,
+        "normalized_quality": 1.0,
+        "schema_plan_authorization_100_percent": true,
+        "verdict": "PASS"
+      },
+      "run_id": "live-v1-002",
+      "tokens": {
+        "input": 2753,
+        "output": 939,
+        "total": 3692
+      }
+    },
+    {
+      "estimated_cost_usd": "0.0019095",
+      "latency_ms": 4756,
+      "result": {
+        "core_blockers": 0,
+        "normalized_quality": 1.0,
+        "schema_plan_authorization_100_percent": true,
+        "verdict": "PASS"
+      },
+      "run_id": "live-v1-003",
+      "tokens": {
+        "input": 2753,
+        "output": 903,
+        "total": 3656
+      }
+    }
+  ],
+  "rounds_completed": 3,
+  "runner_sha256": "47d0e3ae3646d884e3a2519c543412feee16cd6d26b12dbd397f433dbd5b2aeb",
+  "stop_reason": null,
+  "suite_sha256": "60881b4764c4e880afcea589b4373fc1ee6cc92c4cb3ae84305907f9fadee7f8",
+  "summary_version": "planner-live-summary-v1",
+  "tokens": {
+    "input": 8259,
+    "output": 2734,
+    "total": 10993
+  }
+}

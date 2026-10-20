@@ -1,0 +1,56 @@
+{
+  "checks": {
+    "api_key_configured": true,
+    "cost_reserve_within_budget": true,
+    "database_health": true,
+    "database_tests": true,
+    "evidence_path_safe": true,
+    "feature_flags_default_off": true,
+    "frozen_identity": true,
+    "offline_tests": true,
+    "public_planner_api_absent": true
+  },
+  "cost_plan": {
+    "automatic_retries": 0,
+    "budget_limit_usd": "0.02",
+    "maximum_provider_calls_total": 9,
+    "maximum_reserved_cost_usd": "0.018",
+    "per_call_reserve_usd": "0.002"
+  },
+  "database": {
+    "dataset_rows": 8,
+    "error_code": null,
+    "failed_stage": null,
+    "sales_relation": true,
+    "select_1": true,
+    "status": "healthy",
+    "tool_status": "success"
+  },
+  "gate_sha256": "164d0985b5e05159f1b26d1d0befad5002ccbaabecb37f54483fa861d69b40f7",
+  "paid_api_calls": 0,
+  "preflight_version": "planner-preflight-v1",
+  "prompt_sha256": "23a1003075c87466b81525f3981a7aca75d97e64c2d1fbd349d5d40f6c39882b",
+  "release_gate_status": "BLOCKED_PENDING_LIVE_ROUNDS",
+  "runtime": {
+    "api_key_configured": true,
+    "max_output_tokens": 800,
+    "model": "deepseek-flash",
+    "planner_feature_enabled": false,
+    "provider": "deepseek",
+    "public_api_enabled": false,
+    "thinking": "disabled"
+  },
+  "schema_sha256": "8ca0bc1a0a28bc75597bdd77ab56d3878260cbc8c82206c75d2a4cb9f87e5660",
+  "status": "READY",
+  "suite_sha256": "60881b4764c4e880afcea589b4373fc1ee6cc92c4cb3ae84305907f9fadee7f8",
+  "test_results": {
+    "database": {
+      "count": 59,
+      "passed": true
+    },
+    "offline": {
+      "count": 345,
+      "passed": true
+    }
+  }
+}

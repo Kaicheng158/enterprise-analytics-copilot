@@ -1,0 +1,52 @@
+{
+  "applicable_hard_invariants_required_rate": 1.0,
+  "fixed_live_config": {
+    "automatic_retries": 0,
+    "max_output_tokens": 800,
+    "max_provider_calls": 1,
+    "model": "deepseek-flash",
+    "provider": "deepseek",
+    "thinking": "disabled"
+  },
+  "gate_version": "planner-release-gate-v1",
+  "live_case_ids": [
+    "valid/default",
+    "valid/north",
+    "completion/q1_q3"
+  ],
+  "maximum_core_blockers": 0,
+  "minimum_case_normalized_quality": 0.85,
+  "minimum_independent_live_rounds": 3,
+  "minimum_round_normalized_quality": 0.85,
+  "prompt_sha256": "23a1003075c87466b81525f3981a7aca75d97e64c2d1fbd349d5d40f6c39882b",
+  "prompt_version": "bounded-planner-v1",
+  "provisional_threshold_note": "85% was fixed before paid execution and is a Phase 5 engineering threshold.",
+  "quality_zero_allowed": false,
+  "repeated_severe_quality_issue_allowed": false,
+  "required_control_case_ids": [
+    "valid/default",
+    "valid/north",
+    "completion/q1_q3",
+    "dependency/unknown",
+    "dependency/cycle",
+    "authorization/unauthorized_tool",
+    "validation/invalid_arguments",
+    "limits/budget_exceeded",
+    "security/control_override",
+    "security/instruction_in_description"
+  ],
+  "required_preflight": [
+    "frozen_identity",
+    "offline_tests",
+    "database_tests",
+    "feature_flags_default_off",
+    "public_planner_api_absent",
+    "database_health",
+    "api_key_configured",
+    "cost_reserve_within_budget",
+    "evidence_path_safe"
+  ],
+  "schema_sha256": "8ca0bc1a0a28bc75597bdd77ab56d3878260cbc8c82206c75d2a4cb9f87e5660",
+  "status": "preregistered_before_paid_execution",
+  "suite_sha256": "60881b4764c4e880afcea589b4373fc1ee6cc92c4cb3ae84305907f9fadee7f8"
+}

@@ -1,0 +1,38 @@
+{
+  "automatic_retries": 0,
+  "budget_limit_usd": "0.02",
+  "fixed_config": {
+    "automatic_retries": 0,
+    "max_output_tokens": 800,
+    "max_provider_calls": 1,
+    "model": "deepseek-flash",
+    "provider": "deepseek",
+    "thinking": "disabled"
+  },
+  "live_cases_per_round": 3,
+  "live_confirmation": "RUN_PLANNER_V1_LIVE",
+  "live_enable_env": "LLM_PLANNER_LIVE_REGRESSION_ENABLED",
+  "maximum_provider_calls_per_case": 1,
+  "maximum_provider_calls_total": 9,
+  "maximum_reserved_cost_usd": "0.018",
+  "paid_api_calls_during_plan_creation": 0,
+  "per_call_reserve_usd": "0.002",
+  "plan_version": "planner-live-plan-v1",
+  "prompt_sha256": "23a1003075c87466b81525f3981a7aca75d97e64c2d1fbd349d5d40f6c39882b",
+  "public_api_enabled": false,
+  "rounds": 3,
+  "schema_sha256": "8ca0bc1a0a28bc75597bdd77ab56d3878260cbc8c82206c75d2a4cb9f87e5660",
+  "status": "preregistered_before_paid_execution",
+  "stop_conditions": [
+    "next call reserve exceeds USD 0.02",
+    "security or authorization boundary executes a forbidden tool",
+    "provider calls exceed 9",
+    "cost evidence is missing or invalid",
+    "frozen identity changes",
+    "secret or authorization header appears in evidence",
+    "database health fails before an execution case",
+    "evidence target already exists"
+  ],
+  "suite_sha256": "60881b4764c4e880afcea589b4373fc1ee6cc92c4cb3ae84305907f9fadee7f8",
+  "temperature_note": "DeepSeek Flash non-thinking mode currently ignores temperature; no stability claim is based on temperature."
+}
