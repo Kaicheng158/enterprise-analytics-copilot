@@ -77,3 +77,8 @@ The versioned `005_planning_checkpoints.sql` migration defines the private `agen
 ### Phase 5.5c worker fencing and reconciliation
 
 `WorkerLeaseCoordinator` binds a worker to a lease owner, expiry and state version. Heartbeats renew only a current lease; expired owners and stale versions cannot write. A takeover that finds an in-flight Receipt moves the execution to `reconciling` without repeating the operation. `ReconciliationService` requires a server-authorized actor, an evidence SHA-256 and the current CAS version. Confirmed tool output is revalidated through the registered Tool output model, and the resolution, Receipt, Checkpoint, Execution and reconciliation event commit atomically. This is a safe recovery protocol, not an exactly-once claim for external systems.
+
+
+### Phase 5.5d timed-heartbeat Worker Runtime
+
+`DurableWorkerRuntime` composes the existing recovery, Receipt, Checkpoint, Lease and reconciliation modules. A server-owned operation runs while the runtime periodically renews a Lease Session tied to the post-start state version. Completion performs a fresh lease check and then relies on transactional CAS. Heartbeat failure, timeout or takeover prevents the old Worker from persisting; an in-flight Receipt becomes an unknown result for evidence-bound reconciliation. Post-Checkpoint crashes resume at the next step without replay. The runtime is internal and default-off.

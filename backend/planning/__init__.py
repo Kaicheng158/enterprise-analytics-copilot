@@ -43,6 +43,12 @@ from .reconciliation import (
     ReconciliationService,
 )
 from .worker_coordination import WorkerLeaseCoordinator
+from .worker_runtime import (
+    DurableWorkerRuntime,
+    DurableWorkerSettings,
+    WorkerRunResult,
+    load_durable_worker_settings,
+)
 from .structured_provider import (
     PLAN_RESPONSE_SCHEMA_SHA256,
     PLANNER_PROMPT_SHA256,
@@ -77,6 +83,8 @@ __all__ = [
     "DurableControlledPlanner",
     "DurableControlledPlannerSettings",
     "DurablePlannerError",
+    "DurableWorkerRuntime",
+    "DurableWorkerSettings",
     "ExecutionConsistency",
     "LeaseSession",
     "PLAN_RESPONSE_SCHEMA_SHA256",
@@ -117,7 +125,9 @@ __all__ = [
     "load_controlled_planner_settings",
     "load_deepseek_planner_settings",
     "load_durable_controlled_planner_settings",
+    "load_durable_worker_settings",
     "validate_agent_transition",
     "validate_step_transition",
     "WorkerLeaseCoordinator",
+    "WorkerRunResult",
 ]
