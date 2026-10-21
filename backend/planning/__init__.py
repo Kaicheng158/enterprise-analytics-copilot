@@ -42,6 +42,11 @@ from .durable_controlled_runtime import (
     DurablePlannerError,
     load_durable_controlled_planner_settings,
 )
+from .durable_deepseek_integration import (
+    DurableDeepSeekIntegrationSettings,
+    build_durable_deepseek_agent_runtime,
+    load_durable_deepseek_integration_settings,
+)
 from .planner_safety import PlannerCostGuard, PlannerSafetyStop
 from .reconciliation import (
     ReconciliationAuthorizationError,
@@ -91,6 +96,7 @@ __all__ = [
     "DurableAgentSettings",
     "DurableControlledPlanner",
     "DurableControlledPlannerSettings",
+    "DurableDeepSeekIntegrationSettings",
     "DurablePlannerError",
     "DurableWorkerRuntime",
     "DurableWorkerSettings",
@@ -127,6 +133,7 @@ __all__ = [
     "SalesGrowthComparison",
     "build_planning_runtime",
     "build_controlled_planner_runtime",
+    "build_durable_deepseek_agent_runtime",
     "build_planner_generation_request",
     "build_quarter_sales_comparison_plan",
     "canonical_plan_sha256",
@@ -135,6 +142,7 @@ __all__ = [
     "load_deepseek_planner_settings",
     "load_durable_agent_settings",
     "load_durable_controlled_planner_settings",
+    "load_durable_deepseek_integration_settings",
     "load_durable_worker_settings",
     "validate_agent_transition",
     "validate_step_transition",

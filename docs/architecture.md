@@ -91,3 +91,10 @@ The versioned `005_planning_checkpoints.sql` migration defines the private `agen
 The tested chain is Fake Planner → Plan Validator → timed Worker → PostgreSQL sales Tool Executor → transactional Receipt/Checkpoint → optional evidence-bound reconciliation → final Decimal sales comparison. A live heartbeat prevents concurrent takeover. A committed Receipt prevents replay after restart. A lost lease or unknown external result stops progress until reconciliation, and stale workers cannot write through the Lease/CAS fence. Reconciliation validates the persisted JSON Tool Result through the same registered output schema and authorization policy.
 
 The runtime requires the separate default-false `DURABLE_AGENT_RUNTIME_ENABLED` flag. It has no HTTP route, uses no paid provider, and was tested only against disposable databases. See [Phase 5.5e design](phase5-durable-agent-integration.md).
+
+
+### Phase 5.6 controlled DeepSeek-to-durable composition
+
+`build_durable_deepseek_agent_runtime` connects an existing `PlannerTransport` to `StructuredPlanProvider`, `DurableControlledPlanner`, the server-owned Tool Registry/Executor, `DurableWorkerRuntime` and `DurableAgentRuntime`. It adds no alternate schema, validator, authorization rule, execution budget, database writer or recovery protocol. The DeepSeek integration test supplies the actual `DeepSeekStructuredPlannerTransport` with a Mock HTTP opener, so request serialization, JSON-output mode, fixed model configuration, usage/cost validation and zero-retry behavior run without a paid network call.
+
+An accepted Plan remains data until strict Plan parsing, request binding and `PlanValidator` succeed. A rejected or over-limit Plan is never persisted and cannot reach a Tool. A repeated scoped request returns the stored execution before another provider call. Restart recovery reads the persisted Plan and Checkpoint, so it does not regenerate the Plan and a successful Receipt is not replayed. All existing Planner, durable Planner, Worker and Agent flags must be enabled by trusted server composition; they remain false by default and no HTTP route invokes this builder.
