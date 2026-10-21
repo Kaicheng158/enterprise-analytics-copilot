@@ -194,3 +194,35 @@ class ReconciliationCase(StrictModel):
     reason: Literal["outcome_unknown"] = "outcome_unknown"
     retry_allowed: Literal[False] = False
     required_action: Literal["verify_external_outcome"] = "verify_external_outcome"
+
+
+class LeaseSession(StrictModel):
+    execution_id: UUID
+    worker_id: str = Field(pattern=r"^[a-z][a-z0-9_-]{0,127}$")
+    state_version: int = Field(ge=0)
+    lease_expires_at: datetime
+
+    @field_validator("lease_expires_at")
+    @classmethod
+    def expiry_is_timezone_aware(cls, value):
+        if value.tzinfo is None:
+            raise ValueError("lease expiry must be timezone-aware")
+        return value
+
+
+class ReconciliationResolution(StrictModel):
+    event_id: UUID
+    execution: PersistentExecution
+    checkpoint: PersistentCheckpoint
+    receipt: PersistentStepReceipt
+    decision: Literal["confirmed_succeeded", "confirmed_failed"]
+    evidence_sha256: str = Field(pattern=HEX_SHA256)
+    actor_id: str = Field(pattern=r"^[a-z][a-z0-9_-]{0,127}$")
+    created_at: datetime
+
+    @field_validator("created_at")
+    @classmethod
+    def resolution_time_is_timezone_aware(cls, value):
+        if value.tzinfo is None:
+            raise ValueError("reconciliation time must be timezone-aware")
+        return value

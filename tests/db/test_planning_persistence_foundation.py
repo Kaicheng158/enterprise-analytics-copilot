@@ -95,7 +95,7 @@ class PlanningPersistenceFoundationTests(unittest.TestCase):
                 (SCHEMA, f"{SCHEMA}.executions"),
             ).fetchone()
         self.assertEqual(applied, 1)
-        self.assertEqual(tables, 3)
+        self.assertEqual(tables, 4)
         self.assertEqual(access, (False, False))
 
     def test_lease_heartbeat_blocks_takeover_then_expiry_allows_it(self):

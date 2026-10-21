@@ -24,7 +24,12 @@ from .deepseek_planner_adapter import (
     DeepSeekStructuredPlannerTransport,
     load_deepseek_planner_settings,
 )
-from .checkpoint_models import ExecutionConsistency, ReconciliationCase
+from .checkpoint_models import (
+    ExecutionConsistency,
+    LeaseSession,
+    ReconciliationCase,
+    ReconciliationResolution,
+)
 from .durable_controlled_runtime import (
     DurableControlledPlanner,
     DurableControlledPlannerSettings,
@@ -32,6 +37,12 @@ from .durable_controlled_runtime import (
     load_durable_controlled_planner_settings,
 )
 from .planner_safety import PlannerCostGuard, PlannerSafetyStop
+from .reconciliation import (
+    ReconciliationAuthorizationError,
+    ReconciliationPolicy,
+    ReconciliationService,
+)
+from .worker_coordination import WorkerLeaseCoordinator
 from .structured_provider import (
     PLAN_RESPONSE_SCHEMA_SHA256,
     PLANNER_PROMPT_SHA256,
@@ -67,6 +78,7 @@ __all__ = [
     "DurableControlledPlannerSettings",
     "DurablePlannerError",
     "ExecutionConsistency",
+    "LeaseSession",
     "PLAN_RESPONSE_SCHEMA_SHA256",
     "PLANNER_PROMPT_SHA256",
     "PLANNER_PROMPT_VERSION",
@@ -90,7 +102,11 @@ __all__ = [
     "PlanningRequest",
     "PlanningSettings",
     "StateTransitionError",
+    "ReconciliationAuthorizationError",
     "ReconciliationCase",
+    "ReconciliationPolicy",
+    "ReconciliationResolution",
+    "ReconciliationService",
     "SalesGrowthComparison",
     "build_planning_runtime",
     "build_controlled_planner_runtime",
@@ -103,4 +119,5 @@ __all__ = [
     "load_durable_controlled_planner_settings",
     "validate_agent_transition",
     "validate_step_transition",
+    "WorkerLeaseCoordinator",
 ]

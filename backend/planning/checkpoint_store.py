@@ -26,6 +26,7 @@ from .checkpoint_models import (
     PersistentExecution,
     PersistentStepReceipt,
     ReconciliationCase,
+    ReconciliationResolution,
     StepStart,
 )
 from .models import AgentState, Plan
@@ -673,6 +674,138 @@ class PostgresCheckpointStore:
             step_id=receipt.step_id,
             action_name=receipt.action_name,
             idempotency_token=receipt.idempotency_token,
+        )
+
+    def resolve_ambiguous_step(
+        self,
+        execution_id: UUID,
+        *,
+        expected_state_version: int,
+        step_id: str,
+        decision: str,
+        resolved_state: AgentState,
+        evidence_sha256: str,
+        actor_id: str,
+        now: datetime,
+        output: dict | None = None,
+        tool_call_id: str | None = None,
+        error_code: str | None = None,
+    ) -> ReconciliationResolution:
+        """Atomically resolve one verified ambiguous outcome without retrying it."""
+
+        self._validate_hash(evidence_sha256)
+        self._validate_worker(actor_id)
+        self._validate_time(now)
+        if decision not in {"confirmed_succeeded", "confirmed_failed"}:
+            raise ValueError("invalid reconciliation decision")
+        if decision == "confirmed_succeeded":
+            if output is None or error_code is not None:
+                raise ValueError("successful reconciliation requires output")
+            output_hash = canonical_json_sha256(output)
+        else:
+            if output is not None or tool_call_id is not None or not error_code or len(error_code) > 100:
+                raise ValueError("failed reconciliation requires an error code")
+            output_hash = None
+        event_id = uuid4()
+        with self._connection_factory() as connection:
+            with connection.transaction():
+                execution = self._lock_execution(connection, execution_id)
+                if execution.status != "reconciling" or execution.lease_owner is not None:
+                    raise AmbiguousExecution("reconciliation_not_required")
+                if execution.state_version != expected_state_version:
+                    raise CheckpointConflict("checkpoint_cas_conflict")
+                checkpoint = self._latest_checkpoint(connection, execution_id)
+                if checkpoint.state_version != expected_state_version:
+                    raise CheckpointConflict("checkpoint_cas_conflict")
+                receipt_row = connection.execute(
+                    sql.SQL(
+                        "SELECT {} FROM {} WHERE execution_id=%s AND step_id=%s FOR UPDATE"
+                    ).format(sql.SQL(self._receipt_columns()), self._table("step_receipts")),
+                    (execution_id, step_id),
+                ).fetchone()
+                if receipt_row is None:
+                    raise ReceiptConflict("step_receipt_missing")
+                receipt = self._receipt_from_row(receipt_row)
+                if receipt.status != "ambiguous" or receipt.error_code != "outcome_unknown":
+                    raise ReceiptConflict("step_receipt_not_ambiguous")
+                step_state = next(
+                    (state for state in resolved_state.step_states if state.step_id == step_id),
+                    None,
+                )
+                if decision == "confirmed_succeeded":
+                    if step_state is None or step_state.status != "completed" or step_state.output != output:
+                        raise CheckpointConflict("reconciliation_state_output_mismatch")
+                    new_status = "completed" if resolved_state.status == "completed" else "running"
+                else:
+                    if step_state is None or step_state.status != "failed" or resolved_state.status != "failed":
+                        raise CheckpointConflict("reconciliation_failed_state_mismatch")
+                    new_status = "failed"
+                try:
+                    validate_agent_transition(checkpoint.agent_state, resolved_state)
+                except StateTransitionError as error:
+                    raise CheckpointConflict("checkpoint_transition_invalid") from error
+                self._validate_status_state(new_status, resolved_state)
+                new_version = expected_state_version + 1
+                state_json = resolved_state.model_dump(mode="json")
+                state_hash = canonical_json_sha256(state_json)
+                updated_row = connection.execute(
+                    sql.SQL(
+                        """UPDATE {} SET status=%s,state_version=%s,checkpoint_sequence=%s,
+                               lease_owner=NULL,lease_expires_at=NULL,updated_at=%s
+                           WHERE execution_id=%s AND state_version=%s
+                             AND status='reconciling' AND lease_owner IS NULL
+                           RETURNING {}"""
+                    ).format(self._table("executions"), sql.SQL(self._execution_columns())),
+                    (new_status, new_version, new_version, now, execution_id, expected_state_version),
+                ).fetchone()
+                if updated_row is None:
+                    raise CheckpointConflict("checkpoint_cas_conflict")
+                connection.execute(
+                    sql.SQL(
+                        """INSERT INTO {} (execution_id,sequence,state_version,execution_status,
+                               agent_state,state_sha256,created_at) VALUES (%s,%s,%s,%s,%s,%s,%s)"""
+                    ).format(self._table("checkpoints")),
+                    (execution_id, new_version, new_version, new_status, Jsonb(state_json), state_hash, now),
+                )
+                if decision == "confirmed_succeeded":
+                    resolved_row = connection.execute(
+                        sql.SQL(
+                            """UPDATE {} SET status='succeeded',output_json=%s,output_sha256=%s,
+                                   tool_call_id=%s,error_code=NULL,finished_at=%s
+                               WHERE execution_id=%s AND step_id=%s AND status='ambiguous'
+                               RETURNING {}"""
+                        ).format(self._table("step_receipts"), sql.SQL(self._receipt_columns())),
+                        (Jsonb(output), output_hash, tool_call_id, now, execution_id, step_id),
+                    ).fetchone()
+                else:
+                    resolved_row = connection.execute(
+                        sql.SQL(
+                            """UPDATE {} SET status='failed',error_code=%s,finished_at=%s
+                               WHERE execution_id=%s AND step_id=%s AND status='ambiguous'
+                               RETURNING {}"""
+                        ).format(self._table("step_receipts"), sql.SQL(self._receipt_columns())),
+                        (error_code, now, execution_id, step_id),
+                    ).fetchone()
+                if resolved_row is None:
+                    raise ReceiptConflict("step_receipt_conflict")
+                connection.execute(
+                    sql.SQL(
+                        """INSERT INTO {} (event_id,execution_id,step_id,decision,evidence_sha256,actor_id,created_at)
+                           VALUES (%s,%s,%s,%s,%s,%s,%s)"""
+                    ).format(self._table("reconciliation_events")),
+                    (event_id, execution_id, step_id, decision, evidence_sha256, actor_id, now),
+                )
+                updated = self._execution_from_row(updated_row)
+                new_checkpoint = PersistentCheckpoint(
+                    execution_id=execution_id, sequence=new_version, state_version=new_version,
+                    execution_status=new_status, agent_state=resolved_state,
+                    state_sha256=state_hash, created_at=now,
+                )
+                resolved_receipt = self._receipt_from_row(resolved_row)
+        return ReconciliationResolution(
+            event_id=event_id, execution=updated, checkpoint=new_checkpoint,
+            receipt=resolved_receipt, decision=decision, evidence_sha256=evidence_sha256,
+            actor_id=actor_id, created_at=now,
         )
 
     def derive_step_token(

@@ -72,3 +72,8 @@ Execution remains one durable step per lease. The existing recovery simulator cr
 ### Phase 5.5b production persistence boundary
 
 The versioned `005_planning_checkpoints.sql` migration defines the private `agent_runtime` schema for durable executions, checkpoints and receipts. Store writes keep receipt and checkpoint transitions transactional, compare state versions under row lock, and support bounded lease heartbeats plus expiry takeover. A consistency audit verifies the aggregate across the three tables. Unknown external outcomes produce a non-retryable reconciliation record; database uniqueness alone is not treated as proof of exactly-once external effects. The migration is tested only in disposable databases and the runtime remains default-off with no public route.
+
+
+### Phase 5.5c worker fencing and reconciliation
+
+`WorkerLeaseCoordinator` binds a worker to a lease owner, expiry and state version. Heartbeats renew only a current lease; expired owners and stale versions cannot write. A takeover that finds an in-flight Receipt moves the execution to `reconciling` without repeating the operation. `ReconciliationService` requires a server-authorized actor, an evidence SHA-256 and the current CAS version. Confirmed tool output is revalidated through the registered Tool output model, and the resolution, Receipt, Checkpoint, Execution and reconciliation event commit atomically. This is a safe recovery protocol, not an exactly-once claim for external systems.
