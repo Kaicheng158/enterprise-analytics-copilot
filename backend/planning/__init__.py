@@ -30,6 +30,12 @@ from .checkpoint_models import (
     ReconciliationCase,
     ReconciliationResolution,
 )
+from .durable_agent_runtime import (
+    DurableAgentResult,
+    DurableAgentRuntime,
+    DurableAgentSettings,
+    load_durable_agent_settings,
+)
 from .durable_controlled_runtime import (
     DurableControlledPlanner,
     DurableControlledPlannerSettings,
@@ -80,6 +86,9 @@ __all__ = [
     "ControlledPlannerSettings",
     "DeepSeekPlannerSettings",
     "DeepSeekStructuredPlannerTransport",
+    "DurableAgentResult",
+    "DurableAgentRuntime",
+    "DurableAgentSettings",
     "DurableControlledPlanner",
     "DurableControlledPlannerSettings",
     "DurablePlannerError",
@@ -124,6 +133,7 @@ __all__ = [
     "load_planning_settings",
     "load_controlled_planner_settings",
     "load_deepseek_planner_settings",
+    "load_durable_agent_settings",
     "load_durable_controlled_planner_settings",
     "load_durable_worker_settings",
     "validate_agent_transition",

@@ -157,6 +157,11 @@ class DurableControlledPlanner:
             json.dumps(output, ensure_ascii=False), strict=True
         )
 
+    def execute_step(self, execution_id: UUID, step) -> dict:
+        """Execute one already validated Plan step through existing safe boundaries."""
+
+        return self._execute_step(execution_id, step)
+
     def _execute_step(self, execution_id: UUID, step) -> dict:
         if step.kind == "tool":
             result = self._tool_executor.execute(

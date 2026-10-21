@@ -82,3 +82,12 @@ The versioned `005_planning_checkpoints.sql` migration defines the private `agen
 ### Phase 5.5d timed-heartbeat Worker Runtime
 
 `DurableWorkerRuntime` composes the existing recovery, Receipt, Checkpoint, Lease and reconciliation modules. A server-owned operation runs while the runtime periodically renews a Lease Session tied to the post-start state version. Completion performs a fresh lease check and then relies on transactional CAS. Heartbeat failure, timeout or takeover prevents the old Worker from persisting; an in-flight Receipt becomes an unknown result for evidence-bound reconciliation. Post-Checkpoint crashes resume at the next step without replay. The runtime is internal and default-off.
+
+
+### Phase 5.5e durable-agent integration boundary
+
+`DurableAgentRuntime` is a thin internal composition over `DurableControlledPlanner` and `DurableWorkerRuntime`. Submission still passes provider output through strict Plan parsing, request binding and `PlanValidator` before persistence. Execution still delegates every tool call to the authorized Tool Executor and every durable transition to the existing PostgreSQL store. The composition adds only a bounded run-to-terminal loop and a typed final result; it does not add alternate authorization, persistence or recovery behavior.
+
+The tested chain is Fake Planner → Plan Validator → timed Worker → PostgreSQL sales Tool Executor → transactional Receipt/Checkpoint → optional evidence-bound reconciliation → final Decimal sales comparison. A live heartbeat prevents concurrent takeover. A committed Receipt prevents replay after restart. A lost lease or unknown external result stops progress until reconciliation, and stale workers cannot write through the Lease/CAS fence. Reconciliation validates the persisted JSON Tool Result through the same registered output schema and authorization policy.
+
+The runtime requires the separate default-false `DURABLE_AGENT_RUNTIME_ENABLED` flag. It has no HTTP route, uses no paid provider, and was tested only against disposable databases. See [Phase 5.5e design](phase5-durable-agent-integration.md).

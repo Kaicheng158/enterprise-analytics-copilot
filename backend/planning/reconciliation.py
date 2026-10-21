@@ -1,6 +1,7 @@
 """Evidence-bound reconciliation for externally ambiguous tool outcomes."""
 
 from datetime import datetime
+import json
 import re
 from uuid import UUID
 
@@ -72,8 +73,11 @@ class ReconciliationService:
                 definition = self._tool_registry.resolve(
                     step.tool_call.name, self._tool_principal
                 )
-                output = definition.output_model.model_validate(
-                    output, strict=True
+                # Tool receipts persist the executor's JSON representation.  Validate
+                # that JSON contract directly so strict types such as Decimal can be
+                # reconstructed without weakening validation for Python objects.
+                output = definition.output_model.model_validate_json(
+                    json.dumps(output, ensure_ascii=False), strict=True
                 ).model_dump(mode="json")
             except (ToolRegistryError, ValueError, TypeError):
                 raise ValueError("verified tool output is invalid or unauthorized") from None
