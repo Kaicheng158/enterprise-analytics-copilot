@@ -1,7 +1,7 @@
-"""PostgreSQL checkpoint repository for an isolated Phase 5.3 schema.
+"""PostgreSQL checkpoint repository for durable bounded planning.
 
-The repository never creates schema objects. Tests provision its tables in a
-throwaway database; a production migration is intentionally out of scope.
+Schema objects are created only by the versioned migration. The repository
+performs transactional state, receipt, lease, and consistency operations.
 """
 
 from __future__ import annotations
@@ -20,10 +20,12 @@ from psycopg import sql
 from psycopg.types.json import Jsonb
 
 from .checkpoint_models import (
+    ExecutionConsistency,
     ExecutionCreation,
     PersistentCheckpoint,
     PersistentExecution,
     PersistentStepReceipt,
+    ReconciliationCase,
     StepStart,
 )
 from .models import AgentState, Plan
@@ -291,6 +293,50 @@ class PostgresCheckpointStore:
                 raise LeaseUnavailable("lease_unavailable")
             raise ExecutionNotFound("execution_not_found")
         return self._execution_from_row(row)
+
+    def renew_lease(
+        self,
+        execution_id: UUID,
+        *,
+        worker_id: str,
+        expected_state_version: int,
+        now: datetime,
+        ttl_seconds: int,
+    ) -> PersistentExecution:
+        """Heartbeat an active lease without changing durable state version."""
+
+        self._validate_worker(worker_id)
+        self._validate_time(now)
+        if not 1 <= ttl_seconds <= 300:
+            raise ValueError("lease TTL must be between 1 and 300 seconds")
+        expires = now + timedelta(seconds=ttl_seconds)
+        with self._connection_factory() as connection:
+            with connection.transaction():
+                row = connection.execute(
+                    sql.SQL(
+                        """UPDATE {} SET lease_expires_at=%s,updated_at=%s
+                           WHERE execution_id=%s AND lease_owner=%s
+                             AND lease_expires_at > %s
+                             AND state_version=%s
+                             AND status IN ('pending','running')
+                           RETURNING {}"""
+                    ).format(self._table("executions"), sql.SQL(self._execution_columns())),
+                    (expires, now, execution_id, worker_id, now, expected_state_version),
+                ).fetchone()
+                if row is not None:
+                    return self._execution_from_row(row)
+                current_row = connection.execute(
+                    sql.SQL("SELECT {} FROM {} WHERE execution_id=%s").format(
+                        sql.SQL(self._execution_columns()), self._table("executions")
+                    ),
+                    (execution_id,),
+                ).fetchone()
+        if current_row is None:
+            raise ExecutionNotFound("execution_not_found")
+        current = self._execution_from_row(current_row)
+        if current.state_version != expected_state_version:
+            raise CheckpointConflict("checkpoint_cas_conflict")
+        raise LeaseUnavailable("lease_unavailable")
 
     def release_lease(
         self,
@@ -563,6 +609,71 @@ class PostgresCheckpointStore:
                 )
                 ambiguous = self._receipt_from_row(row)
         return updated, new_checkpoint, ambiguous
+
+    def audit_execution_consistency(self, execution_id: UUID) -> ExecutionConsistency:
+        """Fail closed if execution, latest checkpoint and receipts disagree."""
+
+        execution = self.get_execution(execution_id)
+        checkpoint = self.get_latest_checkpoint(execution_id)
+        receipts = self.list_receipts(execution_id)
+        if (
+            execution.state_version != checkpoint.state_version
+            or execution.checkpoint_sequence != checkpoint.sequence
+            or execution.status != checkpoint.execution_status
+            or execution.plan.plan_id != checkpoint.agent_state.plan_id
+        ):
+            raise CheckpointConflict("execution_checkpoint_inconsistent")
+        plan_ids = {step.step_id for step in execution.plan.steps}
+        states = {step.step_id: step for step in checkpoint.agent_state.step_states}
+        if set(states) != plan_ids or any(receipt.step_id not in plan_ids for receipt in receipts):
+            raise CheckpointConflict("execution_step_set_inconsistent")
+        receipt_by_step = {receipt.step_id: receipt for receipt in receipts}
+        for step_id, state in states.items():
+            receipt = receipt_by_step.get(step_id)
+            if state.status == "completed":
+                if receipt is None or receipt.status != "succeeded" or receipt.output != state.output:
+                    raise ReceiptConflict("checkpoint_receipt_inconsistent")
+            elif receipt is not None and receipt.status == "succeeded":
+                raise ReceiptConflict("checkpoint_receipt_inconsistent")
+            if state.status == "running" and (receipt is None or receipt.status not in {"started", "ambiguous"}):
+                raise ReceiptConflict("checkpoint_receipt_inconsistent")
+        ambiguous = [receipt for receipt in receipts if receipt.status == "ambiguous"]
+        if ambiguous and execution.status != "reconciling":
+            raise ReceiptConflict("ambiguous_receipt_status_inconsistent")
+        if execution.status == "reconciling" and len(ambiguous) != 1:
+            raise ReceiptConflict("reconciliation_receipt_inconsistent")
+        if execution.status == "completed" and (
+            checkpoint.agent_state.status != "completed"
+            or len(checkpoint.agent_state.completed_step_ids) != len(execution.plan.steps)
+            or any(receipt.status != "succeeded" for receipt in receipts)
+            or len(receipts) != len(execution.plan.steps)
+        ):
+            raise CheckpointConflict("completed_execution_inconsistent")
+        return ExecutionConsistency(
+            execution_id=execution_id,
+            state_version=execution.state_version,
+            checkpoint_sequence=execution.checkpoint_sequence,
+            receipt_count=len(receipts),
+            completed_receipt_count=sum(r.status == "succeeded" for r in receipts),
+        )
+
+    def get_reconciliation_case(self, execution_id: UUID) -> ReconciliationCase:
+        """Expose a safe stop record; it never authorizes automatic retry."""
+
+        self.audit_execution_consistency(execution_id)
+        execution = self.get_execution(execution_id)
+        if execution.status != "reconciling":
+            raise AmbiguousExecution("reconciliation_not_required")
+        ambiguous = [r for r in self.list_receipts(execution_id) if r.status == "ambiguous"]
+        if len(ambiguous) != 1 or ambiguous[0].error_code != "outcome_unknown":
+            raise ReceiptConflict("reconciliation_receipt_inconsistent")
+        receipt = ambiguous[0]
+        return ReconciliationCase(
+            execution_id=execution_id,
+            step_id=receipt.step_id,
+            action_name=receipt.action_name,
+            idempotency_token=receipt.idempotency_token,
+        )
 
     def derive_step_token(
         self,

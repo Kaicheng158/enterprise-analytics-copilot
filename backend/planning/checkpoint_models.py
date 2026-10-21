@@ -1,4 +1,4 @@
-"""Strict contracts for test-isolated durable planning checkpoints."""
+"""Strict contracts for durable planning checkpoints and reconciliation."""
 
 from __future__ import annotations
 
@@ -175,3 +175,22 @@ class SimulationResult(StrictModel):
     step_id: str | None = None
     operation_calls: int = Field(ge=0)
     state_version: int = Field(ge=0)
+
+
+class ExecutionConsistency(StrictModel):
+    execution_id: UUID
+    state_version: int = Field(ge=0)
+    checkpoint_sequence: int = Field(ge=0)
+    receipt_count: int = Field(ge=0)
+    completed_receipt_count: int = Field(ge=0)
+    status: Literal["consistent"] = "consistent"
+
+
+class ReconciliationCase(StrictModel):
+    execution_id: UUID
+    step_id: str = Field(pattern=r"^[a-z][a-z0-9_]{0,63}$")
+    action_name: str = Field(min_length=1, max_length=100)
+    idempotency_token: str = Field(pattern=HEX_SHA256)
+    reason: Literal["outcome_unknown"] = "outcome_unknown"
+    retry_allowed: Literal[False] = False
+    required_action: Literal["verify_external_outcome"] = "verify_external_outcome"

@@ -24,6 +24,7 @@ from .deepseek_planner_adapter import (
     DeepSeekStructuredPlannerTransport,
     load_deepseek_planner_settings,
 )
+from .checkpoint_models import ExecutionConsistency, ReconciliationCase
 from .durable_controlled_runtime import (
     DurableControlledPlanner,
     DurableControlledPlannerSettings,
@@ -65,6 +66,7 @@ __all__ = [
     "DurableControlledPlanner",
     "DurableControlledPlannerSettings",
     "DurablePlannerError",
+    "ExecutionConsistency",
     "PLAN_RESPONSE_SCHEMA_SHA256",
     "PLANNER_PROMPT_SHA256",
     "PLANNER_PROMPT_VERSION",
@@ -88,6 +90,7 @@ __all__ = [
     "PlanningRequest",
     "PlanningSettings",
     "StateTransitionError",
+    "ReconciliationCase",
     "SalesGrowthComparison",
     "build_planning_runtime",
     "build_controlled_planner_runtime",
