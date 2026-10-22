@@ -122,3 +122,11 @@ There is intentionally no HTTP run/resume/reconcile/cancel endpoint. Workers and
 `backend.local_agent_app:app` is a second independent entrypoint used only for local integration verification. It requires both the internal API flag and `INTERNAL_AGENT_LOCAL_SERVICE_ENABLED`; both default to false. It rejects non-loopback ASGI peers and does not trust forwarding headers. The profile creates a server-named disposable database, migrates and seeds only that database, and removes it on graceful shutdown.
 
 `DisposableLocalAgentRuntime` constructs the existing Planner, Tool Registry/Executor, timed Worker, durable Agent and Checkpoint Store. `LocalExecutingAgentTaskController` adds only a single-flight local supervisor around submission: it serializes concurrent submissions, delegates persistence/idempotency to the existing controller, runs the existing runtime, then reads the authoritative persisted response. This local supervisor is deliberately synchronous and is not a production queue or Worker service. The normal API, RAG API and Compose configuration do not import it.
+
+### Phase 5.7c persistent task queue
+
+The existing `agent_runtime.executions` table is also the durable queue; no parallel job table or status model exists. `claim_next_execution` filters the server-owned scope, uses the existing runnable states and Lease expiry, locks one oldest candidate with PostgreSQL `FOR UPDATE SKIP LOCKED`, and writes the Lease in the same transaction. The existing status/Lease index supports this query.
+
+`PersistentAgentQueueWorker` has no HTTP dependency. It claims a task, passes the same Lease owner to `DurableAgentRuntime`, and relies on the established timed Worker for Heartbeat, state-version CAS, Checkpoint/Receipt transactions and unknown-result reconciliation. Its polling loop is bounded by a server-side interval and an explicit stop event. Database polling errors do not authorize work or expose exception bodies.
+
+`backend.queued_agent_app:app` is only a default-off localhost integration profile. Its controller submits and reads persisted tasks but never executes them. Tests run the Worker separately against the same disposable PostgreSQL database, proving that status changes come from the durable Worker rather than the request handler. Neither this app nor the Worker is included in the normal API/RAG applications or Compose.

@@ -263,6 +263,60 @@ class PostgresCheckpointStore:
             ).fetchall()
         return tuple(self._receipt_from_row(row) for row in rows)
 
+    def claim_next_execution(
+        self,
+        *,
+        scope_key: str,
+        worker_id: str,
+        now: datetime,
+        ttl_seconds: int,
+    ) -> PersistentExecution | None:
+        """Atomically lease the oldest runnable execution for one server scope.
+
+        PostgreSQL row locking and SKIP LOCKED allow independent workers to poll
+        concurrently without both receiving the same queue item. The existing
+        Worker Runtime still revalidates this lease, state version, Checkpoint and
+        Receipts before it starts or commits a step.
+        """
+
+        if not 1 <= len(scope_key) <= 160:
+            raise ValueError("invalid execution scope")
+        self._validate_worker(worker_id)
+        self._validate_time(now)
+        if not 1 <= ttl_seconds <= 300:
+            raise ValueError("lease TTL must be between 1 and 300 seconds")
+        expires = now + timedelta(seconds=ttl_seconds)
+        query = sql.SQL(
+            """WITH candidate AS (
+                   SELECT execution_id FROM {}
+                    WHERE scope_key=%s
+                      AND status IN ('pending','running')
+                      AND (lease_owner IS NULL OR lease_expires_at <= %s)
+                    ORDER BY created_at, execution_id
+                    FOR UPDATE SKIP LOCKED
+                    LIMIT 1
+               )
+               UPDATE {} AS execution
+                  SET lease_owner=%s,lease_expires_at=%s,updated_at=%s
+                 FROM candidate
+                WHERE execution.execution_id=candidate.execution_id
+               RETURNING {}"""
+        ).format(
+            self._table("executions"),
+            self._table("executions"),
+            sql.SQL(",").join(
+                sql.Identifier("execution", item)
+                for item in self._execution_columns().split(",")
+            ),
+        )
+        with self._connection_factory() as connection:
+            with connection.transaction():
+                row = connection.execute(
+                    query,
+                    (scope_key, now, worker_id, expires, now),
+                ).fetchone()
+        return None if row is None else self._execution_from_row(row)
+
     def acquire_lease(
         self,
         execution_id: UUID,

@@ -60,6 +60,12 @@ from .worker_runtime import (
     WorkerRunResult,
     load_durable_worker_settings,
 )
+from .task_queue import (
+    PersistentAgentQueueSettings,
+    PersistentAgentQueueWorker,
+    QueueWorkResult,
+    load_persistent_agent_queue_settings,
+)
 from .structured_provider import (
     PLAN_RESPONSE_SCHEMA_SHA256,
     PLANNER_PROMPT_SHA256,
@@ -124,6 +130,9 @@ __all__ = [
     "PlanningPolicy",
     "PlanningRequest",
     "PlanningSettings",
+    "PersistentAgentQueueSettings",
+    "PersistentAgentQueueWorker",
+    "QueueWorkResult",
     "StateTransitionError",
     "ReconciliationAuthorizationError",
     "ReconciliationCase",
@@ -144,6 +153,7 @@ __all__ = [
     "load_durable_controlled_planner_settings",
     "load_durable_deepseek_integration_settings",
     "load_durable_worker_settings",
+    "load_persistent_agent_queue_settings",
     "validate_agent_transition",
     "validate_step_transition",
     "WorkerLeaseCoordinator",

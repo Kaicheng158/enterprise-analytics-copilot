@@ -22,6 +22,10 @@ from backend.planning.durable_controlled_runtime import (
     DurableControlledPlannerSettings,
 )
 from backend.planning.worker_runtime import DurableWorkerRuntime, DurableWorkerSettings
+from backend.planning.task_queue import (
+    PersistentAgentQueueSettings,
+    PersistentAgentQueueWorker,
+)
 from backend.tools.catalog import build_tool_registry
 from backend.tools.executor import ToolExecutor
 from backend.tools.models import StrictModel
@@ -123,11 +127,13 @@ class DisposableLocalAgentRuntime:
         settings: LocalAgentServiceSettings,
         api_settings: InternalAgentApiSettings,
         provider=None,
+        tool_executor_wrapper=None,
         admin_kwargs_factory: Callable[[], dict] = connect_kwargs,
     ):
         self.settings = settings
         self.api_settings = api_settings
         self._provider_override = provider
+        self._tool_executor_wrapper = tool_executor_wrapper
         self._admin_kwargs_factory = admin_kwargs_factory
         self._lifecycle_lock = Lock()
         self._database_name: str | None = None
@@ -136,6 +142,8 @@ class DisposableLocalAgentRuntime:
         self.provider = None
         self.store = None
         self.agent = None
+        self.base_controller = None
+        self.tool_executor = None
 
     @property
     def database_name(self) -> str | None:
@@ -179,6 +187,8 @@ class DisposableLocalAgentRuntime:
         self.agent = None
         self.store = None
         self.provider = None
+        self.base_controller = None
+        self.tool_executor = None
         database_name = self._database_name
         self._database_name = None
         self._database_kwargs = None
@@ -218,10 +228,13 @@ class DisposableLocalAgentRuntime:
             idempotency_secret=secret,
         )
         provider = self._provider_override or DeterministicLocalPlanProvider()
+        tool_executor = ToolExecutor(build_tool_registry(self.connection_factory))
+        if self._tool_executor_wrapper is not None:
+            tool_executor = self._tool_executor_wrapper(tool_executor)
         planner = DurableControlledPlanner(
             provider,
             store,
-            ToolExecutor(build_tool_registry(self.connection_factory)),
+            tool_executor,
             settings=DurableControlledPlannerSettings(
                 enabled=True,
                 lease_ttl_seconds=self.settings.lease_ttl_seconds,
@@ -248,6 +261,8 @@ class DisposableLocalAgentRuntime:
         self.provider = provider
         self.store = store
         self.agent = agent
+        self.base_controller = delegate
+        self.tool_executor = tool_executor
         self._controller = LocalExecutingAgentTaskController(delegate, agent)
 
     def submit(self, request, *, idempotency_key, caller):
@@ -263,9 +278,40 @@ class DisposableLocalAgentRuntime:
         return controller.get(task_id, caller=caller)
 
 
+class DisposableQueuedAgentRuntime(DisposableLocalAgentRuntime):
+    """Queue-only HTTP controller plus an independently invoked durable Worker."""
+
+    _DATABASE_PREFIX = "eac_queue_agent_"
+
+    def __init__(self, *, queue_settings: PersistentAgentQueueSettings, **kwargs):
+        super().__init__(**kwargs)
+        self.queue_settings = queue_settings
+        self.queue_worker = None
+
+    def start(self) -> None:
+        if not self.queue_settings.enabled:
+            raise ValueError("persistent_agent_queue_disabled")
+        super().start()
+
+    def _compose(self) -> None:
+        super()._compose()
+        self._controller = self.base_controller
+        self.queue_worker = PersistentAgentQueueWorker(
+            self.store,
+            self.agent,
+            scope_key=AgentCaller().scope_key,
+            settings=self.queue_settings,
+        )
+
+    def _close_unlocked(self) -> None:
+        self.queue_worker = None
+        super()._close_unlocked()
+
+
 __all__ = [
     "DeterministicLocalPlanProvider",
     "DisposableLocalAgentRuntime",
+    "DisposableQueuedAgentRuntime",
     "LocalAgentServiceSettings",
     "LocalExecutingAgentTaskController",
     "load_local_agent_service_settings",
