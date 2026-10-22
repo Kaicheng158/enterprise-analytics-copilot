@@ -3,11 +3,12 @@
 from __future__ import annotations
 
 import logging
+from ipaddress import ip_address
 import re
-from typing import Annotated
+from typing import Annotated, AsyncContextManager, Callable
 from uuid import UUID
 
-from fastapi import FastAPI, Header, HTTPException, status
+from fastapi import FastAPI, Header, HTTPException, Request, status
 
 from .auth import (
     AgentAuthorizationError,
@@ -34,6 +35,7 @@ SAFE_SERVICE_ERRORS = {
     "agent_forbidden": (403, "Agent caller is not authorized for this scope"),
     "agent_state_integrity_error": (503, "Agent task state failed integrity validation"),
     "agent_status_changed": (409, "Agent task changed while status was read; retry the request"),
+    "agent_execution_unavailable": (503, "Agent task execution is unavailable"),
 }
 
 
@@ -41,13 +43,32 @@ def create_internal_agent_app(
     *,
     settings: InternalAgentApiSettings | None = None,
     controller: AgentTaskController | None = None,
+    lifespan: Callable[[FastAPI], AsyncContextManager[None]] | None = None,
+    require_loopback: bool = False,
 ) -> FastAPI:
     configured = settings or load_internal_agent_api_settings()
     authorizer = InternalAgentAuthorizer(configured)
     tasks = controller or UnavailableAgentTaskController()
-    app = FastAPI(title="Enterprise Analytics Copilot Internal Agent API")
+    app = FastAPI(
+        title="Enterprise Analytics Copilot Internal Agent API",
+        lifespan=lifespan,
+    )
 
-    def authorize(presented_key: str | None) -> AgentCaller:
+    def authorize(request: Request, presented_key: str | None) -> AgentCaller:
+        if require_loopback:
+            client_host = request.client.host if request.client is not None else ""
+            try:
+                is_loopback = ip_address(client_host).is_loopback
+            except ValueError:
+                is_loopback = False
+            if not is_loopback:
+                raise HTTPException(
+                    status_code=403,
+                    detail={
+                        "code": "agent_local_only",
+                        "message": "Local Agent service accepts loopback clients only",
+                    },
+                )
         try:
             return authorizer.authorize(presented_key)
         except AgentAuthorizationError as error:
@@ -76,13 +97,14 @@ def create_internal_agent_app(
         status_code=status.HTTP_202_ACCEPTED,
     )
     def submit_task(
-        request: AgentTaskRequest,
+        request_body: AgentTaskRequest,
+        request: Request,
         idempotency_key: Annotated[str | None, Header(alias="Idempotency-Key")] = None,
         internal_key: Annotated[
             str | None, Header(alias="X-Internal-Agent-Key")
         ] = None,
     ) -> AgentTaskResponse:
-        caller = authorize(internal_key)
+        caller = authorize(request, internal_key)
         if idempotency_key is None or not IDEMPOTENCY_KEY_RE.fullmatch(idempotency_key):
             raise HTTPException(
                 status_code=422,
@@ -93,7 +115,7 @@ def create_internal_agent_app(
             )
         try:
             response = tasks.submit(
-                request,
+                request_body,
                 idempotency_key=idempotency_key,
                 caller=caller,
             )
@@ -116,11 +138,12 @@ def create_internal_agent_app(
     )
     def get_task(
         task_id: UUID,
+        request: Request,
         internal_key: Annotated[
             str | None, Header(alias="X-Internal-Agent-Key")
         ] = None,
     ) -> AgentTaskResponse:
-        caller = authorize(internal_key)
+        caller = authorize(request, internal_key)
         try:
             response = tasks.get(task_id, caller=caller)
         except AgentTaskServiceError as error:
