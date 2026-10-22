@@ -3,8 +3,8 @@
 from contextlib import contextmanager
 from datetime import UTC, datetime
 from decimal import Decimal
-from threading import Event, Lock, Thread
-from time import sleep
+from threading import Condition, Event, Lock, Thread
+from time import monotonic, sleep
 import unittest
 import uuid
 
@@ -48,12 +48,53 @@ class FakePlanProvider:
         return plan.model_dump_json()
 
 
+class HeartbeatProbe:
+    """Observe successful lease renewals without replacing their real DB behavior."""
+
+    def __init__(self, store: PostgresCheckpointStore):
+        self._condition = Condition()
+        self._count = 0
+        original_renew = store.renew_lease
+
+        def renew_and_record(*args, **kwargs):
+            renewed = original_renew(*args, **kwargs)
+            with self._condition:
+                self._count += 1
+                self._condition.notify_all()
+            return renewed
+
+        store.renew_lease = renew_and_record
+
+    def snapshot(self) -> int:
+        with self._condition:
+            return self._count
+
+    def wait_for(self, target: int, timeout: float) -> bool:
+        deadline = monotonic() + timeout
+        with self._condition:
+            while self._count < target:
+                remaining = deadline - monotonic()
+                if remaining <= 0:
+                    return False
+                self._condition.wait(remaining)
+            return True
+
+
 class RecordingExecutor:
     """Record safe metadata while delegating to the real ToolExecutor."""
 
-    def __init__(self, delegate: ToolExecutor, *, delay_seconds: float = 0):
+    def __init__(
+        self,
+        delegate: ToolExecutor,
+        *,
+        delay_seconds: float = 0,
+        heartbeat_probe: HeartbeatProbe | None = None,
+        heartbeats_before_return: int = 0,
+    ):
         self._delegate = delegate
         self._delay_seconds = delay_seconds
+        self._heartbeat_probe = heartbeat_probe
+        self._heartbeats_before_return = heartbeats_before_return
         self._lock = Lock()
         self.entered = Event()
         self.calls = []
@@ -62,8 +103,16 @@ class RecordingExecutor:
     def execute(self, call, context):
         with self._lock:
             self.calls.append((call.name, dict(call.arguments)))
+        heartbeat_target = None
+        if self._heartbeat_probe is not None:
+            heartbeat_target = (
+                self._heartbeat_probe.snapshot() + self._heartbeats_before_return
+            )
         self.entered.set()
-        if self._delay_seconds:
+        if heartbeat_target is not None and self._heartbeats_before_return:
+            if not self._heartbeat_probe.wait_for(heartbeat_target, timeout=1.5):
+                raise AssertionError("worker did not persist the expected heartbeats")
+        elif self._delay_seconds:
             sleep(self._delay_seconds)
         result = self._delegate.execute(call, context)
         if result.status == "success":
@@ -116,12 +165,25 @@ class DurableAgentIntegrationDatabaseTests(unittest.TestCase):
             idempotency_secret=IDEMPOTENCY_SECRET,
         )
 
-    def new_stack(self, *, delay_seconds=0, provider=None, store=None):
+    def new_stack(
+        self,
+        *,
+        delay_seconds=0,
+        heartbeats_per_tool_call=0,
+        provider=None,
+        store=None,
+    ):
         store = store or self.new_store()
         provider = provider or FakePlanProvider()
+        heartbeat_probe = (
+            HeartbeatProbe(store) if heartbeats_per_tool_call else None
+        )
         registry = build_tool_registry(self.connection_factory)
         executor = RecordingExecutor(
-            ToolExecutor(registry), delay_seconds=delay_seconds
+            ToolExecutor(registry),
+            delay_seconds=delay_seconds,
+            heartbeat_probe=heartbeat_probe,
+            heartbeats_before_return=heartbeats_per_tool_call,
         )
         planner = DurableControlledPlanner(
             provider,
@@ -166,7 +228,9 @@ class DurableAgentIntegrationDatabaseTests(unittest.TestCase):
         self.assertEqual(output.source_relation, "analytics.sales_orders")
 
     def test_full_pipeline_uses_real_tools_heartbeats_and_persistent_receipts(self):
-        agent, _, executor, provider, store, _ = self.new_stack(delay_seconds=0.13)
+        agent, _, executor, provider, store, _ = self.new_stack(
+            heartbeats_per_tool_call=2
+        )
         creation = self.submit(agent, "phase55e-happy-path")
 
         result = agent.run_to_terminal(
