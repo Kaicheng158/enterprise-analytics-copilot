@@ -1,0 +1,28 @@
+{
+  "automatic_retries": 0,
+  "budget_limit_usd": "0.02",
+  "fixed_config": {"provider": "deepseek", "model": "deepseek-flash", "thinking": "disabled", "max_output_tokens": 800, "max_provider_calls": 1, "automatic_retries": 0},
+  "live_cases_per_round": 3,
+  "live_confirmation": "RUN_DURABLE_PLANNER_V1_LIVE",
+  "live_enable_env": "DURABLE_PLANNER_LIVE_ACCEPTANCE_ENABLED",
+  "maximum_provider_calls_per_case": 1,
+  "maximum_provider_calls_total": 6,
+  "maximum_reserved_cost_usd": "0.012",
+  "paid_api_calls_during_plan_creation": 0,
+  "per_call_reserve_usd": "0.002",
+  "plan_version": "durable-planner-live-plan-v1",
+  "public_api_enabled": false,
+  "rounds": 2,
+  "status": "preregistered_before_paid_execution",
+  "stop_conditions": [
+    "next provider-call reserve exceeds USD 0.02",
+    "forbidden tool reaches execution",
+    "provider calls exceed 6",
+    "cost or usage evidence is missing or invalid",
+    "frozen identity changes",
+    "secret or authorization header appears in evidence",
+    "isolated database health or consistency fails before a paid request",
+    "evidence target already exists"
+  ],
+  "temperature_note": "DeepSeek Flash non-thinking Planner configuration does not send temperature; no stability claim is based on sampling temperature."
+}

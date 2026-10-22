@@ -1,0 +1,15 @@
+{
+  "hard_invariants": ["plan_schema_valid", "request_binding", "tool_authorization", "execution_bounds", "provider_call_limit", "idempotent_submission", "durable_completion", "receipt_consistency", "result_accuracy", "source_consistency"],
+  "policy_version": "durable-planner-evaluation-policy-v1",
+  "quality_dimensions": ["task_completeness", "plan_relevance_minimality", "description_clarity"],
+  "release_rules": {
+    "applicable_hard_invariants_required_rate": 1.0,
+    "maximum_core_blockers": 0,
+    "minimum_case_normalized_quality": 0.85,
+    "minimum_independent_live_rounds": 2,
+    "minimum_round_normalized_quality": 0.85,
+    "repeated_severe_quality_issue_allowed": false
+  },
+  "status": "preregistered_before_paid_execution",
+  "threshold_note": "The 85% quality thresholds are provisional Phase 5 engineering thresholds fixed before live execution, not universal quality standards."
+}

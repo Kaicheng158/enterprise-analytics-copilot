@@ -1,0 +1,27 @@
+{
+  "cases": [
+    {
+      "id": "durable/all-q1-q2",
+      "request": {"task": "compare_quarterly_sales", "baseline_period": "2026-Q1", "comparison_period": "2026-Q2", "region": "all"},
+      "expected": {"baseline_total_sales": "400.00", "comparison_total_sales": "600.00", "absolute_change": "200.00", "growth_rate_percent": "50.00", "currency": "USD", "source_relation": "analytics.sales_orders", "dataset_version": "synthetic-sales-db-v1"},
+      "hard_invariants": ["plan_schema_valid", "request_binding", "tool_authorization", "execution_bounds", "provider_call_limit", "idempotent_submission", "durable_completion", "receipt_consistency", "result_accuracy", "source_consistency"],
+      "quality_dimensions": ["task_completeness", "plan_relevance_minimality", "description_clarity"]
+    },
+    {
+      "id": "durable/north-q1-q2",
+      "request": {"task": "compare_quarterly_sales", "baseline_period": "2026-Q1", "comparison_period": "2026-Q2", "region": "north"},
+      "expected": {"baseline_total_sales": "200.00", "comparison_total_sales": "300.00", "absolute_change": "100.00", "growth_rate_percent": "50.00", "currency": "USD", "source_relation": "analytics.sales_orders", "dataset_version": "synthetic-sales-db-v1"},
+      "hard_invariants": ["plan_schema_valid", "request_binding", "tool_authorization", "execution_bounds", "provider_call_limit", "idempotent_submission", "durable_completion", "receipt_consistency", "result_accuracy", "source_consistency"],
+      "quality_dimensions": ["task_completeness", "plan_relevance_minimality", "description_clarity"]
+    },
+    {
+      "id": "durable/south-q2-q1",
+      "request": {"task": "compare_quarterly_sales", "baseline_period": "2026-Q2", "comparison_period": "2026-Q1", "region": "south"},
+      "expected": {"baseline_total_sales": "300.00", "comparison_total_sales": "200.00", "absolute_change": "-100.00", "growth_rate_percent": "-33.33", "currency": "USD", "source_relation": "analytics.sales_orders", "dataset_version": "synthetic-sales-db-v1"},
+      "hard_invariants": ["plan_schema_valid", "request_binding", "tool_authorization", "execution_bounds", "provider_call_limit", "idempotent_submission", "durable_completion", "receipt_consistency", "result_accuracy", "source_consistency"],
+      "quality_dimensions": ["task_completeness", "plan_relevance_minimality", "description_clarity"]
+    }
+  ],
+  "data_classification": "synthetic_non_sensitive",
+  "suite_version": "durable-planner-suite-v1"
+}

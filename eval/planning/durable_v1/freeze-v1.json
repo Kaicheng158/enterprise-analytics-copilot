@@ -1,0 +1,33 @@
+{
+  "file_sha256": {
+    "backend/planning/deepseek_planner_adapter.py": "8c014162ff3b3da7893116e21e9b243b2f17eec72ed0661871f53f3e67fc4c7e",
+    "backend/planning/durable_agent_runtime.py": "6abdbeae3a3c24158ecfa46baa2d7548530981223d14c07c72285a752266eebe",
+    "backend/planning/durable_controlled_runtime.py": "c46a50f5d7ce5ac7d326a8b29011a75e8d4c630dd5215b5e564fc2cbb2d60577",
+    "backend/planning/durable_deepseek_integration.py": "d578ebfdf08829df28ffa4479c81a87b3872de569723aeea475e7b44025e6ed0",
+    "backend/planning/planner_safety.py": "a9f20a3d938629c1b5cd8142e4b40cc3183f71996b5484d4678fae2a3d8679fe",
+    "backend/planning/structured_provider.py": "5084404c33c78b9eee22cf4d13d5a8131cab5adcc7e544e17afe9aa2923cf84e",
+    "backend/planning/worker_runtime.py": "ff4ab76c98b82d62cf36ec48585d8b707aeeacfac5a96ebef0825736c770c681",
+    "eval/planning/durable_v1/__init__.py": "01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+    "eval/planning/durable_v1/cases-v1.json": "b4a84fcec8d229008b33edce54773a2798c52b724df944d4d8548a0d04d29f82",
+    "eval/planning/durable_v1/infrastructure_v1.py": "352853d2f2208f4090caa5ae76fbfa5c4f55a0db5466a6ab2d0358ae013f9531",
+    "eval/planning/durable_v1/live-plan-v1.json": "295430c580237ed611e2884a301eb65b95f35d0b737be5de4d21c9840bea1be9",
+    "eval/planning/durable_v1/live_runner_v1.py": "b066a4f4df1e877d01da8aeefc49f790bd111b088665dbf0e1080766eb5913e7",
+    "eval/planning/durable_v1/policy-v1.json": "7a4f011ff0e6c57e7e0c0e9e2d3376c766b5dd38a798ce66814865f28fc903b4",
+    "eval/planning/durable_v1/preflight_v1.py": "41991390867c53679a9baf34a57bb05497b2ddb1fcfd2fa4095c5c22e307b072",
+    "eval/planning/durable_v1/release-gate-v1.json": "934fee770da53d872eefe2ec81b35d99c0124f1c555ba49ce618b061f1d38961",
+    "eval/planning/durable_v1/release_gate_v1.py": "afb3d49dcf88ceb135dfc0c5092d0b8e3700f017c7963b5cf02aa6591c0d47e7",
+    "eval/planning/durable_v1/suite_v1.py": "47696b962b87283b6438b01fcbcc2d6f93ddba0dee2f2e8957041461c76abf09",
+    "eval/planning/v1/freeze-v1.json": "22e671abd521f6c4251486d2df46e0679f854351466706ae9999a03ebb565d0f"
+  },
+  "freeze_version": "durable-planner-evaluator-freeze-v1",
+  "gate_sha256": "a2355516e49e248e75915d3f7b94c8bf13df4cf19fee1ec592373c872fa1a692",
+  "historical_phase2_5_artifacts_modified": false,
+  "live_plan_sha256": "425a2613b798ab4add2894aea06a91bfc7d9c4848249422cb2f3a5fd14b0d3a7",
+  "paid_api_calls_during_freeze": 0,
+  "prompt_sha256": "23a1003075c87466b81525f3981a7aca75d97e64c2d1fbd349d5d40f6c39882b",
+  "prompt_version": "bounded-planner-v1",
+  "protected_historical_sha256": "22e671abd521f6c4251486d2df46e0679f854351466706ae9999a03ebb565d0f",
+  "schema_sha256": "8ca0bc1a0a28bc75597bdd77ab56d3878260cbc8c82206c75d2a4cb9f87e5660",
+  "status": "preregistered_before_paid_execution",
+  "suite_sha256": "c059028e3b67924338bcb27ab5cf5c8f1bf7c32977ab63ab217c2d98c061df11"
+}

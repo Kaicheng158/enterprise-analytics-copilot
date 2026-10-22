@@ -1,0 +1,62 @@
+{
+  "estimated_cost_usd": "0.0038814",
+  "gate": {
+    "blockers": [],
+    "gate_sha256": "a2355516e49e248e75915d3f7b94c8bf13df4cf19fee1ec592373c872fa1a692",
+    "gate_version": "durable-planner-release-gate-v1",
+    "live_rounds_received": 2,
+    "suite_sha256": "c059028e3b67924338bcb27ab5cf5c8f1bf7c32977ab63ab217c2d98c061df11",
+    "verdict": "PASS"
+  },
+  "gate_sha256": "a2355516e49e248e75915d3f7b94c8bf13df4cf19fee1ec592373c872fa1a692",
+  "latency_ms": 11672,
+  "live_plan_sha256": "425a2613b798ab4add2894aea06a91bfc7d9c4848249422cb2f3a5fd14b0d3a7",
+  "provider_calls": 6,
+  "rounds": [
+    {
+      "estimated_cost_usd": "0.0019203",
+      "latency_ms": 5959,
+      "result": {
+        "all_cases_meet_quality_threshold": true,
+        "core_blockers": 0,
+        "hard_invariants_100_percent": true,
+        "normalized_quality": 1.0,
+        "repeated_severe_quality_issue": false,
+        "verdict": "PASS"
+      },
+      "run_id": "live-v1-001",
+      "tokens": {
+        "input": 2753,
+        "output": 912,
+        "total": 3665
+      }
+    },
+    {
+      "estimated_cost_usd": "0.0019611",
+      "latency_ms": 5713,
+      "result": {
+        "all_cases_meet_quality_threshold": true,
+        "core_blockers": 0,
+        "hard_invariants_100_percent": true,
+        "normalized_quality": 1.0,
+        "repeated_severe_quality_issue": false,
+        "verdict": "PASS"
+      },
+      "run_id": "live-v1-002",
+      "tokens": {
+        "input": 2753,
+        "output": 946,
+        "total": 3699
+      }
+    }
+  ],
+  "rounds_completed": 2,
+  "stop_reason": null,
+  "suite_sha256": "c059028e3b67924338bcb27ab5cf5c8f1bf7c32977ab63ab217c2d98c061df11",
+  "summary_version": "durable-planner-live-summary-v1",
+  "tokens": {
+    "input": 5506,
+    "output": 1858,
+    "total": 7364
+  }
+}

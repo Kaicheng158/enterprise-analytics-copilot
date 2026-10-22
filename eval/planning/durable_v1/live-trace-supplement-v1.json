@@ -1,0 +1,4669 @@
+{
+  "evidence_kind": "zero_paid_deterministic_replay_of_frozen_live_plans",
+  "evidence_version": "durable-planner-live-trace-supplement-v1",
+  "gate_sha256": "a2355516e49e248e75915d3f7b94c8bf13df4cf19fee1ec592373c872fa1a692",
+  "live_plan_sha256": "425a2613b798ab4add2894aea06a91bfc7d9c4848249422cb2f3a5fd14b0d3a7",
+  "original_ephemeral_database_trace_available": false,
+  "paid_api_calls": 0,
+  "rounds": [
+    {
+      "source_run_id": "live-v1-001",
+      "traces": [
+        {
+          "case_id": "durable/all-q1-q2",
+          "matches_original_final_result": true,
+          "matches_original_plan_sha256": true,
+          "replay_checkpoints": [
+            {
+              "agent_state": {
+                "budget_units_used": 0,
+                "completed_step_ids": [],
+                "current_step_id": null,
+                "elapsed_ms": 0,
+                "error": null,
+                "plan_id": "compare_quarterly_sales_plan",
+                "status": "pending",
+                "step_states": [
+                  {
+                    "attempts": 0,
+                    "error": null,
+                    "kind": "tool",
+                    "latency_ms": 0,
+                    "output": null,
+                    "status": "pending",
+                    "step_id": "baseline_sales",
+                    "tool_call_id": null
+                  },
+                  {
+                    "attempts": 0,
+                    "error": null,
+                    "kind": "tool",
+                    "latency_ms": 0,
+                    "output": null,
+                    "status": "pending",
+                    "step_id": "comparison_sales",
+                    "tool_call_id": null
+                  },
+                  {
+                    "attempts": 0,
+                    "error": null,
+                    "kind": "compute",
+                    "latency_ms": 0,
+                    "output": null,
+                    "status": "pending",
+                    "step_id": "compare_growth",
+                    "tool_call_id": null
+                  }
+                ],
+                "steps_executed": 0,
+                "tool_calls_used": 0
+              },
+              "created_at": "2026-10-22T08:35:34.945937+00:00",
+              "execution_status": "pending",
+              "sequence": 0,
+              "state_sha256": "ef327cc05d2f2844e60697d46d0966e9b2d20e361fb2789cc1343386d83f5645",
+              "state_version": 0
+            },
+            {
+              "agent_state": {
+                "budget_units_used": 1,
+                "completed_step_ids": [],
+                "current_step_id": "baseline_sales",
+                "elapsed_ms": 1,
+                "error": null,
+                "plan_id": "compare_quarterly_sales_plan",
+                "status": "running",
+                "step_states": [
+                  {
+                    "attempts": 1,
+                    "error": null,
+                    "kind": "tool",
+                    "latency_ms": 0,
+                    "output": null,
+                    "status": "running",
+                    "step_id": "baseline_sales",
+                    "tool_call_id": null
+                  },
+                  {
+                    "attempts": 0,
+                    "error": null,
+                    "kind": "tool",
+                    "latency_ms": 0,
+                    "output": null,
+                    "status": "pending",
+                    "step_id": "comparison_sales",
+                    "tool_call_id": null
+                  },
+                  {
+                    "attempts": 0,
+                    "error": null,
+                    "kind": "compute",
+                    "latency_ms": 0,
+                    "output": null,
+                    "status": "pending",
+                    "step_id": "compare_growth",
+                    "tool_call_id": null
+                  }
+                ],
+                "steps_executed": 0,
+                "tool_calls_used": 1
+              },
+              "created_at": "2026-10-22T08:35:35.019281+00:00",
+              "execution_status": "running",
+              "sequence": 1,
+              "state_sha256": "6b94d8749f8ac90c26774f1536b76cd2477abb6b53108db45e1dfb23db5ba021",
+              "state_version": 1
+            },
+            {
+              "agent_state": {
+                "budget_units_used": 1,
+                "completed_step_ids": [
+                  "baseline_sales"
+                ],
+                "current_step_id": null,
+                "elapsed_ms": 2,
+                "error": null,
+                "plan_id": "compare_quarterly_sales_plan",
+                "status": "running",
+                "step_states": [
+                  {
+                    "attempts": 1,
+                    "error": null,
+                    "kind": "tool",
+                    "latency_ms": 1,
+                    "output": {
+                      "average_order_value": "100.00",
+                      "currency": "USD",
+                      "data_source": {
+                        "dataset_version": "synthetic-sales-db-v1",
+                        "kind": "postgresql",
+                        "read_only": true,
+                        "relation": "analytics.sales_orders"
+                      },
+                      "order_count": 4,
+                      "period": "2026-Q1",
+                      "region": "all",
+                      "total_sales": "400.00"
+                    },
+                    "status": "completed",
+                    "step_id": "baseline_sales",
+                    "tool_call_id": "sim-9c6159e5643e0375"
+                  },
+                  {
+                    "attempts": 0,
+                    "error": null,
+                    "kind": "tool",
+                    "latency_ms": 0,
+                    "output": null,
+                    "status": "pending",
+                    "step_id": "comparison_sales",
+                    "tool_call_id": null
+                  },
+                  {
+                    "attempts": 0,
+                    "error": null,
+                    "kind": "compute",
+                    "latency_ms": 0,
+                    "output": null,
+                    "status": "pending",
+                    "step_id": "compare_growth",
+                    "tool_call_id": null
+                  }
+                ],
+                "steps_executed": 1,
+                "tool_calls_used": 1
+              },
+              "created_at": "2026-10-22T08:35:35.187534+00:00",
+              "execution_status": "running",
+              "sequence": 2,
+              "state_sha256": "856c21f0a7e6a71323576287a3e50419d5114c1c800240b61051d18be3a293e1",
+              "state_version": 2
+            },
+            {
+              "agent_state": {
+                "budget_units_used": 2,
+                "completed_step_ids": [
+                  "baseline_sales"
+                ],
+                "current_step_id": "comparison_sales",
+                "elapsed_ms": 3,
+                "error": null,
+                "plan_id": "compare_quarterly_sales_plan",
+                "status": "running",
+                "step_states": [
+                  {
+                    "attempts": 1,
+                    "error": null,
+                    "kind": "tool",
+                    "latency_ms": 1,
+                    "output": {
+                      "average_order_value": "100.00",
+                      "currency": "USD",
+                      "data_source": {
+                        "dataset_version": "synthetic-sales-db-v1",
+                        "kind": "postgresql",
+                        "read_only": true,
+                        "relation": "analytics.sales_orders"
+                      },
+                      "order_count": 4,
+                      "period": "2026-Q1",
+                      "region": "all",
+                      "total_sales": "400.00"
+                    },
+                    "status": "completed",
+                    "step_id": "baseline_sales",
+                    "tool_call_id": "sim-9c6159e5643e0375"
+                  },
+                  {
+                    "attempts": 1,
+                    "error": null,
+                    "kind": "tool",
+                    "latency_ms": 0,
+                    "output": null,
+                    "status": "running",
+                    "step_id": "comparison_sales",
+                    "tool_call_id": null
+                  },
+                  {
+                    "attempts": 0,
+                    "error": null,
+                    "kind": "compute",
+                    "latency_ms": 0,
+                    "output": null,
+                    "status": "pending",
+                    "step_id": "compare_growth",
+                    "tool_call_id": null
+                  }
+                ],
+                "steps_executed": 1,
+                "tool_calls_used": 2
+              },
+              "created_at": "2026-10-22T08:35:35.230052+00:00",
+              "execution_status": "running",
+              "sequence": 3,
+              "state_sha256": "754261739737f0e16170be2bec15f39e76c8ef5701cb57891eff8aac74b0c572",
+              "state_version": 3
+            },
+            {
+              "agent_state": {
+                "budget_units_used": 2,
+                "completed_step_ids": [
+                  "baseline_sales",
+                  "comparison_sales"
+                ],
+                "current_step_id": null,
+                "elapsed_ms": 4,
+                "error": null,
+                "plan_id": "compare_quarterly_sales_plan",
+                "status": "running",
+                "step_states": [
+                  {
+                    "attempts": 1,
+                    "error": null,
+                    "kind": "tool",
+                    "latency_ms": 1,
+                    "output": {
+                      "average_order_value": "100.00",
+                      "currency": "USD",
+                      "data_source": {
+                        "dataset_version": "synthetic-sales-db-v1",
+                        "kind": "postgresql",
+                        "read_only": true,
+                        "relation": "analytics.sales_orders"
+                      },
+                      "order_count": 4,
+                      "period": "2026-Q1",
+                      "region": "all",
+                      "total_sales": "400.00"
+                    },
+                    "status": "completed",
+                    "step_id": "baseline_sales",
+                    "tool_call_id": "sim-9c6159e5643e0375"
+                  },
+                  {
+                    "attempts": 1,
+                    "error": null,
+                    "kind": "tool",
+                    "latency_ms": 1,
+                    "output": {
+                      "average_order_value": "150.00",
+                      "currency": "USD",
+                      "data_source": {
+                        "dataset_version": "synthetic-sales-db-v1",
+                        "kind": "postgresql",
+                        "read_only": true,
+                        "relation": "analytics.sales_orders"
+                      },
+                      "order_count": 4,
+                      "period": "2026-Q2",
+                      "region": "all",
+                      "total_sales": "600.00"
+                    },
+                    "status": "completed",
+                    "step_id": "comparison_sales",
+                    "tool_call_id": "sim-a16a4789366b4c29"
+                  },
+                  {
+                    "attempts": 0,
+                    "error": null,
+                    "kind": "compute",
+                    "latency_ms": 0,
+                    "output": null,
+                    "status": "pending",
+                    "step_id": "compare_growth",
+                    "tool_call_id": null
+                  }
+                ],
+                "steps_executed": 2,
+                "tool_calls_used": 2
+              },
+              "created_at": "2026-10-22T08:35:35.382781+00:00",
+              "execution_status": "running",
+              "sequence": 4,
+              "state_sha256": "516e829dfd1e5a30d315883e63f2777a1c948460cc4f08eb59911d9198dff690",
+              "state_version": 4
+            },
+            {
+              "agent_state": {
+                "budget_units_used": 3,
+                "completed_step_ids": [
+                  "baseline_sales",
+                  "comparison_sales"
+                ],
+                "current_step_id": "compare_growth",
+                "elapsed_ms": 5,
+                "error": null,
+                "plan_id": "compare_quarterly_sales_plan",
+                "status": "running",
+                "step_states": [
+                  {
+                    "attempts": 1,
+                    "error": null,
+                    "kind": "tool",
+                    "latency_ms": 1,
+                    "output": {
+                      "average_order_value": "100.00",
+                      "currency": "USD",
+                      "data_source": {
+                        "dataset_version": "synthetic-sales-db-v1",
+                        "kind": "postgresql",
+                        "read_only": true,
+                        "relation": "analytics.sales_orders"
+                      },
+                      "order_count": 4,
+                      "period": "2026-Q1",
+                      "region": "all",
+                      "total_sales": "400.00"
+                    },
+                    "status": "completed",
+                    "step_id": "baseline_sales",
+                    "tool_call_id": "sim-9c6159e5643e0375"
+                  },
+                  {
+                    "attempts": 1,
+                    "error": null,
+                    "kind": "tool",
+                    "latency_ms": 1,
+                    "output": {
+                      "average_order_value": "150.00",
+                      "currency": "USD",
+                      "data_source": {
+                        "dataset_version": "synthetic-sales-db-v1",
+                        "kind": "postgresql",
+                        "read_only": true,
+                        "relation": "analytics.sales_orders"
+                      },
+                      "order_count": 4,
+                      "period": "2026-Q2",
+                      "region": "all",
+                      "total_sales": "600.00"
+                    },
+                    "status": "completed",
+                    "step_id": "comparison_sales",
+                    "tool_call_id": "sim-a16a4789366b4c29"
+                  },
+                  {
+                    "attempts": 1,
+                    "error": null,
+                    "kind": "compute",
+                    "latency_ms": 0,
+                    "output": null,
+                    "status": "running",
+                    "step_id": "compare_growth",
+                    "tool_call_id": null
+                  }
+                ],
+                "steps_executed": 2,
+                "tool_calls_used": 2
+              },
+              "created_at": "2026-10-22T08:35:35.424879+00:00",
+              "execution_status": "running",
+              "sequence": 5,
+              "state_sha256": "7a456ca28189d47ef063afdafb4f017bc48f27c197e70dba8dd3fd991f1d6b9e",
+              "state_version": 5
+            },
+            {
+              "agent_state": {
+                "budget_units_used": 3,
+                "completed_step_ids": [
+                  "baseline_sales",
+                  "comparison_sales",
+                  "compare_growth"
+                ],
+                "current_step_id": null,
+                "elapsed_ms": 6,
+                "error": null,
+                "plan_id": "compare_quarterly_sales_plan",
+                "status": "completed",
+                "step_states": [
+                  {
+                    "attempts": 1,
+                    "error": null,
+                    "kind": "tool",
+                    "latency_ms": 1,
+                    "output": {
+                      "average_order_value": "100.00",
+                      "currency": "USD",
+                      "data_source": {
+                        "dataset_version": "synthetic-sales-db-v1",
+                        "kind": "postgresql",
+                        "read_only": true,
+                        "relation": "analytics.sales_orders"
+                      },
+                      "order_count": 4,
+                      "period": "2026-Q1",
+                      "region": "all",
+                      "total_sales": "400.00"
+                    },
+                    "status": "completed",
+                    "step_id": "baseline_sales",
+                    "tool_call_id": "sim-9c6159e5643e0375"
+                  },
+                  {
+                    "attempts": 1,
+                    "error": null,
+                    "kind": "tool",
+                    "latency_ms": 1,
+                    "output": {
+                      "average_order_value": "150.00",
+                      "currency": "USD",
+                      "data_source": {
+                        "dataset_version": "synthetic-sales-db-v1",
+                        "kind": "postgresql",
+                        "read_only": true,
+                        "relation": "analytics.sales_orders"
+                      },
+                      "order_count": 4,
+                      "period": "2026-Q2",
+                      "region": "all",
+                      "total_sales": "600.00"
+                    },
+                    "status": "completed",
+                    "step_id": "comparison_sales",
+                    "tool_call_id": "sim-a16a4789366b4c29"
+                  },
+                  {
+                    "attempts": 1,
+                    "error": null,
+                    "kind": "compute",
+                    "latency_ms": 1,
+                    "output": {
+                      "absolute_change": "200.00",
+                      "baseline_period": "2026-Q1",
+                      "baseline_total_sales": "400.00",
+                      "comparison_period": "2026-Q2",
+                      "comparison_total_sales": "600.00",
+                      "currency": "USD",
+                      "dataset_version": "synthetic-sales-db-v1",
+                      "growth_rate_percent": "50.00",
+                      "region": "all",
+                      "source_relation": "analytics.sales_orders"
+                    },
+                    "status": "completed",
+                    "step_id": "compare_growth",
+                    "tool_call_id": null
+                  }
+                ],
+                "steps_executed": 3,
+                "tool_calls_used": 2
+              },
+              "created_at": "2026-10-22T08:35:35.582564+00:00",
+              "execution_status": "completed",
+              "sequence": 6,
+              "state_sha256": "f73ca36c060048d1bbc5daa9b1947172391eef5f1bdfdcc2a310f8e57c5bf4f9",
+              "state_version": 6
+            }
+          ],
+          "replay_execution": {
+            "checkpoint_sequence": 6,
+            "created_at": "2026-10-22T08:35:34.945937Z",
+            "execution_id": "47326322-11bf-43c9-856a-06a6766fab01",
+            "idempotency_key_hash": "af5ad84605f48406d29167d5f2b441234cc3cdcc23071b9f0151f436478c74e9",
+            "lease_expires_at": null,
+            "lease_owner": null,
+            "plan": {
+              "baseline_period": "2026-Q1",
+              "comparison_period": "2026-Q2",
+              "plan_id": "compare_quarterly_sales_plan",
+              "region": "all",
+              "steps": [
+                {
+                  "computation": null,
+                  "depends_on": [],
+                  "description": "Get PostgreSQL sales summary for the 2026-Q1 baseline period across all regions.",
+                  "kind": "tool",
+                  "step_id": "baseline_sales",
+                  "tool_call": {
+                    "arguments": {
+                      "period": "2026-Q1",
+                      "region": "all"
+                    },
+                    "name": "get_postgres_sales_summary"
+                  }
+                },
+                {
+                  "computation": null,
+                  "depends_on": [],
+                  "description": "Get PostgreSQL sales summary for the 2026-Q2 comparison period across all regions.",
+                  "kind": "tool",
+                  "step_id": "comparison_sales",
+                  "tool_call": {
+                    "arguments": {
+                      "period": "2026-Q2",
+                      "region": "all"
+                    },
+                    "name": "get_postgres_sales_summary"
+                  }
+                },
+                {
+                  "computation": {
+                    "baseline_period": "2026-Q1",
+                    "baseline_step_id": "baseline_sales",
+                    "comparison_period": "2026-Q2",
+                    "comparison_step_id": "comparison_sales",
+                    "operation": "compare_sales_growth",
+                    "region": "all"
+                  },
+                  "depends_on": [
+                    "baseline_sales",
+                    "comparison_sales"
+                  ],
+                  "description": "Compute quarterly sales growth from the 2026-Q1 baseline to the 2026-Q2 comparison period across all regions.",
+                  "kind": "compute",
+                  "step_id": "compare_growth",
+                  "tool_call": null
+                }
+              ],
+              "task": "compare_quarterly_sales",
+              "version": "bounded-plan-v1"
+            },
+            "plan_sha256": "89d1ef47bf2f0f2299872e6fa811a49dd749103e3dd5bef3394ae446a141bbb4",
+            "plan_version": "bounded-plan-v1",
+            "policy_version": "bounded-plan-policy-v1",
+            "request_sha256": "122ebb8fb4dd43fa34289c08fc7113c2fb19beaba421b06c4ab1f2de2287a783",
+            "runtime_version": "durable-controlled-planner-v1",
+            "scope_key": "acceptance-trace:analytics-copilot",
+            "state_version": 6,
+            "status": "completed",
+            "updated_at": "2026-10-22T08:35:35.582564Z"
+          },
+          "replay_final_result": {
+            "absolute_change": "200.00",
+            "baseline_period": "2026-Q1",
+            "baseline_total_sales": "400.00",
+            "comparison_period": "2026-Q2",
+            "comparison_total_sales": "600.00",
+            "currency": "USD",
+            "dataset_version": "synthetic-sales-db-v1",
+            "growth_rate_percent": "50.00",
+            "region": "all",
+            "source_relation": "analytics.sales_orders"
+          },
+          "replay_idempotency_verified": true,
+          "replay_receipts": [
+            {
+              "action_name": "get_postgres_sales_summary",
+              "error_code": null,
+              "execution_id": "47326322-11bf-43c9-856a-06a6766fab01",
+              "finished_at": "2026-10-22T08:35:35.187534Z",
+              "idempotency_token": "9c6159e5643e0375cc048e639ff031e2c992c794f553a237d06ff8d470200f27",
+              "input_sha256": "7f9f2b5108df28321e05dd40343520464bf1d6bfe25752173cc0e9a30413a997",
+              "output": {
+                "average_order_value": "100.00",
+                "currency": "USD",
+                "data_source": {
+                  "dataset_version": "synthetic-sales-db-v1",
+                  "kind": "postgresql",
+                  "read_only": true,
+                  "relation": "analytics.sales_orders"
+                },
+                "order_count": 4,
+                "period": "2026-Q1",
+                "region": "all",
+                "total_sales": "400.00"
+              },
+              "output_sha256": "8222757757f670894c3fc87fe5ecd0f4f9233a0bf4ae2b23566b07b3e9a545d4",
+              "started_at": "2026-10-22T08:35:35.019281Z",
+              "status": "succeeded",
+              "step_id": "baseline_sales",
+              "tool_call_id": "worker-9c6159e5643e0375"
+            },
+            {
+              "action_name": "get_postgres_sales_summary",
+              "error_code": null,
+              "execution_id": "47326322-11bf-43c9-856a-06a6766fab01",
+              "finished_at": "2026-10-22T08:35:35.382781Z",
+              "idempotency_token": "a16a4789366b4c29c4107235d6e5cd7ab31fc7fd1af066cc6802895666bbddf7",
+              "input_sha256": "3124a6f3e68921bd7f95aae7fb6b0eb115e4ad128062865dd45d3eeb4259fc95",
+              "output": {
+                "average_order_value": "150.00",
+                "currency": "USD",
+                "data_source": {
+                  "dataset_version": "synthetic-sales-db-v1",
+                  "kind": "postgresql",
+                  "read_only": true,
+                  "relation": "analytics.sales_orders"
+                },
+                "order_count": 4,
+                "period": "2026-Q2",
+                "region": "all",
+                "total_sales": "600.00"
+              },
+              "output_sha256": "5a4835c4e8c2fb8d1789c0ba451ba118e39f58361d2971397c770d754ad8ac80",
+              "started_at": "2026-10-22T08:35:35.230052Z",
+              "status": "succeeded",
+              "step_id": "comparison_sales",
+              "tool_call_id": "worker-a16a4789366b4c29"
+            },
+            {
+              "action_name": "compare_sales_growth",
+              "error_code": null,
+              "execution_id": "47326322-11bf-43c9-856a-06a6766fab01",
+              "finished_at": "2026-10-22T08:35:35.582564Z",
+              "idempotency_token": "e5a0d82153c5d9fad5e35a70644bb2b0ca6a7f557dda4bba60200cac4a22c586",
+              "input_sha256": "6058eb83f9a574fe29e73e0c92de72b75f4e5d4cdfe10e73a5d91698745c9040",
+              "output": {
+                "absolute_change": "200.00",
+                "baseline_period": "2026-Q1",
+                "baseline_total_sales": "400.00",
+                "comparison_period": "2026-Q2",
+                "comparison_total_sales": "600.00",
+                "currency": "USD",
+                "dataset_version": "synthetic-sales-db-v1",
+                "growth_rate_percent": "50.00",
+                "region": "all",
+                "source_relation": "analytics.sales_orders"
+              },
+              "output_sha256": "49485c0ba2c228a935a19380c7133f1d515ca2ea2dee80f3b4a63c9f3d7116cd",
+              "started_at": "2026-10-22T08:35:35.424879Z",
+              "status": "succeeded",
+              "step_id": "compare_growth",
+              "tool_call_id": null
+            }
+          ],
+          "replay_tool_executions": [
+            {
+              "action_name": "get_postgres_sales_summary",
+              "error_code": null,
+              "execution_id": "47326322-11bf-43c9-856a-06a6766fab01",
+              "finished_at": "2026-10-22T08:35:35.187534Z",
+              "idempotency_token": "9c6159e5643e0375cc048e639ff031e2c992c794f553a237d06ff8d470200f27",
+              "input_sha256": "7f9f2b5108df28321e05dd40343520464bf1d6bfe25752173cc0e9a30413a997",
+              "output": {
+                "average_order_value": "100.00",
+                "currency": "USD",
+                "data_source": {
+                  "dataset_version": "synthetic-sales-db-v1",
+                  "kind": "postgresql",
+                  "read_only": true,
+                  "relation": "analytics.sales_orders"
+                },
+                "order_count": 4,
+                "period": "2026-Q1",
+                "region": "all",
+                "total_sales": "400.00"
+              },
+              "output_sha256": "8222757757f670894c3fc87fe5ecd0f4f9233a0bf4ae2b23566b07b3e9a545d4",
+              "started_at": "2026-10-22T08:35:35.019281Z",
+              "status": "succeeded",
+              "step_id": "baseline_sales",
+              "tool_call_id": "worker-9c6159e5643e0375"
+            },
+            {
+              "action_name": "get_postgres_sales_summary",
+              "error_code": null,
+              "execution_id": "47326322-11bf-43c9-856a-06a6766fab01",
+              "finished_at": "2026-10-22T08:35:35.382781Z",
+              "idempotency_token": "a16a4789366b4c29c4107235d6e5cd7ab31fc7fd1af066cc6802895666bbddf7",
+              "input_sha256": "3124a6f3e68921bd7f95aae7fb6b0eb115e4ad128062865dd45d3eeb4259fc95",
+              "output": {
+                "average_order_value": "150.00",
+                "currency": "USD",
+                "data_source": {
+                  "dataset_version": "synthetic-sales-db-v1",
+                  "kind": "postgresql",
+                  "read_only": true,
+                  "relation": "analytics.sales_orders"
+                },
+                "order_count": 4,
+                "period": "2026-Q2",
+                "region": "all",
+                "total_sales": "600.00"
+              },
+              "output_sha256": "5a4835c4e8c2fb8d1789c0ba451ba118e39f58361d2971397c770d754ad8ac80",
+              "started_at": "2026-10-22T08:35:35.230052Z",
+              "status": "succeeded",
+              "step_id": "comparison_sales",
+              "tool_call_id": "worker-a16a4789366b4c29"
+            }
+          ],
+          "source_estimated_cost_usd": "0.0006363",
+          "source_evidence_sha256": "73e2d22a13fae7a9189024b4bb4308888f97ec60b73930329b8ede0346ab1539",
+          "source_execution_id": "0c1847bd-15b0-439c-8822-5e2b26d91653",
+          "source_latency_ms": 1945,
+          "source_plan": {
+            "baseline_period": "2026-Q1",
+            "comparison_period": "2026-Q2",
+            "plan_id": "compare_quarterly_sales_plan",
+            "region": "all",
+            "steps": [
+              {
+                "depends_on": [],
+                "description": "Get PostgreSQL sales summary for the 2026-Q1 baseline period across all regions.",
+                "kind": "tool",
+                "step_id": "baseline_sales",
+                "tool_call": {
+                  "arguments": {
+                    "period": "2026-Q1",
+                    "region": "all"
+                  },
+                  "name": "get_postgres_sales_summary"
+                }
+              },
+              {
+                "depends_on": [],
+                "description": "Get PostgreSQL sales summary for the 2026-Q2 comparison period across all regions.",
+                "kind": "tool",
+                "step_id": "comparison_sales",
+                "tool_call": {
+                  "arguments": {
+                    "period": "2026-Q2",
+                    "region": "all"
+                  },
+                  "name": "get_postgres_sales_summary"
+                }
+              },
+              {
+                "computation": {
+                  "baseline_period": "2026-Q1",
+                  "baseline_step_id": "baseline_sales",
+                  "comparison_period": "2026-Q2",
+                  "comparison_step_id": "comparison_sales",
+                  "operation": "compare_sales_growth",
+                  "region": "all"
+                },
+                "depends_on": [
+                  "baseline_sales",
+                  "comparison_sales"
+                ],
+                "description": "Compute quarterly sales growth from the 2026-Q1 baseline to the 2026-Q2 comparison period across all regions.",
+                "kind": "compute",
+                "step_id": "compare_growth"
+              }
+            ],
+            "task": "compare_quarterly_sales",
+            "version": "bounded-plan-v1"
+          },
+          "source_plan_sha256": "89d1ef47bf2f0f2299872e6fa811a49dd749103e3dd5bef3394ae446a141bbb4",
+          "source_provider_request_id": "7224c97b-7729-4549-80fd-7f1351cf77dd",
+          "source_run_id": "live-v1-001",
+          "source_usage": {
+            "input_tokens": 917,
+            "output_tokens": 301,
+            "total_tokens": 1218
+          }
+        },
+        {
+          "case_id": "durable/north-q1-q2",
+          "matches_original_final_result": true,
+          "matches_original_plan_sha256": true,
+          "replay_checkpoints": [
+            {
+              "agent_state": {
+                "budget_units_used": 0,
+                "completed_step_ids": [],
+                "current_step_id": null,
+                "elapsed_ms": 0,
+                "error": null,
+                "plan_id": "compare-sales-q1-q2-north",
+                "status": "pending",
+                "step_states": [
+                  {
+                    "attempts": 0,
+                    "error": null,
+                    "kind": "tool",
+                    "latency_ms": 0,
+                    "output": null,
+                    "status": "pending",
+                    "step_id": "baseline_sales",
+                    "tool_call_id": null
+                  },
+                  {
+                    "attempts": 0,
+                    "error": null,
+                    "kind": "tool",
+                    "latency_ms": 0,
+                    "output": null,
+                    "status": "pending",
+                    "step_id": "comparison_sales",
+                    "tool_call_id": null
+                  },
+                  {
+                    "attempts": 0,
+                    "error": null,
+                    "kind": "compute",
+                    "latency_ms": 0,
+                    "output": null,
+                    "status": "pending",
+                    "step_id": "sales_growth",
+                    "tool_call_id": null
+                  }
+                ],
+                "steps_executed": 0,
+                "tool_calls_used": 0
+              },
+              "created_at": "2026-10-22T08:35:35.681707+00:00",
+              "execution_status": "pending",
+              "sequence": 0,
+              "state_sha256": "ee250553e74c2a9f9ba347cce40d157a01d052f6705a0d292eb4d98bf17c225a",
+              "state_version": 0
+            },
+            {
+              "agent_state": {
+                "budget_units_used": 1,
+                "completed_step_ids": [],
+                "current_step_id": "baseline_sales",
+                "elapsed_ms": 1,
+                "error": null,
+                "plan_id": "compare-sales-q1-q2-north",
+                "status": "running",
+                "step_states": [
+                  {
+                    "attempts": 1,
+                    "error": null,
+                    "kind": "tool",
+                    "latency_ms": 0,
+                    "output": null,
+                    "status": "running",
+                    "step_id": "baseline_sales",
+                    "tool_call_id": null
+                  },
+                  {
+                    "attempts": 0,
+                    "error": null,
+                    "kind": "tool",
+                    "latency_ms": 0,
+                    "output": null,
+                    "status": "pending",
+                    "step_id": "comparison_sales",
+                    "tool_call_id": null
+                  },
+                  {
+                    "attempts": 0,
+                    "error": null,
+                    "kind": "compute",
+                    "latency_ms": 0,
+                    "output": null,
+                    "status": "pending",
+                    "step_id": "sales_growth",
+                    "tool_call_id": null
+                  }
+                ],
+                "steps_executed": 0,
+                "tool_calls_used": 1
+              },
+              "created_at": "2026-10-22T08:35:35.730076+00:00",
+              "execution_status": "running",
+              "sequence": 1,
+              "state_sha256": "544006b7a33ecd07e012c2ce270552a71cce90abc9acda2b1230c5755d9a4fd3",
+              "state_version": 1
+            },
+            {
+              "agent_state": {
+                "budget_units_used": 1,
+                "completed_step_ids": [
+                  "baseline_sales"
+                ],
+                "current_step_id": null,
+                "elapsed_ms": 2,
+                "error": null,
+                "plan_id": "compare-sales-q1-q2-north",
+                "status": "running",
+                "step_states": [
+                  {
+                    "attempts": 1,
+                    "error": null,
+                    "kind": "tool",
+                    "latency_ms": 1,
+                    "output": {
+                      "average_order_value": "100.00",
+                      "currency": "USD",
+                      "data_source": {
+                        "dataset_version": "synthetic-sales-db-v1",
+                        "kind": "postgresql",
+                        "read_only": true,
+                        "relation": "analytics.sales_orders"
+                      },
+                      "order_count": 2,
+                      "period": "2026-Q1",
+                      "region": "north",
+                      "total_sales": "200.00"
+                    },
+                    "status": "completed",
+                    "step_id": "baseline_sales",
+                    "tool_call_id": "sim-202b247383e99de8"
+                  },
+                  {
+                    "attempts": 0,
+                    "error": null,
+                    "kind": "tool",
+                    "latency_ms": 0,
+                    "output": null,
+                    "status": "pending",
+                    "step_id": "comparison_sales",
+                    "tool_call_id": null
+                  },
+                  {
+                    "attempts": 0,
+                    "error": null,
+                    "kind": "compute",
+                    "latency_ms": 0,
+                    "output": null,
+                    "status": "pending",
+                    "step_id": "sales_growth",
+                    "tool_call_id": null
+                  }
+                ],
+                "steps_executed": 1,
+                "tool_calls_used": 1
+              },
+              "created_at": "2026-10-22T08:35:35.874161+00:00",
+              "execution_status": "running",
+              "sequence": 2,
+              "state_sha256": "ecfcc6e2a98ee75591c957c7bbe1bbc97134864146a3474f29b7da4bcf9f449b",
+              "state_version": 2
+            },
+            {
+              "agent_state": {
+                "budget_units_used": 2,
+                "completed_step_ids": [
+                  "baseline_sales"
+                ],
+                "current_step_id": "comparison_sales",
+                "elapsed_ms": 3,
+                "error": null,
+                "plan_id": "compare-sales-q1-q2-north",
+                "status": "running",
+                "step_states": [
+                  {
+                    "attempts": 1,
+                    "error": null,
+                    "kind": "tool",
+                    "latency_ms": 1,
+                    "output": {
+                      "average_order_value": "100.00",
+                      "currency": "USD",
+                      "data_source": {
+                        "dataset_version": "synthetic-sales-db-v1",
+                        "kind": "postgresql",
+                        "read_only": true,
+                        "relation": "analytics.sales_orders"
+                      },
+                      "order_count": 2,
+                      "period": "2026-Q1",
+                      "region": "north",
+                      "total_sales": "200.00"
+                    },
+                    "status": "completed",
+                    "step_id": "baseline_sales",
+                    "tool_call_id": "sim-202b247383e99de8"
+                  },
+                  {
+                    "attempts": 1,
+                    "error": null,
+                    "kind": "tool",
+                    "latency_ms": 0,
+                    "output": null,
+                    "status": "running",
+                    "step_id": "comparison_sales",
+                    "tool_call_id": null
+                  },
+                  {
+                    "attempts": 0,
+                    "error": null,
+                    "kind": "compute",
+                    "latency_ms": 0,
+                    "output": null,
+                    "status": "pending",
+                    "step_id": "sales_growth",
+                    "tool_call_id": null
+                  }
+                ],
+                "steps_executed": 1,
+                "tool_calls_used": 2
+              },
+              "created_at": "2026-10-22T08:35:35.914031+00:00",
+              "execution_status": "running",
+              "sequence": 3,
+              "state_sha256": "10eebfc747b15fe6368357bb9ee891ba154df763391f0ae4a0402bc888f12eaa",
+              "state_version": 3
+            },
+            {
+              "agent_state": {
+                "budget_units_used": 2,
+                "completed_step_ids": [
+                  "baseline_sales",
+                  "comparison_sales"
+                ],
+                "current_step_id": null,
+                "elapsed_ms": 4,
+                "error": null,
+                "plan_id": "compare-sales-q1-q2-north",
+                "status": "running",
+                "step_states": [
+                  {
+                    "attempts": 1,
+                    "error": null,
+                    "kind": "tool",
+                    "latency_ms": 1,
+                    "output": {
+                      "average_order_value": "100.00",
+                      "currency": "USD",
+                      "data_source": {
+                        "dataset_version": "synthetic-sales-db-v1",
+                        "kind": "postgresql",
+                        "read_only": true,
+                        "relation": "analytics.sales_orders"
+                      },
+                      "order_count": 2,
+                      "period": "2026-Q1",
+                      "region": "north",
+                      "total_sales": "200.00"
+                    },
+                    "status": "completed",
+                    "step_id": "baseline_sales",
+                    "tool_call_id": "sim-202b247383e99de8"
+                  },
+                  {
+                    "attempts": 1,
+                    "error": null,
+                    "kind": "tool",
+                    "latency_ms": 1,
+                    "output": {
+                      "average_order_value": "150.00",
+                      "currency": "USD",
+                      "data_source": {
+                        "dataset_version": "synthetic-sales-db-v1",
+                        "kind": "postgresql",
+                        "read_only": true,
+                        "relation": "analytics.sales_orders"
+                      },
+                      "order_count": 2,
+                      "period": "2026-Q2",
+                      "region": "north",
+                      "total_sales": "300.00"
+                    },
+                    "status": "completed",
+                    "step_id": "comparison_sales",
+                    "tool_call_id": "sim-6283e1455a9048ea"
+                  },
+                  {
+                    "attempts": 0,
+                    "error": null,
+                    "kind": "compute",
+                    "latency_ms": 0,
+                    "output": null,
+                    "status": "pending",
+                    "step_id": "sales_growth",
+                    "tool_call_id": null
+                  }
+                ],
+                "steps_executed": 2,
+                "tool_calls_used": 2
+              },
+              "created_at": "2026-10-22T08:35:36.062637+00:00",
+              "execution_status": "running",
+              "sequence": 4,
+              "state_sha256": "b90fcbecffb6a0da63058a9ad9cc14af5d01f42e9292c618e58291c38baa4ae6",
+              "state_version": 4
+            },
+            {
+              "agent_state": {
+                "budget_units_used": 3,
+                "completed_step_ids": [
+                  "baseline_sales",
+                  "comparison_sales"
+                ],
+                "current_step_id": "sales_growth",
+                "elapsed_ms": 5,
+                "error": null,
+                "plan_id": "compare-sales-q1-q2-north",
+                "status": "running",
+                "step_states": [
+                  {
+                    "attempts": 1,
+                    "error": null,
+                    "kind": "tool",
+                    "latency_ms": 1,
+                    "output": {
+                      "average_order_value": "100.00",
+                      "currency": "USD",
+                      "data_source": {
+                        "dataset_version": "synthetic-sales-db-v1",
+                        "kind": "postgresql",
+                        "read_only": true,
+                        "relation": "analytics.sales_orders"
+                      },
+                      "order_count": 2,
+                      "period": "2026-Q1",
+                      "region": "north",
+                      "total_sales": "200.00"
+                    },
+                    "status": "completed",
+                    "step_id": "baseline_sales",
+                    "tool_call_id": "sim-202b247383e99de8"
+                  },
+                  {
+                    "attempts": 1,
+                    "error": null,
+                    "kind": "tool",
+                    "latency_ms": 1,
+                    "output": {
+                      "average_order_value": "150.00",
+                      "currency": "USD",
+                      "data_source": {
+                        "dataset_version": "synthetic-sales-db-v1",
+                        "kind": "postgresql",
+                        "read_only": true,
+                        "relation": "analytics.sales_orders"
+                      },
+                      "order_count": 2,
+                      "period": "2026-Q2",
+                      "region": "north",
+                      "total_sales": "300.00"
+                    },
+                    "status": "completed",
+                    "step_id": "comparison_sales",
+                    "tool_call_id": "sim-6283e1455a9048ea"
+                  },
+                  {
+                    "attempts": 1,
+                    "error": null,
+                    "kind": "compute",
+                    "latency_ms": 0,
+                    "output": null,
+                    "status": "running",
+                    "step_id": "sales_growth",
+                    "tool_call_id": null
+                  }
+                ],
+                "steps_executed": 2,
+                "tool_calls_used": 2
+              },
+              "created_at": "2026-10-22T08:35:36.105279+00:00",
+              "execution_status": "running",
+              "sequence": 5,
+              "state_sha256": "9a43087a31731f7426a17866b5975054588c9cbc60d834e248835f85120e75ea",
+              "state_version": 5
+            },
+            {
+              "agent_state": {
+                "budget_units_used": 3,
+                "completed_step_ids": [
+                  "baseline_sales",
+                  "comparison_sales",
+                  "sales_growth"
+                ],
+                "current_step_id": null,
+                "elapsed_ms": 6,
+                "error": null,
+                "plan_id": "compare-sales-q1-q2-north",
+                "status": "completed",
+                "step_states": [
+                  {
+                    "attempts": 1,
+                    "error": null,
+                    "kind": "tool",
+                    "latency_ms": 1,
+                    "output": {
+                      "average_order_value": "100.00",
+                      "currency": "USD",
+                      "data_source": {
+                        "dataset_version": "synthetic-sales-db-v1",
+                        "kind": "postgresql",
+                        "read_only": true,
+                        "relation": "analytics.sales_orders"
+                      },
+                      "order_count": 2,
+                      "period": "2026-Q1",
+                      "region": "north",
+                      "total_sales": "200.00"
+                    },
+                    "status": "completed",
+                    "step_id": "baseline_sales",
+                    "tool_call_id": "sim-202b247383e99de8"
+                  },
+                  {
+                    "attempts": 1,
+                    "error": null,
+                    "kind": "tool",
+                    "latency_ms": 1,
+                    "output": {
+                      "average_order_value": "150.00",
+                      "currency": "USD",
+                      "data_source": {
+                        "dataset_version": "synthetic-sales-db-v1",
+                        "kind": "postgresql",
+                        "read_only": true,
+                        "relation": "analytics.sales_orders"
+                      },
+                      "order_count": 2,
+                      "period": "2026-Q2",
+                      "region": "north",
+                      "total_sales": "300.00"
+                    },
+                    "status": "completed",
+                    "step_id": "comparison_sales",
+                    "tool_call_id": "sim-6283e1455a9048ea"
+                  },
+                  {
+                    "attempts": 1,
+                    "error": null,
+                    "kind": "compute",
+                    "latency_ms": 1,
+                    "output": {
+                      "absolute_change": "100.00",
+                      "baseline_period": "2026-Q1",
+                      "baseline_total_sales": "200.00",
+                      "comparison_period": "2026-Q2",
+                      "comparison_total_sales": "300.00",
+                      "currency": "USD",
+                      "dataset_version": "synthetic-sales-db-v1",
+                      "growth_rate_percent": "50.00",
+                      "region": "north",
+                      "source_relation": "analytics.sales_orders"
+                    },
+                    "status": "completed",
+                    "step_id": "sales_growth",
+                    "tool_call_id": null
+                  }
+                ],
+                "steps_executed": 3,
+                "tool_calls_used": 2
+              },
+              "created_at": "2026-10-22T08:35:36.251887+00:00",
+              "execution_status": "completed",
+              "sequence": 6,
+              "state_sha256": "2bdcf40e4cbe1a2dcf4a3d82a9a059f3e8d8a702f49d9821e1957d405c0a2016",
+              "state_version": 6
+            }
+          ],
+          "replay_execution": {
+            "checkpoint_sequence": 6,
+            "created_at": "2026-10-22T08:35:35.681707Z",
+            "execution_id": "48aeeb0e-7490-4aba-821e-524ab652f493",
+            "idempotency_key_hash": "b7b2c122f88b47ccaefa038216596f960738248eda220382a833e20af7ef8c1d",
+            "lease_expires_at": null,
+            "lease_owner": null,
+            "plan": {
+              "baseline_period": "2026-Q1",
+              "comparison_period": "2026-Q2",
+              "plan_id": "compare-sales-q1-q2-north",
+              "region": "north",
+              "steps": [
+                {
+                  "computation": null,
+                  "depends_on": [],
+                  "description": "Fetch Postgres sales summary for baseline period 2026-Q1 in the north region.",
+                  "kind": "tool",
+                  "step_id": "baseline_sales",
+                  "tool_call": {
+                    "arguments": {
+                      "period": "2026-Q1",
+                      "region": "north"
+                    },
+                    "name": "get_postgres_sales_summary"
+                  }
+                },
+                {
+                  "computation": null,
+                  "depends_on": [],
+                  "description": "Fetch Postgres sales summary for comparison period 2026-Q2 in the north region.",
+                  "kind": "tool",
+                  "step_id": "comparison_sales",
+                  "tool_call": {
+                    "arguments": {
+                      "period": "2026-Q2",
+                      "region": "north"
+                    },
+                    "name": "get_postgres_sales_summary"
+                  }
+                },
+                {
+                  "computation": {
+                    "baseline_period": "2026-Q1",
+                    "baseline_step_id": "baseline_sales",
+                    "comparison_period": "2026-Q2",
+                    "comparison_step_id": "comparison_sales",
+                    "operation": "compare_sales_growth",
+                    "region": "north"
+                  },
+                  "depends_on": [
+                    "baseline_sales",
+                    "comparison_sales"
+                  ],
+                  "description": "Compare north region sales growth from 2026-Q1 baseline to 2026-Q2 comparison.",
+                  "kind": "compute",
+                  "step_id": "sales_growth",
+                  "tool_call": null
+                }
+              ],
+              "task": "compare_quarterly_sales",
+              "version": "bounded-plan-v1"
+            },
+            "plan_sha256": "fde482d391713a75f275c573a913bb1d510640aa1df3a83ea3f99fa400550ba6",
+            "plan_version": "bounded-plan-v1",
+            "policy_version": "bounded-plan-policy-v1",
+            "request_sha256": "3a1ddf00b7fbacac4551db8fd2458c1e4078d354f95e2fae02169a7e2ee6075c",
+            "runtime_version": "durable-controlled-planner-v1",
+            "scope_key": "acceptance-trace:analytics-copilot",
+            "state_version": 6,
+            "status": "completed",
+            "updated_at": "2026-10-22T08:35:36.251887Z"
+          },
+          "replay_final_result": {
+            "absolute_change": "100.00",
+            "baseline_period": "2026-Q1",
+            "baseline_total_sales": "200.00",
+            "comparison_period": "2026-Q2",
+            "comparison_total_sales": "300.00",
+            "currency": "USD",
+            "dataset_version": "synthetic-sales-db-v1",
+            "growth_rate_percent": "50.00",
+            "region": "north",
+            "source_relation": "analytics.sales_orders"
+          },
+          "replay_idempotency_verified": true,
+          "replay_receipts": [
+            {
+              "action_name": "get_postgres_sales_summary",
+              "error_code": null,
+              "execution_id": "48aeeb0e-7490-4aba-821e-524ab652f493",
+              "finished_at": "2026-10-22T08:35:35.874161Z",
+              "idempotency_token": "202b247383e99de83df0439ceedb1b2637438cec053008e9321055391ab4edaa",
+              "input_sha256": "303129ab8652d1302be333de9ec7af1030d6fcda1cb285b0a3f8fb793fbbf08f",
+              "output": {
+                "average_order_value": "100.00",
+                "currency": "USD",
+                "data_source": {
+                  "dataset_version": "synthetic-sales-db-v1",
+                  "kind": "postgresql",
+                  "read_only": true,
+                  "relation": "analytics.sales_orders"
+                },
+                "order_count": 2,
+                "period": "2026-Q1",
+                "region": "north",
+                "total_sales": "200.00"
+              },
+              "output_sha256": "c0b129586a75d4e35fbc3cf1c82a265c19387973536d7aaa7e52f08688b81772",
+              "started_at": "2026-10-22T08:35:35.730076Z",
+              "status": "succeeded",
+              "step_id": "baseline_sales",
+              "tool_call_id": "worker-202b247383e99de8"
+            },
+            {
+              "action_name": "get_postgres_sales_summary",
+              "error_code": null,
+              "execution_id": "48aeeb0e-7490-4aba-821e-524ab652f493",
+              "finished_at": "2026-10-22T08:35:36.062637Z",
+              "idempotency_token": "6283e1455a9048ea0bb6ff399cd50859e64bdd785b7e12cb048620797bf4bb11",
+              "input_sha256": "55e6c1f32527d126367bf0988173b4c1302b274d036991a5cb307c5e947012ab",
+              "output": {
+                "average_order_value": "150.00",
+                "currency": "USD",
+                "data_source": {
+                  "dataset_version": "synthetic-sales-db-v1",
+                  "kind": "postgresql",
+                  "read_only": true,
+                  "relation": "analytics.sales_orders"
+                },
+                "order_count": 2,
+                "period": "2026-Q2",
+                "region": "north",
+                "total_sales": "300.00"
+              },
+              "output_sha256": "70403bc45f566f1b9e4079b50ccb7fb0952ffe57770efab0af021a913910c0a9",
+              "started_at": "2026-10-22T08:35:35.914031Z",
+              "status": "succeeded",
+              "step_id": "comparison_sales",
+              "tool_call_id": "worker-6283e1455a9048ea"
+            },
+            {
+              "action_name": "compare_sales_growth",
+              "error_code": null,
+              "execution_id": "48aeeb0e-7490-4aba-821e-524ab652f493",
+              "finished_at": "2026-10-22T08:35:36.251887Z",
+              "idempotency_token": "da7ce304f4e99e984b422b8886b76a4ea6c2cef4178223981a8717fe51a669bc",
+              "input_sha256": "3107a4ef6c512429ea9bddb524cc9877bfc4dd39bf7fd54c37ff04be48235f0e",
+              "output": {
+                "absolute_change": "100.00",
+                "baseline_period": "2026-Q1",
+                "baseline_total_sales": "200.00",
+                "comparison_period": "2026-Q2",
+                "comparison_total_sales": "300.00",
+                "currency": "USD",
+                "dataset_version": "synthetic-sales-db-v1",
+                "growth_rate_percent": "50.00",
+                "region": "north",
+                "source_relation": "analytics.sales_orders"
+              },
+              "output_sha256": "fd579626280688f5e094e7bd979855145d6268586263522828dfa0956597f282",
+              "started_at": "2026-10-22T08:35:36.105279Z",
+              "status": "succeeded",
+              "step_id": "sales_growth",
+              "tool_call_id": null
+            }
+          ],
+          "replay_tool_executions": [
+            {
+              "action_name": "get_postgres_sales_summary",
+              "error_code": null,
+              "execution_id": "48aeeb0e-7490-4aba-821e-524ab652f493",
+              "finished_at": "2026-10-22T08:35:35.874161Z",
+              "idempotency_token": "202b247383e99de83df0439ceedb1b2637438cec053008e9321055391ab4edaa",
+              "input_sha256": "303129ab8652d1302be333de9ec7af1030d6fcda1cb285b0a3f8fb793fbbf08f",
+              "output": {
+                "average_order_value": "100.00",
+                "currency": "USD",
+                "data_source": {
+                  "dataset_version": "synthetic-sales-db-v1",
+                  "kind": "postgresql",
+                  "read_only": true,
+                  "relation": "analytics.sales_orders"
+                },
+                "order_count": 2,
+                "period": "2026-Q1",
+                "region": "north",
+                "total_sales": "200.00"
+              },
+              "output_sha256": "c0b129586a75d4e35fbc3cf1c82a265c19387973536d7aaa7e52f08688b81772",
+              "started_at": "2026-10-22T08:35:35.730076Z",
+              "status": "succeeded",
+              "step_id": "baseline_sales",
+              "tool_call_id": "worker-202b247383e99de8"
+            },
+            {
+              "action_name": "get_postgres_sales_summary",
+              "error_code": null,
+              "execution_id": "48aeeb0e-7490-4aba-821e-524ab652f493",
+              "finished_at": "2026-10-22T08:35:36.062637Z",
+              "idempotency_token": "6283e1455a9048ea0bb6ff399cd50859e64bdd785b7e12cb048620797bf4bb11",
+              "input_sha256": "55e6c1f32527d126367bf0988173b4c1302b274d036991a5cb307c5e947012ab",
+              "output": {
+                "average_order_value": "150.00",
+                "currency": "USD",
+                "data_source": {
+                  "dataset_version": "synthetic-sales-db-v1",
+                  "kind": "postgresql",
+                  "read_only": true,
+                  "relation": "analytics.sales_orders"
+                },
+                "order_count": 2,
+                "period": "2026-Q2",
+                "region": "north",
+                "total_sales": "300.00"
+              },
+              "output_sha256": "70403bc45f566f1b9e4079b50ccb7fb0952ffe57770efab0af021a913910c0a9",
+              "started_at": "2026-10-22T08:35:35.914031Z",
+              "status": "succeeded",
+              "step_id": "comparison_sales",
+              "tool_call_id": "worker-6283e1455a9048ea"
+            }
+          ],
+          "source_estimated_cost_usd": "0.0006294",
+          "source_evidence_sha256": "73e2d22a13fae7a9189024b4bb4308888f97ec60b73930329b8ede0346ab1539",
+          "source_execution_id": "2463cb0f-c104-459b-83b0-273a2879b1d8",
+          "source_latency_ms": 2016,
+          "source_plan": {
+            "baseline_period": "2026-Q1",
+            "comparison_period": "2026-Q2",
+            "plan_id": "compare-sales-q1-q2-north",
+            "region": "north",
+            "steps": [
+              {
+                "depends_on": [],
+                "description": "Fetch Postgres sales summary for baseline period 2026-Q1 in the north region.",
+                "kind": "tool",
+                "step_id": "baseline_sales",
+                "tool_call": {
+                  "arguments": {
+                    "period": "2026-Q1",
+                    "region": "north"
+                  },
+                  "name": "get_postgres_sales_summary"
+                }
+              },
+              {
+                "depends_on": [],
+                "description": "Fetch Postgres sales summary for comparison period 2026-Q2 in the north region.",
+                "kind": "tool",
+                "step_id": "comparison_sales",
+                "tool_call": {
+                  "arguments": {
+                    "period": "2026-Q2",
+                    "region": "north"
+                  },
+                  "name": "get_postgres_sales_summary"
+                }
+              },
+              {
+                "computation": {
+                  "baseline_period": "2026-Q1",
+                  "baseline_step_id": "baseline_sales",
+                  "comparison_period": "2026-Q2",
+                  "comparison_step_id": "comparison_sales",
+                  "operation": "compare_sales_growth",
+                  "region": "north"
+                },
+                "depends_on": [
+                  "baseline_sales",
+                  "comparison_sales"
+                ],
+                "description": "Compare north region sales growth from 2026-Q1 baseline to 2026-Q2 comparison.",
+                "kind": "compute",
+                "step_id": "sales_growth"
+              }
+            ],
+            "task": "compare_quarterly_sales"
+          },
+          "source_plan_sha256": "fde482d391713a75f275c573a913bb1d510640aa1df3a83ea3f99fa400550ba6",
+          "source_provider_request_id": "5d55f080-5c0a-4b2f-a4a3-358babd0f77f",
+          "source_run_id": "live-v1-001",
+          "source_usage": {
+            "input_tokens": 918,
+            "output_tokens": 295,
+            "total_tokens": 1213
+          }
+        },
+        {
+          "case_id": "durable/south-q2-q1",
+          "matches_original_final_result": true,
+          "matches_original_plan_sha256": true,
+          "replay_checkpoints": [
+            {
+              "agent_state": {
+                "budget_units_used": 0,
+                "completed_step_ids": [],
+                "current_step_id": null,
+                "elapsed_ms": 0,
+                "error": null,
+                "plan_id": "compare_quarterly_sales_south_q2_vs_q1",
+                "status": "pending",
+                "step_states": [
+                  {
+                    "attempts": 0,
+                    "error": null,
+                    "kind": "tool",
+                    "latency_ms": 0,
+                    "output": null,
+                    "status": "pending",
+                    "step_id": "baseline_sales_summary",
+                    "tool_call_id": null
+                  },
+                  {
+                    "attempts": 0,
+                    "error": null,
+                    "kind": "tool",
+                    "latency_ms": 0,
+                    "output": null,
+                    "status": "pending",
+                    "step_id": "comparison_sales_summary",
+                    "tool_call_id": null
+                  },
+                  {
+                    "attempts": 0,
+                    "error": null,
+                    "kind": "compute",
+                    "latency_ms": 0,
+                    "output": null,
+                    "status": "pending",
+                    "step_id": "compare_sales_growth_result",
+                    "tool_call_id": null
+                  }
+                ],
+                "steps_executed": 0,
+                "tool_calls_used": 0
+              },
+              "created_at": "2026-10-22T08:35:36.349480+00:00",
+              "execution_status": "pending",
+              "sequence": 0,
+              "state_sha256": "bc128ef66eede2740b6e842c0d1d8485109c67b79a7835bb14f810d6e2ffda40",
+              "state_version": 0
+            },
+            {
+              "agent_state": {
+                "budget_units_used": 1,
+                "completed_step_ids": [],
+                "current_step_id": "baseline_sales_summary",
+                "elapsed_ms": 1,
+                "error": null,
+                "plan_id": "compare_quarterly_sales_south_q2_vs_q1",
+                "status": "running",
+                "step_states": [
+                  {
+                    "attempts": 1,
+                    "error": null,
+                    "kind": "tool",
+                    "latency_ms": 0,
+                    "output": null,
+                    "status": "running",
+                    "step_id": "baseline_sales_summary",
+                    "tool_call_id": null
+                  },
+                  {
+                    "attempts": 0,
+                    "error": null,
+                    "kind": "tool",
+                    "latency_ms": 0,
+                    "output": null,
+                    "status": "pending",
+                    "step_id": "comparison_sales_summary",
+                    "tool_call_id": null
+                  },
+                  {
+                    "attempts": 0,
+                    "error": null,
+                    "kind": "compute",
+                    "latency_ms": 0,
+                    "output": null,
+                    "status": "pending",
+                    "step_id": "compare_sales_growth_result",
+                    "tool_call_id": null
+                  }
+                ],
+                "steps_executed": 0,
+                "tool_calls_used": 1
+              },
+              "created_at": "2026-10-22T08:35:36.398819+00:00",
+              "execution_status": "running",
+              "sequence": 1,
+              "state_sha256": "7b235fd0773c29610d32287345c0e4defafdf4b1bddf6ef4f949b095d388f1ab",
+              "state_version": 1
+            },
+            {
+              "agent_state": {
+                "budget_units_used": 1,
+                "completed_step_ids": [
+                  "baseline_sales_summary"
+                ],
+                "current_step_id": null,
+                "elapsed_ms": 2,
+                "error": null,
+                "plan_id": "compare_quarterly_sales_south_q2_vs_q1",
+                "status": "running",
+                "step_states": [
+                  {
+                    "attempts": 1,
+                    "error": null,
+                    "kind": "tool",
+                    "latency_ms": 1,
+                    "output": {
+                      "average_order_value": "150.00",
+                      "currency": "USD",
+                      "data_source": {
+                        "dataset_version": "synthetic-sales-db-v1",
+                        "kind": "postgresql",
+                        "read_only": true,
+                        "relation": "analytics.sales_orders"
+                      },
+                      "order_count": 2,
+                      "period": "2026-Q2",
+                      "region": "south",
+                      "total_sales": "300.00"
+                    },
+                    "status": "completed",
+                    "step_id": "baseline_sales_summary",
+                    "tool_call_id": "sim-5d2508bd2888e413"
+                  },
+                  {
+                    "attempts": 0,
+                    "error": null,
+                    "kind": "tool",
+                    "latency_ms": 0,
+                    "output": null,
+                    "status": "pending",
+                    "step_id": "comparison_sales_summary",
+                    "tool_call_id": null
+                  },
+                  {
+                    "attempts": 0,
+                    "error": null,
+                    "kind": "compute",
+                    "latency_ms": 0,
+                    "output": null,
+                    "status": "pending",
+                    "step_id": "compare_sales_growth_result",
+                    "tool_call_id": null
+                  }
+                ],
+                "steps_executed": 1,
+                "tool_calls_used": 1
+              },
+              "created_at": "2026-10-22T08:35:36.550142+00:00",
+              "execution_status": "running",
+              "sequence": 2,
+              "state_sha256": "a8107c58b02a30382c2acc60325ca0b71529081ce303eb6f2b53232dc78f65b7",
+              "state_version": 2
+            },
+            {
+              "agent_state": {
+                "budget_units_used": 2,
+                "completed_step_ids": [
+                  "baseline_sales_summary"
+                ],
+                "current_step_id": "comparison_sales_summary",
+                "elapsed_ms": 3,
+                "error": null,
+                "plan_id": "compare_quarterly_sales_south_q2_vs_q1",
+                "status": "running",
+                "step_states": [
+                  {
+                    "attempts": 1,
+                    "error": null,
+                    "kind": "tool",
+                    "latency_ms": 1,
+                    "output": {
+                      "average_order_value": "150.00",
+                      "currency": "USD",
+                      "data_source": {
+                        "dataset_version": "synthetic-sales-db-v1",
+                        "kind": "postgresql",
+                        "read_only": true,
+                        "relation": "analytics.sales_orders"
+                      },
+                      "order_count": 2,
+                      "period": "2026-Q2",
+                      "region": "south",
+                      "total_sales": "300.00"
+                    },
+                    "status": "completed",
+                    "step_id": "baseline_sales_summary",
+                    "tool_call_id": "sim-5d2508bd2888e413"
+                  },
+                  {
+                    "attempts": 1,
+                    "error": null,
+                    "kind": "tool",
+                    "latency_ms": 0,
+                    "output": null,
+                    "status": "running",
+                    "step_id": "comparison_sales_summary",
+                    "tool_call_id": null
+                  },
+                  {
+                    "attempts": 0,
+                    "error": null,
+                    "kind": "compute",
+                    "latency_ms": 0,
+                    "output": null,
+                    "status": "pending",
+                    "step_id": "compare_sales_growth_result",
+                    "tool_call_id": null
+                  }
+                ],
+                "steps_executed": 1,
+                "tool_calls_used": 2
+              },
+              "created_at": "2026-10-22T08:35:36.589494+00:00",
+              "execution_status": "running",
+              "sequence": 3,
+              "state_sha256": "03be991eb20163baa087321a08836b8866c92414c62aeded3f777284c80c8585",
+              "state_version": 3
+            },
+            {
+              "agent_state": {
+                "budget_units_used": 2,
+                "completed_step_ids": [
+                  "baseline_sales_summary",
+                  "comparison_sales_summary"
+                ],
+                "current_step_id": null,
+                "elapsed_ms": 4,
+                "error": null,
+                "plan_id": "compare_quarterly_sales_south_q2_vs_q1",
+                "status": "running",
+                "step_states": [
+                  {
+                    "attempts": 1,
+                    "error": null,
+                    "kind": "tool",
+                    "latency_ms": 1,
+                    "output": {
+                      "average_order_value": "150.00",
+                      "currency": "USD",
+                      "data_source": {
+                        "dataset_version": "synthetic-sales-db-v1",
+                        "kind": "postgresql",
+                        "read_only": true,
+                        "relation": "analytics.sales_orders"
+                      },
+                      "order_count": 2,
+                      "period": "2026-Q2",
+                      "region": "south",
+                      "total_sales": "300.00"
+                    },
+                    "status": "completed",
+                    "step_id": "baseline_sales_summary",
+                    "tool_call_id": "sim-5d2508bd2888e413"
+                  },
+                  {
+                    "attempts": 1,
+                    "error": null,
+                    "kind": "tool",
+                    "latency_ms": 1,
+                    "output": {
+                      "average_order_value": "100.00",
+                      "currency": "USD",
+                      "data_source": {
+                        "dataset_version": "synthetic-sales-db-v1",
+                        "kind": "postgresql",
+                        "read_only": true,
+                        "relation": "analytics.sales_orders"
+                      },
+                      "order_count": 2,
+                      "period": "2026-Q1",
+                      "region": "south",
+                      "total_sales": "200.00"
+                    },
+                    "status": "completed",
+                    "step_id": "comparison_sales_summary",
+                    "tool_call_id": "sim-f5a06f551aef9a11"
+                  },
+                  {
+                    "attempts": 0,
+                    "error": null,
+                    "kind": "compute",
+                    "latency_ms": 0,
+                    "output": null,
+                    "status": "pending",
+                    "step_id": "compare_sales_growth_result",
+                    "tool_call_id": null
+                  }
+                ],
+                "steps_executed": 2,
+                "tool_calls_used": 2
+              },
+              "created_at": "2026-10-22T08:35:36.734844+00:00",
+              "execution_status": "running",
+              "sequence": 4,
+              "state_sha256": "10c866a8af781c06e79090d5ff1750f0b1b6890907c0e581d04cce9daaa9a01c",
+              "state_version": 4
+            },
+            {
+              "agent_state": {
+                "budget_units_used": 3,
+                "completed_step_ids": [
+                  "baseline_sales_summary",
+                  "comparison_sales_summary"
+                ],
+                "current_step_id": "compare_sales_growth_result",
+                "elapsed_ms": 5,
+                "error": null,
+                "plan_id": "compare_quarterly_sales_south_q2_vs_q1",
+                "status": "running",
+                "step_states": [
+                  {
+                    "attempts": 1,
+                    "error": null,
+                    "kind": "tool",
+                    "latency_ms": 1,
+                    "output": {
+                      "average_order_value": "150.00",
+                      "currency": "USD",
+                      "data_source": {
+                        "dataset_version": "synthetic-sales-db-v1",
+                        "kind": "postgresql",
+                        "read_only": true,
+                        "relation": "analytics.sales_orders"
+                      },
+                      "order_count": 2,
+                      "period": "2026-Q2",
+                      "region": "south",
+                      "total_sales": "300.00"
+                    },
+                    "status": "completed",
+                    "step_id": "baseline_sales_summary",
+                    "tool_call_id": "sim-5d2508bd2888e413"
+                  },
+                  {
+                    "attempts": 1,
+                    "error": null,
+                    "kind": "tool",
+                    "latency_ms": 1,
+                    "output": {
+                      "average_order_value": "100.00",
+                      "currency": "USD",
+                      "data_source": {
+                        "dataset_version": "synthetic-sales-db-v1",
+                        "kind": "postgresql",
+                        "read_only": true,
+                        "relation": "analytics.sales_orders"
+                      },
+                      "order_count": 2,
+                      "period": "2026-Q1",
+                      "region": "south",
+                      "total_sales": "200.00"
+                    },
+                    "status": "completed",
+                    "step_id": "comparison_sales_summary",
+                    "tool_call_id": "sim-f5a06f551aef9a11"
+                  },
+                  {
+                    "attempts": 1,
+                    "error": null,
+                    "kind": "compute",
+                    "latency_ms": 0,
+                    "output": null,
+                    "status": "running",
+                    "step_id": "compare_sales_growth_result",
+                    "tool_call_id": null
+                  }
+                ],
+                "steps_executed": 2,
+                "tool_calls_used": 2
+              },
+              "created_at": "2026-10-22T08:35:36.775804+00:00",
+              "execution_status": "running",
+              "sequence": 5,
+              "state_sha256": "f8657dfb16b3ecec403d9ede0df377d69fe73db630ed029f0447fbbf05161e73",
+              "state_version": 5
+            },
+            {
+              "agent_state": {
+                "budget_units_used": 3,
+                "completed_step_ids": [
+                  "baseline_sales_summary",
+                  "comparison_sales_summary",
+                  "compare_sales_growth_result"
+                ],
+                "current_step_id": null,
+                "elapsed_ms": 6,
+                "error": null,
+                "plan_id": "compare_quarterly_sales_south_q2_vs_q1",
+                "status": "completed",
+                "step_states": [
+                  {
+                    "attempts": 1,
+                    "error": null,
+                    "kind": "tool",
+                    "latency_ms": 1,
+                    "output": {
+                      "average_order_value": "150.00",
+                      "currency": "USD",
+                      "data_source": {
+                        "dataset_version": "synthetic-sales-db-v1",
+                        "kind": "postgresql",
+                        "read_only": true,
+                        "relation": "analytics.sales_orders"
+                      },
+                      "order_count": 2,
+                      "period": "2026-Q2",
+                      "region": "south",
+                      "total_sales": "300.00"
+                    },
+                    "status": "completed",
+                    "step_id": "baseline_sales_summary",
+                    "tool_call_id": "sim-5d2508bd2888e413"
+                  },
+                  {
+                    "attempts": 1,
+                    "error": null,
+                    "kind": "tool",
+                    "latency_ms": 1,
+                    "output": {
+                      "average_order_value": "100.00",
+                      "currency": "USD",
+                      "data_source": {
+                        "dataset_version": "synthetic-sales-db-v1",
+                        "kind": "postgresql",
+                        "read_only": true,
+                        "relation": "analytics.sales_orders"
+                      },
+                      "order_count": 2,
+                      "period": "2026-Q1",
+                      "region": "south",
+                      "total_sales": "200.00"
+                    },
+                    "status": "completed",
+                    "step_id": "comparison_sales_summary",
+                    "tool_call_id": "sim-f5a06f551aef9a11"
+                  },
+                  {
+                    "attempts": 1,
+                    "error": null,
+                    "kind": "compute",
+                    "latency_ms": 1,
+                    "output": {
+                      "absolute_change": "-100.00",
+                      "baseline_period": "2026-Q2",
+                      "baseline_total_sales": "300.00",
+                      "comparison_period": "2026-Q1",
+                      "comparison_total_sales": "200.00",
+                      "currency": "USD",
+                      "dataset_version": "synthetic-sales-db-v1",
+                      "growth_rate_percent": "-33.33",
+                      "region": "south",
+                      "source_relation": "analytics.sales_orders"
+                    },
+                    "status": "completed",
+                    "step_id": "compare_sales_growth_result",
+                    "tool_call_id": null
+                  }
+                ],
+                "steps_executed": 3,
+                "tool_calls_used": 2
+              },
+              "created_at": "2026-10-22T08:35:36.922234+00:00",
+              "execution_status": "completed",
+              "sequence": 6,
+              "state_sha256": "50dfb9127ba0c67aa997c6763398931e227a066a53801b630ded495db3000d08",
+              "state_version": 6
+            }
+          ],
+          "replay_execution": {
+            "checkpoint_sequence": 6,
+            "created_at": "2026-10-22T08:35:36.349480Z",
+            "execution_id": "0b72eef4-7934-4ceb-b8a7-f6423f3e3266",
+            "idempotency_key_hash": "7ddd998f47d4c85ea3a2e6741514fc047f1ebe685b4b8ccfd55614c5cc7379dc",
+            "lease_expires_at": null,
+            "lease_owner": null,
+            "plan": {
+              "baseline_period": "2026-Q2",
+              "comparison_period": "2026-Q1",
+              "plan_id": "compare_quarterly_sales_south_q2_vs_q1",
+              "region": "south",
+              "steps": [
+                {
+                  "computation": null,
+                  "depends_on": [],
+                  "description": "Retrieve Q2 2026 sales summary for the south region as the baseline.",
+                  "kind": "tool",
+                  "step_id": "baseline_sales_summary",
+                  "tool_call": {
+                    "arguments": {
+                      "period": "2026-Q2",
+                      "region": "south"
+                    },
+                    "name": "get_postgres_sales_summary"
+                  }
+                },
+                {
+                  "computation": null,
+                  "depends_on": [],
+                  "description": "Retrieve Q1 2026 sales summary for the south region as the comparison period.",
+                  "kind": "tool",
+                  "step_id": "comparison_sales_summary",
+                  "tool_call": {
+                    "arguments": {
+                      "period": "2026-Q1",
+                      "region": "south"
+                    },
+                    "name": "get_postgres_sales_summary"
+                  }
+                },
+                {
+                  "computation": {
+                    "baseline_period": "2026-Q2",
+                    "baseline_step_id": "baseline_sales_summary",
+                    "comparison_period": "2026-Q1",
+                    "comparison_step_id": "comparison_sales_summary",
+                    "operation": "compare_sales_growth",
+                    "region": "south"
+                  },
+                  "depends_on": [
+                    "baseline_sales_summary",
+                    "comparison_sales_summary"
+                  ],
+                  "description": "Compare Q1 2026 sales against Q2 2026 baseline for the south region to compute growth.",
+                  "kind": "compute",
+                  "step_id": "compare_sales_growth_result",
+                  "tool_call": null
+                }
+              ],
+              "task": "compare_quarterly_sales",
+              "version": "bounded-plan-v1"
+            },
+            "plan_sha256": "e55887a228c9609b9a62afc2fec9dd2aef49ebdf0b9186595d65f811df5faf8e",
+            "plan_version": "bounded-plan-v1",
+            "policy_version": "bounded-plan-policy-v1",
+            "request_sha256": "5a1d4651d67d5bc3603f70aa6da36b95e9520e0b5876f8d29e76883a3a9a8c61",
+            "runtime_version": "durable-controlled-planner-v1",
+            "scope_key": "acceptance-trace:analytics-copilot",
+            "state_version": 6,
+            "status": "completed",
+            "updated_at": "2026-10-22T08:35:36.922234Z"
+          },
+          "replay_final_result": {
+            "absolute_change": "-100.00",
+            "baseline_period": "2026-Q2",
+            "baseline_total_sales": "300.00",
+            "comparison_period": "2026-Q1",
+            "comparison_total_sales": "200.00",
+            "currency": "USD",
+            "dataset_version": "synthetic-sales-db-v1",
+            "growth_rate_percent": "-33.33",
+            "region": "south",
+            "source_relation": "analytics.sales_orders"
+          },
+          "replay_idempotency_verified": true,
+          "replay_receipts": [
+            {
+              "action_name": "get_postgres_sales_summary",
+              "error_code": null,
+              "execution_id": "0b72eef4-7934-4ceb-b8a7-f6423f3e3266",
+              "finished_at": "2026-10-22T08:35:36.550142Z",
+              "idempotency_token": "5d2508bd2888e41303449306176e09199093e90f543b69dde76c9a6ecf626322",
+              "input_sha256": "c62d11a991b68089d48798f34d608c62df66b4f04d8379f7b1c3a99c662aac6e",
+              "output": {
+                "average_order_value": "150.00",
+                "currency": "USD",
+                "data_source": {
+                  "dataset_version": "synthetic-sales-db-v1",
+                  "kind": "postgresql",
+                  "read_only": true,
+                  "relation": "analytics.sales_orders"
+                },
+                "order_count": 2,
+                "period": "2026-Q2",
+                "region": "south",
+                "total_sales": "300.00"
+              },
+              "output_sha256": "477cba9bd5c32bf8d2c9504d9c8e49d04872d3044bb746a38b3fee8238c33977",
+              "started_at": "2026-10-22T08:35:36.398819Z",
+              "status": "succeeded",
+              "step_id": "baseline_sales_summary",
+              "tool_call_id": "worker-5d2508bd2888e413"
+            },
+            {
+              "action_name": "get_postgres_sales_summary",
+              "error_code": null,
+              "execution_id": "0b72eef4-7934-4ceb-b8a7-f6423f3e3266",
+              "finished_at": "2026-10-22T08:35:36.734844Z",
+              "idempotency_token": "f5a06f551aef9a11b0a279bc587fbe47d015bb2274acf8ab27c3aec10283a239",
+              "input_sha256": "8da6a19cfb8868a6e559a2a3e29de9f9617b152f1782040e0dc03c9ce2ca58d6",
+              "output": {
+                "average_order_value": "100.00",
+                "currency": "USD",
+                "data_source": {
+                  "dataset_version": "synthetic-sales-db-v1",
+                  "kind": "postgresql",
+                  "read_only": true,
+                  "relation": "analytics.sales_orders"
+                },
+                "order_count": 2,
+                "period": "2026-Q1",
+                "region": "south",
+                "total_sales": "200.00"
+              },
+              "output_sha256": "9f334711d4eec9f3c2aa93a988db5561369558f459ac238857ddf1ed75b5caac",
+              "started_at": "2026-10-22T08:35:36.589494Z",
+              "status": "succeeded",
+              "step_id": "comparison_sales_summary",
+              "tool_call_id": "worker-f5a06f551aef9a11"
+            },
+            {
+              "action_name": "compare_sales_growth",
+              "error_code": null,
+              "execution_id": "0b72eef4-7934-4ceb-b8a7-f6423f3e3266",
+              "finished_at": "2026-10-22T08:35:36.922234Z",
+              "idempotency_token": "0b45fab3078e7654289cf448df99282707d79e6de94518d49fd3ade110f99413",
+              "input_sha256": "964ae7d6a047734751206986c4aa1be12621b23042ec2c60aca591857c5d8798",
+              "output": {
+                "absolute_change": "-100.00",
+                "baseline_period": "2026-Q2",
+                "baseline_total_sales": "300.00",
+                "comparison_period": "2026-Q1",
+                "comparison_total_sales": "200.00",
+                "currency": "USD",
+                "dataset_version": "synthetic-sales-db-v1",
+                "growth_rate_percent": "-33.33",
+                "region": "south",
+                "source_relation": "analytics.sales_orders"
+              },
+              "output_sha256": "4be97efb392b0866a74b78d80a86b498c18e96b1498fc991f0b5e7aa6211b2ad",
+              "started_at": "2026-10-22T08:35:36.775804Z",
+              "status": "succeeded",
+              "step_id": "compare_sales_growth_result",
+              "tool_call_id": null
+            }
+          ],
+          "replay_tool_executions": [
+            {
+              "action_name": "get_postgres_sales_summary",
+              "error_code": null,
+              "execution_id": "0b72eef4-7934-4ceb-b8a7-f6423f3e3266",
+              "finished_at": "2026-10-22T08:35:36.550142Z",
+              "idempotency_token": "5d2508bd2888e41303449306176e09199093e90f543b69dde76c9a6ecf626322",
+              "input_sha256": "c62d11a991b68089d48798f34d608c62df66b4f04d8379f7b1c3a99c662aac6e",
+              "output": {
+                "average_order_value": "150.00",
+                "currency": "USD",
+                "data_source": {
+                  "dataset_version": "synthetic-sales-db-v1",
+                  "kind": "postgresql",
+                  "read_only": true,
+                  "relation": "analytics.sales_orders"
+                },
+                "order_count": 2,
+                "period": "2026-Q2",
+                "region": "south",
+                "total_sales": "300.00"
+              },
+              "output_sha256": "477cba9bd5c32bf8d2c9504d9c8e49d04872d3044bb746a38b3fee8238c33977",
+              "started_at": "2026-10-22T08:35:36.398819Z",
+              "status": "succeeded",
+              "step_id": "baseline_sales_summary",
+              "tool_call_id": "worker-5d2508bd2888e413"
+            },
+            {
+              "action_name": "get_postgres_sales_summary",
+              "error_code": null,
+              "execution_id": "0b72eef4-7934-4ceb-b8a7-f6423f3e3266",
+              "finished_at": "2026-10-22T08:35:36.734844Z",
+              "idempotency_token": "f5a06f551aef9a11b0a279bc587fbe47d015bb2274acf8ab27c3aec10283a239",
+              "input_sha256": "8da6a19cfb8868a6e559a2a3e29de9f9617b152f1782040e0dc03c9ce2ca58d6",
+              "output": {
+                "average_order_value": "100.00",
+                "currency": "USD",
+                "data_source": {
+                  "dataset_version": "synthetic-sales-db-v1",
+                  "kind": "postgresql",
+                  "read_only": true,
+                  "relation": "analytics.sales_orders"
+                },
+                "order_count": 2,
+                "period": "2026-Q1",
+                "region": "south",
+                "total_sales": "200.00"
+              },
+              "output_sha256": "9f334711d4eec9f3c2aa93a988db5561369558f459ac238857ddf1ed75b5caac",
+              "started_at": "2026-10-22T08:35:36.589494Z",
+              "status": "succeeded",
+              "step_id": "comparison_sales_summary",
+              "tool_call_id": "worker-f5a06f551aef9a11"
+            }
+          ],
+          "source_estimated_cost_usd": "0.0006546",
+          "source_evidence_sha256": "73e2d22a13fae7a9189024b4bb4308888f97ec60b73930329b8ede0346ab1539",
+          "source_execution_id": "62a490dc-a197-4e1d-99a4-15d70426f6e4",
+          "source_latency_ms": 1998,
+          "source_plan": {
+            "baseline_period": "2026-Q2",
+            "comparison_period": "2026-Q1",
+            "plan_id": "compare_quarterly_sales_south_q2_vs_q1",
+            "region": "south",
+            "steps": [
+              {
+                "depends_on": [],
+                "description": "Retrieve Q2 2026 sales summary for the south region as the baseline.",
+                "kind": "tool",
+                "step_id": "baseline_sales_summary",
+                "tool_call": {
+                  "arguments": {
+                    "period": "2026-Q2",
+                    "region": "south"
+                  },
+                  "name": "get_postgres_sales_summary"
+                }
+              },
+              {
+                "depends_on": [],
+                "description": "Retrieve Q1 2026 sales summary for the south region as the comparison period.",
+                "kind": "tool",
+                "step_id": "comparison_sales_summary",
+                "tool_call": {
+                  "arguments": {
+                    "period": "2026-Q1",
+                    "region": "south"
+                  },
+                  "name": "get_postgres_sales_summary"
+                }
+              },
+              {
+                "computation": {
+                  "baseline_period": "2026-Q2",
+                  "baseline_step_id": "baseline_sales_summary",
+                  "comparison_period": "2026-Q1",
+                  "comparison_step_id": "comparison_sales_summary",
+                  "operation": "compare_sales_growth",
+                  "region": "south"
+                },
+                "depends_on": [
+                  "baseline_sales_summary",
+                  "comparison_sales_summary"
+                ],
+                "description": "Compare Q1 2026 sales against Q2 2026 baseline for the south region to compute growth.",
+                "kind": "compute",
+                "step_id": "compare_sales_growth_result"
+              }
+            ],
+            "task": "compare_quarterly_sales"
+          },
+          "source_plan_sha256": "e55887a228c9609b9a62afc2fec9dd2aef49ebdf0b9186595d65f811df5faf8e",
+          "source_provider_request_id": "82be0d94-38de-4202-9229-665ade2b4a70",
+          "source_run_id": "live-v1-001",
+          "source_usage": {
+            "input_tokens": 918,
+            "output_tokens": 316,
+            "total_tokens": 1234
+          }
+        }
+      ]
+    },
+    {
+      "source_run_id": "live-v1-002",
+      "traces": [
+        {
+          "case_id": "durable/all-q1-q2",
+          "matches_original_final_result": true,
+          "matches_original_plan_sha256": true,
+          "replay_checkpoints": [
+            {
+              "agent_state": {
+                "budget_units_used": 0,
+                "completed_step_ids": [],
+                "current_step_id": null,
+                "elapsed_ms": 0,
+                "error": null,
+                "plan_id": "compare_quarterly_sales_q1_q2_all",
+                "status": "pending",
+                "step_states": [
+                  {
+                    "attempts": 0,
+                    "error": null,
+                    "kind": "tool",
+                    "latency_ms": 0,
+                    "output": null,
+                    "status": "pending",
+                    "step_id": "fetch_baseline_sales",
+                    "tool_call_id": null
+                  },
+                  {
+                    "attempts": 0,
+                    "error": null,
+                    "kind": "tool",
+                    "latency_ms": 0,
+                    "output": null,
+                    "status": "pending",
+                    "step_id": "fetch_comparison_sales",
+                    "tool_call_id": null
+                  },
+                  {
+                    "attempts": 0,
+                    "error": null,
+                    "kind": "compute",
+                    "latency_ms": 0,
+                    "output": null,
+                    "status": "pending",
+                    "step_id": "compare_growth",
+                    "tool_call_id": null
+                  }
+                ],
+                "steps_executed": 0,
+                "tool_calls_used": 0
+              },
+              "created_at": "2026-10-22T08:35:37.445001+00:00",
+              "execution_status": "pending",
+              "sequence": 0,
+              "state_sha256": "837311efd12a145b847b269027c44701d436d01223d0fd3bb4468d98c0d39e6e",
+              "state_version": 0
+            },
+            {
+              "agent_state": {
+                "budget_units_used": 1,
+                "completed_step_ids": [],
+                "current_step_id": "fetch_baseline_sales",
+                "elapsed_ms": 1,
+                "error": null,
+                "plan_id": "compare_quarterly_sales_q1_q2_all",
+                "status": "running",
+                "step_states": [
+                  {
+                    "attempts": 1,
+                    "error": null,
+                    "kind": "tool",
+                    "latency_ms": 0,
+                    "output": null,
+                    "status": "running",
+                    "step_id": "fetch_baseline_sales",
+                    "tool_call_id": null
+                  },
+                  {
+                    "attempts": 0,
+                    "error": null,
+                    "kind": "tool",
+                    "latency_ms": 0,
+                    "output": null,
+                    "status": "pending",
+                    "step_id": "fetch_comparison_sales",
+                    "tool_call_id": null
+                  },
+                  {
+                    "attempts": 0,
+                    "error": null,
+                    "kind": "compute",
+                    "latency_ms": 0,
+                    "output": null,
+                    "status": "pending",
+                    "step_id": "compare_growth",
+                    "tool_call_id": null
+                  }
+                ],
+                "steps_executed": 0,
+                "tool_calls_used": 1
+              },
+              "created_at": "2026-10-22T08:35:37.499114+00:00",
+              "execution_status": "running",
+              "sequence": 1,
+              "state_sha256": "d669224027929dc2de21ed62cd110d62ecbb7f50afd4b03ba0b26362d0ce3395",
+              "state_version": 1
+            },
+            {
+              "agent_state": {
+                "budget_units_used": 1,
+                "completed_step_ids": [
+                  "fetch_baseline_sales"
+                ],
+                "current_step_id": null,
+                "elapsed_ms": 2,
+                "error": null,
+                "plan_id": "compare_quarterly_sales_q1_q2_all",
+                "status": "running",
+                "step_states": [
+                  {
+                    "attempts": 1,
+                    "error": null,
+                    "kind": "tool",
+                    "latency_ms": 1,
+                    "output": {
+                      "average_order_value": "100.00",
+                      "currency": "USD",
+                      "data_source": {
+                        "dataset_version": "synthetic-sales-db-v1",
+                        "kind": "postgresql",
+                        "read_only": true,
+                        "relation": "analytics.sales_orders"
+                      },
+                      "order_count": 4,
+                      "period": "2026-Q1",
+                      "region": "all",
+                      "total_sales": "400.00"
+                    },
+                    "status": "completed",
+                    "step_id": "fetch_baseline_sales",
+                    "tool_call_id": "sim-5d007db7758353ef"
+                  },
+                  {
+                    "attempts": 0,
+                    "error": null,
+                    "kind": "tool",
+                    "latency_ms": 0,
+                    "output": null,
+                    "status": "pending",
+                    "step_id": "fetch_comparison_sales",
+                    "tool_call_id": null
+                  },
+                  {
+                    "attempts": 0,
+                    "error": null,
+                    "kind": "compute",
+                    "latency_ms": 0,
+                    "output": null,
+                    "status": "pending",
+                    "step_id": "compare_growth",
+                    "tool_call_id": null
+                  }
+                ],
+                "steps_executed": 1,
+                "tool_calls_used": 1
+              },
+              "created_at": "2026-10-22T08:35:37.648187+00:00",
+              "execution_status": "running",
+              "sequence": 2,
+              "state_sha256": "c4bca202603f73c59bad25029c82e21de15c83bbedfcbef6fff174d701966154",
+              "state_version": 2
+            },
+            {
+              "agent_state": {
+                "budget_units_used": 2,
+                "completed_step_ids": [
+                  "fetch_baseline_sales"
+                ],
+                "current_step_id": "fetch_comparison_sales",
+                "elapsed_ms": 3,
+                "error": null,
+                "plan_id": "compare_quarterly_sales_q1_q2_all",
+                "status": "running",
+                "step_states": [
+                  {
+                    "attempts": 1,
+                    "error": null,
+                    "kind": "tool",
+                    "latency_ms": 1,
+                    "output": {
+                      "average_order_value": "100.00",
+                      "currency": "USD",
+                      "data_source": {
+                        "dataset_version": "synthetic-sales-db-v1",
+                        "kind": "postgresql",
+                        "read_only": true,
+                        "relation": "analytics.sales_orders"
+                      },
+                      "order_count": 4,
+                      "period": "2026-Q1",
+                      "region": "all",
+                      "total_sales": "400.00"
+                    },
+                    "status": "completed",
+                    "step_id": "fetch_baseline_sales",
+                    "tool_call_id": "sim-5d007db7758353ef"
+                  },
+                  {
+                    "attempts": 1,
+                    "error": null,
+                    "kind": "tool",
+                    "latency_ms": 0,
+                    "output": null,
+                    "status": "running",
+                    "step_id": "fetch_comparison_sales",
+                    "tool_call_id": null
+                  },
+                  {
+                    "attempts": 0,
+                    "error": null,
+                    "kind": "compute",
+                    "latency_ms": 0,
+                    "output": null,
+                    "status": "pending",
+                    "step_id": "compare_growth",
+                    "tool_call_id": null
+                  }
+                ],
+                "steps_executed": 1,
+                "tool_calls_used": 2
+              },
+              "created_at": "2026-10-22T08:35:37.691939+00:00",
+              "execution_status": "running",
+              "sequence": 3,
+              "state_sha256": "2ac66b257ebbf2c7afaef7211bfb5d4d265b6c7014810a5bc1e6e692f250d361",
+              "state_version": 3
+            },
+            {
+              "agent_state": {
+                "budget_units_used": 2,
+                "completed_step_ids": [
+                  "fetch_baseline_sales",
+                  "fetch_comparison_sales"
+                ],
+                "current_step_id": null,
+                "elapsed_ms": 4,
+                "error": null,
+                "plan_id": "compare_quarterly_sales_q1_q2_all",
+                "status": "running",
+                "step_states": [
+                  {
+                    "attempts": 1,
+                    "error": null,
+                    "kind": "tool",
+                    "latency_ms": 1,
+                    "output": {
+                      "average_order_value": "100.00",
+                      "currency": "USD",
+                      "data_source": {
+                        "dataset_version": "synthetic-sales-db-v1",
+                        "kind": "postgresql",
+                        "read_only": true,
+                        "relation": "analytics.sales_orders"
+                      },
+                      "order_count": 4,
+                      "period": "2026-Q1",
+                      "region": "all",
+                      "total_sales": "400.00"
+                    },
+                    "status": "completed",
+                    "step_id": "fetch_baseline_sales",
+                    "tool_call_id": "sim-5d007db7758353ef"
+                  },
+                  {
+                    "attempts": 1,
+                    "error": null,
+                    "kind": "tool",
+                    "latency_ms": 1,
+                    "output": {
+                      "average_order_value": "150.00",
+                      "currency": "USD",
+                      "data_source": {
+                        "dataset_version": "synthetic-sales-db-v1",
+                        "kind": "postgresql",
+                        "read_only": true,
+                        "relation": "analytics.sales_orders"
+                      },
+                      "order_count": 4,
+                      "period": "2026-Q2",
+                      "region": "all",
+                      "total_sales": "600.00"
+                    },
+                    "status": "completed",
+                    "step_id": "fetch_comparison_sales",
+                    "tool_call_id": "sim-7f809e9596475e67"
+                  },
+                  {
+                    "attempts": 0,
+                    "error": null,
+                    "kind": "compute",
+                    "latency_ms": 0,
+                    "output": null,
+                    "status": "pending",
+                    "step_id": "compare_growth",
+                    "tool_call_id": null
+                  }
+                ],
+                "steps_executed": 2,
+                "tool_calls_used": 2
+              },
+              "created_at": "2026-10-22T08:35:37.839140+00:00",
+              "execution_status": "running",
+              "sequence": 4,
+              "state_sha256": "b5c4624a04da70fbbdce3cc3dd4fc866fba2054bff8f3f359708f6426c264c7d",
+              "state_version": 4
+            },
+            {
+              "agent_state": {
+                "budget_units_used": 3,
+                "completed_step_ids": [
+                  "fetch_baseline_sales",
+                  "fetch_comparison_sales"
+                ],
+                "current_step_id": "compare_growth",
+                "elapsed_ms": 5,
+                "error": null,
+                "plan_id": "compare_quarterly_sales_q1_q2_all",
+                "status": "running",
+                "step_states": [
+                  {
+                    "attempts": 1,
+                    "error": null,
+                    "kind": "tool",
+                    "latency_ms": 1,
+                    "output": {
+                      "average_order_value": "100.00",
+                      "currency": "USD",
+                      "data_source": {
+                        "dataset_version": "synthetic-sales-db-v1",
+                        "kind": "postgresql",
+                        "read_only": true,
+                        "relation": "analytics.sales_orders"
+                      },
+                      "order_count": 4,
+                      "period": "2026-Q1",
+                      "region": "all",
+                      "total_sales": "400.00"
+                    },
+                    "status": "completed",
+                    "step_id": "fetch_baseline_sales",
+                    "tool_call_id": "sim-5d007db7758353ef"
+                  },
+                  {
+                    "attempts": 1,
+                    "error": null,
+                    "kind": "tool",
+                    "latency_ms": 1,
+                    "output": {
+                      "average_order_value": "150.00",
+                      "currency": "USD",
+                      "data_source": {
+                        "dataset_version": "synthetic-sales-db-v1",
+                        "kind": "postgresql",
+                        "read_only": true,
+                        "relation": "analytics.sales_orders"
+                      },
+                      "order_count": 4,
+                      "period": "2026-Q2",
+                      "region": "all",
+                      "total_sales": "600.00"
+                    },
+                    "status": "completed",
+                    "step_id": "fetch_comparison_sales",
+                    "tool_call_id": "sim-7f809e9596475e67"
+                  },
+                  {
+                    "attempts": 1,
+                    "error": null,
+                    "kind": "compute",
+                    "latency_ms": 0,
+                    "output": null,
+                    "status": "running",
+                    "step_id": "compare_growth",
+                    "tool_call_id": null
+                  }
+                ],
+                "steps_executed": 2,
+                "tool_calls_used": 2
+              },
+              "created_at": "2026-10-22T08:35:37.879232+00:00",
+              "execution_status": "running",
+              "sequence": 5,
+              "state_sha256": "10af078a47fe8599d43bf0187a301994eff0e5bfba4fb93b2ae4eec6aecdbd63",
+              "state_version": 5
+            },
+            {
+              "agent_state": {
+                "budget_units_used": 3,
+                "completed_step_ids": [
+                  "fetch_baseline_sales",
+                  "fetch_comparison_sales",
+                  "compare_growth"
+                ],
+                "current_step_id": null,
+                "elapsed_ms": 6,
+                "error": null,
+                "plan_id": "compare_quarterly_sales_q1_q2_all",
+                "status": "completed",
+                "step_states": [
+                  {
+                    "attempts": 1,
+                    "error": null,
+                    "kind": "tool",
+                    "latency_ms": 1,
+                    "output": {
+                      "average_order_value": "100.00",
+                      "currency": "USD",
+                      "data_source": {
+                        "dataset_version": "synthetic-sales-db-v1",
+                        "kind": "postgresql",
+                        "read_only": true,
+                        "relation": "analytics.sales_orders"
+                      },
+                      "order_count": 4,
+                      "period": "2026-Q1",
+                      "region": "all",
+                      "total_sales": "400.00"
+                    },
+                    "status": "completed",
+                    "step_id": "fetch_baseline_sales",
+                    "tool_call_id": "sim-5d007db7758353ef"
+                  },
+                  {
+                    "attempts": 1,
+                    "error": null,
+                    "kind": "tool",
+                    "latency_ms": 1,
+                    "output": {
+                      "average_order_value": "150.00",
+                      "currency": "USD",
+                      "data_source": {
+                        "dataset_version": "synthetic-sales-db-v1",
+                        "kind": "postgresql",
+                        "read_only": true,
+                        "relation": "analytics.sales_orders"
+                      },
+                      "order_count": 4,
+                      "period": "2026-Q2",
+                      "region": "all",
+                      "total_sales": "600.00"
+                    },
+                    "status": "completed",
+                    "step_id": "fetch_comparison_sales",
+                    "tool_call_id": "sim-7f809e9596475e67"
+                  },
+                  {
+                    "attempts": 1,
+                    "error": null,
+                    "kind": "compute",
+                    "latency_ms": 1,
+                    "output": {
+                      "absolute_change": "200.00",
+                      "baseline_period": "2026-Q1",
+                      "baseline_total_sales": "400.00",
+                      "comparison_period": "2026-Q2",
+                      "comparison_total_sales": "600.00",
+                      "currency": "USD",
+                      "dataset_version": "synthetic-sales-db-v1",
+                      "growth_rate_percent": "50.00",
+                      "region": "all",
+                      "source_relation": "analytics.sales_orders"
+                    },
+                    "status": "completed",
+                    "step_id": "compare_growth",
+                    "tool_call_id": null
+                  }
+                ],
+                "steps_executed": 3,
+                "tool_calls_used": 2
+              },
+              "created_at": "2026-10-22T08:35:38.024462+00:00",
+              "execution_status": "completed",
+              "sequence": 6,
+              "state_sha256": "cc2914dcacfa5552c36224b34599e49504331b838e13b799c4f0122d70c25774",
+              "state_version": 6
+            }
+          ],
+          "replay_execution": {
+            "checkpoint_sequence": 6,
+            "created_at": "2026-10-22T08:35:37.445001Z",
+            "execution_id": "fc011338-bf23-42ea-8955-d2fed3e3f06a",
+            "idempotency_key_hash": "6126048a6da393a0620f79db3605ad194b697276d07184aec438eafe6f602aff",
+            "lease_expires_at": null,
+            "lease_owner": null,
+            "plan": {
+              "baseline_period": "2026-Q1",
+              "comparison_period": "2026-Q2",
+              "plan_id": "compare_quarterly_sales_q1_q2_all",
+              "region": "all",
+              "steps": [
+                {
+                  "computation": null,
+                  "depends_on": [],
+                  "description": "Retrieve the sales summary for the baseline period 2026-Q1 across all regions.",
+                  "kind": "tool",
+                  "step_id": "fetch_baseline_sales",
+                  "tool_call": {
+                    "arguments": {
+                      "period": "2026-Q1",
+                      "region": "all"
+                    },
+                    "name": "get_postgres_sales_summary"
+                  }
+                },
+                {
+                  "computation": null,
+                  "depends_on": [],
+                  "description": "Retrieve the sales summary for the comparison period 2026-Q2 across all regions.",
+                  "kind": "tool",
+                  "step_id": "fetch_comparison_sales",
+                  "tool_call": {
+                    "arguments": {
+                      "period": "2026-Q2",
+                      "region": "all"
+                    },
+                    "name": "get_postgres_sales_summary"
+                  }
+                },
+                {
+                  "computation": {
+                    "baseline_period": "2026-Q1",
+                    "baseline_step_id": "fetch_baseline_sales",
+                    "comparison_period": "2026-Q2",
+                    "comparison_step_id": "fetch_comparison_sales",
+                    "operation": "compare_sales_growth",
+                    "region": "all"
+                  },
+                  "depends_on": [
+                    "fetch_baseline_sales",
+                    "fetch_comparison_sales"
+                  ],
+                  "description": "Compare sales growth from 2026-Q1 baseline to 2026-Q2 comparison for all regions.",
+                  "kind": "compute",
+                  "step_id": "compare_growth",
+                  "tool_call": null
+                }
+              ],
+              "task": "compare_quarterly_sales",
+              "version": "bounded-plan-v1"
+            },
+            "plan_sha256": "795938fe42e3792451e3c7aa2b7c40c36ae6d7a389b2960cdd878f42ad53639b",
+            "plan_version": "bounded-plan-v1",
+            "policy_version": "bounded-plan-policy-v1",
+            "request_sha256": "122ebb8fb4dd43fa34289c08fc7113c2fb19beaba421b06c4ab1f2de2287a783",
+            "runtime_version": "durable-controlled-planner-v1",
+            "scope_key": "acceptance-trace:analytics-copilot",
+            "state_version": 6,
+            "status": "completed",
+            "updated_at": "2026-10-22T08:35:38.024462Z"
+          },
+          "replay_final_result": {
+            "absolute_change": "200.00",
+            "baseline_period": "2026-Q1",
+            "baseline_total_sales": "400.00",
+            "comparison_period": "2026-Q2",
+            "comparison_total_sales": "600.00",
+            "currency": "USD",
+            "dataset_version": "synthetic-sales-db-v1",
+            "growth_rate_percent": "50.00",
+            "region": "all",
+            "source_relation": "analytics.sales_orders"
+          },
+          "replay_idempotency_verified": true,
+          "replay_receipts": [
+            {
+              "action_name": "get_postgres_sales_summary",
+              "error_code": null,
+              "execution_id": "fc011338-bf23-42ea-8955-d2fed3e3f06a",
+              "finished_at": "2026-10-22T08:35:37.648187Z",
+              "idempotency_token": "5d007db7758353ef61879903685c0811e126ad43dc9bc4916e453063e1b6fc09",
+              "input_sha256": "7f9f2b5108df28321e05dd40343520464bf1d6bfe25752173cc0e9a30413a997",
+              "output": {
+                "average_order_value": "100.00",
+                "currency": "USD",
+                "data_source": {
+                  "dataset_version": "synthetic-sales-db-v1",
+                  "kind": "postgresql",
+                  "read_only": true,
+                  "relation": "analytics.sales_orders"
+                },
+                "order_count": 4,
+                "period": "2026-Q1",
+                "region": "all",
+                "total_sales": "400.00"
+              },
+              "output_sha256": "8222757757f670894c3fc87fe5ecd0f4f9233a0bf4ae2b23566b07b3e9a545d4",
+              "started_at": "2026-10-22T08:35:37.499114Z",
+              "status": "succeeded",
+              "step_id": "fetch_baseline_sales",
+              "tool_call_id": "worker-5d007db7758353ef"
+            },
+            {
+              "action_name": "get_postgres_sales_summary",
+              "error_code": null,
+              "execution_id": "fc011338-bf23-42ea-8955-d2fed3e3f06a",
+              "finished_at": "2026-10-22T08:35:37.839140Z",
+              "idempotency_token": "7f809e9596475e6793bb7cc1f67d5f2451b616230fb86c1e5a2478d8790caef0",
+              "input_sha256": "3124a6f3e68921bd7f95aae7fb6b0eb115e4ad128062865dd45d3eeb4259fc95",
+              "output": {
+                "average_order_value": "150.00",
+                "currency": "USD",
+                "data_source": {
+                  "dataset_version": "synthetic-sales-db-v1",
+                  "kind": "postgresql",
+                  "read_only": true,
+                  "relation": "analytics.sales_orders"
+                },
+                "order_count": 4,
+                "period": "2026-Q2",
+                "region": "all",
+                "total_sales": "600.00"
+              },
+              "output_sha256": "5a4835c4e8c2fb8d1789c0ba451ba118e39f58361d2971397c770d754ad8ac80",
+              "started_at": "2026-10-22T08:35:37.691939Z",
+              "status": "succeeded",
+              "step_id": "fetch_comparison_sales",
+              "tool_call_id": "worker-7f809e9596475e67"
+            },
+            {
+              "action_name": "compare_sales_growth",
+              "error_code": null,
+              "execution_id": "fc011338-bf23-42ea-8955-d2fed3e3f06a",
+              "finished_at": "2026-10-22T08:35:38.024462Z",
+              "idempotency_token": "57cbdfd24b3f6e21097c3c691c81f72bab59c211ff8f172e922beb170ab50bcb",
+              "input_sha256": "b2842d829ca915561215ab7b6ad22581a88c83f02e4063466518dce430357c52",
+              "output": {
+                "absolute_change": "200.00",
+                "baseline_period": "2026-Q1",
+                "baseline_total_sales": "400.00",
+                "comparison_period": "2026-Q2",
+                "comparison_total_sales": "600.00",
+                "currency": "USD",
+                "dataset_version": "synthetic-sales-db-v1",
+                "growth_rate_percent": "50.00",
+                "region": "all",
+                "source_relation": "analytics.sales_orders"
+              },
+              "output_sha256": "49485c0ba2c228a935a19380c7133f1d515ca2ea2dee80f3b4a63c9f3d7116cd",
+              "started_at": "2026-10-22T08:35:37.879232Z",
+              "status": "succeeded",
+              "step_id": "compare_growth",
+              "tool_call_id": null
+            }
+          ],
+          "replay_tool_executions": [
+            {
+              "action_name": "get_postgres_sales_summary",
+              "error_code": null,
+              "execution_id": "fc011338-bf23-42ea-8955-d2fed3e3f06a",
+              "finished_at": "2026-10-22T08:35:37.648187Z",
+              "idempotency_token": "5d007db7758353ef61879903685c0811e126ad43dc9bc4916e453063e1b6fc09",
+              "input_sha256": "7f9f2b5108df28321e05dd40343520464bf1d6bfe25752173cc0e9a30413a997",
+              "output": {
+                "average_order_value": "100.00",
+                "currency": "USD",
+                "data_source": {
+                  "dataset_version": "synthetic-sales-db-v1",
+                  "kind": "postgresql",
+                  "read_only": true,
+                  "relation": "analytics.sales_orders"
+                },
+                "order_count": 4,
+                "period": "2026-Q1",
+                "region": "all",
+                "total_sales": "400.00"
+              },
+              "output_sha256": "8222757757f670894c3fc87fe5ecd0f4f9233a0bf4ae2b23566b07b3e9a545d4",
+              "started_at": "2026-10-22T08:35:37.499114Z",
+              "status": "succeeded",
+              "step_id": "fetch_baseline_sales",
+              "tool_call_id": "worker-5d007db7758353ef"
+            },
+            {
+              "action_name": "get_postgres_sales_summary",
+              "error_code": null,
+              "execution_id": "fc011338-bf23-42ea-8955-d2fed3e3f06a",
+              "finished_at": "2026-10-22T08:35:37.839140Z",
+              "idempotency_token": "7f809e9596475e6793bb7cc1f67d5f2451b616230fb86c1e5a2478d8790caef0",
+              "input_sha256": "3124a6f3e68921bd7f95aae7fb6b0eb115e4ad128062865dd45d3eeb4259fc95",
+              "output": {
+                "average_order_value": "150.00",
+                "currency": "USD",
+                "data_source": {
+                  "dataset_version": "synthetic-sales-db-v1",
+                  "kind": "postgresql",
+                  "read_only": true,
+                  "relation": "analytics.sales_orders"
+                },
+                "order_count": 4,
+                "period": "2026-Q2",
+                "region": "all",
+                "total_sales": "600.00"
+              },
+              "output_sha256": "5a4835c4e8c2fb8d1789c0ba451ba118e39f58361d2971397c770d754ad8ac80",
+              "started_at": "2026-10-22T08:35:37.691939Z",
+              "status": "succeeded",
+              "step_id": "fetch_comparison_sales",
+              "tool_call_id": "worker-7f809e9596475e67"
+            }
+          ],
+          "source_estimated_cost_usd": "0.0006699",
+          "source_evidence_sha256": "4181e41870a9f7e5888849f3846a4f434ff30e23c484e9b07a3ee52e9b01c75f",
+          "source_execution_id": "d9c81310-bed1-4b37-880d-f0458e8aed92",
+          "source_latency_ms": 1781,
+          "source_plan": {
+            "baseline_period": "2026-Q1",
+            "comparison_period": "2026-Q2",
+            "plan_id": "compare_quarterly_sales_q1_q2_all",
+            "region": "all",
+            "steps": [
+              {
+                "computation": null,
+                "depends_on": [],
+                "description": "Retrieve the sales summary for the baseline period 2026-Q1 across all regions.",
+                "kind": "tool",
+                "step_id": "fetch_baseline_sales",
+                "tool_call": {
+                  "arguments": {
+                    "period": "2026-Q1",
+                    "region": "all"
+                  },
+                  "name": "get_postgres_sales_summary"
+                }
+              },
+              {
+                "computation": null,
+                "depends_on": [],
+                "description": "Retrieve the sales summary for the comparison period 2026-Q2 across all regions.",
+                "kind": "tool",
+                "step_id": "fetch_comparison_sales",
+                "tool_call": {
+                  "arguments": {
+                    "period": "2026-Q2",
+                    "region": "all"
+                  },
+                  "name": "get_postgres_sales_summary"
+                }
+              },
+              {
+                "computation": {
+                  "baseline_period": "2026-Q1",
+                  "baseline_step_id": "fetch_baseline_sales",
+                  "comparison_period": "2026-Q2",
+                  "comparison_step_id": "fetch_comparison_sales",
+                  "operation": "compare_sales_growth",
+                  "region": "all"
+                },
+                "depends_on": [
+                  "fetch_baseline_sales",
+                  "fetch_comparison_sales"
+                ],
+                "description": "Compare sales growth from 2026-Q1 baseline to 2026-Q2 comparison for all regions.",
+                "kind": "compute",
+                "step_id": "compare_growth",
+                "tool_call": null
+              }
+            ],
+            "task": "compare_quarterly_sales",
+            "version": "bounded-plan-v1"
+          },
+          "source_plan_sha256": "795938fe42e3792451e3c7aa2b7c40c36ae6d7a389b2960cdd878f42ad53639b",
+          "source_provider_request_id": "984c93f4-34c4-4347-9a51-1d9a6a902100",
+          "source_run_id": "live-v1-002",
+          "source_usage": {
+            "input_tokens": 917,
+            "output_tokens": 329,
+            "total_tokens": 1246
+          }
+        },
+        {
+          "case_id": "durable/north-q1-q2",
+          "matches_original_final_result": true,
+          "matches_original_plan_sha256": true,
+          "replay_checkpoints": [
+            {
+              "agent_state": {
+                "budget_units_used": 0,
+                "completed_step_ids": [],
+                "current_step_id": null,
+                "elapsed_ms": 0,
+                "error": null,
+                "plan_id": "compare_q1_q2_north",
+                "status": "pending",
+                "step_states": [
+                  {
+                    "attempts": 0,
+                    "error": null,
+                    "kind": "tool",
+                    "latency_ms": 0,
+                    "output": null,
+                    "status": "pending",
+                    "step_id": "q1_summary",
+                    "tool_call_id": null
+                  },
+                  {
+                    "attempts": 0,
+                    "error": null,
+                    "kind": "tool",
+                    "latency_ms": 0,
+                    "output": null,
+                    "status": "pending",
+                    "step_id": "q2_summary",
+                    "tool_call_id": null
+                  },
+                  {
+                    "attempts": 0,
+                    "error": null,
+                    "kind": "compute",
+                    "latency_ms": 0,
+                    "output": null,
+                    "status": "pending",
+                    "step_id": "growth_compare",
+                    "tool_call_id": null
+                  }
+                ],
+                "steps_executed": 0,
+                "tool_calls_used": 0
+              },
+              "created_at": "2026-10-22T08:35:38.125206+00:00",
+              "execution_status": "pending",
+              "sequence": 0,
+              "state_sha256": "05fb3191e536e267839eb95b7738c9e3e64347ee0e65b801a5b6ea71e25251b9",
+              "state_version": 0
+            },
+            {
+              "agent_state": {
+                "budget_units_used": 1,
+                "completed_step_ids": [],
+                "current_step_id": "q1_summary",
+                "elapsed_ms": 1,
+                "error": null,
+                "plan_id": "compare_q1_q2_north",
+                "status": "running",
+                "step_states": [
+                  {
+                    "attempts": 1,
+                    "error": null,
+                    "kind": "tool",
+                    "latency_ms": 0,
+                    "output": null,
+                    "status": "running",
+                    "step_id": "q1_summary",
+                    "tool_call_id": null
+                  },
+                  {
+                    "attempts": 0,
+                    "error": null,
+                    "kind": "tool",
+                    "latency_ms": 0,
+                    "output": null,
+                    "status": "pending",
+                    "step_id": "q2_summary",
+                    "tool_call_id": null
+                  },
+                  {
+                    "attempts": 0,
+                    "error": null,
+                    "kind": "compute",
+                    "latency_ms": 0,
+                    "output": null,
+                    "status": "pending",
+                    "step_id": "growth_compare",
+                    "tool_call_id": null
+                  }
+                ],
+                "steps_executed": 0,
+                "tool_calls_used": 1
+              },
+              "created_at": "2026-10-22T08:35:38.175869+00:00",
+              "execution_status": "running",
+              "sequence": 1,
+              "state_sha256": "c1a3f6e3b8b7ba2b93f9a21aa9b1054499977dab8fee4c0dab733cf501386637",
+              "state_version": 1
+            },
+            {
+              "agent_state": {
+                "budget_units_used": 1,
+                "completed_step_ids": [
+                  "q1_summary"
+                ],
+                "current_step_id": null,
+                "elapsed_ms": 2,
+                "error": null,
+                "plan_id": "compare_q1_q2_north",
+                "status": "running",
+                "step_states": [
+                  {
+                    "attempts": 1,
+                    "error": null,
+                    "kind": "tool",
+                    "latency_ms": 1,
+                    "output": {
+                      "average_order_value": "100.00",
+                      "currency": "USD",
+                      "data_source": {
+                        "dataset_version": "synthetic-sales-db-v1",
+                        "kind": "postgresql",
+                        "read_only": true,
+                        "relation": "analytics.sales_orders"
+                      },
+                      "order_count": 2,
+                      "period": "2026-Q1",
+                      "region": "north",
+                      "total_sales": "200.00"
+                    },
+                    "status": "completed",
+                    "step_id": "q1_summary",
+                    "tool_call_id": "sim-2198277a4986ca59"
+                  },
+                  {
+                    "attempts": 0,
+                    "error": null,
+                    "kind": "tool",
+                    "latency_ms": 0,
+                    "output": null,
+                    "status": "pending",
+                    "step_id": "q2_summary",
+                    "tool_call_id": null
+                  },
+                  {
+                    "attempts": 0,
+                    "error": null,
+                    "kind": "compute",
+                    "latency_ms": 0,
+                    "output": null,
+                    "status": "pending",
+                    "step_id": "growth_compare",
+                    "tool_call_id": null
+                  }
+                ],
+                "steps_executed": 1,
+                "tool_calls_used": 1
+              },
+              "created_at": "2026-10-22T08:35:38.334614+00:00",
+              "execution_status": "running",
+              "sequence": 2,
+              "state_sha256": "f6ca1e41165f4d0aeb3cf8454feac83ee48dab94d9968d0ee3ddc8a42138e7a3",
+              "state_version": 2
+            },
+            {
+              "agent_state": {
+                "budget_units_used": 2,
+                "completed_step_ids": [
+                  "q1_summary"
+                ],
+                "current_step_id": "q2_summary",
+                "elapsed_ms": 3,
+                "error": null,
+                "plan_id": "compare_q1_q2_north",
+                "status": "running",
+                "step_states": [
+                  {
+                    "attempts": 1,
+                    "error": null,
+                    "kind": "tool",
+                    "latency_ms": 1,
+                    "output": {
+                      "average_order_value": "100.00",
+                      "currency": "USD",
+                      "data_source": {
+                        "dataset_version": "synthetic-sales-db-v1",
+                        "kind": "postgresql",
+                        "read_only": true,
+                        "relation": "analytics.sales_orders"
+                      },
+                      "order_count": 2,
+                      "period": "2026-Q1",
+                      "region": "north",
+                      "total_sales": "200.00"
+                    },
+                    "status": "completed",
+                    "step_id": "q1_summary",
+                    "tool_call_id": "sim-2198277a4986ca59"
+                  },
+                  {
+                    "attempts": 1,
+                    "error": null,
+                    "kind": "tool",
+                    "latency_ms": 0,
+                    "output": null,
+                    "status": "running",
+                    "step_id": "q2_summary",
+                    "tool_call_id": null
+                  },
+                  {
+                    "attempts": 0,
+                    "error": null,
+                    "kind": "compute",
+                    "latency_ms": 0,
+                    "output": null,
+                    "status": "pending",
+                    "step_id": "growth_compare",
+                    "tool_call_id": null
+                  }
+                ],
+                "steps_executed": 1,
+                "tool_calls_used": 2
+              },
+              "created_at": "2026-10-22T08:35:38.375659+00:00",
+              "execution_status": "running",
+              "sequence": 3,
+              "state_sha256": "e4d2f6a03d2f40cfa27c8337ce5245f01126a24a16d5e0410831aedc768462db",
+              "state_version": 3
+            },
+            {
+              "agent_state": {
+                "budget_units_used": 2,
+                "completed_step_ids": [
+                  "q1_summary",
+                  "q2_summary"
+                ],
+                "current_step_id": null,
+                "elapsed_ms": 4,
+                "error": null,
+                "plan_id": "compare_q1_q2_north",
+                "status": "running",
+                "step_states": [
+                  {
+                    "attempts": 1,
+                    "error": null,
+                    "kind": "tool",
+                    "latency_ms": 1,
+                    "output": {
+                      "average_order_value": "100.00",
+                      "currency": "USD",
+                      "data_source": {
+                        "dataset_version": "synthetic-sales-db-v1",
+                        "kind": "postgresql",
+                        "read_only": true,
+                        "relation": "analytics.sales_orders"
+                      },
+                      "order_count": 2,
+                      "period": "2026-Q1",
+                      "region": "north",
+                      "total_sales": "200.00"
+                    },
+                    "status": "completed",
+                    "step_id": "q1_summary",
+                    "tool_call_id": "sim-2198277a4986ca59"
+                  },
+                  {
+                    "attempts": 1,
+                    "error": null,
+                    "kind": "tool",
+                    "latency_ms": 1,
+                    "output": {
+                      "average_order_value": "150.00",
+                      "currency": "USD",
+                      "data_source": {
+                        "dataset_version": "synthetic-sales-db-v1",
+                        "kind": "postgresql",
+                        "read_only": true,
+                        "relation": "analytics.sales_orders"
+                      },
+                      "order_count": 2,
+                      "period": "2026-Q2",
+                      "region": "north",
+                      "total_sales": "300.00"
+                    },
+                    "status": "completed",
+                    "step_id": "q2_summary",
+                    "tool_call_id": "sim-5ccef8849a766776"
+                  },
+                  {
+                    "attempts": 0,
+                    "error": null,
+                    "kind": "compute",
+                    "latency_ms": 0,
+                    "output": null,
+                    "status": "pending",
+                    "step_id": "growth_compare",
+                    "tool_call_id": null
+                  }
+                ],
+                "steps_executed": 2,
+                "tool_calls_used": 2
+              },
+              "created_at": "2026-10-22T08:35:38.529672+00:00",
+              "execution_status": "running",
+              "sequence": 4,
+              "state_sha256": "355a49d6c3f9379bb6d52bde6635c2c77f0e98c3983f7852e65e7add5d554e58",
+              "state_version": 4
+            },
+            {
+              "agent_state": {
+                "budget_units_used": 3,
+                "completed_step_ids": [
+                  "q1_summary",
+                  "q2_summary"
+                ],
+                "current_step_id": "growth_compare",
+                "elapsed_ms": 5,
+                "error": null,
+                "plan_id": "compare_q1_q2_north",
+                "status": "running",
+                "step_states": [
+                  {
+                    "attempts": 1,
+                    "error": null,
+                    "kind": "tool",
+                    "latency_ms": 1,
+                    "output": {
+                      "average_order_value": "100.00",
+                      "currency": "USD",
+                      "data_source": {
+                        "dataset_version": "synthetic-sales-db-v1",
+                        "kind": "postgresql",
+                        "read_only": true,
+                        "relation": "analytics.sales_orders"
+                      },
+                      "order_count": 2,
+                      "period": "2026-Q1",
+                      "region": "north",
+                      "total_sales": "200.00"
+                    },
+                    "status": "completed",
+                    "step_id": "q1_summary",
+                    "tool_call_id": "sim-2198277a4986ca59"
+                  },
+                  {
+                    "attempts": 1,
+                    "error": null,
+                    "kind": "tool",
+                    "latency_ms": 1,
+                    "output": {
+                      "average_order_value": "150.00",
+                      "currency": "USD",
+                      "data_source": {
+                        "dataset_version": "synthetic-sales-db-v1",
+                        "kind": "postgresql",
+                        "read_only": true,
+                        "relation": "analytics.sales_orders"
+                      },
+                      "order_count": 2,
+                      "period": "2026-Q2",
+                      "region": "north",
+                      "total_sales": "300.00"
+                    },
+                    "status": "completed",
+                    "step_id": "q2_summary",
+                    "tool_call_id": "sim-5ccef8849a766776"
+                  },
+                  {
+                    "attempts": 1,
+                    "error": null,
+                    "kind": "compute",
+                    "latency_ms": 0,
+                    "output": null,
+                    "status": "running",
+                    "step_id": "growth_compare",
+                    "tool_call_id": null
+                  }
+                ],
+                "steps_executed": 2,
+                "tool_calls_used": 2
+              },
+              "created_at": "2026-10-22T08:35:38.570540+00:00",
+              "execution_status": "running",
+              "sequence": 5,
+              "state_sha256": "91b9fde48bf142ec7f27064459b523519d44d5d9112dc0f75942144f7a3703a5",
+              "state_version": 5
+            },
+            {
+              "agent_state": {
+                "budget_units_used": 3,
+                "completed_step_ids": [
+                  "q1_summary",
+                  "q2_summary",
+                  "growth_compare"
+                ],
+                "current_step_id": null,
+                "elapsed_ms": 6,
+                "error": null,
+                "plan_id": "compare_q1_q2_north",
+                "status": "completed",
+                "step_states": [
+                  {
+                    "attempts": 1,
+                    "error": null,
+                    "kind": "tool",
+                    "latency_ms": 1,
+                    "output": {
+                      "average_order_value": "100.00",
+                      "currency": "USD",
+                      "data_source": {
+                        "dataset_version": "synthetic-sales-db-v1",
+                        "kind": "postgresql",
+                        "read_only": true,
+                        "relation": "analytics.sales_orders"
+                      },
+                      "order_count": 2,
+                      "period": "2026-Q1",
+                      "region": "north",
+                      "total_sales": "200.00"
+                    },
+                    "status": "completed",
+                    "step_id": "q1_summary",
+                    "tool_call_id": "sim-2198277a4986ca59"
+                  },
+                  {
+                    "attempts": 1,
+                    "error": null,
+                    "kind": "tool",
+                    "latency_ms": 1,
+                    "output": {
+                      "average_order_value": "150.00",
+                      "currency": "USD",
+                      "data_source": {
+                        "dataset_version": "synthetic-sales-db-v1",
+                        "kind": "postgresql",
+                        "read_only": true,
+                        "relation": "analytics.sales_orders"
+                      },
+                      "order_count": 2,
+                      "period": "2026-Q2",
+                      "region": "north",
+                      "total_sales": "300.00"
+                    },
+                    "status": "completed",
+                    "step_id": "q2_summary",
+                    "tool_call_id": "sim-5ccef8849a766776"
+                  },
+                  {
+                    "attempts": 1,
+                    "error": null,
+                    "kind": "compute",
+                    "latency_ms": 1,
+                    "output": {
+                      "absolute_change": "100.00",
+                      "baseline_period": "2026-Q1",
+                      "baseline_total_sales": "200.00",
+                      "comparison_period": "2026-Q2",
+                      "comparison_total_sales": "300.00",
+                      "currency": "USD",
+                      "dataset_version": "synthetic-sales-db-v1",
+                      "growth_rate_percent": "50.00",
+                      "region": "north",
+                      "source_relation": "analytics.sales_orders"
+                    },
+                    "status": "completed",
+                    "step_id": "growth_compare",
+                    "tool_call_id": null
+                  }
+                ],
+                "steps_executed": 3,
+                "tool_calls_used": 2
+              },
+              "created_at": "2026-10-22T08:35:38.723475+00:00",
+              "execution_status": "completed",
+              "sequence": 6,
+              "state_sha256": "6358b822a140249b98ced54d60976d42492ab21e4a09cd9d36782d710da998df",
+              "state_version": 6
+            }
+          ],
+          "replay_execution": {
+            "checkpoint_sequence": 6,
+            "created_at": "2026-10-22T08:35:38.125206Z",
+            "execution_id": "b25ab193-ca8e-4853-ba2f-23dddeedf71f",
+            "idempotency_key_hash": "1eaf97d0c2b72183a0aee4c8a2ebffd3c2b60ed03ecd0b655acd7498ecec6ab3",
+            "lease_expires_at": null,
+            "lease_owner": null,
+            "plan": {
+              "baseline_period": "2026-Q1",
+              "comparison_period": "2026-Q2",
+              "plan_id": "compare_q1_q2_north",
+              "region": "north",
+              "steps": [
+                {
+                  "computation": null,
+                  "depends_on": [],
+                  "description": "Fetch Q1 2026 sales summary for the north region.",
+                  "kind": "tool",
+                  "step_id": "q1_summary",
+                  "tool_call": {
+                    "arguments": {
+                      "period": "2026-Q1",
+                      "region": "north"
+                    },
+                    "name": "get_postgres_sales_summary"
+                  }
+                },
+                {
+                  "computation": null,
+                  "depends_on": [],
+                  "description": "Fetch Q2 2026 sales summary for the north region.",
+                  "kind": "tool",
+                  "step_id": "q2_summary",
+                  "tool_call": {
+                    "arguments": {
+                      "period": "2026-Q2",
+                      "region": "north"
+                    },
+                    "name": "get_postgres_sales_summary"
+                  }
+                },
+                {
+                  "computation": {
+                    "baseline_period": "2026-Q1",
+                    "baseline_step_id": "q1_summary",
+                    "comparison_period": "2026-Q2",
+                    "comparison_step_id": "q2_summary",
+                    "operation": "compare_sales_growth",
+                    "region": "north"
+                  },
+                  "depends_on": [
+                    "q1_summary",
+                    "q2_summary"
+                  ],
+                  "description": "Compare north-region sales growth from Q1 2026 to Q2 2026.",
+                  "kind": "compute",
+                  "step_id": "growth_compare",
+                  "tool_call": null
+                }
+              ],
+              "task": "compare_quarterly_sales",
+              "version": "bounded-plan-v1"
+            },
+            "plan_sha256": "bc82e0f4e9699a101c0e400b66411b39f2ce97229643fd7b7b48e3dd4d954c47",
+            "plan_version": "bounded-plan-v1",
+            "policy_version": "bounded-plan-policy-v1",
+            "request_sha256": "3a1ddf00b7fbacac4551db8fd2458c1e4078d354f95e2fae02169a7e2ee6075c",
+            "runtime_version": "durable-controlled-planner-v1",
+            "scope_key": "acceptance-trace:analytics-copilot",
+            "state_version": 6,
+            "status": "completed",
+            "updated_at": "2026-10-22T08:35:38.723475Z"
+          },
+          "replay_final_result": {
+            "absolute_change": "100.00",
+            "baseline_period": "2026-Q1",
+            "baseline_total_sales": "200.00",
+            "comparison_period": "2026-Q2",
+            "comparison_total_sales": "300.00",
+            "currency": "USD",
+            "dataset_version": "synthetic-sales-db-v1",
+            "growth_rate_percent": "50.00",
+            "region": "north",
+            "source_relation": "analytics.sales_orders"
+          },
+          "replay_idempotency_verified": true,
+          "replay_receipts": [
+            {
+              "action_name": "get_postgres_sales_summary",
+              "error_code": null,
+              "execution_id": "b25ab193-ca8e-4853-ba2f-23dddeedf71f",
+              "finished_at": "2026-10-22T08:35:38.334614Z",
+              "idempotency_token": "2198277a4986ca59f292498bf72c6cab9031f3a984d9cdb9576209570d291a33",
+              "input_sha256": "303129ab8652d1302be333de9ec7af1030d6fcda1cb285b0a3f8fb793fbbf08f",
+              "output": {
+                "average_order_value": "100.00",
+                "currency": "USD",
+                "data_source": {
+                  "dataset_version": "synthetic-sales-db-v1",
+                  "kind": "postgresql",
+                  "read_only": true,
+                  "relation": "analytics.sales_orders"
+                },
+                "order_count": 2,
+                "period": "2026-Q1",
+                "region": "north",
+                "total_sales": "200.00"
+              },
+              "output_sha256": "c0b129586a75d4e35fbc3cf1c82a265c19387973536d7aaa7e52f08688b81772",
+              "started_at": "2026-10-22T08:35:38.175869Z",
+              "status": "succeeded",
+              "step_id": "q1_summary",
+              "tool_call_id": "worker-2198277a4986ca59"
+            },
+            {
+              "action_name": "get_postgres_sales_summary",
+              "error_code": null,
+              "execution_id": "b25ab193-ca8e-4853-ba2f-23dddeedf71f",
+              "finished_at": "2026-10-22T08:35:38.529672Z",
+              "idempotency_token": "5ccef8849a76677672f20e79a3cf8097433d66ea732e2af9e94576c9ead944a3",
+              "input_sha256": "55e6c1f32527d126367bf0988173b4c1302b274d036991a5cb307c5e947012ab",
+              "output": {
+                "average_order_value": "150.00",
+                "currency": "USD",
+                "data_source": {
+                  "dataset_version": "synthetic-sales-db-v1",
+                  "kind": "postgresql",
+                  "read_only": true,
+                  "relation": "analytics.sales_orders"
+                },
+                "order_count": 2,
+                "period": "2026-Q2",
+                "region": "north",
+                "total_sales": "300.00"
+              },
+              "output_sha256": "70403bc45f566f1b9e4079b50ccb7fb0952ffe57770efab0af021a913910c0a9",
+              "started_at": "2026-10-22T08:35:38.375659Z",
+              "status": "succeeded",
+              "step_id": "q2_summary",
+              "tool_call_id": "worker-5ccef8849a766776"
+            },
+            {
+              "action_name": "compare_sales_growth",
+              "error_code": null,
+              "execution_id": "b25ab193-ca8e-4853-ba2f-23dddeedf71f",
+              "finished_at": "2026-10-22T08:35:38.723475Z",
+              "idempotency_token": "d9e53a6459429277593ffe6d4546e16aca6505a1bb7c0bd1eb790e282b6a0e95",
+              "input_sha256": "01580b9c9890ecf01dcef95d339eb098170ac2c336e026c4972bc67494f3fcb0",
+              "output": {
+                "absolute_change": "100.00",
+                "baseline_period": "2026-Q1",
+                "baseline_total_sales": "200.00",
+                "comparison_period": "2026-Q2",
+                "comparison_total_sales": "300.00",
+                "currency": "USD",
+                "dataset_version": "synthetic-sales-db-v1",
+                "growth_rate_percent": "50.00",
+                "region": "north",
+                "source_relation": "analytics.sales_orders"
+              },
+              "output_sha256": "fd579626280688f5e094e7bd979855145d6268586263522828dfa0956597f282",
+              "started_at": "2026-10-22T08:35:38.570540Z",
+              "status": "succeeded",
+              "step_id": "growth_compare",
+              "tool_call_id": null
+            }
+          ],
+          "replay_tool_executions": [
+            {
+              "action_name": "get_postgres_sales_summary",
+              "error_code": null,
+              "execution_id": "b25ab193-ca8e-4853-ba2f-23dddeedf71f",
+              "finished_at": "2026-10-22T08:35:38.334614Z",
+              "idempotency_token": "2198277a4986ca59f292498bf72c6cab9031f3a984d9cdb9576209570d291a33",
+              "input_sha256": "303129ab8652d1302be333de9ec7af1030d6fcda1cb285b0a3f8fb793fbbf08f",
+              "output": {
+                "average_order_value": "100.00",
+                "currency": "USD",
+                "data_source": {
+                  "dataset_version": "synthetic-sales-db-v1",
+                  "kind": "postgresql",
+                  "read_only": true,
+                  "relation": "analytics.sales_orders"
+                },
+                "order_count": 2,
+                "period": "2026-Q1",
+                "region": "north",
+                "total_sales": "200.00"
+              },
+              "output_sha256": "c0b129586a75d4e35fbc3cf1c82a265c19387973536d7aaa7e52f08688b81772",
+              "started_at": "2026-10-22T08:35:38.175869Z",
+              "status": "succeeded",
+              "step_id": "q1_summary",
+              "tool_call_id": "worker-2198277a4986ca59"
+            },
+            {
+              "action_name": "get_postgres_sales_summary",
+              "error_code": null,
+              "execution_id": "b25ab193-ca8e-4853-ba2f-23dddeedf71f",
+              "finished_at": "2026-10-22T08:35:38.529672Z",
+              "idempotency_token": "5ccef8849a76677672f20e79a3cf8097433d66ea732e2af9e94576c9ead944a3",
+              "input_sha256": "55e6c1f32527d126367bf0988173b4c1302b274d036991a5cb307c5e947012ab",
+              "output": {
+                "average_order_value": "150.00",
+                "currency": "USD",
+                "data_source": {
+                  "dataset_version": "synthetic-sales-db-v1",
+                  "kind": "postgresql",
+                  "read_only": true,
+                  "relation": "analytics.sales_orders"
+                },
+                "order_count": 2,
+                "period": "2026-Q2",
+                "region": "north",
+                "total_sales": "300.00"
+              },
+              "output_sha256": "70403bc45f566f1b9e4079b50ccb7fb0952ffe57770efab0af021a913910c0a9",
+              "started_at": "2026-10-22T08:35:38.375659Z",
+              "status": "succeeded",
+              "step_id": "q2_summary",
+              "tool_call_id": "worker-5ccef8849a766776"
+            }
+          ],
+          "source_estimated_cost_usd": "0.0006234",
+          "source_evidence_sha256": "4181e41870a9f7e5888849f3846a4f434ff30e23c484e9b07a3ee52e9b01c75f",
+          "source_execution_id": "4abac169-12f6-4a46-93ad-cfc8126b6efa",
+          "source_latency_ms": 1854,
+          "source_plan": {
+            "baseline_period": "2026-Q1",
+            "comparison_period": "2026-Q2",
+            "plan_id": "compare_q1_q2_north",
+            "region": "north",
+            "steps": [
+              {
+                "depends_on": [],
+                "description": "Fetch Q1 2026 sales summary for the north region.",
+                "kind": "tool",
+                "step_id": "q1_summary",
+                "tool_call": {
+                  "arguments": {
+                    "period": "2026-Q1",
+                    "region": "north"
+                  },
+                  "name": "get_postgres_sales_summary"
+                }
+              },
+              {
+                "depends_on": [],
+                "description": "Fetch Q2 2026 sales summary for the north region.",
+                "kind": "tool",
+                "step_id": "q2_summary",
+                "tool_call": {
+                  "arguments": {
+                    "period": "2026-Q2",
+                    "region": "north"
+                  },
+                  "name": "get_postgres_sales_summary"
+                }
+              },
+              {
+                "computation": {
+                  "baseline_period": "2026-Q1",
+                  "baseline_step_id": "q1_summary",
+                  "comparison_period": "2026-Q2",
+                  "comparison_step_id": "q2_summary",
+                  "operation": "compare_sales_growth",
+                  "region": "north"
+                },
+                "depends_on": [
+                  "q1_summary",
+                  "q2_summary"
+                ],
+                "description": "Compare north-region sales growth from Q1 2026 to Q2 2026.",
+                "kind": "compute",
+                "step_id": "growth_compare"
+              }
+            ],
+            "task": "compare_quarterly_sales",
+            "version": "bounded-plan-v1"
+          },
+          "source_plan_sha256": "bc82e0f4e9699a101c0e400b66411b39f2ce97229643fd7b7b48e3dd4d954c47",
+          "source_provider_request_id": "738ba8ad-75d3-4143-8039-8fecb2378c64",
+          "source_run_id": "live-v1-002",
+          "source_usage": {
+            "input_tokens": 918,
+            "output_tokens": 290,
+            "total_tokens": 1208
+          }
+        },
+        {
+          "case_id": "durable/south-q2-q1",
+          "matches_original_final_result": true,
+          "matches_original_plan_sha256": true,
+          "replay_checkpoints": [
+            {
+              "agent_state": {
+                "budget_units_used": 0,
+                "completed_step_ids": [],
+                "current_step_id": null,
+                "elapsed_ms": 0,
+                "error": null,
+                "plan_id": "compare_q_sales_south_q2_vs_q1",
+                "status": "pending",
+                "step_states": [
+                  {
+                    "attempts": 0,
+                    "error": null,
+                    "kind": "tool",
+                    "latency_ms": 0,
+                    "output": null,
+                    "status": "pending",
+                    "step_id": "baseline_sales_summary",
+                    "tool_call_id": null
+                  },
+                  {
+                    "attempts": 0,
+                    "error": null,
+                    "kind": "tool",
+                    "latency_ms": 0,
+                    "output": null,
+                    "status": "pending",
+                    "step_id": "comparison_sales_summary",
+                    "tool_call_id": null
+                  },
+                  {
+                    "attempts": 0,
+                    "error": null,
+                    "kind": "compute",
+                    "latency_ms": 0,
+                    "output": null,
+                    "status": "pending",
+                    "step_id": "compare_growth",
+                    "tool_call_id": null
+                  }
+                ],
+                "steps_executed": 0,
+                "tool_calls_used": 0
+              },
+              "created_at": "2026-10-22T08:35:38.834090+00:00",
+              "execution_status": "pending",
+              "sequence": 0,
+              "state_sha256": "d39381acaa8ea06d8d744172668c8c250981add70bc4e7865b99bc19842ccaa1",
+              "state_version": 0
+            },
+            {
+              "agent_state": {
+                "budget_units_used": 1,
+                "completed_step_ids": [],
+                "current_step_id": "baseline_sales_summary",
+                "elapsed_ms": 1,
+                "error": null,
+                "plan_id": "compare_q_sales_south_q2_vs_q1",
+                "status": "running",
+                "step_states": [
+                  {
+                    "attempts": 1,
+                    "error": null,
+                    "kind": "tool",
+                    "latency_ms": 0,
+                    "output": null,
+                    "status": "running",
+                    "step_id": "baseline_sales_summary",
+                    "tool_call_id": null
+                  },
+                  {
+                    "attempts": 0,
+                    "error": null,
+                    "kind": "tool",
+                    "latency_ms": 0,
+                    "output": null,
+                    "status": "pending",
+                    "step_id": "comparison_sales_summary",
+                    "tool_call_id": null
+                  },
+                  {
+                    "attempts": 0,
+                    "error": null,
+                    "kind": "compute",
+                    "latency_ms": 0,
+                    "output": null,
+                    "status": "pending",
+                    "step_id": "compare_growth",
+                    "tool_call_id": null
+                  }
+                ],
+                "steps_executed": 0,
+                "tool_calls_used": 1
+              },
+              "created_at": "2026-10-22T08:35:38.888230+00:00",
+              "execution_status": "running",
+              "sequence": 1,
+              "state_sha256": "478765aef07bafc297a34f0c18acb0d425b824d842ff87dc2e27c89f10d551cd",
+              "state_version": 1
+            },
+            {
+              "agent_state": {
+                "budget_units_used": 1,
+                "completed_step_ids": [
+                  "baseline_sales_summary"
+                ],
+                "current_step_id": null,
+                "elapsed_ms": 2,
+                "error": null,
+                "plan_id": "compare_q_sales_south_q2_vs_q1",
+                "status": "running",
+                "step_states": [
+                  {
+                    "attempts": 1,
+                    "error": null,
+                    "kind": "tool",
+                    "latency_ms": 1,
+                    "output": {
+                      "average_order_value": "150.00",
+                      "currency": "USD",
+                      "data_source": {
+                        "dataset_version": "synthetic-sales-db-v1",
+                        "kind": "postgresql",
+                        "read_only": true,
+                        "relation": "analytics.sales_orders"
+                      },
+                      "order_count": 2,
+                      "period": "2026-Q2",
+                      "region": "south",
+                      "total_sales": "300.00"
+                    },
+                    "status": "completed",
+                    "step_id": "baseline_sales_summary",
+                    "tool_call_id": "sim-105b226c5c6c2e69"
+                  },
+                  {
+                    "attempts": 0,
+                    "error": null,
+                    "kind": "tool",
+                    "latency_ms": 0,
+                    "output": null,
+                    "status": "pending",
+                    "step_id": "comparison_sales_summary",
+                    "tool_call_id": null
+                  },
+                  {
+                    "attempts": 0,
+                    "error": null,
+                    "kind": "compute",
+                    "latency_ms": 0,
+                    "output": null,
+                    "status": "pending",
+                    "step_id": "compare_growth",
+                    "tool_call_id": null
+                  }
+                ],
+                "steps_executed": 1,
+                "tool_calls_used": 1
+              },
+              "created_at": "2026-10-22T08:35:39.042780+00:00",
+              "execution_status": "running",
+              "sequence": 2,
+              "state_sha256": "9d435ccab9ef1f3c5c860808dac4f0210c652adc0436e38c3a8a2bd943683d0e",
+              "state_version": 2
+            },
+            {
+              "agent_state": {
+                "budget_units_used": 2,
+                "completed_step_ids": [
+                  "baseline_sales_summary"
+                ],
+                "current_step_id": "comparison_sales_summary",
+                "elapsed_ms": 3,
+                "error": null,
+                "plan_id": "compare_q_sales_south_q2_vs_q1",
+                "status": "running",
+                "step_states": [
+                  {
+                    "attempts": 1,
+                    "error": null,
+                    "kind": "tool",
+                    "latency_ms": 1,
+                    "output": {
+                      "average_order_value": "150.00",
+                      "currency": "USD",
+                      "data_source": {
+                        "dataset_version": "synthetic-sales-db-v1",
+                        "kind": "postgresql",
+                        "read_only": true,
+                        "relation": "analytics.sales_orders"
+                      },
+                      "order_count": 2,
+                      "period": "2026-Q2",
+                      "region": "south",
+                      "total_sales": "300.00"
+                    },
+                    "status": "completed",
+                    "step_id": "baseline_sales_summary",
+                    "tool_call_id": "sim-105b226c5c6c2e69"
+                  },
+                  {
+                    "attempts": 1,
+                    "error": null,
+                    "kind": "tool",
+                    "latency_ms": 0,
+                    "output": null,
+                    "status": "running",
+                    "step_id": "comparison_sales_summary",
+                    "tool_call_id": null
+                  },
+                  {
+                    "attempts": 0,
+                    "error": null,
+                    "kind": "compute",
+                    "latency_ms": 0,
+                    "output": null,
+                    "status": "pending",
+                    "step_id": "compare_growth",
+                    "tool_call_id": null
+                  }
+                ],
+                "steps_executed": 1,
+                "tool_calls_used": 2
+              },
+              "created_at": "2026-10-22T08:35:39.086483+00:00",
+              "execution_status": "running",
+              "sequence": 3,
+              "state_sha256": "8c9695b9f455be4b7b15c0e3f74268cc58d3024bcfcb4630ddc6ed14ecccab13",
+              "state_version": 3
+            },
+            {
+              "agent_state": {
+                "budget_units_used": 2,
+                "completed_step_ids": [
+                  "baseline_sales_summary",
+                  "comparison_sales_summary"
+                ],
+                "current_step_id": null,
+                "elapsed_ms": 4,
+                "error": null,
+                "plan_id": "compare_q_sales_south_q2_vs_q1",
+                "status": "running",
+                "step_states": [
+                  {
+                    "attempts": 1,
+                    "error": null,
+                    "kind": "tool",
+                    "latency_ms": 1,
+                    "output": {
+                      "average_order_value": "150.00",
+                      "currency": "USD",
+                      "data_source": {
+                        "dataset_version": "synthetic-sales-db-v1",
+                        "kind": "postgresql",
+                        "read_only": true,
+                        "relation": "analytics.sales_orders"
+                      },
+                      "order_count": 2,
+                      "period": "2026-Q2",
+                      "region": "south",
+                      "total_sales": "300.00"
+                    },
+                    "status": "completed",
+                    "step_id": "baseline_sales_summary",
+                    "tool_call_id": "sim-105b226c5c6c2e69"
+                  },
+                  {
+                    "attempts": 1,
+                    "error": null,
+                    "kind": "tool",
+                    "latency_ms": 1,
+                    "output": {
+                      "average_order_value": "100.00",
+                      "currency": "USD",
+                      "data_source": {
+                        "dataset_version": "synthetic-sales-db-v1",
+                        "kind": "postgresql",
+                        "read_only": true,
+                        "relation": "analytics.sales_orders"
+                      },
+                      "order_count": 2,
+                      "period": "2026-Q1",
+                      "region": "south",
+                      "total_sales": "200.00"
+                    },
+                    "status": "completed",
+                    "step_id": "comparison_sales_summary",
+                    "tool_call_id": "sim-adf848afd1de7b7e"
+                  },
+                  {
+                    "attempts": 0,
+                    "error": null,
+                    "kind": "compute",
+                    "latency_ms": 0,
+                    "output": null,
+                    "status": "pending",
+                    "step_id": "compare_growth",
+                    "tool_call_id": null
+                  }
+                ],
+                "steps_executed": 2,
+                "tool_calls_used": 2
+              },
+              "created_at": "2026-10-22T08:35:39.239204+00:00",
+              "execution_status": "running",
+              "sequence": 4,
+              "state_sha256": "4bed611d46462c3efe46b83d6e8d5eb46579610ca72fb43cd29a658c47e3bd48",
+              "state_version": 4
+            },
+            {
+              "agent_state": {
+                "budget_units_used": 3,
+                "completed_step_ids": [
+                  "baseline_sales_summary",
+                  "comparison_sales_summary"
+                ],
+                "current_step_id": "compare_growth",
+                "elapsed_ms": 5,
+                "error": null,
+                "plan_id": "compare_q_sales_south_q2_vs_q1",
+                "status": "running",
+                "step_states": [
+                  {
+                    "attempts": 1,
+                    "error": null,
+                    "kind": "tool",
+                    "latency_ms": 1,
+                    "output": {
+                      "average_order_value": "150.00",
+                      "currency": "USD",
+                      "data_source": {
+                        "dataset_version": "synthetic-sales-db-v1",
+                        "kind": "postgresql",
+                        "read_only": true,
+                        "relation": "analytics.sales_orders"
+                      },
+                      "order_count": 2,
+                      "period": "2026-Q2",
+                      "region": "south",
+                      "total_sales": "300.00"
+                    },
+                    "status": "completed",
+                    "step_id": "baseline_sales_summary",
+                    "tool_call_id": "sim-105b226c5c6c2e69"
+                  },
+                  {
+                    "attempts": 1,
+                    "error": null,
+                    "kind": "tool",
+                    "latency_ms": 1,
+                    "output": {
+                      "average_order_value": "100.00",
+                      "currency": "USD",
+                      "data_source": {
+                        "dataset_version": "synthetic-sales-db-v1",
+                        "kind": "postgresql",
+                        "read_only": true,
+                        "relation": "analytics.sales_orders"
+                      },
+                      "order_count": 2,
+                      "period": "2026-Q1",
+                      "region": "south",
+                      "total_sales": "200.00"
+                    },
+                    "status": "completed",
+                    "step_id": "comparison_sales_summary",
+                    "tool_call_id": "sim-adf848afd1de7b7e"
+                  },
+                  {
+                    "attempts": 1,
+                    "error": null,
+                    "kind": "compute",
+                    "latency_ms": 0,
+                    "output": null,
+                    "status": "running",
+                    "step_id": "compare_growth",
+                    "tool_call_id": null
+                  }
+                ],
+                "steps_executed": 2,
+                "tool_calls_used": 2
+              },
+              "created_at": "2026-10-22T08:35:39.285907+00:00",
+              "execution_status": "running",
+              "sequence": 5,
+              "state_sha256": "705a644098aaadf80311069f93e7c91b9e15a026f230f109073d5542f99a8587",
+              "state_version": 5
+            },
+            {
+              "agent_state": {
+                "budget_units_used": 3,
+                "completed_step_ids": [
+                  "baseline_sales_summary",
+                  "comparison_sales_summary",
+                  "compare_growth"
+                ],
+                "current_step_id": null,
+                "elapsed_ms": 6,
+                "error": null,
+                "plan_id": "compare_q_sales_south_q2_vs_q1",
+                "status": "completed",
+                "step_states": [
+                  {
+                    "attempts": 1,
+                    "error": null,
+                    "kind": "tool",
+                    "latency_ms": 1,
+                    "output": {
+                      "average_order_value": "150.00",
+                      "currency": "USD",
+                      "data_source": {
+                        "dataset_version": "synthetic-sales-db-v1",
+                        "kind": "postgresql",
+                        "read_only": true,
+                        "relation": "analytics.sales_orders"
+                      },
+                      "order_count": 2,
+                      "period": "2026-Q2",
+                      "region": "south",
+                      "total_sales": "300.00"
+                    },
+                    "status": "completed",
+                    "step_id": "baseline_sales_summary",
+                    "tool_call_id": "sim-105b226c5c6c2e69"
+                  },
+                  {
+                    "attempts": 1,
+                    "error": null,
+                    "kind": "tool",
+                    "latency_ms": 1,
+                    "output": {
+                      "average_order_value": "100.00",
+                      "currency": "USD",
+                      "data_source": {
+                        "dataset_version": "synthetic-sales-db-v1",
+                        "kind": "postgresql",
+                        "read_only": true,
+                        "relation": "analytics.sales_orders"
+                      },
+                      "order_count": 2,
+                      "period": "2026-Q1",
+                      "region": "south",
+                      "total_sales": "200.00"
+                    },
+                    "status": "completed",
+                    "step_id": "comparison_sales_summary",
+                    "tool_call_id": "sim-adf848afd1de7b7e"
+                  },
+                  {
+                    "attempts": 1,
+                    "error": null,
+                    "kind": "compute",
+                    "latency_ms": 1,
+                    "output": {
+                      "absolute_change": "-100.00",
+                      "baseline_period": "2026-Q2",
+                      "baseline_total_sales": "300.00",
+                      "comparison_period": "2026-Q1",
+                      "comparison_total_sales": "200.00",
+                      "currency": "USD",
+                      "dataset_version": "synthetic-sales-db-v1",
+                      "growth_rate_percent": "-33.33",
+                      "region": "south",
+                      "source_relation": "analytics.sales_orders"
+                    },
+                    "status": "completed",
+                    "step_id": "compare_growth",
+                    "tool_call_id": null
+                  }
+                ],
+                "steps_executed": 3,
+                "tool_calls_used": 2
+              },
+              "created_at": "2026-10-22T08:35:39.437088+00:00",
+              "execution_status": "completed",
+              "sequence": 6,
+              "state_sha256": "e6e338c3f6cc3944705310ef25eef93c5e1a93f7fe9a9eae49a7659425ba7c37",
+              "state_version": 6
+            }
+          ],
+          "replay_execution": {
+            "checkpoint_sequence": 6,
+            "created_at": "2026-10-22T08:35:38.834090Z",
+            "execution_id": "a6a603be-6c6c-4e55-a652-b59de89110fc",
+            "idempotency_key_hash": "b7bbc56e20211a43c4dc417acb8ed3ffd231322d21545eb0839fc5dd12d52040",
+            "lease_expires_at": null,
+            "lease_owner": null,
+            "plan": {
+              "baseline_period": "2026-Q2",
+              "comparison_period": "2026-Q1",
+              "plan_id": "compare_q_sales_south_q2_vs_q1",
+              "region": "south",
+              "steps": [
+                {
+                  "computation": null,
+                  "depends_on": [],
+                  "description": "Fetch PostgreSQL sales summary for the baseline period 2026-Q2 in the south region.",
+                  "kind": "tool",
+                  "step_id": "baseline_sales_summary",
+                  "tool_call": {
+                    "arguments": {
+                      "period": "2026-Q2",
+                      "region": "south"
+                    },
+                    "name": "get_postgres_sales_summary"
+                  }
+                },
+                {
+                  "computation": null,
+                  "depends_on": [],
+                  "description": "Fetch PostgreSQL sales summary for the comparison period 2026-Q1 in the south region.",
+                  "kind": "tool",
+                  "step_id": "comparison_sales_summary",
+                  "tool_call": {
+                    "arguments": {
+                      "period": "2026-Q1",
+                      "region": "south"
+                    },
+                    "name": "get_postgres_sales_summary"
+                  }
+                },
+                {
+                  "computation": {
+                    "baseline_period": "2026-Q2",
+                    "baseline_step_id": "baseline_sales_summary",
+                    "comparison_period": "2026-Q1",
+                    "comparison_step_id": "comparison_sales_summary",
+                    "operation": "compare_sales_growth",
+                    "region": "south"
+                  },
+                  "depends_on": [
+                    "baseline_sales_summary",
+                    "comparison_sales_summary"
+                  ],
+                  "description": "Compare sales growth between 2026-Q2 baseline and 2026-Q1 comparison for the south region.",
+                  "kind": "compute",
+                  "step_id": "compare_growth",
+                  "tool_call": null
+                }
+              ],
+              "task": "compare_quarterly_sales",
+              "version": "bounded-plan-v1"
+            },
+            "plan_sha256": "6a6b8c840bec5fd026920141c794ef32aaabb830c08b2c6aec5af4f218571a31",
+            "plan_version": "bounded-plan-v1",
+            "policy_version": "bounded-plan-policy-v1",
+            "request_sha256": "5a1d4651d67d5bc3603f70aa6da36b95e9520e0b5876f8d29e76883a3a9a8c61",
+            "runtime_version": "durable-controlled-planner-v1",
+            "scope_key": "acceptance-trace:analytics-copilot",
+            "state_version": 6,
+            "status": "completed",
+            "updated_at": "2026-10-22T08:35:39.437088Z"
+          },
+          "replay_final_result": {
+            "absolute_change": "-100.00",
+            "baseline_period": "2026-Q2",
+            "baseline_total_sales": "300.00",
+            "comparison_period": "2026-Q1",
+            "comparison_total_sales": "200.00",
+            "currency": "USD",
+            "dataset_version": "synthetic-sales-db-v1",
+            "growth_rate_percent": "-33.33",
+            "region": "south",
+            "source_relation": "analytics.sales_orders"
+          },
+          "replay_idempotency_verified": true,
+          "replay_receipts": [
+            {
+              "action_name": "get_postgres_sales_summary",
+              "error_code": null,
+              "execution_id": "a6a603be-6c6c-4e55-a652-b59de89110fc",
+              "finished_at": "2026-10-22T08:35:39.042780Z",
+              "idempotency_token": "105b226c5c6c2e691c1c3a58f68f584f9d766f359c6a54070eb794a196dec2e1",
+              "input_sha256": "c62d11a991b68089d48798f34d608c62df66b4f04d8379f7b1c3a99c662aac6e",
+              "output": {
+                "average_order_value": "150.00",
+                "currency": "USD",
+                "data_source": {
+                  "dataset_version": "synthetic-sales-db-v1",
+                  "kind": "postgresql",
+                  "read_only": true,
+                  "relation": "analytics.sales_orders"
+                },
+                "order_count": 2,
+                "period": "2026-Q2",
+                "region": "south",
+                "total_sales": "300.00"
+              },
+              "output_sha256": "477cba9bd5c32bf8d2c9504d9c8e49d04872d3044bb746a38b3fee8238c33977",
+              "started_at": "2026-10-22T08:35:38.888230Z",
+              "status": "succeeded",
+              "step_id": "baseline_sales_summary",
+              "tool_call_id": "worker-105b226c5c6c2e69"
+            },
+            {
+              "action_name": "get_postgres_sales_summary",
+              "error_code": null,
+              "execution_id": "a6a603be-6c6c-4e55-a652-b59de89110fc",
+              "finished_at": "2026-10-22T08:35:39.239204Z",
+              "idempotency_token": "adf848afd1de7b7e4dcd52e5c56382be0dd3fafaace9e99804632ebc7357f332",
+              "input_sha256": "8da6a19cfb8868a6e559a2a3e29de9f9617b152f1782040e0dc03c9ce2ca58d6",
+              "output": {
+                "average_order_value": "100.00",
+                "currency": "USD",
+                "data_source": {
+                  "dataset_version": "synthetic-sales-db-v1",
+                  "kind": "postgresql",
+                  "read_only": true,
+                  "relation": "analytics.sales_orders"
+                },
+                "order_count": 2,
+                "period": "2026-Q1",
+                "region": "south",
+                "total_sales": "200.00"
+              },
+              "output_sha256": "9f334711d4eec9f3c2aa93a988db5561369558f459ac238857ddf1ed75b5caac",
+              "started_at": "2026-10-22T08:35:39.086483Z",
+              "status": "succeeded",
+              "step_id": "comparison_sales_summary",
+              "tool_call_id": "worker-adf848afd1de7b7e"
+            },
+            {
+              "action_name": "compare_sales_growth",
+              "error_code": null,
+              "execution_id": "a6a603be-6c6c-4e55-a652-b59de89110fc",
+              "finished_at": "2026-10-22T08:35:39.437088Z",
+              "idempotency_token": "45d3e3eae626bb8b8f379affa81480976e593919333b2630a95f5272cc75de41",
+              "input_sha256": "964ae7d6a047734751206986c4aa1be12621b23042ec2c60aca591857c5d8798",
+              "output": {
+                "absolute_change": "-100.00",
+                "baseline_period": "2026-Q2",
+                "baseline_total_sales": "300.00",
+                "comparison_period": "2026-Q1",
+                "comparison_total_sales": "200.00",
+                "currency": "USD",
+                "dataset_version": "synthetic-sales-db-v1",
+                "growth_rate_percent": "-33.33",
+                "region": "south",
+                "source_relation": "analytics.sales_orders"
+              },
+              "output_sha256": "4be97efb392b0866a74b78d80a86b498c18e96b1498fc991f0b5e7aa6211b2ad",
+              "started_at": "2026-10-22T08:35:39.285907Z",
+              "status": "succeeded",
+              "step_id": "compare_growth",
+              "tool_call_id": null
+            }
+          ],
+          "replay_tool_executions": [
+            {
+              "action_name": "get_postgres_sales_summary",
+              "error_code": null,
+              "execution_id": "a6a603be-6c6c-4e55-a652-b59de89110fc",
+              "finished_at": "2026-10-22T08:35:39.042780Z",
+              "idempotency_token": "105b226c5c6c2e691c1c3a58f68f584f9d766f359c6a54070eb794a196dec2e1",
+              "input_sha256": "c62d11a991b68089d48798f34d608c62df66b4f04d8379f7b1c3a99c662aac6e",
+              "output": {
+                "average_order_value": "150.00",
+                "currency": "USD",
+                "data_source": {
+                  "dataset_version": "synthetic-sales-db-v1",
+                  "kind": "postgresql",
+                  "read_only": true,
+                  "relation": "analytics.sales_orders"
+                },
+                "order_count": 2,
+                "period": "2026-Q2",
+                "region": "south",
+                "total_sales": "300.00"
+              },
+              "output_sha256": "477cba9bd5c32bf8d2c9504d9c8e49d04872d3044bb746a38b3fee8238c33977",
+              "started_at": "2026-10-22T08:35:38.888230Z",
+              "status": "succeeded",
+              "step_id": "baseline_sales_summary",
+              "tool_call_id": "worker-105b226c5c6c2e69"
+            },
+            {
+              "action_name": "get_postgres_sales_summary",
+              "error_code": null,
+              "execution_id": "a6a603be-6c6c-4e55-a652-b59de89110fc",
+              "finished_at": "2026-10-22T08:35:39.239204Z",
+              "idempotency_token": "adf848afd1de7b7e4dcd52e5c56382be0dd3fafaace9e99804632ebc7357f332",
+              "input_sha256": "8da6a19cfb8868a6e559a2a3e29de9f9617b152f1782040e0dc03c9ce2ca58d6",
+              "output": {
+                "average_order_value": "100.00",
+                "currency": "USD",
+                "data_source": {
+                  "dataset_version": "synthetic-sales-db-v1",
+                  "kind": "postgresql",
+                  "read_only": true,
+                  "relation": "analytics.sales_orders"
+                },
+                "order_count": 2,
+                "period": "2026-Q1",
+                "region": "south",
+                "total_sales": "200.00"
+              },
+              "output_sha256": "9f334711d4eec9f3c2aa93a988db5561369558f459ac238857ddf1ed75b5caac",
+              "started_at": "2026-10-22T08:35:39.086483Z",
+              "status": "succeeded",
+              "step_id": "comparison_sales_summary",
+              "tool_call_id": "worker-adf848afd1de7b7e"
+            }
+          ],
+          "source_estimated_cost_usd": "0.0006678",
+          "source_evidence_sha256": "4181e41870a9f7e5888849f3846a4f434ff30e23c484e9b07a3ee52e9b01c75f",
+          "source_execution_id": "17a4fb07-0396-4c4b-9642-1de428754f13",
+          "source_latency_ms": 2078,
+          "source_plan": {
+            "baseline_period": "2026-Q2",
+            "comparison_period": "2026-Q1",
+            "plan_id": "compare_q_sales_south_q2_vs_q1",
+            "region": "south",
+            "steps": [
+              {
+                "computation": null,
+                "depends_on": [],
+                "description": "Fetch PostgreSQL sales summary for the baseline period 2026-Q2 in the south region.",
+                "kind": "tool",
+                "step_id": "baseline_sales_summary",
+                "tool_call": {
+                  "arguments": {
+                    "period": "2026-Q2",
+                    "region": "south"
+                  },
+                  "name": "get_postgres_sales_summary"
+                }
+              },
+              {
+                "computation": null,
+                "depends_on": [],
+                "description": "Fetch PostgreSQL sales summary for the comparison period 2026-Q1 in the south region.",
+                "kind": "tool",
+                "step_id": "comparison_sales_summary",
+                "tool_call": {
+                  "arguments": {
+                    "period": "2026-Q1",
+                    "region": "south"
+                  },
+                  "name": "get_postgres_sales_summary"
+                }
+              },
+              {
+                "computation": {
+                  "baseline_period": "2026-Q2",
+                  "baseline_step_id": "baseline_sales_summary",
+                  "comparison_period": "2026-Q1",
+                  "comparison_step_id": "comparison_sales_summary",
+                  "operation": "compare_sales_growth",
+                  "region": "south"
+                },
+                "depends_on": [
+                  "baseline_sales_summary",
+                  "comparison_sales_summary"
+                ],
+                "description": "Compare sales growth between 2026-Q2 baseline and 2026-Q1 comparison for the south region.",
+                "kind": "compute",
+                "step_id": "compare_growth",
+                "tool_call": null
+              }
+            ],
+            "task": "compare_quarterly_sales"
+          },
+          "source_plan_sha256": "6a6b8c840bec5fd026920141c794ef32aaabb830c08b2c6aec5af4f218571a31",
+          "source_provider_request_id": "73b94cc9-d402-48a6-b096-53312e3a8d35",
+          "source_run_id": "live-v1-002",
+          "source_usage": {
+            "input_tokens": 918,
+            "output_tokens": 327,
+            "total_tokens": 1245
+          }
+        }
+      ]
+    }
+  ],
+  "scope_note": "The paid-run evidence contains original model Plans, final results, receipt counts and consistency verdicts. Its disposable databases were dropped. This supplement replays those exact original Plans against a fresh isolated database to preserve detailed Checkpoint, Receipt and Tool outputs; replay identifiers/timestamps are not original-run values.",
+  "suite_sha256": "c059028e3b67924338bcb27ab5cf5c8f1bf7c32977ab63ab217c2d98c061df11"
+}

@@ -1,0 +1,212 @@
+{
+  "estimated_cost_usd": "0.0019203",
+  "evidence_version": "durable-planner-live-evidence-v1",
+  "gate_sha256": "a2355516e49e248e75915d3f7b94c8bf13df4cf19fee1ec592373c872fa1a692",
+  "latency_ms": 5959,
+  "live_plan_sha256": "425a2613b798ab4add2894aea06a91bfc7d9c4848249422cb2f3a5fd14b0d3a7",
+  "paid_api_calls": 3,
+  "records": [
+    {
+      "case_id": "durable/all-q1-q2",
+      "execution_id": "0c1847bd-15b0-439c-8822-5e2b26d91653",
+      "final_result": {
+        "absolute_change": "200.00",
+        "baseline_period": "2026-Q1",
+        "baseline_total_sales": "400.00",
+        "comparison_period": "2026-Q2",
+        "comparison_total_sales": "600.00",
+        "currency": "USD",
+        "dataset_version": "synthetic-sales-db-v1",
+        "growth_rate_percent": "50.00",
+        "region": "all",
+        "source_relation": "analytics.sales_orders"
+      },
+      "generation": {
+        "content": "{\"plan_id\":\"compare_quarterly_sales_plan\",\"task\":\"compare_quarterly_sales\",\"baseline_period\":\"2026-Q1\",\"comparison_period\":\"2026-Q2\",\"region\":\"all\",\"version\":\"bounded-plan-v1\",\"steps\":[{\"step_id\":\"baseline_sales\",\"kind\":\"tool\",\"description\":\"Get PostgreSQL sales summary for the 2026-Q1 baseline period across all regions.\",\"depends_on\":[],\"tool_call\":{\"name\":\"get_postgres_sales_summary\",\"arguments\":{\"period\":\"2026-Q1\",\"region\":\"all\"}}},{\"step_id\":\"comparison_sales\",\"kind\":\"tool\",\"description\":\"Get PostgreSQL sales summary for the 2026-Q2 comparison period across all regions.\",\"depends_on\":[],\"tool_call\":{\"name\":\"get_postgres_sales_summary\",\"arguments\":{\"period\":\"2026-Q2\",\"region\":\"all\"}}},{\"step_id\":\"compare_growth\",\"kind\":\"compute\",\"description\":\"Compute quarterly sales growth from the 2026-Q1 baseline to the 2026-Q2 comparison period across all regions.\",\"depends_on\":[\"baseline_sales\",\"comparison_sales\"],\"computation\":{\"operation\":\"compare_sales_growth\",\"baseline_step_id\":\"baseline_sales\",\"comparison_step_id\":\"comparison_sales\",\"baseline_period\":\"2026-Q1\",\"comparison_period\":\"2026-Q2\",\"region\":\"all\"}}]}",
+        "estimated_cost_usd": "0.0006363",
+        "finish_reason": "stop",
+        "latency_ms": 1945,
+        "model": "deepseek-flash",
+        "pricing_version": "deepseek-2026-09-13",
+        "provider": "deepseek",
+        "request_id": "7224c97b-7729-4549-80fd-7f1351cf77dd",
+        "retry_count": 0,
+        "usage": {
+          "input_tokens": 917,
+          "output_tokens": 301,
+          "total_tokens": 1218
+        }
+      },
+      "plan_sha256": "89d1ef47bf2f0f2299872e6fa811a49dd749103e3dd5bef3394ae446a141bbb4",
+      "request": {
+        "baseline_period": "2026-Q1",
+        "comparison_period": "2026-Q2",
+        "region": "all",
+        "task": "compare_quarterly_sales"
+      },
+      "review": {
+        "core_blocker": false,
+        "hard_invariants": {
+          "durable_completion": true,
+          "execution_bounds": true,
+          "idempotent_submission": true,
+          "plan_schema_valid": true,
+          "provider_call_limit": true,
+          "receipt_consistency": true,
+          "request_binding": true,
+          "result_accuracy": true,
+          "source_consistency": true,
+          "tool_authorization": true
+        },
+        "normalized_quality": 1.0,
+        "quality": {
+          "description_clarity": 2,
+          "plan_relevance_minimality": 2,
+          "task_completeness": 2
+        },
+        "verdict": "PASS"
+      },
+      "run_id": "live-v1-001"
+    },
+    {
+      "case_id": "durable/north-q1-q2",
+      "execution_id": "2463cb0f-c104-459b-83b0-273a2879b1d8",
+      "final_result": {
+        "absolute_change": "100.00",
+        "baseline_period": "2026-Q1",
+        "baseline_total_sales": "200.00",
+        "comparison_period": "2026-Q2",
+        "comparison_total_sales": "300.00",
+        "currency": "USD",
+        "dataset_version": "synthetic-sales-db-v1",
+        "growth_rate_percent": "50.00",
+        "region": "north",
+        "source_relation": "analytics.sales_orders"
+      },
+      "generation": {
+        "content": "{\"plan_id\":\"compare-sales-q1-q2-north\",\"task\":\"compare_quarterly_sales\",\"baseline_period\":\"2026-Q1\",\"comparison_period\":\"2026-Q2\",\"region\":\"north\",\"steps\":[{\"step_id\":\"baseline_sales\",\"kind\":\"tool\",\"description\":\"Fetch Postgres sales summary for baseline period 2026-Q1 in the north region.\",\"tool_call\":{\"name\":\"get_postgres_sales_summary\",\"arguments\":{\"period\":\"2026-Q1\",\"region\":\"north\"}},\"depends_on\":[]},{\"step_id\":\"comparison_sales\",\"kind\":\"tool\",\"description\":\"Fetch Postgres sales summary for comparison period 2026-Q2 in the north region.\",\"tool_call\":{\"name\":\"get_postgres_sales_summary\",\"arguments\":{\"period\":\"2026-Q2\",\"region\":\"north\"}},\"depends_on\":[]},{\"step_id\":\"sales_growth\",\"kind\":\"compute\",\"description\":\"Compare north region sales growth from 2026-Q1 baseline to 2026-Q2 comparison.\",\"computation\":{\"operation\":\"compare_sales_growth\",\"baseline_step_id\":\"baseline_sales\",\"comparison_step_id\":\"comparison_sales\",\"baseline_period\":\"2026-Q1\",\"comparison_period\":\"2026-Q2\",\"region\":\"north\"},\"depends_on\":[\"baseline_sales\",\"comparison_sales\"]}]}",
+        "estimated_cost_usd": "0.0006294",
+        "finish_reason": "stop",
+        "latency_ms": 2016,
+        "model": "deepseek-flash",
+        "pricing_version": "deepseek-2026-09-13",
+        "provider": "deepseek",
+        "request_id": "5d55f080-5c0a-4b2f-a4a3-358babd0f77f",
+        "retry_count": 0,
+        "usage": {
+          "input_tokens": 918,
+          "output_tokens": 295,
+          "total_tokens": 1213
+        }
+      },
+      "plan_sha256": "fde482d391713a75f275c573a913bb1d510640aa1df3a83ea3f99fa400550ba6",
+      "request": {
+        "baseline_period": "2026-Q1",
+        "comparison_period": "2026-Q2",
+        "region": "north",
+        "task": "compare_quarterly_sales"
+      },
+      "review": {
+        "core_blocker": false,
+        "hard_invariants": {
+          "durable_completion": true,
+          "execution_bounds": true,
+          "idempotent_submission": true,
+          "plan_schema_valid": true,
+          "provider_call_limit": true,
+          "receipt_consistency": true,
+          "request_binding": true,
+          "result_accuracy": true,
+          "source_consistency": true,
+          "tool_authorization": true
+        },
+        "normalized_quality": 1.0,
+        "quality": {
+          "description_clarity": 2,
+          "plan_relevance_minimality": 2,
+          "task_completeness": 2
+        },
+        "verdict": "PASS"
+      },
+      "run_id": "live-v1-001"
+    },
+    {
+      "case_id": "durable/south-q2-q1",
+      "execution_id": "62a490dc-a197-4e1d-99a4-15d70426f6e4",
+      "final_result": {
+        "absolute_change": "-100.00",
+        "baseline_period": "2026-Q2",
+        "baseline_total_sales": "300.00",
+        "comparison_period": "2026-Q1",
+        "comparison_total_sales": "200.00",
+        "currency": "USD",
+        "dataset_version": "synthetic-sales-db-v1",
+        "growth_rate_percent": "-33.33",
+        "region": "south",
+        "source_relation": "analytics.sales_orders"
+      },
+      "generation": {
+        "content": "{\"plan_id\":\"compare_quarterly_sales_south_q2_vs_q1\",\"task\":\"compare_quarterly_sales\",\"baseline_period\":\"2026-Q2\",\"comparison_period\":\"2026-Q1\",\"region\":\"south\",\"steps\":[{\"step_id\":\"baseline_sales_summary\",\"kind\":\"tool\",\"description\":\"Retrieve Q2 2026 sales summary for the south region as the baseline.\",\"tool_call\":{\"name\":\"get_postgres_sales_summary\",\"arguments\":{\"period\":\"2026-Q2\",\"region\":\"south\"}},\"depends_on\":[]},{\"step_id\":\"comparison_sales_summary\",\"kind\":\"tool\",\"description\":\"Retrieve Q1 2026 sales summary for the south region as the comparison period.\",\"tool_call\":{\"name\":\"get_postgres_sales_summary\",\"arguments\":{\"period\":\"2026-Q1\",\"region\":\"south\"}},\"depends_on\":[]},{\"step_id\":\"compare_sales_growth_result\",\"kind\":\"compute\",\"description\":\"Compare Q1 2026 sales against Q2 2026 baseline for the south region to compute growth.\",\"computation\":{\"operation\":\"compare_sales_growth\",\"baseline_step_id\":\"baseline_sales_summary\",\"comparison_step_id\":\"comparison_sales_summary\",\"baseline_period\":\"2026-Q2\",\"comparison_period\":\"2026-Q1\",\"region\":\"south\"},\"depends_on\":[\"baseline_sales_summary\",\"comparison_sales_summary\"]}]}",
+        "estimated_cost_usd": "0.0006546",
+        "finish_reason": "stop",
+        "latency_ms": 1998,
+        "model": "deepseek-flash",
+        "pricing_version": "deepseek-2026-09-13",
+        "provider": "deepseek",
+        "request_id": "82be0d94-38de-4202-9229-665ade2b4a70",
+        "retry_count": 0,
+        "usage": {
+          "input_tokens": 918,
+          "output_tokens": 316,
+          "total_tokens": 1234
+        }
+      },
+      "plan_sha256": "e55887a228c9609b9a62afc2fec9dd2aef49ebdf0b9186595d65f811df5faf8e",
+      "request": {
+        "baseline_period": "2026-Q2",
+        "comparison_period": "2026-Q1",
+        "region": "south",
+        "task": "compare_quarterly_sales"
+      },
+      "review": {
+        "core_blocker": false,
+        "hard_invariants": {
+          "durable_completion": true,
+          "execution_bounds": true,
+          "idempotent_submission": true,
+          "plan_schema_valid": true,
+          "provider_call_limit": true,
+          "receipt_consistency": true,
+          "request_binding": true,
+          "result_accuracy": true,
+          "source_consistency": true,
+          "tool_authorization": true
+        },
+        "normalized_quality": 1.0,
+        "quality": {
+          "description_clarity": 2,
+          "plan_relevance_minimality": 2,
+          "task_completeness": 2
+        },
+        "verdict": "PASS"
+      },
+      "run_id": "live-v1-001"
+    }
+  ],
+  "result": {
+    "all_cases_meet_quality_threshold": true,
+    "core_blockers": 0,
+    "hard_invariants_100_percent": true,
+    "normalized_quality": 1.0,
+    "repeated_severe_quality_issue": false,
+    "verdict": "PASS"
+  },
+  "run_id": "live-v1-001",
+  "stop_reason": null,
+  "suite_sha256": "c059028e3b67924338bcb27ab5cf5c8f1bf7c32977ab63ab217c2d98c061df11",
+  "tokens": {
+    "input": 2753,
+    "output": 912,
+    "total": 3665
+  }
+}

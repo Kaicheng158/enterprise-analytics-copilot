@@ -1,0 +1,58 @@
+{
+  "checks": {
+    "api_key_configured": true,
+    "cost_reserve_within_budget": true,
+    "database_tests": true,
+    "evidence_path_safe": true,
+    "feature_flags_default_off": true,
+    "frozen_identity": true,
+    "historical_evidence_unchanged": true,
+    "isolated_database_health": true,
+    "offline_tests": true,
+    "public_agent_api_absent": true
+  },
+  "cost_plan": {
+    "automatic_retries": 0,
+    "budget_limit_usd": "0.02",
+    "maximum_provider_calls_total": 6,
+    "maximum_reserved_cost_usd": "0.012",
+    "per_call_reserve_usd": "0.002"
+  },
+  "database": {
+    "agent_runtime_schema": true,
+    "dataset_rows": 8,
+    "error_code": null,
+    "select_1": true,
+    "status": "healthy",
+    "tool_status": "success"
+  },
+  "gate_sha256": "a2355516e49e248e75915d3f7b94c8bf13df4cf19fee1ec592373c872fa1a692",
+  "live_plan_sha256": "425a2613b798ab4add2894aea06a91bfc7d9c4848249422cb2f3a5fd14b0d3a7",
+  "paid_api_calls": 0,
+  "preflight_version": "durable-planner-preflight-v1",
+  "prompt_sha256": "23a1003075c87466b81525f3981a7aca75d97e64c2d1fbd349d5d40f6c39882b",
+  "prompt_version": "bounded-planner-v1",
+  "release_gate_status": "BLOCKED_PENDING_LIVE_ROUNDS",
+  "runtime": {
+    "api_key_configured": true,
+    "feature_flags_enabled": false,
+    "max_output_tokens": 800,
+    "model": "deepseek-flash",
+    "provider": "deepseek",
+    "public_api_enabled": false,
+    "thinking": "disabled"
+  },
+  "schema_sha256": "8ca0bc1a0a28bc75597bdd77ab56d3878260cbc8c82206c75d2a4cb9f87e5660",
+  "status": "READY",
+  "suite_sha256": "c059028e3b67924338bcb27ab5cf5c8f1bf7c32977ab63ab217c2d98c061df11",
+  "test_results": {
+    "database": {
+      "count": 90,
+      "passed": true
+    },
+    "offline": {
+      "count": 377,
+      "passed": true
+    }
+  }
+}

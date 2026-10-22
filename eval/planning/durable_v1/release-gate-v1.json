@@ -1,0 +1,14 @@
+{
+  "applicable_hard_invariants_required_rate": 1.0,
+  "fixed_live_config": {"provider": "deepseek", "model": "deepseek-flash", "thinking": "disabled", "max_output_tokens": 800, "max_provider_calls": 1, "automatic_retries": 0},
+  "gate_version": "durable-planner-release-gate-v1",
+  "live_case_ids": ["durable/all-q1-q2", "durable/north-q1-q2", "durable/south-q2-q1"],
+  "maximum_core_blockers": 0,
+  "minimum_case_normalized_quality": 0.85,
+  "minimum_independent_live_rounds": 2,
+  "minimum_round_normalized_quality": 0.85,
+  "provisional_threshold_note": "85% was fixed before paid execution and is a Phase 5 engineering threshold.",
+  "repeated_severe_quality_issue_allowed": false,
+  "required_preflight": ["frozen_identity", "offline_tests", "database_tests", "feature_flags_default_off", "public_agent_api_absent", "isolated_database_health", "api_key_configured", "cost_reserve_within_budget", "evidence_path_safe", "historical_evidence_unchanged"],
+  "status": "preregistered_before_paid_execution"
+}
