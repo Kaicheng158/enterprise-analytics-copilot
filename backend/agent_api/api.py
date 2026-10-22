@@ -36,6 +36,7 @@ SAFE_SERVICE_ERRORS = {
     "agent_state_integrity_error": (503, "Agent task state failed integrity validation"),
     "agent_status_changed": (409, "Agent task changed while status was read; retry the request"),
     "agent_execution_unavailable": (503, "Agent task execution is unavailable"),
+    "agent_queue_full": (429, "Agent queue has reached its configured capacity"),
 }
 
 

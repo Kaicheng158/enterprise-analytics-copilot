@@ -130,3 +130,11 @@ The existing `agent_runtime.executions` table is also the durable queue; no para
 `PersistentAgentQueueWorker` has no HTTP dependency. It claims a task, passes the same Lease owner to `DurableAgentRuntime`, and relies on the established timed Worker for Heartbeat, state-version CAS, Checkpoint/Receipt transactions and unknown-result reconciliation. Its polling loop is bounded by a server-side interval and an explicit stop event. Database polling errors do not authorize work or expose exception bodies.
 
 `backend.queued_agent_app:app` is only a default-off localhost integration profile. Its controller submits and reads persisted tasks but never executes them. Tests run the Worker separately against the same disposable PostgreSQL database, proving that status changes come from the durable Worker rather than the request handler. Neither this app nor the Worker is included in the normal API/RAG applications or Compose.
+
+### Phase 5.7d bounded Worker lifecycle
+
+`PersistentAgentWorkerSupervisor` wraps the Phase 5.7c queue Worker with a fixed-size thread pool, explicit lifecycle states and cooperative graceful shutdown. Stopping prevents new claims before waiting for in-flight durable executions. If the grace period expires, the runtime reports the timeout and keeps the disposable database intact rather than terminating a possible Checkpoint/Receipt writer.
+
+Queue admission is configured on the isolated profile's `PostgresCheckpointStore`. A transaction-scoped advisory lock serializes capacity decisions within the server-owned scope; an existing HMAC-bound idempotent request is returned before capacity is evaluated, while a new request above the pending/running/reconciling limit receives HTTP 429. The frozen Durable Planner code and identities remain unchanged.
+
+`backend.managed_agent_app:app` is a third default-off, loopback-only integration profile. It is absent from Compose and the normal chat surfaces. Its basic in-process metrics expose lifecycle/counter and database queue totals without task bodies. See [the Phase 5.7d design](phase5-worker-supervisor.md).

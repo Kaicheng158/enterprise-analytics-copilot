@@ -26,6 +26,10 @@ from backend.planning.task_queue import (
     PersistentAgentQueueSettings,
     PersistentAgentQueueWorker,
 )
+from backend.planning.worker_supervisor import (
+    PersistentAgentWorkerSupervisor,
+    WorkerSupervisorSettings,
+)
 from backend.tools.catalog import build_tool_registry
 from backend.tools.executor import ToolExecutor
 from backend.tools.models import StrictModel
@@ -47,6 +51,7 @@ class LocalAgentServiceSettings(StrictModel):
     heartbeat_interval_ms: int = Field(default=50, ge=25, le=60_000)
     operation_timeout_ms: int = Field(default=2_000, ge=100, le=300_000)
     max_steps_per_run: int = Field(default=8, ge=1, le=8)
+    max_active_executions: int | None = Field(default=None, ge=1, le=10_000)
 
 
 def load_local_agent_service_settings() -> LocalAgentServiceSettings:
@@ -226,6 +231,7 @@ class DisposableLocalAgentRuntime:
             self.connection_factory,
             schema="agent_runtime",
             idempotency_secret=secret,
+            max_active_executions=self.settings.max_active_executions,
         )
         provider = self._provider_override or DeterministicLocalPlanProvider()
         tool_executor = ToolExecutor(build_tool_registry(self.connection_factory))
@@ -308,9 +314,45 @@ class DisposableQueuedAgentRuntime(DisposableLocalAgentRuntime):
         super()._close_unlocked()
 
 
+class DisposableManagedAgentRuntime(DisposableQueuedAgentRuntime):
+    """Disposable queue runtime hosted by the bounded Worker supervisor."""
+
+    _DATABASE_PREFIX = "eac_managed_agent_"
+
+    def __init__(self, *, supervisor_settings: WorkerSupervisorSettings, **kwargs):
+        super().__init__(**kwargs)
+        self.supervisor_settings = supervisor_settings
+        self.supervisor = None
+
+    def start(self) -> None:
+        if not self.supervisor_settings.enabled:
+            raise ValueError("worker_supervisor_disabled")
+        super().start()
+
+    def _compose(self) -> None:
+        super()._compose()
+        self.supervisor = PersistentAgentWorkerSupervisor(
+            self.queue_worker,
+            self.store,
+            scope_key=AgentCaller().scope_key,
+            settings=self.supervisor_settings,
+        )
+
+    def _close_unlocked(self) -> None:
+        if self.supervisor is not None:
+            shutdown = self.supervisor.stop()
+            if shutdown.timed_out:
+                # Keep the disposable database intact while an in-flight Worker
+                # may still be recording a receipt/checkpoint.
+                raise RuntimeError("worker_supervisor_shutdown_timed_out")
+            self.supervisor = None
+        super()._close_unlocked()
+
+
 __all__ = [
     "DeterministicLocalPlanProvider",
     "DisposableLocalAgentRuntime",
+    "DisposableManagedAgentRuntime",
     "DisposableQueuedAgentRuntime",
     "LocalAgentServiceSettings",
     "LocalExecutingAgentTaskController",

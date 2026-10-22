@@ -66,6 +66,13 @@ from .task_queue import (
     QueueWorkResult,
     load_persistent_agent_queue_settings,
 )
+from .worker_supervisor import (
+    PersistentAgentWorkerSupervisor,
+    WorkerShutdownResult,
+    WorkerSupervisorMetrics,
+    WorkerSupervisorSettings,
+    load_worker_supervisor_settings,
+)
 from .structured_provider import (
     PLAN_RESPONSE_SCHEMA_SHA256,
     PLANNER_PROMPT_SHA256,
@@ -133,6 +140,7 @@ __all__ = [
     "PersistentAgentQueueSettings",
     "PersistentAgentQueueWorker",
     "QueueWorkResult",
+    "PersistentAgentWorkerSupervisor",
     "StateTransitionError",
     "ReconciliationAuthorizationError",
     "ReconciliationCase",
@@ -158,4 +166,8 @@ __all__ = [
     "validate_step_transition",
     "WorkerLeaseCoordinator",
     "WorkerRunResult",
+    "WorkerShutdownResult",
+    "WorkerSupervisorMetrics",
+    "WorkerSupervisorSettings",
+    "load_worker_supervisor_settings",
 ]

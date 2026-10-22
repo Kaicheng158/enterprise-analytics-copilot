@@ -70,6 +70,10 @@ class AmbiguousExecution(CheckpointStoreError):
     pass
 
 
+class QueueCapacityExceeded(CheckpointStoreError):
+    pass
+
+
 def canonical_json_sha256(value) -> str:
     payload = json.dumps(
         value,
@@ -87,14 +91,21 @@ class PostgresCheckpointStore:
         *,
         schema: str,
         idempotency_secret: bytes,
+        max_active_executions: int | None = None,
     ):
         if not IDENTIFIER_RE.fullmatch(schema):
             raise ValueError("invalid checkpoint schema")
         if len(idempotency_secret) < 32:
             raise ValueError("idempotency secret must contain at least 32 bytes")
+        if (
+            max_active_executions is not None
+            and not 1 <= max_active_executions <= 10_000
+        ):
+            raise ValueError("invalid active execution limit")
         self._connection_factory = connection_factory
         self._schema = schema
         self._secret = bytes(idempotency_secret)
+        self._max_active_executions = max_active_executions
 
     def create_or_get_execution(
         self,
@@ -132,6 +143,46 @@ class PostgresCheckpointStore:
         ).format(self._table("executions"), sql.SQL(self._execution_columns()))
         with self._connection_factory() as connection:
             with connection.transaction():
+                if self._max_active_executions is not None:
+                    connection.execute(
+                        "SELECT pg_advisory_xact_lock(hashtextextended(%s, 5701))",
+                        (scope_key,),
+                    )
+                    existing_row = connection.execute(
+                        sql.SQL(
+                            "SELECT {} FROM {} WHERE scope_key=%s "
+                            "AND idempotency_key_hash=%s FOR UPDATE"
+                        ).format(
+                            sql.SQL(self._execution_columns()),
+                            self._table("executions"),
+                        ),
+                        (scope_key, key_hash),
+                    ).fetchone()
+                    if existing_row is not None:
+                        execution = self._execution_from_row(existing_row)
+                        if (
+                            execution.request_sha256 != request_sha256
+                            or execution.plan_sha256 != plan_hash
+                            or execution.plan != plan
+                        ):
+                            raise IdempotencyConflict("idempotency_key_conflict")
+                        checkpoint = self._latest_checkpoint(
+                            connection, execution.execution_id
+                        )
+                        return ExecutionCreation(
+                            execution=execution,
+                            checkpoint=checkpoint,
+                            created=False,
+                        )
+                    active_count = connection.execute(
+                        sql.SQL(
+                            "SELECT count(*) FROM {} WHERE scope_key=%s "
+                            "AND status IN ('pending','running','reconciling')"
+                        ).format(self._table("executions")),
+                        (scope_key,),
+                    ).fetchone()[0]
+                    if active_count >= self._max_active_executions:
+                        raise QueueCapacityExceeded("queue_capacity_exceeded")
                 row = connection.execute(
                     insert,
                     (
@@ -192,6 +243,23 @@ class PostgresCheckpointStore:
             checkpoint=checkpoint,
             created=created,
         )
+
+    def queue_status_counts(self, *, scope_key: str) -> dict[str, int]:
+        if not 1 <= len(scope_key) <= 160:
+            raise ValueError("invalid execution scope")
+        counts = {"pending": 0, "running": 0, "reconciling": 0}
+        with self._connection_factory() as connection:
+            rows = connection.execute(
+                sql.SQL(
+                    "SELECT status,count(*) FROM {} WHERE scope_key=%s "
+                    "AND status IN ('pending','running','reconciling') GROUP BY status"
+                ).format(self._table("executions")),
+                (scope_key,),
+            ).fetchall()
+        for status, count in rows:
+            counts[status] = count
+        counts["total"] = sum(counts.values())
+        return counts
 
     def find_execution_by_idempotency(
         self,

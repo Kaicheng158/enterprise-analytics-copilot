@@ -7,7 +7,7 @@ import logging
 import os
 import re
 from threading import Event
-from typing import Literal
+from typing import Callable, Literal
 from uuid import UUID
 
 from pydantic import Field, model_validator
@@ -83,7 +83,12 @@ class PersistentAgentQueueWorker:
             raise ValueError("invalid queue worker ID")
         return f"queue-{worker_id}"
 
-    def run_once(self, *, worker_id: str) -> QueueWorkResult:
+    def run_once(
+        self,
+        *,
+        worker_id: str,
+        on_claimed: Callable[[UUID], None] | None = None,
+    ) -> QueueWorkResult:
         if not QUEUE_WORKER_ID_RE.fullmatch(worker_id):
             raise ValueError("invalid queue worker ID")
         # The first DurableAgentRuntime step uses suffix '-0'. Claim with that
@@ -98,6 +103,16 @@ class PersistentAgentQueueWorker:
         )
         if claimed is None:
             return QueueWorkResult(outcome="idle")
+        if on_claimed is not None:
+            try:
+                on_claimed(claimed.execution_id)
+            except Exception:
+                # Metrics/lifecycle observers must never authorize, block, or
+                # change a durable task execution.
+                LOGGER.info(
+                    "persistent_agent_queue %s",
+                    {"status": "claim_observer_error"},
+                )
 
         try:
             result = self._agent.run_to_terminal(

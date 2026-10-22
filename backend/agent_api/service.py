@@ -102,6 +102,12 @@ class DurableAgentTaskController:
                     code="agent_idempotency_conflict",
                     message="Idempotency key is already bound to another request",
                 ) from None
+            if error.code == "queue_capacity_exceeded":
+                raise AgentTaskServiceError(
+                    status_code=429,
+                    code="agent_queue_full",
+                    message="Agent queue has reached its configured capacity",
+                ) from None
             if error.code in {
                 "durable_planner_provider_error",
                 "durable_planner_plan_invalid",
