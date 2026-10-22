@@ -9,6 +9,7 @@ from backend.agent_api.local_runtime import (
     LocalAgentServiceSettings,
 )
 from backend.agent_api.models import AgentCaller
+from backend.agent_api.ui import add_local_agent_console
 from backend.planning.task_queue import (
     PersistentAgentQueueSettings,
     load_persistent_agent_queue_settings,
@@ -57,6 +58,7 @@ def create_managed_agent_app():
         lifespan=lifespan,
         require_loopback=True,
     )
+    add_local_agent_console(app)
     app.state.managed_agent_runtime = runtime
     app.state.agent_scope = AgentCaller().scope_key
     return app

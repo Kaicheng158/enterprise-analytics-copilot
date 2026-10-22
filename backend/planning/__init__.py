@@ -48,6 +48,7 @@ from .durable_deepseek_integration import (
     load_durable_deepseek_integration_settings,
 )
 from .planner_safety import PlannerCostGuard, PlannerSafetyStop
+from .product_planner import DeepSeekProductPlanProvider, ProductPlannerTelemetry
 from .reconciliation import (
     ReconciliationAuthorizationError,
     ReconciliationPolicy,
@@ -103,6 +104,7 @@ __all__ = [
     "BoundedPlanningOrchestrator",
     "ControlledPlannerSettings",
     "DeepSeekPlannerSettings",
+    "DeepSeekProductPlanProvider",
     "DeepSeekStructuredPlannerTransport",
     "DurableAgentResult",
     "DurableAgentRuntime",
@@ -126,6 +128,7 @@ __all__ = [
     "PlannerSafetyStop",
     "PlannerTransport",
     "PlannerUsage",
+    "ProductPlannerTelemetry",
     "StructuredPlanProvider",
     "Plan",
     "PlanExecutionResult",

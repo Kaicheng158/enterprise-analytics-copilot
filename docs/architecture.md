@@ -138,3 +138,11 @@ The existing `agent_runtime.executions` table is also the durable queue; no para
 Queue admission is configured on the isolated profile's `PostgresCheckpointStore`. A transaction-scoped advisory lock serializes capacity decisions within the server-owned scope; an existing HMAC-bound idempotent request is returned before capacity is evaluated, while a new request above the pending/running/reconciling limit receives HTTP 429. The frozen Durable Planner code and identities remain unchanged.
 
 `backend.managed_agent_app:app` is a third default-off, loopback-only integration profile. It is absent from Compose and the normal chat surfaces. Its basic in-process metrics expose lifecycle/counter and database queue totals without task bodies. See [the Phase 5.7d design](phase5-worker-supervisor.md).
+
+### Phase 5.7e local sales Agent product slice
+
+`backend.product_agent_app:app` composes the existing internal Agent API, official DeepSeek structured Planner adapter, durable Planner, PostgreSQL queue, bounded Worker supervisor and authorized read-only sales Tool into a loopback-only product profile. Every existing feature flag plus `LOCAL_AGENT_PRODUCT_ENABLED` must be true; otherwise no runtime database or Worker is started.
+
+The evaluated DeepSeek transport remains single-call. `DeepSeekProductPlanProvider` creates one such transport per new task, serializes provider calls and shares a bounded process-level cost/call guard. Durable scoped idempotency is checked before this provider, so an identical request does not consume another call. Generated Plans still pass the frozen structured schema, request binding, validator, Tool authorization and execution budgets.
+
+The static local console submits only the existing quarterly-sales contract and polls the existing status route. Completed responses expose the deterministic Decimal calculation plus `analytics.sales_orders` and `synthetic-sales-db-v1` provenance. RAG remains a separate unchanged path because this task requires database evidence, not document retrieval. See [the local product design](phase5-local-agent-product.md).

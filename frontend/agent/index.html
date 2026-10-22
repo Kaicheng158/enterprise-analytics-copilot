@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Local Sales Agent</title>
+    <link rel="stylesheet" href="/agent/styles.css">
+  </head>
+  <body>
+    <main>
+      <header>
+        <p class="eyebrow">Enterprise Analytics Copilot</p>
+        <h1>Quarterly sales comparison</h1>
+        <p>This local preview only analyzes the seeded synthetic sales dataset.</p>
+      </header>
+
+      <form id="task-form">
+        <label>Local access key
+          <input id="access-key" type="password" autocomplete="off" required>
+        </label>
+        <div class="grid">
+          <label>Baseline period
+            <select id="baseline-period">
+              <option>2026-Q1</option><option>2026-Q2</option><option>2026-Q3</option>
+            </select>
+          </label>
+          <label>Comparison period
+            <select id="comparison-period">
+              <option>2026-Q2</option><option>2026-Q1</option><option>2026-Q3</option>
+            </select>
+          </label>
+          <label>Region
+            <select id="region">
+              <option value="all">All</option>
+              <option value="north">North</option>
+              <option value="south">South</option>
+            </select>
+          </label>
+        </div>
+        <button type="submit">Run controlled analysis</button>
+      </form>
+
+      <section aria-live="polite" aria-atomic="true">
+        <h2>Task status</h2>
+        <p id="status">Ready</p>
+        <pre id="result"></pre>
+      </section>
+    </main>
+    <script src="/agent/app.js" defer></script>
+  </body>
+</html>
