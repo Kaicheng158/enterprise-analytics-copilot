@@ -102,3 +102,24 @@ Phase 4 is complete for local engineering acceptance. Tool Calling remains defau
 - [x] 5.7e Local sales Agent product slice: a default-off, loopback-only page submits the existing strict quarterly-sales task through Agent API authentication, the real DeepSeek structured Planner protocol, durable PostgreSQL queue and independent Worker, then polls authoritative status and renders a source-backed result. Verification passed 409 offline and 108 isolated database tests using Mock HTTP/disposable PostgreSQL only; no paid call or public deployment. RAG remains unchanged and is not needed for this database task. See [design](phase5-local-agent-product.md).
 - [ ] 5.7f Production Worker/API operations: deploy separate managed processes and add cancellation semantics, workload identity/RBAC, exported metrics/alerts, persistent non-disposable tasks, orphan cleanup and authorized operator reconciliation.
 - [ ] 5.8 Agent + RAG task type: reuse the existing `RagService`, retrieval security boundary and citation contract as a bounded evidence step; do not duplicate ingestion, retrieval, prompts or generation.
+
+## Independent Frontend / UI MVP track
+
+- [x] Phase 5.8a frontend refinement: Workspace v4.1 Login/Register, seven-entry bilingual shell, responsive layouts, token-aligned components and honest Demo boundaries are locally accepted. Final auth detail checks cover EN/中文 at 1440/768/390, keyboard password visibility, one Demo entry and no credential read/send/store. Figma native Auth synchronization and exact native-frame comparison remain pending and are not reported complete. See [visual review](phase5-8a-workspace-visual-qa.md), [alignment](phase5-8a-final-figma-alignment.md) and [auth acceptance](phase5-8a-auth-refinement-acceptance.md).
+- [ ] Phase 5.8b Fake/Mock Agent UI integration: next implementation stage; reuse the existing Agent API and keep provider/backend capabilities default-off. This UI workstream is separate from the previously listed Agent + RAG task capability.
+
+**Current UI baseline (2026-10-25): Workspace v4.1 bilingual HTML + handoff.** The sales-only four-view navigation below is historical. The independent `frontend/workspace/` now provides the seven-entry workspace shell, demo Login/Register, Settings language controls and keyed EN/zh-CN resources without changing the existing console/API. See [v4.1 audit, implementation and handoff](workspace-v41-frontend.md). UI, answer and report languages are independent; no backend integration or identity feature is implied. Next: Figma v4.1 components/responsive acceptance, then separately scoped safe Fake Agent API integration (idempotency/polling/recovery first).
+
+This is a design/product workstream, separate from Phase 5 backend milestones. No runtime, API, database, flags or frozen evaluation changes are part of design preparation.
+
+- [x] UI-MVP-0: integrate reviewed v1.1 brief; specify four buildable views, responsive layouts, tokens/components, API mapping and required idempotency/polling/recovery fixes. Documentation prepared; Figma progress is tracked separately below.
+- [x] UI-MVP-D1a: Figma file created; first drafts of four desktop core views completed, as confirmed by the user. This is progress confirmation, not a design acceptance verdict.
+- [ ] UI-MVP-D1b: Design System/tokens/reusable components → 390px mobile layouts → exceptional states → clickable Prototype.
+- [ ] UI-MVP-D2: independent visual, responsive, interaction, accessibility and API-boundary review; user confirmation before implementation.
+- [ ] UI-MVP-1: incremental frontend implementation against existing Agent API, with Fake/Mock behavioral tests and default-off flags.
+- [ ] UI-MVP-2: local browser and isolated database verification; no paid model call.
+- [ ] Separately authorized live product smoke, with preregistered budget.
+
+Dashboard, AI Chat/RAG integration, Task History and Account/Workspace are **Future Concepts**, not available Sales Agent features. See [workflow](ui-mvp-workflow.md), [Figma handoff](ui-mvp-figma-handoff.md) and [reviewed brief](mvp-figma-design-brief.md).
+
+Design file: [Enterprise Analytics Copilot — Figma MVP](https://www.figma.com/design/GxZ8cOgDc4Wj7XUJN1aAJO). Desktop draft progress is user-confirmed; no Figma node inspection or design acceptance was performed during this documentation sync. Existing API contracts, Fake/Mock integration, default-off flags and security boundaries remain unchanged.

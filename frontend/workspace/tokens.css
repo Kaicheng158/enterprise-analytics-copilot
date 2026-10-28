@@ -1,0 +1,14 @@
+:root {
+  --navy: #101c32; --navy2: #182946; --blue: #4d74ed; --blue2: #729aff;
+  --bg: #f5f7fb; --ink: #1a2944; --muted: #71819a; --line: #e6ebf3;
+  --white: #fff; --green: #078b69; --red: #b94c57; --amber: #b67b29;
+  /* Accessible foreground variants retain the reference palette for decoration. */
+  --text-secondary: #526782; --action: #4164d4; --positive-text: #087959;
+  --error-text: #a93648; --warning-text: #80571c; --focus: #4164d4;
+  --control-border: #8393ad;
+  --surface-info: #f0f5ff; --surface-warning: #fffaee;
+  --radius: 17px; --control-radius: 10px; --shadow: 0 14px 40px rgba(17,35,66,.055);
+  --space-1: 4px; --space-2: 8px; --space-3: 12px; --space-4: 16px;
+  --space-5: 24px; --space-6: 32px; --space-7: 48px;
+  --sidebar-width: 262px; --topbar-height: 73px; --touch-target: 44px;
+}
