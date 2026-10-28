@@ -146,3 +146,12 @@ Queue admission is configured on the isolated profile's `PostgresCheckpointStore
 The evaluated DeepSeek transport remains single-call. `DeepSeekProductPlanProvider` creates one such transport per new task, serializes provider calls and shares a bounded process-level cost/call guard. Durable scoped idempotency is checked before this provider, so an identical request does not consume another call. Generated Plans still pass the frozen structured schema, request binding, validator, Tool authorization and execution budgets.
 
 The static local console submits only the existing quarterly-sales contract and polls the existing status route. Completed responses expose the deterministic Decimal calculation plus `analytics.sales_orders` and `synthetic-sales-db-v1` provenance. RAG remains a separate unchanged path because this task requires database evidence, not document retrieval. See [the local product design](phase5-local-agent-product.md).
+
+
+## Product Vision v2 规划索引 — 2026-10-28
+
+新增产品方向以 [Product Vision v2](product-vision-v2.md)、[完整阶段依赖与优先级](product-roadmap-v2.md)、[数据生命周期与项目协作架构初稿](project-data-architecture-v2.md) 为规划入口。上文保留为历史阶段/实现记录，旧销售四页面及早期未开始状态不代表当前产品全貌；验收证据不追溯更改。
+
+核心改为文件上传→验证→Analysis & Chat→可视化→简答或完整报告；Sales Comparison 保留为模板。Data Detective、Decision Lab、Decision Follow-through 与 Project Collaboration 分阶段实施。当前 Workspace 仍为独立 Demo，文件产品链路、真实身份和项目协作尚未实现。Checkpoint/Receipt 不等于 Project State。
+
+保留七项导航及批准的 Auth/Workspace 视觉；Overview 右上重复“询问 AI 助手”仅登记为待移除。正式注册后的可跳过首次引导属于未来功能，现阶段不添加 Demo 教程按钮。Figma 原生 Auth 同步仍待办，本轮没有读取或编辑 Figma，也没有修改 API、运行代码或功能开关。

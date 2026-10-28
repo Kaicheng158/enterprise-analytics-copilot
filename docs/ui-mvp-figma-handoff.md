@@ -131,3 +131,7 @@ Figma variables 用语义名绑定，避免每个节点独立硬编码。
 待确认：品牌主色/字体；是否首版包含双柱图；受信运行模式标识的部署注入方式。保守默认：中文 light theme、金额卡片优先、未知模式明确标注。无新接口前，不设计认证成功探测。凭证和请求恢复暂只保留内存，刷新后需重新输入并手动查询 Task ID；跨刷新恢复另行设计，不承诺已有能力。
 
 当前状态：Phase 5.8a 本地实现与交接规范已核对，Figma 原生同步仍为 Pending。
+
+## Product Vision v2 规划索引
+
+新的产品信息架构与页面状态应引用 [Product Vision v2](product-vision-v2.md)、[Product Roadmap v2](product-roadmap-v2.md) 与 [数据生命周期及项目协作架构初稿](project-data-architecture-v2.md)。任何 Figma 新画板必须标注 `Implemented`、`Mock` 或 `Planned`，不得把真实身份、上传、协作或报告导出画成当前可用。

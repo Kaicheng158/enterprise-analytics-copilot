@@ -262,3 +262,7 @@ Local Access 仅在内存接收共享内部 key，不是登录；当前无无副
 本轮仅同步已有 Figma 设计进度，不操作 Figma 文件或修改运行代码。首版四个页面是 UI 视图，不新增后端路由。
 
 当前状态：Phase 5.8a 本地前端已完成收尾审查，Figma 原生同步仍为 Pending。
+
+## Product Vision v2 规划索引
+
+后续页面和能力规划以 [Product Vision v2](product-vision-v2.md)、[Product Roadmap v2](product-roadmap-v2.md) 与 [数据生命周期及项目协作架构初稿](project-data-architecture-v2.md) 为准。本 Brief 保留 Phase 5.8a 已确认的 Auth/Workspace 视觉与 API 边界，不把计划中的上传、项目、真实身份或协作描述为已实现。

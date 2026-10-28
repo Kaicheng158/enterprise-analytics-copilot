@@ -58,3 +58,7 @@
 交接规范：[Figma UI MVP](ui-mvp-figma-handoff.md)。产品边界：[审阅整合稿](mvp-figma-design-brief.md)。
 
 当前状态：Phase 5.8a 本地前端已完成收尾审查，下一阶段尚未开始。
+
+## Product Vision v2 规划索引
+
+Document-first 主链路与开发优先级见 [Product Vision v2](product-vision-v2.md) 和 [Product Roadmap v2](product-roadmap-v2.md)；资产、项目与协作边界见 [架构初稿](project-data-architecture-v2.md)。5.8b 仍只允许安全对接现有销售模板，不能用它宣称文件分析 MVP 已完成。

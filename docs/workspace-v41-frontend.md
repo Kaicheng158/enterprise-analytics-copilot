@@ -91,3 +91,5 @@ No backend, database, flags, frozen prompts or evaluation assets are part of thi
 ## Phase 5.8a closeout — 2026-10-28
 
 The incremental frontend refinement is accepted for local closeout after the final Login/Register detail review. The current implementation has one heading, one Demo entry, a low-weight no-auth safety boundary, token-aligned eye/eye-off controls and the shared bilingual text brand. Figma native Auth synchronization and exact native-frame comparison remain pending; no claim of completed Figma synchronization is made. Phase 5.8b transport work has not started.
+
+Product Vision v2 的产品链路、阶段依赖与数据边界分别见 [愿景](product-vision-v2.md)、[Roadmap v2](product-roadmap-v2.md) 和 [架构初稿](project-data-architecture-v2.md)。本地 Workspace 继续保持 Demo 状态，不能把规划中的文件分析、真实身份或项目协作描述为已实现。

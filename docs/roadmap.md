@@ -123,3 +123,9 @@ This is a design/product workstream, separate from Phase 5 backend milestones. N
 Dashboard, AI Chat/RAG integration, Task History and Account/Workspace are **Future Concepts**, not available Sales Agent features. See [workflow](ui-mvp-workflow.md), [Figma handoff](ui-mvp-figma-handoff.md) and [reviewed brief](mvp-figma-design-brief.md).
 
 Design file: [Enterprise Analytics Copilot — Figma MVP](https://www.figma.com/design/GxZ8cOgDc4Wj7XUJN1aAJO). Desktop draft progress is user-confirmed; no Figma node inspection or design acceptance was performed during this documentation sync. Existing API contracts, Fake/Mock integration, default-off flags and security boundaries remain unchanged.
+
+## Product Vision v2 规划索引 — 2026-10-28
+
+新的产品规划入口为 [Product Vision v2](product-vision-v2.md)、[Product Roadmap v2](product-roadmap-v2.md) 与 [数据生命周期及项目协作架构初稿](project-data-architecture-v2.md)。本文件继续保留历史阶段、验收结果与原有编号；v2 规划不会回写或覆盖冻结证据。
+
+Product Vision v2 将主链路定义为上传文件→验证→分析与对话→可视化→简答或完整报告，并将 Sales Comparison 保留为已实现模板。新增功能必须先通过 v2 Roadmap 中的 Feature Value Gate v1，证明减少用户工作量并服务 Investigate、Simulate、Decide & Review 或 Collaborate 主线。
