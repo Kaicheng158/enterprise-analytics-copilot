@@ -1,11 +1,13 @@
 import { translate, readLocale, saveLocale } from './i18n.js';
-import { createState, navigation, routes, sampleRows, addDemoAnswer, setUiLocale } from './state.js';
+import { createState, navigation, routes, sampleRows, setUiLocale } from './state.js';
+import { createAgentClient, TERMINAL_STATUSES } from './agent-client.js';
 
 let storage;
 try { storage = window.localStorage; } catch { storage = null; }
 const state = createState(readLocale(storage));
 let bindings = [];
 const root = document.querySelector('#app');
+let agentClient;
 const t = (key, values) => translate(state.locale, key, values);
 function el(tag, className = '', text) {
   const node = document.createElement(tag);
@@ -202,12 +204,18 @@ function shell(page) {
   content.append(top, main, mobileNav); layout.append(sidebar, backdrop, content); root.append(layout);
   return main;
 }
-function chart() {
+function chart(result = null) {
   const box = el('figure', 'chart'); box.setAttribute('role', 'img'); attr(box, 'aria-label', 'visualizations.chart');
   const bars = el('div', 'bars');
-  for (const [quarter, amount] of [['q1', '400'], ['q2', '600']]) {
+  const values = result
+    ? [[result.baseline_period, result.baseline_total_sales], [result.comparison_period, result.comparison_total_sales]]
+    : [['2026-Q1', '400'], ['2026-Q2', '600']];
+  const max = Math.max(...values.map(([, amount]) => Number(amount)), 1);
+  for (const [period, amount] of values) {
+    const quarter = period.toLowerCase().replace('2026-', '');
     const column = el('div', `chart-column ${quarter}`); const bar = el('div', 'bar');
-    bar.append(el('span', 'bar-value', `USD ${amount}`)); column.append(bar, el('span', 'bar-label', `2026-${quarter.toUpperCase()}`)); bars.append(column);
+    bar.style.height = `${Math.max(18, Math.round(Number(amount) / max * 100))}%`;
+    bar.append(el('span', 'bar-value', `USD ${amount}`)); column.append(bar, el('span', 'bar-label', period)); bars.append(column);
   }
   box.append(bars); return box;
 }
@@ -238,6 +246,36 @@ function quickLink(key, hintKey, page, symbol) {
   const node = el('button', 'quick-link'); node.type = 'button';
   const copy = el('span'); copy.append(text('strong', key), text('span', hintKey, 'small muted'));
   node.append(icon(symbol, 'quick-icon'), copy, icon('↗')); node.addEventListener('click', () => go(page)); return node;
+}
+function selectField(id, key, options, value, onChange) {
+  const wrapper = el('div', 'field'); const label = text('label', key); label.htmlFor = id;
+  const select = el('select'); select.id = id;
+  for (const [optionValue, optionLabel] of options) { const option = el('option', '', optionLabel); option.value = optionValue; select.append(option); }
+  select.value = value; select.addEventListener('change', () => onChange(select.value)); wrapper.append(label, select); return wrapper;
+}
+function taskSummary(compact = false) {
+  const task = state.agent.task; const panel = card(); panel.classList.add('task-card');
+  if (!task) {
+    panel.append(text('p', state.agent.phase === 'submission_unknown' ? 'tasks.submissionUnknown' : 'tasks.empty'));
+    if (state.agent.errorKey) panel.append(text('p', state.agent.errorKey, 'field-error'));
+    if (state.agent.phase === 'submission_unknown') panel.append(button('tasks.recover', () => { void agentClient.recover(); }, true));
+    return panel;
+  }
+  const top = el('div', 'task-card-head'); top.append(text('strong', 'tasks.current'), text('span', `status.${task.status}`, `status status-${task.status}`));
+  const progress = el('p', 'small muted', `${task.progress.completed_steps}/${task.progress.total_steps}`);
+  const request = el('p', 'source-id', `${task.request.baseline_period} → ${task.request.comparison_period} · ${task.request.region}`);
+  panel.append(top, request, progress);
+  if (!compact) panel.append(el('p', 'small muted', task.task_id), el('p', 'small muted', task.updated_at));
+  if (state.agent.errorKey) panel.append(text('p', state.agent.errorKey, 'field-error'), button('tasks.retryStatus', () => { void agentClient.poll(); }, true));
+  if (TERMINAL_STATUSES.has(task.status)) panel.append(button('tasks.new', () => { agentClient.clear(); render(false); }, true));
+  return panel;
+}
+function resultSummary(result) {
+  const node = card(sectionHead('ui.contextResult', 'tasks.verifiedResult'));
+  node.append(el('p', 'metric positive', `${result.growth_rate_percent}%`),
+    el('p', 'small muted', `${result.baseline_period}: ${result.currency} ${result.baseline_total_sales} → ${result.comparison_period}: ${result.currency} ${result.comparison_total_sales}`),
+    chart(result), el('p', 'source-id', `${result.source_relation} · ${result.dataset_version}`), text('p', 'tasks.shortOnly', 'info-note'));
+  return node;
 }
 function findings() {
   const node = card(sectionHead('ui.findings', 'ui.sampleOnly'));
@@ -271,36 +309,31 @@ function renderPage(main, page) {
     guide.append(steps); main.append(guide);
     const grid = el('div', 'analysis-grid'); const context = card(sectionHead('analysis.context'), el('p', 'source-chip', 'CSV · sales_2026_sample.csv'), text('p', 'ui.sampleRows', 'small muted'), text('p', 'common.sample', 'info-note'), link('common.preview', 'preview', true), link('common.add', 'source', true));
     context.classList.add('context-panel');
-    const conversation = card(); const thread = el('div', 'thread'); thread.id = 'thread'; thread.setAttribute('role', 'log');
-    conversation.classList.add('conversation-panel'); conversation.append(sectionHead('ui.conversation', 'ui.sampleOnly'));
-    if (!state.messages.length) {
-      const empty = el('div', 'conversation-empty'); empty.append(icon('✧', 'empty-icon'), text('h3', 'analysis.question'), text('p', 'analysis.empty')); thread.append(empty);
-    }
-    for (const message of state.messages) {
-      const user = el('div', 'message user'); user.append(text('strong', 'analysis.user'), el('p', '', message.question));
-      const answer = el('div', 'message'); const body = el('p', '', message.answer); body.lang = message.language;
-      answer.append(text('strong', 'analysis.assistant'), body); thread.append(user, answer);
-    }
-    const form = el('form', 'composer'); const label = text('label', 'analysis.question'); label.htmlFor = 'question';
-    const input = el('textarea'); input.id = 'question'; input.maxLength = 2000; input.value = state.draft;
-    attr(input, 'placeholder', 'analysis.placeholder'); input.addEventListener('input', () => { state.draft = input.value; });
-    const error = text('p', 'errors.empty', 'field-error'); error.id = 'question-error'; error.hidden = true;
-    input.setAttribute('aria-describedby', 'question-help question-error');
-    input.addEventListener('input', () => { input.removeAttribute('aria-invalid'); error.hidden = true; });
+    const conversation = card(); conversation.classList.add('conversation-panel'); conversation.append(sectionHead('ui.conversation', 'tasks.controlled'));
+    const form = el('form', 'composer structured-task-form');
+    const periodOptions = [['2026-Q1','2026-Q1'],['2026-Q2','2026-Q2'],['2026-Q3','2026-Q3']];
+    const regionOptions = [['all',t('analysis.regionAll')],['north','North'],['south','South']];
+    form.append(text('p', 'analysis.structuredOnly', 'info-note'),
+      selectField('baseline-period', 'analysis.baseline', periodOptions, state.agentRequest.baseline_period, value => { state.agentRequest.baseline_period = value; }),
+      selectField('comparison-period', 'analysis.comparison', periodOptions, state.agentRequest.comparison_period, value => { state.agentRequest.comparison_period = value; }),
+      selectField('sales-region', 'analysis.region', regionOptions, state.agentRequest.region, value => { state.agentRequest.region = value; }));
+    const error = text('p', state.agent.errorKey || 'errors.validation', 'field-error'); error.hidden = !state.agent.errorKey;
     const send = text('button', 'analysis.run', 'button'); send.type = 'submit';
-    form.addEventListener('submit', event => { event.preventDefault(); if (!addDemoAnswer(state)) { error.hidden = false; input.setAttribute('aria-invalid', 'true'); input.focus(); return; } render(false); document.querySelector('#question').focus(); });
-    const help = text('p', 'ui.composeHint', 'small muted'); help.id = 'question-help';
-    form.append(label, input, error, help, send);
-    const preset = button('ui.insertExample', () => { if (!state.draft.trim()) { state.draft = t('ui.exampleQuestion'); input.value = state.draft; } input.focus(); }, true); preset.classList.add('example-button');
-    const progress = el('div', 'execution-placeholder'); progress.append(text('strong', 'ui.noExecution'), text('p', 'ui.executionHelp', 'small muted'), link('nav.tasks', 'tasks', true));
-    conversation.append(thread, form, preset, progress);
-    const result = state.messages.length
-      ? card(sectionHead('ui.contextResult', 'ui.sampleOnly'), text('p', 'ui.resultHint', 'small muted'), chart(), el('p', 'metric positive', '+50%'), text('p', 'ui.methods', 'small muted'), link('analysis.chart', 'visualizations', true))
-      : card(sectionHead('ui.analysisSettings'), text('p', 'ui.activeSource', 'small muted'), el('p', 'source-chip', 'sales_2026_sample.csv · USD'),
+    send.disabled = ['submitting','queued','running','recovering'].includes(state.agent.phase);
+    form.addEventListener('submit', event => {
+      event.preventDefault();
+      if (state.agentRequest.baseline_period === state.agentRequest.comparison_period) { error.hidden = false; error.textContent = t('errors.periods'); return; }
+      void agentClient.submit({...state.agentRequest});
+    });
+    form.append(error, text('p', 'ui.composeHint', 'small muted'), send);
+    conversation.append(form, taskSummary(true));
+    const result = state.agent.task?.status === 'completed'
+      ? resultSummary(state.agent.task.result)
+      : card(sectionHead('ui.analysisSettings'), text('p', 'ui.activeSource', 'small muted'), el('p', 'source-chip', 'analytics.sales_orders · synthetic-sales-db-v1 · USD'),
         preference('analysis-answer-language', 'settings.answer', state.answerLanguage, value => { state.answerLanguage = value; }),
         preference('analysis-report-language', 'settings.report', state.reportLanguage, value => { state.reportLanguage = value; }),
-        text('p', 'ui.beforeAnalysis', 'info-note'), text('p', 'ui.noExecution', 'small muted'));
-    result.dataset.mode = state.messages.length ? 'demo-preview' : 'settings';
+        text('p', 'ui.beforeAnalysis', 'info-note'));
+    result.dataset.mode = state.agent.task?.status === 'completed' ? 'verified-result' : 'settings';
     result.classList.add('result-panel'); grid.append(context, conversation, result); main.append(grid);
   } else if (page === 'source') {
     heading(main, 'source.title', 'source.description'); const box = card(text('p', 'source.notice', 'warning'));
@@ -313,9 +346,16 @@ function renderPage(main, page) {
   else if (page === 'visualizations') {
     heading(main, 'visualizations.title', 'visualizations.description', 'ui.vizKicker'); const grid = el('div', 'grid metrics');
     grid.classList.add('visual-metrics');
-    for (const [key, value] of [['baseline', 'USD 400'], ['comparison', 'USD 600'], ['growth', '+50%']]) grid.append(metric(`visualizations.${key}`, value, key === 'growth' ? 'ui.findingGrowth' : 'common.sample', key === 'growth'));
-    const visual = el('div', 'grid two visual-grid'); visual.append(card(sectionHead('ui.revenue', 'ui.sampleOnly'), chart(), text('p', 'visualizations.source', 'small muted')), findings());
-    main.append(text('p', 'common.sample', 'info-note'), grid, visual, card(sectionHead('ui.related'), text('p', 'report.title'), link('visualizations.open', 'report')));
+    const verified = state.agent.task?.status === 'completed' ? state.agent.task.result : null;
+    const values = verified
+      ? [['baseline', `${verified.currency} ${verified.baseline_total_sales}`], ['comparison', `${verified.currency} ${verified.comparison_total_sales}`], ['growth', `${verified.growth_rate_percent}%`]]
+      : [['baseline', 'USD 400'], ['comparison', 'USD 600'], ['growth', '+50%']];
+    for (const [key, value] of values) grid.append(metric(`visualizations.${key}`, value, verified ? 'tasks.verifiedResult' : 'common.sample', key === 'growth'));
+    const visual = el('div', 'grid two visual-grid');
+    visual.append(card(sectionHead('ui.revenue', verified ? 'tasks.verifiedResult' : 'ui.sampleOnly'), chart(verified),
+      verified ? el('p', 'source-id', `${verified.source_relation} · ${verified.dataset_version}`) : text('p', 'visualizations.source', 'small muted')),
+      verified ? card(sectionHead('ui.findings'), text('p', 'tasks.shortAnalysis'), text('p', 'tasks.shortOnly', 'info-note')) : findings());
+    main.append(text('p', verified ? 'tasks.verifiedBoundary' : 'common.sample', 'info-note'), grid, visual);
   } else if (page === 'report') {
     heading(main, 'report.title'); const body = el('p', 'report-body', state.report.body); body.lang = state.report.language;
     const exportButton = button('report.export', () => {}); exportButton.disabled = true;
@@ -328,10 +368,7 @@ function renderPage(main, page) {
     else if (state.libraryTab === 'reports') main.append(card(text('p', 'common.sample'), link('visualizations.open', 'report')));
     else main.append(card(text('p', 'library.lineageText')));
   } else if (page === 'tasks') {
-    heading(main, 'tasks.title'); main.append(card(text('p', 'tasks.empty'), text('p', 'tasks.safe', 'warning')));
-    const states = card(sectionHead('ui.taskStates'), text('p', 'ui.taskHelp', 'muted')); const list = el('div', 'status-list');
-    for (const status of ['queued', 'running', 'completed', 'failed', 'needs_reconciliation']) list.append(text('span', `status.${status}`, `status status-${status}`));
-    states.append(list); main.append(states);
+    heading(main, 'tasks.title'); main.append(taskSummary(), text('p', 'tasks.safe', 'warning'));
   } else if (page === 'settings') {
     heading(main, 'settings.title', 'ui.settingsDescription', 'ui.settingsKicker'); const wrapper = card(); wrapper.classList.add('settings-wrapper'); const grid = el('div', 'grid two');
     const choices = el('div', 'locale-choices'); choices.id = 'settings-locale'; choices.setAttribute('role', 'group'); attr(choices, 'aria-label', 'settings.ui');
@@ -366,4 +403,11 @@ function render(focus = true) {
 window.addEventListener('hashchange', () => render());
 // Rebuild navigation accessibility when crossing the mobile breakpoint, preserving draft state.
 matchMedia('(max-width: 760px)').addEventListener('change', () => render(false));
+let taskStorage;
+try { taskStorage = window.sessionStorage; } catch { taskStorage = {getItem:()=>null,setItem:()=>{},removeItem:()=>{}}; }
+agentClient = createAgentClient({storage:taskStorage, onChange:snapshot => {
+  state.agent = snapshot;
+  if (root.dataset.page) render(false);
+}});
 render(false);
+agentClient.hydrate();

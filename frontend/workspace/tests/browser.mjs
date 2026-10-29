@@ -1,4 +1,4 @@
-// Run against the standalone loopback preview. No backend/API calls are allowed.
+// Run against the standalone loopback preview without submitting an Agent task.
 import assert from 'node:assert/strict';
 import { createRequire } from 'node:module';
 const require = createRequire(import.meta.url);
@@ -56,23 +56,18 @@ try {
   await page.locator('#answer-language').selectOption('zh-CN');
   await page.locator('#report-language').selectOption('zh-CN'); checks++;
   await visit('analysis');
-  await page.locator('#question').fill('销售 <img src=x onerror=alert(1)>');
-  await page.locator('form button[type=submit]').click();
-  const original = await page.locator('#thread .message:not(.user) p').innerText();
-  assert.match(original, /合成销售/);
-  await page.locator('#question').fill('未发送的草稿');
+  await page.locator('#baseline-period').selectOption('2026-Q1');
+  await page.locator('#comparison-period').selectOption('2026-Q3');
+  await page.locator('#sales-region').selectOption('south');
   await page.locator('#workspace-locale').selectOption('zh-CN');
   await page.locator('#workspace-locale').selectOption('en');
-  assert.equal(await page.locator('#question').inputValue(), '未发送的草稿');
-  assert.equal(await page.locator('#thread .message:not(.user) p').innerText(), original);
-  assert.equal(await page.locator('#thread img').count(), 0); checks++;
+  assert.equal(await page.locator('#comparison-period').inputValue(), '2026-Q3');
+  assert.equal(await page.locator('#sales-region').inputValue(), 'south'); checks++;
   await page.locator('#menu').click(); await page.locator('.sidebar nav a[href="#settings"]').click();
   await page.locator('#answer-language').selectOption('en');
   await page.locator('#menu').click(); await page.locator('.sidebar nav a[href="#analysis"]').click();
-  assert.equal(await page.locator('#question').inputValue(), '未发送的草稿');
-  await page.locator('form button[type=submit]').click();
-  assert.match(await page.locator('#thread .message:not(.user) p').last().innerText(), /Synthetic sales/);
-  assert.equal(await page.locator('#thread .message:not(.user) p').first().innerText(), original); checks++;
+  assert.equal(await page.locator('#comparison-period').inputValue(), '2026-Q3');
+  assert.equal(await page.locator('#sales-region').inputValue(), 'south'); checks++;
   await visit('report');
   const report = await page.locator('.report-body').innerText();
   await page.locator('#workspace-locale').selectOption('zh-CN');

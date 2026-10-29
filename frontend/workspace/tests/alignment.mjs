@@ -23,20 +23,17 @@ try{
    assert.equal(await page.locator('#menu').getAttribute('aria-expanded'),'false');
   }
   await visit('analysis');await page.locator('#analysis-answer-language').selectOption('en');
-  await page.locator('#question').fill('Compare sample sales');await page.locator('.composer button').click();
-  assert.equal(await page.locator('.result-panel').getAttribute('data-mode'),'demo-preview');
-  assert.ok(await page.locator('.result-panel .chart').isVisible());
-  assert.ok((await page.locator('.execution-placeholder').innerText()).includes(translate(locale,'ui.noExecution')));
-  await page.locator('#question').focus();
-  await page.locator('#question').scrollIntoViewIfNeeded();
-  assert.ok(await page.locator('#question').evaluate(e => e.getBoundingClientRect().bottom <= document.querySelector('.mobile-primary').getBoundingClientRect().top));
+  await page.locator('#sales-region').selectOption('north');
+  assert.equal(await page.locator('.result-panel').getAttribute('data-mode'),'settings');
+  assert.equal(await page.locator('.result-panel .chart').count(),0);
+  assert.equal(await page.locator('#sales-region').inputValue(),'north');
   await page.locator('#workspace-locale').selectOption(locale==='en'?'zh-CN':'en');
-  assert.equal(await page.locator('#thread .message:not(.user) p').getAttribute('lang'),'en');
+  assert.equal(await page.locator('#sales-region').inputValue(),'north');
   await page.locator('#workspace-locale').selectOption(locale);
   await page.evaluate(()=>{document.activeElement.blur();scrollTo(0,0);});
   await page.screenshot({path:`${output}/viewport-${locale}-390.png`});
-  await page.screenshot({path:`${output}/demo-result-${locale}-390.png`,fullPage:true});
-  // Full reload discards only transient demo state; it does not persist a completed task.
+  await page.screenshot({path:`${output}/structured-task-${locale}-390.png`,fullPage:true});
+  // Full reload preserves no task when no request was submitted.
   await page.reload();await page.waitForSelector('.result-panel[data-mode=settings]');
   assert.equal(await page.locator('.result-panel .chart').count(),0);
   for(const width of [390,1440]){

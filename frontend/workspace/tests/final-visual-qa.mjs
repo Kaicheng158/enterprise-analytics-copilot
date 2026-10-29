@@ -25,8 +25,7 @@ try {
  }
  for (const locale of ['en','zh-CN']) for (const width of [390,320]) {
   await page.setViewportSize({width,height:844}); await visit('analysis'); await page.locator('.topbar select').selectOption(locale);
-  await page.locator('#question').fill((locale === 'en' ? 'Compare the supplied quarterly sales and explain what can be established. ' : '请比较季度销售数据并说明证据局限。').repeat(18));
-  await page.locator('.composer button').click();
+  await page.locator('#comparison-period').selectOption('2026-Q3'); await page.locator('#sales-region').selectOption('south');
   const audit = await page.evaluate(() => {
    const title = document.querySelector('.breadcrumb strong'); const range = document.createRange(); range.selectNodeContents(title);
    const rect = title.getBoundingClientRect(); const controls = [...document.querySelectorAll('#menu,.topbar select')].map(e => e.getBoundingClientRect());
@@ -35,11 +34,11 @@ try {
   assert.equal(audit.lines,1); assert.ok(audit.width>=250); assert.ok(audit.height<=22); assert.ok(audit.controls); assert.equal(audit.overflow,false);
   await page.evaluate(() => {document.activeElement.blur();scrollTo(0,0);});
   assert.ok(await page.locator('.skip').evaluate(e => e.getBoundingClientRect().bottom < 0));
-  await page.screenshot({path:`${output}/long-transcript-${locale}-${width}.png`,fullPage:true});
+  await page.screenshot({path:`${output}/structured-analysis-${locale}-${width}.png`,fullPage:true});
   await page.locator('.skip').focus();
   assert.equal(await page.locator('.skip').evaluate(e => e.getBoundingClientRect().top),10);
   await page.keyboard.press('Enter'); assert.equal(await page.locator('#page-title').evaluate(e=>e===document.activeElement),true);
-  checks.push(`long transcript + header + skip/${locale}/${width}`);
+  checks.push(`structured task + header + skip/${locale}/${width}`);
  }
  // Browser zoom equivalent layout stress: 390px at 200% has a 195 CSS-pixel layout viewport.
  await page.setViewportSize({width:195,height:422}); await visit('analysis');

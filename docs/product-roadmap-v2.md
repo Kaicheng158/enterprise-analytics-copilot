@@ -6,7 +6,7 @@
 
 Phase 0–2 已完成；Phase 3 为 RAG 首轮本地验收，重复运行稳定性未确立；Phase 4 Tool Calling 完成本地 gate；Phase 5.1–5.7e 已有 bounded Planner、Durable Runtime、受保护本地任务 API、队列/Worker 与 synthetic sales 产品演示。它们不是生产级多用户平台。
 
-Phase 5.8a Workspace 双语 UI 与 Auth 细节已完成本地收尾审查；Figma 原生 Auth 同步仍待办。5.8b Fake/Mock Workspace API 对接尚未实施。旧表将 Phase 5 写为 LangGraph “未开始”是早期技术路线，不能用于描述当前 Bounded Planning 进度。LangGraph 仍未引入；Evaluation 已在各阶段实现，不应再把早期“Evaluation 未开始”解释为无测试基础。
+Phase 5.8a Workspace 双语 UI 与 Auth 细节已完成本地收尾审查；Figma 原生 Auth 同步仍待办。5.8b 已完成默认关闭的本地 Fake/Mock Workspace bridge、隔离数据库和浏览器验收；它仍只支持固定 synthetic sales 模板，不是 document-first MVP。旧表将 Phase 5 写为 LangGraph “未开始”是早期技术路线，不能用于描述当前 Bounded Planning 进度。LangGraph 仍未引入；Evaluation 已在各阶段实现，不应再把早期“Evaluation 未开始”解释为无测试基础。
 
 为避免旧编号冲突，下面用 PV2-xx 表示新的产品工作包，不重编号历史 Phase，也不把它们误标为已完成。
 
@@ -15,7 +15,7 @@ Phase 5.8a Workspace 双语 UI 与 Auth 细节已完成本地收尾审查；Figm
 | 阶段 / 优先级 | 交付与范围 | 依赖 / 完成条件 |
 |---|---|---|
 | 5.8a 收尾 / P0（完成） | 已归档本地视觉、双语、响应式、可访问性与 Demo 安全边界；后续授权时移除 Overview 重复 CTA | 本地审查通过；Figma 原生同步继续单独标记 Pending |
-| 5.8b / P0 | Workspace 安全 Fake/Mock bridge；沿用固定 sales 模板与既有 API | 5.8a；双击仅一次提交、同 key/body 恢复、单轮询、乱序防护、终态停止、错误脱敏、locale 不触发任务；隔离 DB 验证 |
+| 5.8b / P0（完成） | Workspace 安全 Fake/Mock bridge；沿用固定 sales 模板与既有 API | 双击仅一次提交、同 key/body 恢复、有界单轮询、乱序防护、终态停止、错误脱敏、locale 不触发任务；loopback/同源边界、隔离 DB 与真实浏览器验收通过；保持默认关闭且不公开启用 |
 | PV2-01 / P0 | 文件/项目产品契约与威胁边界；版本化 CSV/XLSX 解析验证 foundation | 不改变旧 API；固定容量、格式、公式/日期/单位策略；synthetic 离线用例含 Unicode/坏文件/超限/重复/空值；不先接 LLM |
 | PV2-02 / P0 | 本地私有资产持久化、隔离区、配额/期限、删除与恢复；验证预览 | PV2-01；隔离环境迁移、原子配额预留、路径/类型/压缩炸弹保护、修订哈希、清理失败可恢复；仍仅 synthetic/local |
 | PV2-03 / P0，对外阻断项 | 真实身份/会话、单所有者私有项目、资产授权、项目状态与任务关联 | 设计可与01并行，集成依赖02；跨用户访问负例、权限撤销、会话/CSRF策略、持久重启、审计；禁止用 Demo 身份接真实客户数据 |
@@ -33,6 +33,8 @@ Phase 5.8a Workspace 双语 UI 与 Auth 细节已完成本地收尾审查；Figm
 
 所有新增产品功能或工作包在进入实现前都必须留下可核验的 Gate 记录。候选功能必须说明它服务的主线：**Investigate**（Data Detective）、**Simulate**（Decision Lab）、**Decide & Review**（回答、报告与 Follow-through）或 **Collaborate**（Project Collaboration），并证明相对当前流程减少用户完成真实任务所需的工作量。仅写“AI 驱动”、增加页面或增加技术组件不构成价值证据。
 
+A+B+E 是目标产品的核心分析—决策闭环，D 是长期核心协作能力。分阶段上线只表示依赖和风险控制，不取消这些承诺。基础设施候选必须指出它具体解锁哪段用户工作流、避免何种用户错误或人工操作；“为以后打基础”本身不能通过 Gate。
+
 至少预注册一个主要工作量指标及目标，并保留安全、事实、授权、可访问性和成本边界。可选指标包括完成任务的主动步骤或时间、重复输入次数、被打断的澄清轮数、失败后的恢复步骤、人工复算/查源时间、错误或返工率。目标必须在实现与验收前固定，不能看到结果后调低。
 
 | 决策 | 判定条件 | 后续动作 |
@@ -43,7 +45,9 @@ Phase 5.8a Workspace 双语 UI 与 Auth 细节已完成本地收尾审查；Figm
 
 完成验收必须比较 baseline 与 candidate，并至少记录任务完成率、主要工作量指标、澄清/恢复次数和错误/返工。安全、事实正确性、授权、可访问性及预算硬条件不能用平均体验分抵消。若未达到工作量目标，结果为 Hold（有明确可修复缺口）或 Reject（价值假设不成立）；不得因功能已经开发而自动 Approve。
 
-Gate 记录字段：feature/work-package ID、目标主线、用户与任务、baseline、价值假设、指标与预注册目标、代表性场景/证据、依赖和风险、决策/理由/负责人/日期，以及实现后的实际结果。Hold/Reject 项不得被 UI 或文档描述为已支持功能。
+Gate 记录字段：feature/work-package ID、目标主线、用户与任务、baseline、价值假设、指标与预注册目标、代表性场景/证据、是否与现有能力重复、开发与运维成本、运行/模型成本、安全与隐私代价、依赖和风险、决策/理由/负责人/日期，以及实现后的实际结果。Hold/Reject 项不得被 UI 或文档描述为已支持功能。
+
+准入流程：提案→记录 baseline/代价/预注册目标→Approve/Hold/Reject→仅 Approve 进入 Active Roadmap→隔离环境实现→按原指标验收→记录实际收益与剩余代价。验收不达标时回到 Hold 或 Reject，不能因为代码已完成而跳过价值复核。
 
 ## MVP / Future release 边界与验收
 
@@ -56,6 +60,6 @@ Gate 记录字段：feature/work-package ID、目标主线、用户与任务、b
 
 ## 推荐下一开发阶段
 
-先完成 **Phase 5.8b 安全 Fake/Mock bridge**，仅用现有销售模板验证提交、状态查询与来源展示；同时把 PV2-01 作为紧接的后端基础工作包，先做文件契约和确定性解析测试，不扩大 Planner 能力或重做 UI。新上传/项目 API 必须独立评审，不能复用旧四字段请求假装接受文件分析。
+下一阶段为 **PV2-01 文件/项目产品契约与 CSV/XLSX 确定性解析验证 foundation**。5.8b 仅用现有销售模板验证提交、状态查询与来源展示；PV2-01 先做文件契约、容量/类型/公式/日期/单位边界和 synthetic 确定性解析测试，不扩大 Planner 能力或重做 UI。新上传/项目 API 必须独立评审，不能复用旧四字段请求假装接受文件分析。
 
 不把技术选型（LangGraph）、UI大改或持续 Prompt 调优设为产品前置条件。先复用已完成执行控制；只有明确缺口和验收收益时再引入依赖。

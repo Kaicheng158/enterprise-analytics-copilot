@@ -42,9 +42,11 @@ test('v4.1 navigation and synthetic arithmetic are stable', () => {
   assert.equal(total('2026-Q1'), 400); assert.equal(total('2026-Q2'), 600);
   assert.equal((total('2026-Q2') - total('2026-Q1')) / total('2026-Q1'), .5);
 });
-test('standalone boundary: no API transport, DOM translation walker or unsafe HTML sinks', () => {
+test('workspace boundary: same-origin transport only, no secret or unsafe HTML sinks', () => {
   const app = readFileSync(new URL('../app.js', import.meta.url), 'utf8');
-  assert.doesNotMatch(app, /innerHTML|outerHTML|insertAdjacentHTML|createTreeWalker|MutationObserver|fetch\(|XMLHttpRequest|sendBeacon|WebSocket|FileReader/);
+  const client = readFileSync(new URL('../agent-client.js', import.meta.url), 'utf8');
+  assert.doesNotMatch(app + client, /innerHTML|outerHTML|insertAdjacentHTML|createTreeWalker|MutationObserver|XMLHttpRequest|sendBeacon|WebSocket|FileReader|X-Internal-Agent-Key/);
+  assert.match(client, /\/workspace-api\/tasks/);
   const html = readFileSync(new URL('../index.html', import.meta.url), 'utf8');
-  assert.match(html, /connect-src 'none'/); assert.match(html, /form-action 'none'/);
+  assert.match(html, /connect-src 'self'/); assert.match(html, /form-action 'none'/);
 });

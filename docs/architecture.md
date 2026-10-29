@@ -155,3 +155,9 @@ The static local console submits only the existing quarterly-sales contract and 
 核心改为文件上传→验证→Analysis & Chat→可视化→简答或完整报告；Sales Comparison 保留为模板。Data Detective、Decision Lab、Decision Follow-through 与 Project Collaboration 分阶段实施。当前 Workspace 仍为独立 Demo，文件产品链路、真实身份和项目协作尚未实现。Checkpoint/Receipt 不等于 Project State。
 
 保留七项导航及批准的 Auth/Workspace 视觉；Overview 右上重复“询问 AI 助手”仅登记为待移除。正式注册后的可跳过首次引导属于未来功能，现阶段不添加 Demo 教程按钮。Figma 原生 Auth 同步仍待办，本轮没有读取或编辑 Figma，也没有修改 API、运行代码或功能开关。
+
+### Phase 5.8b Workspace same-origin bridge boundary
+
+`backend.workspace_bridge_app:app` 是独立、默认关闭且只接受 loopback ASGI peer 与 loopback `Host` 的本地入口。它提供静态 Workspace 和同源 `/workspace-api/tasks` 提交/状态路由；API 写请求必须携带与当前 Bridge 完全一致的 `Origin`，Fetch Metadata 必须为 `same-origin`，且没有 CORS allowlist。Workspace CSP 只允许连接 `'self'`。浏览器只发送严格的 `AgentTaskRequest` 与 `Idempotency-Key`，不能提供 scope、Prompt、SQL、Tool、模型参数或内部 Agent key。Bridge 在服务端构造既有固定 principal/scope，并复用 `InternalAgentAuthorizer`、`DisposableManagedAgentRuntime`、Fake Planner、持久队列、Worker supervisor、Checkpoint/Receipt、Lease/CAS 和 PostgreSQL sales Tool。普通 `/chat`、`/rag/chat`、Compose 与既有 Agent apps 均未改变。
+
+浏览器把固定请求、幂等键和已知 task ID 存在 session storage，用于同一标签页刷新和 POST 响应丢失后的相同请求恢复；它不保存服务端凭据。轮询有次数上限，按 `state_version` 和更新时间单调更新，终态停止，断网保留最后可信状态。Tasks 只显示当前 session 已知任务，因为目前没有授权 task-list API；Visualizations 只在严格响应为 `completed` 后采用验证过的结果和来源。此边界不是认证、多租户授权、生产 Bridge 或 document-first 分析能力。

@@ -11,7 +11,9 @@ export const sampleReport = Object.freeze({
 });
 export function createState(locale = 'en') {
   return { locale: normalizeLocale(locale), answerLanguage: 'auto', reportLanguage: 'auto',
-    draft: '', messages: [], report: sampleReport, selectedFile: '', libraryTab: 'data' };
+    draft: '', messages: [], report: sampleReport, selectedFile: '', libraryTab: 'data',
+    agentRequest: {task:'compare_quarterly_sales', baseline_period:'2026-Q1', comparison_period:'2026-Q2', region:'all'},
+    agent: {phase:'idle', task:null, recovery:null, errorKey:null, polling:false} };
 }
 export function setUiLocale(state, locale) { state.locale = normalizeLocale(locale); }
 export function addDemoAnswer(state) {
