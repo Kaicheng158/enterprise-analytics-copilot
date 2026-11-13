@@ -63,3 +63,13 @@ Gate 记录字段：feature/work-package ID、目标主线、用户与任务、b
 下一阶段为 **PV2-01 文件/项目产品契约与 CSV/XLSX 确定性解析验证 foundation**。5.8b 仅用现有销售模板验证提交、状态查询与来源展示；PV2-01 先做文件契约、容量/类型/公式/日期/单位边界和 synthetic 确定性解析测试，不扩大 Planner 能力或重做 UI。新上传/项目 API 必须独立评审，不能复用旧四字段请求假装接受文件分析。
 
 不把技术选型（LangGraph）、UI大改或持续 Prompt 调优设为产品前置条件。先复用已完成执行控制；只有明确缺口和验收收益时再引入依赖。
+
+
+## PV2-01 implementation checkpoint — 2026-10-29
+
+Local CSV/XLSX parsing foundation implemented, awaiting user review; no public upload or downstream analysis enabled. Independent typed contracts, guarded parsing, source/normalized/revision identity and content-safe preview are covered by synthetic tests. See [preregistered Feature Value Gate, actual workflow metrics and limits](pv2-01-file-parsing.md). PV2-02 storage/lifecycle and PV2-03 identity/authorization remain required before customer intake. All existing flags and historical acceptance evidence are unchanged.
+
+
+## PV2-01 final review — 2026-11-13
+
+PV2-01 local deterministic parsing foundation is complete; the preceding recommendation/checkpoint is historical. The next planned work package is PV2-02 project-scoped persistence and lifecycle, **not implemented in this change**. Repeatable revision identities are not database-backed deduplication. No real upload, customer-data intake or Agent file analysis is enabled. Feature Value Gate approval remains limited to the synthetic local foundation; customer/public intake stays Hold.

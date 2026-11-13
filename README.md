@@ -2,6 +2,8 @@
 
 Development has completed Phase 5.8b local Fake/Mock acceptance. The repository includes the accepted Phase 3 RAG path, Phase 4 bounded Tool Calling, Phase 5 durable planning/Worker foundations and a bilingual responsive Workspace connected through a default-off localhost Bridge to the fixed synthetic quarterly-sales task. Existing `/chat` remains on analytics-v2, `/rag/chat` remains separately controlled, Agent features remain default-off and no Tool or Agent workflow is publicly deployed. Product Vision v2 defines the document-first direction; real CSV/XLSX upload, identity, reports, project collaboration and production data lifecycle controls are still planned. This is not a public production release.
 
+PV2-01 now has a **completed local, default-off CSV/XLSX parsing foundation**, with explicit typed contracts, scoped revision identities, bounded process parsing and synthetic validation evidence. This is not an upload feature or real file analysis. See [design, limits and value metrics](docs/pv2-01-file-parsing.md).
+
 ## Start
 
 Start Docker Desktop. From the repository root, create a local `.env` with your own password:

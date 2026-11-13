@@ -1,0 +1,90 @@
+{
+  "evidence_version": "pv2-01-synthetic-workflow-v1",
+  "scope": "local synthetic library; no user-study time savings or persisted dedup claim",
+  "policy_version": "tabular-v1",
+  "manual_format_conversions": 0,
+  "manual_cell_edits": 0,
+  "explicit_column_mapping_sets": 1,
+  "equivalent_normalized_hash": true,
+  "distinct_raw_hashes": true,
+  "duplicate_submissions": 3,
+  "unique_revision_ids": 1,
+  "cross_project_revision_separated": true,
+  "issue_collections": 1,
+  "issue_categories": [
+    "date_ambiguous",
+    "numeric_ambiguous",
+    "required_missing"
+  ],
+  "traceable_cells": 6,
+  "total_cells": 6,
+  "manual_recovery_resets": 0,
+  "recovery_same_revision": true,
+  "lingering_workers": 0,
+  "paid_calls": 0,
+  "sample_csv_source_sha256": "404d64128ad064d8e2968215d6249d778cc512c5ef55067a1cca98c0be450848",
+  "sample_normalized_sha256": "7e19a71dd5fcd37a87cce58f6e8e6d1d250ab709e437676328e24328dbf7f49e",
+  "sample_revision_id": "2d765204c58db3b3b234c37d98cebd2453d5270cf81588577a9bc4cbd77587a0",
+  "authorized_synthetic_preview": {
+    "revision_id": "2d765204c58db3b3b234c37d98cebd2453d5270cf81588577a9bc4cbd77587a0",
+    "status": "validated",
+    "tables": [
+      {
+        "columns": [
+          "地区",
+          "销售额",
+          "日期"
+        ],
+        "rows": [
+          [
+            {
+              "value": "华东",
+              "kind": "text",
+              "row": 2,
+              "column": 1
+            },
+            {
+              "value": "1200.5",
+              "kind": "money",
+              "row": 2,
+              "column": 2
+            },
+            {
+              "value": "2026-10-01",
+              "kind": "date",
+              "row": 2,
+              "column": 3
+            }
+          ],
+          [
+            {
+              "value": "华南",
+              "kind": "text",
+              "row": 3,
+              "column": 1
+            },
+            {
+              "value": "800.25",
+              "kind": "money",
+              "row": 3,
+              "column": 2
+            },
+            {
+              "value": "2026-10-02",
+              "kind": "date",
+              "row": 3,
+              "column": 3
+            }
+          ]
+        ],
+        "total_rows": 2,
+        "total_columns": 3
+      }
+    ],
+    "issue_codes": []
+  },
+  "rejection_codes": {
+    "invalid_utf8": "unsupported_encoding",
+    "cached_formula": "formula_or_unsupported_sheet"
+  }
+}

@@ -161,3 +161,12 @@ The static local console submits only the existing quarterly-sales contract and 
 `backend.workspace_bridge_app:app` 是独立、默认关闭且只接受 loopback ASGI peer 与 loopback `Host` 的本地入口。它提供静态 Workspace 和同源 `/workspace-api/tasks` 提交/状态路由；API 写请求必须携带与当前 Bridge 完全一致的 `Origin`，Fetch Metadata 必须为 `same-origin`，且没有 CORS allowlist。Workspace CSP 只允许连接 `'self'`。浏览器只发送严格的 `AgentTaskRequest` 与 `Idempotency-Key`，不能提供 scope、Prompt、SQL、Tool、模型参数或内部 Agent key。Bridge 在服务端构造既有固定 principal/scope，并复用 `InternalAgentAuthorizer`、`DisposableManagedAgentRuntime`、Fake Planner、持久队列、Worker supervisor、Checkpoint/Receipt、Lease/CAS 和 PostgreSQL sales Tool。普通 `/chat`、`/rag/chat`、Compose 与既有 Agent apps 均未改变。
 
 浏览器把固定请求、幂等键和已知 task ID 存在 session storage，用于同一标签页刷新和 POST 响应丢失后的相同请求恢复；它不保存服务端凭据。轮询有次数上限，按 `state_version` 和更新时间单调更新，终态停止，断网保留最后可信状态。Tasks 只显示当前 session 已知任务，因为目前没有授权 task-list API；Visualizations 只在严格响应为 `completed` 后采用验证过的结果和来源。此边界不是认证、多租户授权、生产 Bridge 或 document-first 分析能力。
+
+
+### PV2-01 deterministic Dataset boundary — 2026-11-13
+
+`backend.datasets` is an independent, default-off local library: trusted bytes + FileSpec/explicit columns → guarded parser process → immutable Dataset with typed canonical strings, content-free quality issues, file/sheet/row/column provenance and scoped revision identity. It is not wired into Workspace, Bridge, AgentTaskRequest, API or PostgreSQL. Decimal tokens avoid float math; ambiguous dates/units remain review-required. Only the documented CSV/OOXML subset is accepted, never formulas, macros or external-link execution.
+
+Memory protection on macOS is sampled RSS, not an OS hard sandbox; parent-side result validation and process startup/IPC are not a hard real-time or memory isolation guarantee. No filesystem extraction occurs; workers and pipes are closed on success/failure. Full Dataset serialization is privileged data, not safe telemetry; only bounded opt-in preview supports redaction. Source/normalized hashes do not grant access.
+
+PV2-01 local foundation is complete. PV2-02 durable project storage, atomic deduplication, quota/retention/deletion/recovery are **not implemented**. PV2-03 real identity and resource authorization are also prerequisites to customer upload. See [compatibility, tests and limitations](pv2-01-file-parsing.md).
