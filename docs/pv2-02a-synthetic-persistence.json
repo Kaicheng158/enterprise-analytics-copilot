@@ -1,0 +1,25 @@
+{
+  "changed_revision_number": 2,
+  "duplicate_reuse_count": 2,
+  "duplicate_submissions": 3,
+  "evidence_version": "pv2-02a-synthetic-persistence-v1",
+  "interruption_error_code": "finalization_uncertain",
+  "manual_file_copy_steps_for_three_duplicates": 0,
+  "manual_recovery_actions": 1,
+  "manual_version_index_steps": 0,
+  "operation_states": [
+    {
+      "count": 3,
+      "state": "ready"
+    }
+  ],
+  "paid_calls": 0,
+  "private_blob_count": 6,
+  "quota_reserved_bytes": 0,
+  "quota_used_bytes": 3396,
+  "ready_revision_count": 3,
+  "reconciliation_action": "published_verified_blobs",
+  "reconciliation_state": "ready",
+  "scope": "trusted local synthetic harness; no real-user time-savings claim",
+  "unique_duplicate_revision_ids": 1
+}

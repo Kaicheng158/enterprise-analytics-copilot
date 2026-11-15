@@ -2,5 +2,10 @@
 from .models import Column, Dataset, FileSpec, ParseSettings
 from .service import parse_file, preview
 from .parser import ParseFailure
+from .persistence import PrivateDatasetPersistenceService
+from .persistence_models import DatasetPersistenceSettings, PersistenceFailure
+from .private_storage import PrivateLocalBlobStore
 
-__all__ = ['Column', 'Dataset', 'FileSpec', 'ParseSettings', 'ParseFailure', 'parse_file', 'preview']
+__all__ = ['Column', 'Dataset', 'FileSpec', 'ParseSettings', 'ParseFailure', 'parse_file', 'preview',
+           'PrivateDatasetPersistenceService', 'DatasetPersistenceSettings', 'PersistenceFailure',
+           'PrivateLocalBlobStore']

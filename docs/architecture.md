@@ -170,3 +170,11 @@ The static local console submits only the existing quarterly-sales contract and 
 Memory protection on macOS is sampled RSS, not an OS hard sandbox; parent-side result validation and process startup/IPC are not a hard real-time or memory isolation guarantee. No filesystem extraction occurs; workers and pipes are closed on success/failure. Full Dataset serialization is privileged data, not safe telemetry; only bounded opt-in preview supports redaction. Source/normalized hashes do not grant access.
 
 PV2-01 local foundation is complete. PV2-02 durable project storage, atomic deduplication, quota/retention/deletion/recovery are **not implemented**. PV2-03 real identity and resource authorization are also prerequisites to customer upload. See [compatibility, tests and limitations](pv2-01-file-parsing.md).
+
+### PV2-02a private persistence boundary — 2026-11-13
+
+PV2-02a introduces a separate `dataset_store` metadata schema and a default-off trusted service. Project State owns Project/Asset/Revision/lifecycle metadata; it has no foreign key or authorization inheritance from `agent_runtime` Checkpoint/Receipt. PostgreSQL stores hashes, state, quota, policy and opaque storage references. Raw source bytes and canonical Dataset JSON live in a private local adapter; callers never receive its path or references.
+
+The coordination sequence is parse/validate → project/content locks → atomic quota reservation and pending metadata → two atomic private blob writes → hash/size verification → quota settlement and ready publication. Failure before publication is invisible. Uncertain finalization retains reservation and enters reconciliation; verified blobs can be published once, while missing/mismatched blobs fail and release quota. This is recoverable coordination, not a distributed transaction/exactly-once guarantee.
+
+Duplicate identity is project + raw hash + parse contract. Cross-project storage/revision reuse is forbidden. Revision and storage result contracts expose metadata only. Ready duplicate reuse performs blob integrity checks. Lifecycle states and retention fields are placeholders; PV2-02b still owns scheduled reconciliation, expiry, deletion/restore, cleanup, broader accounting and production storage. PV2-03 still owns identity/authorization. See [PV2-02a contract](pv2-02a-private-dataset-persistence.md).

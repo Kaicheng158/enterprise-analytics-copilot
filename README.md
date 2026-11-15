@@ -4,6 +4,8 @@ Development has completed Phase 5.8b local Fake/Mock acceptance. The repository 
 
 PV2-01 now has a **completed local, default-off CSV/XLSX parsing foundation**, with explicit typed contracts, scoped revision identities, bounded process parsing and synthetic validation evidence. This is not an upload feature or real file analysis. See [design, limits and value metrics](docs/pv2-01-file-parsing.md).
 
+PV2-02a adds a **default-off private Dataset persistence foundation for trusted synthetic harnesses**: project-scoped immutable revisions, opaque local blob references, PostgreSQL metadata, project-wide duplicate recognition, atomic logical-byte quota reservation and conservative reconciliation. It adds no upload/API/authentication path and was migrated only in disposable databases. Retention enforcement, delete/restore, cleanup, encryption and production object storage remain PV2-02b or deployment work. See [design and limitations](docs/pv2-02a-private-dataset-persistence.md).
+
 ## Start
 
 Start Docker Desktop. From the repository root, create a local `.env` with your own password:

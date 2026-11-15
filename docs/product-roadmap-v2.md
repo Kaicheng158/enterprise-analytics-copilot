@@ -73,3 +73,9 @@ Local CSV/XLSX parsing foundation implemented, awaiting user review; no public u
 ## PV2-01 final review — 2026-11-13
 
 PV2-01 local deterministic parsing foundation is complete; the preceding recommendation/checkpoint is historical. The next planned work package is PV2-02 project-scoped persistence and lifecycle, **not implemented in this change**. Repeatable revision identities are not database-backed deduplication. No real upload, customer-data intake or Agent file analysis is enabled. Feature Value Gate approval remains limited to the synthetic local foundation; customer/public intake stays Hold.
+
+## PV2-02a local implementation checkpoint — 2026-11-13
+
+PV2-02a private persistence foundation is implemented locally and awaiting review. It adds versioned Project/Asset/AssetRevision/DatasetRevision metadata, opaque private local blobs, project-wide immutable duplicate identity, atomic logical-byte quota reservation and explicit reconciliation. The feature remains default off and trusted-synthetic-only; no route, real identity, production migration or customer upload exists.
+
+PV2-02 is deliberately split. **PV2-02b is not implemented**: lifecycle enforcement, stale-operation scanning, expiry, deletion/restore, staging/orphan cleanup, backup semantics, content-object accounting and production storage/security remain required. PV2-03 authorization still blocks customer intake. See [PV2-02a design/evidence](pv2-02a-private-dataset-persistence.md).
