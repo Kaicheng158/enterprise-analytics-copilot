@@ -1,6 +1,7 @@
 import { translate, readLocale, saveLocale } from './i18n.js';
 import { createState, navigation, routes, sampleRows, setUiLocale } from './state.js';
 import { createAgentClient, TERMINAL_STATUSES } from './agent-client.js';
+import { createAuthClient } from './auth-client.js';
 
 let storage;
 try { storage = window.localStorage; } catch { storage = null; }
@@ -8,6 +9,7 @@ const state = createState(readLocale(storage));
 let bindings = [];
 const root = document.querySelector('#app');
 let agentClient;
+let authClient;
 const t = (key, values) => translate(state.locale, key, values);
 function el(tag, className = '', text) {
   const node = document.createElement(tag);
@@ -111,6 +113,7 @@ function field(id, key, type = 'text') {
   return wrapper;
 }
 function auth(main, page) {
+  const realAuth = Boolean(authClient?.enabled);
   const header = el('header', 'auth-header'); header.append(brand(), localeSelect('auth-locale'));
   const layout = el('div', 'auth-layout');
   const art = card(); art.classList.add('auth-art');
@@ -126,25 +129,64 @@ function auth(main, page) {
   insight.classList.add('auth-float-insight'); floating.append(metricCard, chartCard, insight); art.append(floating);
   layout.append(art);
   const pane = card(); pane.classList.add('auth-pane');
-  heading(pane, page === 'register' ? 'auth.register' : 'auth.login', page === 'register' ? 'auth.registerSubtitle' : 'ui.authSubtitle');
+  const headingKey = realAuth && page === 'register' ? 'auth.localRegister' : (page === 'register' ? 'auth.register' : 'auth.login');
+  const subtitleKey = realAuth
+    ? (page === 'register' ? 'auth.localRegisterSubtitle' : 'auth.localLoginSubtitle')
+    : (page === 'register' ? 'auth.registerSubtitle' : 'ui.authSubtitle');
+  heading(pane, headingKey, subtitleKey);
   const fields = el('div', 'auth-fields');
   if (page === 'register') fields.append(field('demo-name', 'auth.name'));
   const account = field('demo-email', 'auth.email', 'text');
   const accountInput = account.querySelector('input'); accountInput.inputMode = 'email';
+  accountInput.autocomplete = realAuth ? 'username' : 'off';
   accountInput.placeholder = 'demo@example.com';
-  bindings.push(() => { accountInput.placeholder = 'demo@example.com'; });
-  const hint = text('p', 'auth.accountHint', 'small muted'); hint.id = 'account-hint';
+  bindings.push(() => { accountInput.placeholder = realAuth ? t('auth.localAccountPlaceholder') : 'demo@example.com'; });
+  const hint = text('p', realAuth ? 'auth.localAccountHint' : 'auth.accountHint', 'small muted'); hint.id = 'account-hint';
   accountInput.setAttribute('aria-describedby', hint.id); account.append(hint);
-  fields.append(account, field('demo-password', 'auth.password', 'password'));
-  if (page === 'register') fields.append(field('demo-confirm', 'auth.confirm', 'password'));
-  // These are deliberately not a credential form. No values are read or validated.
+  const password = field('demo-password', 'auth.password', 'password');
+  password.querySelector('input').autocomplete = realAuth ? (page === 'register' ? 'new-password' : 'current-password') : 'off';
+  fields.append(account, password);
+  if (page === 'register') {
+    const confirmation = field('demo-confirm', 'auth.confirm', 'password');
+    confirmation.querySelector('input').autocomplete = realAuth ? 'new-password' : 'off';
+    fields.append(confirmation);
+  }
+  if (realAuth) {
+    for (const input of fields.querySelectorAll('input:not(#demo-email)')) {
+      bindings.push(() => { input.placeholder = t('auth.localCredentialPlaceholder'); });
+    }
+  }
+  // Demo mode never reads values. Local-auth mode is a separate default-off service.
   pane.append(fields);
   if (page === 'login') { const forgot = button('auth.forgot', () => announce('auth.reset'), true); forgot.classList.add('text-button', 'forgot'); pane.append(forgot); }
-  const enter = link('auth.enter', 'overview'); enter.classList.add('wide'); pane.append(enter);
+  const enter = button(realAuth ? (page === 'register' ? 'auth.createLocal' : 'auth.signInLocal') : 'auth.enter', async () => {
+    if (!realAuth) { go('overview'); return; }
+    const accountValue = document.querySelector('#demo-email').value;
+    const passwordValue = document.querySelector('#demo-password').value;
+    const payload = {account:accountValue,password:passwordValue};
+    if (page === 'register') {
+      if (passwordValue !== document.querySelector('#demo-confirm').value) { announce('errors.authConfirm'); return; }
+      payload.display_name = document.querySelector('#demo-name').value;
+    }
+    const accepted = await authClient.authenticate(page, payload);
+    payload.password = '';
+    if (accepted) go('overview');
+  });
+  enter.classList.add('wide'); enter.disabled = Boolean(authClient?.snapshot.busy); pane.append(enter);
+  if (realAuth) fields.addEventListener('keydown', event => {
+    if (event.key === 'Enter') { event.preventDefault(); enter.click(); }
+  });
+  if (realAuth && authClient.snapshot.errorKey) pane.append(text('p', authClient.snapshot.errorKey, 'field-error'));
   const foot = el('div', 'auth-foot');
-  const switcher = link(page === 'register' ? 'auth.switchLogin' : 'auth.switchRegister', page === 'register' ? 'login' : 'register', true); switcher.classList.add('text-button');
-  foot.append(text('span', page === 'register' ? 'ui.already' : 'ui.newHere'), switcher);
-  pane.append(foot, text('p', 'auth.notice', 'auth-safety-note'));
+  const switchKey = realAuth
+    ? (page === 'register' ? 'auth.localSwitchLogin' : 'auth.localSwitchRegister')
+    : (page === 'register' ? 'auth.switchLogin' : 'auth.switchRegister');
+  const switcher = link(switchKey, page === 'register' ? 'login' : 'register', true); switcher.classList.add('text-button');
+  const footKey = realAuth
+    ? (page === 'register' ? 'auth.localHaveAccount' : 'auth.localNeedAccount')
+    : (page === 'register' ? 'ui.already' : 'ui.newHere');
+  foot.append(text('span', footKey), switcher);
+  pane.append(foot, text('p', realAuth ? 'auth.localNotice' : 'auth.notice', 'auth-safety-note'));
   layout.append(pane); main.append(header, layout);
 }
 function shell(page) {
@@ -161,8 +203,14 @@ function shell(page) {
     nav.append(anchor);
   }
   const bottom = el('div', 'side-bottom'); const profile = el('div', 'profile'); const profileText = el('div');
-  profileText.append(text('strong', 'ui.visitor'), text('p', 'ui.session'));
-  profile.append(icon('D', 'avatar'), profileText); bottom.append(profile, text('p', 'common.boundary', 'sidebar-note'), link('common.exit', 'login', true));
+  if (authClient?.session) profileText.append(el('strong', '', authClient.session.user.display_name), text('p', 'ui.localSession'));
+  else profileText.append(text('strong', 'ui.visitor'), text('p', 'ui.session'));
+  profile.append(icon('D', 'avatar'), profileText);
+  const exit = button(authClient?.session ? 'auth.signOut' : 'common.exit', async () => {
+    if (authClient?.session && !await authClient.logout()) return;
+    go('login');
+  }, true);
+  bottom.append(profile, text('p', authClient?.session ? 'common.localAuthBoundary' : 'common.boundary', 'sidebar-note'), exit);
   sidebar.append(nav, bottom);
   const backdrop = el('button', 'backdrop'); backdrop.type = 'button'; attr(backdrop, 'aria-label', 'common.close');
   const content = el('div', 'content'); const top = el('header', 'topbar');
@@ -390,6 +438,10 @@ function renderPage(main, page) {
 function render(focus = true) {
   document.body.classList.remove('drawer-open');
   bindings = []; root.replaceChildren(); const page = route();
+  if (authClient?.enabled && !authClient.session && !['login', 'register'].includes(page)) {
+    if (location.hash !== '#login') location.hash = 'login';
+    return;
+  }
   if (['login', 'register'].includes(page)) { const main = el('main', 'auth-main'); root.append(main); auth(main, page); }
   else {
     const skip = text('a', 'common.skip', 'skip'); skip.href = '#main';
@@ -409,5 +461,9 @@ agentClient = createAgentClient({storage:taskStorage, onChange:snapshot => {
   state.agent = snapshot;
   if (root.dataset.page) render(false);
 }});
+authClient = createAuthClient({onChange:() => {
+  if (root.dataset.page) render(false);
+}});
 render(false);
 agentClient.hydrate();
+void authClient.bootstrap();

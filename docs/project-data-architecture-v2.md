@@ -67,3 +67,9 @@
 跨项目枚举/缓存泄漏、派生结果越权、删除与在途任务竞争、备份恢复复活删除数据、配额并发、压缩炸弹、公式/报告注入、口径漂移、并发分支冲突、源过期后不可重算、重复模型计费。采用 synthetic 文件、Fake/Mock、隔离数据库验证，后续真实模型仅独立授权。
 
 本草案不承诺生产SLA或合规认证；真实身份供应商、存储/密钥管理、地域、保留期、恢复目标及协作角色最终矩阵均待专项评审。现有 frozen Prompt/评估证据继续原样保留。
+
+## PV2-03a identity foundation note — 2026-11-15
+
+PV2-03a implements only the first identity layer described above. `product_auth.users` is the server identity; password credentials and opaque sessions are separate records, and `AuthPrincipal` is resolved from a hashed HttpOnly session token. Demo identity and the fixed internal Agent principal are not convertible into a product user. `GET /auth-api/my-workspace` proves the protected principal boundary but deliberately returns `projects_available=false`.
+
+Project State is still not Session State or Execution State. Migration 009 does not add a Project owner, membership or AssetGrant and does not change `dataset_store.projects.scope_key`. PV2-03b must introduce a server-owned relationship between the authenticated user and product Project, then authorize project, asset, revision, task and result access on every server path. A request-supplied `project_id`, Demo route or internal Agent key remains insufficient proof of user authorization. See [the PV2-03a contract](pv2-03a-local-authentication.md).

@@ -16,9 +16,10 @@ Phase 5.8a Workspace 双语 UI 与 Auth 细节已完成本地收尾审查；Figm
 |---|---|---|
 | 5.8a 收尾 / P0（完成） | 已归档本地视觉、双语、响应式、可访问性与 Demo 安全边界；后续授权时移除 Overview 重复 CTA | 本地审查通过；Figma 原生同步继续单独标记 Pending |
 | 5.8b / P0（完成） | Workspace 安全 Fake/Mock bridge；沿用固定 sales 模板与既有 API | 双击仅一次提交、同 key/body 恢复、有界单轮询、乱序防护、终态停止、错误脱敏、locale 不触发任务；loopback/同源边界、隔离 DB 与真实浏览器验收通过；保持默认关闭且不公开启用 |
-| PV2-01 / P0 | 文件/项目产品契约与威胁边界；版本化 CSV/XLSX 解析验证 foundation | 不改变旧 API；固定容量、格式、公式/日期/单位策略；synthetic 离线用例含 Unicode/坏文件/超限/重复/空值；不先接 LLM |
-| PV2-02 / P0 | 本地私有资产持久化、隔离区、配额/期限、删除与恢复；验证预览 | PV2-01；隔离环境迁移、原子配额预留、路径/类型/压缩炸弹保护、修订哈希、清理失败可恢复；仍仅 synthetic/local |
-| PV2-03 / P0，对外阻断项 | 真实身份/会话、单所有者私有项目、资产授权、项目状态与任务关联 | 设计可与01并行，集成依赖02；跨用户访问负例、权限撤销、会话/CSRF策略、持久重启、审计；禁止用 Demo 身份接真实客户数据 |
+| PV2-01 / P0（本地完成） | 文件/项目产品契约与威胁边界；版本化 CSV/XLSX 解析验证 foundation | synthetic/local 验收完成；不改变旧 API、不接 LLM；真实上传仍关闭 |
+| PV2-02 / P0（本地完成，生产 Hold） | 私有资产持久化、隔离区、配额/期限、删除与恢复；本地可靠性验收 | PV2-01；隔离 migration 与故障矩阵通过；对象存储/KMS/容量/备份/监控仍阻断生产 |
+| PV2-03a / P0（本地实现） | localhost 真实账号、凭证与 Session foundation | 独立默认关闭服务；Argon2id、HttpOnly/CSRF、过期/撤销/限流与持久重启；非公网认证 |
+| PV2-03b / P0，对外阻断项 | 单所有者私有项目、资产授权、项目状态与任务关联 | 依赖02+03a；跨用户负例、权限撤销、任务/资产逐路径授权与审计；禁止用 Demo 或固定内部 scope 接真实数据 |
 | PV2-04 / P0 | 文件分析主闭环：集中澄清→受控计算工具→图表→简答/版本化报告页面 | 5.8b+01–03；扩展任务须新契约与独立评估；精确计算、口径一致、来源可复现、无证据不编造；复杂度/用户意图决定深度 |
 | PV2-05 / P1，MVP收束 | Data Detective 有限双表核对、持久历史及端到端验收 | 04；显式匹配键/粒度、重复/未匹配/差异解释、每项结论可定位行/列；安全/数值硬条件全过，独立质量与稳定性评估 |
 | PV2-06 / P1 | Decision Lab：版本化假设和确定性情景计算 | 04可信计算/报告；基准与模拟分开、合法输入范围、零/负/边界、敏感性；不承诺预测/因果 |
@@ -27,7 +28,7 @@ Phase 5.8a Workspace 双语 UI 与 Auth 细节已完成本地收尾审查；Figm
 | PV2-09 / P2 | PDF/DOCX、现有 RAG 产品接入、可追踪报告导出 | 02–04授权/来源/生命周期；解析/OCR质量、文档注入、跨项目隔离、源删除→向量/缓存失效；导出防公式/HTML注入 |
 | PV2-10 / P2 | 连接数据源、部署运维与企业治理 | 前述各自验收；最小只读连接、secret 管理、备份恢复演练、SLO/负载/成本/审计；SSO、BYOK/计费另立工作包 |
 
-依赖主线：5.8a → 5.8b；PV2-01 → 02 → 03；两条汇合 → 04 → 05。06/07/08 在依赖满足后可分别推进，不要求一次全实现。09 不阻塞 CSV/XLSX MVP。对外发布始终依赖真实身份与授权、生命周期、隔离、运维验收；本地通过不自动解锁公网。
+依赖主线：5.8a → 5.8b；PV2-01 → 02 → 03a → 03b；两条汇合 → 04 → 05。06/07/08 在依赖满足后可分别推进，不要求一次全实现。09 不阻塞 CSV/XLSX MVP。对外发布始终依赖真实身份与授权、生命周期、隔离、运维验收；本地通过不自动解锁公网。
 
 ## Feature Value Gate v1
 
@@ -91,3 +92,9 @@ The next storage work is **PV2-02c / Hold**: production object storage and encry
 PV2-02c completed a bounded local reliability review rather than building production cloud storage. A frozen 20-case fault matrix passed against synthetic data and disposable PostgreSQL, including database/finalization failure, process crash, disk failure, concurrent upload/delete, GC/write exclusion, lease takeover with stale-worker fencing, repeated reconciliation, immutable revision identity, project isolation, read barriers and quota-once settlement. The existing Durable Agent lease test was made deterministic without extending its wait or weakening assertions. See [acceptance report, production gaps and PV2-03 scope](pv2-02c-local-storage-reliability.md).
 
 Decision: the PV2-01/02 local foundation is sufficient to start **PV2-03 local identity and project/asset authorization development**. Production capability and real-customer upload remain **Hold**. Release blockers include production object storage, encryption/KMS, malware quarantine, physical-capacity protection, scheduled/observable lifecycle maintenance, backup/tombstone recovery, derived-data deletion propagation and multi-host consistency. Passing the local suite does not authorize a production migration or public route.
+
+## PV2-03a local authentication checkpoint — 2026-11-15
+
+PV2-03a now has a separate, default-off localhost authentication foundation: strict User/Credential/Session contracts, Argon2id password hashing, opaque server sessions, HttpOnly/SameSite cookies, same-origin and CSRF controls, expiry/revocation, bounded login failure limiting and content-free audit events. Migration 009 is validated only in disposable PostgreSQL. The approved Workspace Login/Register design can use the service only when its independent local flag is explicitly enabled; otherwise the prior non-reading Demo behavior remains unchanged. Successful local registration/login targets My Workspace directly, without an Organization page.
+
+This checkpoint does not claim production authentication or customer onboarding. Email ownership, recovery, MFA, HTTPS deployment, centralized abuse controls, production secrets/monitoring and all real Project/Asset authorization remain Hold. PV2-03b must bind a server-created principal to a single-owner private Project and enforce cross-user project/asset/task denial before any real upload can be enabled. See [PV2-03a design, value gate and limitations](pv2-03a-local-authentication.md).
