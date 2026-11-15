@@ -96,7 +96,9 @@ class PrivateDatasetPersistenceTests(unittest.TestCase):
     def test_migration_contract_and_public_access_revoked(self):
         with self.connections() as connection:
             applied = connection.execute("SELECT count(*) FROM app_migrations.applied WHERE name='007_private_dataset_storage.sql'").fetchone()[0]
-            tables = connection.execute("SELECT count(*) FROM information_schema.tables WHERE table_schema='dataset_store'").fetchone()[0]
+            tables = connection.execute("""SELECT count(*) FROM information_schema.tables
+                WHERE table_schema='dataset_store' AND table_name IN
+                ('projects','assets','asset_revisions','dataset_revisions','storage_operations')""").fetchone()[0]
             privileges = connection.execute("SELECT has_schema_privilege('public','dataset_store','USAGE'),has_table_privilege('public','dataset_store.projects','SELECT')").fetchone()
         self.assertEqual((applied,tables,privileges),(1,5,(False,False)))
 

@@ -5,7 +5,10 @@ from .parser import ParseFailure
 from .persistence import PrivateDatasetPersistenceService
 from .persistence_models import DatasetPersistenceSettings, PersistenceFailure
 from .private_storage import PrivateLocalBlobStore
+from .lifecycle import PrivateDatasetLifecycleService
+from .lifecycle_models import DatasetLifecycleSettings, LifecycleOperationResult, MaintenanceResult
 
 __all__ = ['Column', 'Dataset', 'FileSpec', 'ParseSettings', 'ParseFailure', 'parse_file', 'preview',
            'PrivateDatasetPersistenceService', 'DatasetPersistenceSettings', 'PersistenceFailure',
-           'PrivateLocalBlobStore']
+           'PrivateLocalBlobStore', 'PrivateDatasetLifecycleService', 'DatasetLifecycleSettings',
+           'LifecycleOperationResult', 'MaintenanceResult']

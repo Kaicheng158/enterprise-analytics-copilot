@@ -1,3 +1,4 @@
+import hashlib
 import os
 from pathlib import Path
 import tempfile
@@ -66,6 +67,43 @@ class PrivateDatasetStorageTests(unittest.TestCase):
         with self.assertRaisesRegex(PersistenceFailure,"invalid_storage_reference"):
             self.store.put(reference,b"synthetic")
         self.assertEqual(list(outside.iterdir()),[])
+
+    def test_cleanup_removes_only_unreferenced_objects_and_staging(self):
+        referenced = self.store.new_reference("raw")
+        orphan = self.store.new_reference("dataset")
+        self.store.put(referenced, b"keep")
+        self.store.put(orphan, b"remove")
+        shard = self.store._path(self.store.new_reference("raw")).parent
+        staging = shard / ".staging-synthetic"
+        staging.write_bytes(b"partial")
+        result = self.store.cleanup_unreferenced({referenced}, 10)
+        self.assertEqual(result[:3], (1, 1, 13))
+        self.assertFalse(result[4])
+        self.assertTrue(self.store.verify(referenced, 4, hashlib.sha256(b"keep").hexdigest()))
+        self.assertFalse(staging.exists())
+
+    def test_cleanup_is_bounded_and_rejects_untrusted_references(self):
+        for _ in range(3):
+            self.store.put(self.store.new_reference("raw"), b"orphan")
+        first = self.store.cleanup_unreferenced(set(), 2)
+        self.assertEqual(first[0], 2)
+        self.assertTrue(first[4])
+        self.assertEqual(self.store.object_count(), 1)
+        second = self.store.cleanup_unreferenced(set(), 2)
+        self.assertEqual(second[0], 1)
+        self.assertFalse(second[4])
+        with self.assertRaisesRegex(PersistenceFailure, "invalid_cleanup_reference"):
+            self.store.cleanup_unreferenced({"../outside"}, 1)
+
+    def test_cleanup_never_traverses_symlinked_shard(self):
+        outside = Path(self.temporary.name) / "outside-cleanup"
+        outside.mkdir()
+        external = outside / ("b" * 32 + ".raw")
+        external.write_bytes(b"outside")
+        (self.root / "objects" / "bb").symlink_to(outside, target_is_directory=True)
+        result = self.store.cleanup_unreferenced(set(), 10)
+        self.assertEqual(result[:2], (0, 0))
+        self.assertEqual(external.read_bytes(), b"outside")
 
 
 if __name__ == "__main__":

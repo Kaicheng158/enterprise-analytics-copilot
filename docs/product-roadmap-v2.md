@@ -76,6 +76,12 @@ PV2-01 local deterministic parsing foundation is complete; the preceding recomme
 
 ## PV2-02a local implementation checkpoint — 2026-11-13
 
-PV2-02a private persistence foundation is implemented locally and awaiting review. It adds versioned Project/Asset/AssetRevision/DatasetRevision metadata, opaque private local blobs, project-wide immutable duplicate identity, atomic logical-byte quota reservation and explicit reconciliation. The feature remains default off and trusted-synthetic-only; no route, real identity, production migration or customer upload exists.
+PV2-02a private persistence foundation has completed local review and is merged. It adds versioned Project/Asset/AssetRevision/DatasetRevision metadata, opaque private local blobs, project-wide immutable duplicate identity, atomic logical-byte quota reservation and explicit reconciliation. The feature remains default off and trusted-synthetic-only; no route, real identity, production migration or customer upload exists.
 
-PV2-02 is deliberately split. **PV2-02b is not implemented**: lifecycle enforcement, stale-operation scanning, expiry, deletion/restore, staging/orphan cleanup, backup semantics, content-object accounting and production storage/security remain required. PV2-03 authorization still blocks customer intake. See [PV2-02a design/evidence](pv2-02a-private-dataset-persistence.md).
+PV2-02 is deliberately split. PV2-02b now supplies the local lifecycle, stale-operation reconciliation, expiry, physical deletion and staging/orphan cleanup foundation described below. Production storage/security, backup semantics, derived-object cleanup, scheduled operations and user restore remain PV2-02c or later work. PV2-03 authorization still blocks customer intake. See [PV2-02a design/evidence](pv2-02a-private-dataset-persistence.md).
+
+## PV2-02b local implementation checkpoint — 2026-11-15
+
+PV2-02b now has a local, default-off trusted-synthetic lifecycle implementation: deterministic expiry, immediate read blocking, marked/resumable deletion, lease/fence protection, exactly-once logical quota release, stale StorageOperation reconciliation and reference-checked orphan/staging cleanup. Migration 008 and all lifecycle migrations run only in disposable databases; no HTTP route, scheduler, customer file or application-database migration is enabled. See [design, value metrics and limitations](pv2-02b-dataset-lifecycle.md).
+
+The next storage work is **PV2-02c / Hold**: production object storage and encryption, physical capacity enforcement, scheduled/observable maintenance, backups and deletion tombstones, derived-data cleanup and restore drills. User recycle-bin restoration is not implemented; after physical deletion this phase offers operational resume only. PV2-03 real identity/authorization remains a separate external-release blocker.

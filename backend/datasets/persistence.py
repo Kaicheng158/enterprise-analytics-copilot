@@ -21,6 +21,9 @@ from .private_storage import PrivateLocalBlobStore
 from .service import parse_file
 
 
+MAINTENANCE_LOCK = "dataset_store:maintenance:v1"
+
+
 def _sha256(value: bytes) -> str:
     return hashlib.sha256(value).hexdigest()
 
@@ -65,6 +68,23 @@ class PrivateDatasetPersistenceService:
             raise
         except Exception:
             raise PersistenceFailure("database_error") from None
+
+    @contextmanager
+    def _shared_maintenance_lock(self, connection):
+        connection.execute(
+            "SELECT pg_advisory_lock_shared(hashtextextended(%s,0))",
+            (MAINTENANCE_LOCK,),
+        )
+        try:
+            yield
+        finally:
+            try:
+                connection.execute(
+                    "SELECT pg_advisory_unlock_shared(hashtextextended(%s,0))",
+                    (MAINTENANCE_LOCK,),
+                )
+            except Exception:
+                pass
 
     def create_project(
         self,
@@ -130,8 +150,13 @@ class PrivateDatasetPersistenceService:
             f"{project_id}:asset:{asset_key}",
             f"{project_id}:content:{dataset.source_sha256}:{dataset.parse_contract_sha256}",
         ))
+        project_lock_key = f"dataset_store:project:{project_id}"
 
-        with self._connection() as connection:
+        with self._connection() as connection, self._shared_maintenance_lock(connection):
+            connection.execute(
+                "SELECT pg_advisory_lock_shared(hashtextextended(%s,0))",
+                (project_lock_key,),
+            )
             for lock_key in lock_keys:
                 connection.execute("SELECT pg_advisory_lock(hashtextextended(%s,0))", (lock_key,))
             try:
@@ -186,6 +211,13 @@ class PrivateDatasetPersistenceService:
                         connection.execute("SELECT pg_advisory_unlock(hashtextextended(%s,0))", (lock_key,))
                     except Exception:
                         pass
+                try:
+                    connection.execute(
+                        "SELECT pg_advisory_unlock_shared(hashtextextended(%s,0))",
+                        (project_lock_key,),
+                    )
+                except Exception:
+                    pass
 
     def reconcile(
         self, operation_id: uuid.UUID, *, trusted_local: bool = False
@@ -193,7 +225,7 @@ class PrivateDatasetPersistenceService:
         self._authorize(trusted_local)
         if type(operation_id) is not uuid.UUID:
             raise PersistenceFailure("invalid_operation_id")
-        with self._connection() as connection:
+        with self._connection() as connection, self._shared_maintenance_lock(connection):
             with connection.transaction():
                 row = connection.execute(
                     """SELECT o.state,o.reserved_bytes,a.storage_ref,a.source_bytes,a.source_sha256,
@@ -275,7 +307,8 @@ class PrivateDatasetPersistenceService:
                     connection.execute("UPDATE dataset_store.asset_revisions SET state='pending',ready_at=NULL WHERE project_id=%s AND revision_id=%s", (project_id, prior[1]))
                     connection.execute("UPDATE dataset_store.dataset_revisions SET state='pending',ready_at=NULL WHERE project_id=%s AND asset_revision_id=%s", (project_id, prior[1]))
                     connection.execute("""UPDATE dataset_store.storage_operations SET state='writing',reserved_bytes=%s,
-                        actual_bytes=NULL,error_code=NULL,updated_at=now() WHERE operation_id=%s""", (reservation,retry[0]))
+                        actual_bytes=NULL,error_code=NULL,updated_at=now(),state_version=state_version+1,
+                        reconcile_after=now()+interval '15 minutes' WHERE operation_id=%s""", (reservation,retry[0]))
                     return {"reused": False,"operation_id":retry[0],"asset_id":prior[0],"revision_id":prior[1],"raw_ref":retry[1],"dataset_ref":retry[2]}
                 raise PersistenceFailure("reconciliation_required")
             connection.execute(
@@ -319,12 +352,13 @@ class PrivateDatasetPersistenceService:
             )
             connection.execute(
                 """INSERT INTO dataset_store.storage_operations
-                   (operation_id,project_id,asset_id,asset_revision_id,request_sha256,state,reserved_bytes)
-                   VALUES (%s,%s,%s,%s,%s,'reserved',%s)""",
+                   (operation_id,project_id,asset_id,asset_revision_id,request_sha256,state,reserved_bytes,reconcile_after)
+                   VALUES (%s,%s,%s,%s,%s,'reserved',%s,now()+interval '15 minutes')""",
                 (operation_id, project_id, asset_id, revision_id, request_sha, reservation),
             )
             connection.execute(
-                "UPDATE dataset_store.storage_operations SET state='writing',updated_at=now() WHERE operation_id=%s",
+                """UPDATE dataset_store.storage_operations SET state='writing',updated_at=now(),
+                   state_version=state_version+1 WHERE operation_id=%s""",
                 (operation_id,),
             )
         return {"reused": False, "operation_id": operation_id, "asset_id": asset_id, "revision_id": revision_id,
@@ -359,7 +393,8 @@ class PrivateDatasetPersistenceService:
             )
             connection.execute(
                 """UPDATE dataset_store.storage_operations SET state='ready',actual_bytes=%s,
-                   reserved_bytes=0,updated_at=now() WHERE operation_id=%s""",
+                   reserved_bytes=0,updated_at=now(),state_version=state_version+1,reconcile_after=NULL
+                   WHERE operation_id=%s""",
                 (reserved, operation_id),
             )
 
@@ -372,7 +407,9 @@ class PrivateDatasetPersistenceService:
                 ).fetchone()
                 if not row:
                     return
-                connection.execute("UPDATE dataset_store.storage_operations SET state='reconciling',updated_at=now() WHERE operation_id=%s AND state IN ('reserved','writing')", (operation_id,))
+                connection.execute("""UPDATE dataset_store.storage_operations SET state='reconciling',updated_at=now(),
+                    state_version=state_version+1,reconcile_after=now()+interval '15 minutes'
+                    WHERE operation_id=%s AND state IN ('reserved','writing')""", (operation_id,))
                 connection.execute("UPDATE dataset_store.asset_revisions SET state='reconciling' WHERE project_id=%s AND revision_id=%s AND state='pending'", row)
                 connection.execute("UPDATE dataset_store.dataset_revisions SET state='reconciling' WHERE project_id=%s AND asset_revision_id=%s AND state='pending'", row)
         except Exception:
@@ -390,7 +427,9 @@ class PrivateDatasetPersistenceService:
             connection.execute("UPDATE dataset_store.projects SET reserved_bytes=reserved_bytes-%s,updated_at=now() WHERE project_id=%s", (reserved, project_id))
             connection.execute("UPDATE dataset_store.asset_revisions SET state='failed' WHERE project_id=%s AND revision_id=%s", (project_id, revision_id))
             connection.execute("UPDATE dataset_store.dataset_revisions SET state='failed' WHERE project_id=%s AND asset_revision_id=%s", (project_id, revision_id))
-            connection.execute("UPDATE dataset_store.storage_operations SET state='failed',reserved_bytes=0,error_code=%s,updated_at=now() WHERE operation_id=%s", (error_code, operation_id))
+            connection.execute("""UPDATE dataset_store.storage_operations SET state='failed',reserved_bytes=0,
+                error_code=%s,updated_at=now(),state_version=state_version+1,reconcile_after=NULL
+                WHERE operation_id=%s""", (error_code, operation_id))
 
     def _result(self, connection, project_id, asset_id, revision_id, reused):
         project = self._project(connection.execute(

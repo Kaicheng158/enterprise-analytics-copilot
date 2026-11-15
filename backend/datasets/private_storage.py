@@ -117,6 +117,60 @@ class PrivateLocalBlobStore:
     def object_count(self) -> int:
         return sum(1 for path in self._objects.glob("*/*") if path.is_file())
 
+    def cleanup_unreferenced(
+        self, referenced: set[str], limit: int
+    ) -> tuple[int, int, int, int, bool]:
+        """Remove only recognized unreferenced objects/staging files under an external maintenance lock."""
+        if type(referenced) is not set or type(limit) is not int or limit < 0:
+            raise PersistenceFailure("invalid_cleanup_contract")
+        for reference in referenced:
+            if not isinstance(reference, str) or not REFERENCE.fullmatch(reference):
+                raise PersistenceFailure("invalid_cleanup_reference")
+        removed_objects = removed_staging = logical_bytes = physical_bytes = 0
+        candidates: list[tuple[Path, str | None]] = []
+        for path in sorted(self._objects.glob("*/*")):
+            try:
+                parent = path.parent
+                if (
+                    parent.is_symlink()
+                    or parent.resolve(strict=True).parent != self._objects
+                    or path.is_symlink()
+                    or not path.is_file()
+                ):
+                    continue
+            except OSError:
+                continue
+            if path.name.startswith(".staging-"):
+                candidates.append((path, None))
+                continue
+            match = re.fullmatch(r"([0-9a-f]{32})\.(raw|dataset)", path.name)
+            if match:
+                candidates.append((path, f"private:v1:{match.group(1)}:{match.group(2)}"))
+        eligible = [(path, ref) for path, ref in candidates if ref is None or ref not in referenced]
+        for path, reference in eligible[:limit]:
+            try:
+                stat = path.stat()
+                allocated = getattr(stat, "st_blocks", 0) * 512
+                path.unlink()
+                self._fsync_directory(path.parent)
+            except FileNotFoundError:
+                continue
+            except OSError:
+                raise PersistenceFailure("storage_cleanup_failed") from None
+            logical_bytes += stat.st_size
+            physical_bytes += allocated
+            if reference is None:
+                removed_staging += 1
+            else:
+                removed_objects += 1
+        return (
+            removed_objects,
+            removed_staging,
+            logical_bytes,
+            physical_bytes,
+            len(eligible) > limit,
+        )
+
     @staticmethod
     def _fsync_directory(path: Path) -> None:
         descriptor = os.open(path, os.O_RDONLY)

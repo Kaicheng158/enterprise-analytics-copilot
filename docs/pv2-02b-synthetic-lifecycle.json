@@ -1,0 +1,63 @@
+{
+  "audit_event_counts": [
+    {
+      "count": 1,
+      "event": "deletion_completed"
+    },
+    {
+      "count": 1,
+      "event": "deletion_marked"
+    },
+    {
+      "count": 1,
+      "event": "garbage_collection"
+    },
+    {
+      "count": 1,
+      "event": "maintenance_run"
+    },
+    {
+      "count": 1,
+      "event": "retention_set"
+    },
+    {
+      "count": 1,
+      "event": "revision_expired"
+    },
+    {
+      "count": 1,
+      "event": "storage_reconciled_failed"
+    }
+  ],
+  "deletion_quota_released_bytes": 1138,
+  "evidence_version": "pv2-02b-lifecycle-v1",
+  "expired_revisions": 1,
+  "logical_quota_after_delete_before_maintenance": 1138,
+  "logical_quota_before_delete": 2276,
+  "maintenance_processed_items": 4,
+  "orphan_blobs_removed": 1,
+  "paid_calls": 0,
+  "physical_bytes_reclaimed_positive": true,
+  "private_blob_count_after_maintenance": 2,
+  "quota_reserved_bytes": 0,
+  "quota_used_bytes": 1138,
+  "revision_states": [
+    {
+      "count": 1,
+      "state": "deleted"
+    },
+    {
+      "count": 1,
+      "state": "expired"
+    },
+    {
+      "count": 1,
+      "state": "failed"
+    }
+  ],
+  "scope": "trusted local synthetic harness; no real-user time-savings claim",
+  "staging_files_removed": 1,
+  "stale_storage_failed": 1,
+  "truncated": false,
+  "user_restore_after_physical_delete_supported": false
+}

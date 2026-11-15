@@ -4,7 +4,9 @@ Development has completed Phase 5.8b local Fake/Mock acceptance. The repository 
 
 PV2-01 now has a **completed local, default-off CSV/XLSX parsing foundation**, with explicit typed contracts, scoped revision identities, bounded process parsing and synthetic validation evidence. This is not an upload feature or real file analysis. See [design, limits and value metrics](docs/pv2-01-file-parsing.md).
 
-PV2-02a adds a **default-off private Dataset persistence foundation for trusted synthetic harnesses**: project-scoped immutable revisions, opaque local blob references, PostgreSQL metadata, project-wide duplicate recognition, atomic logical-byte quota reservation and conservative reconciliation. It adds no upload/API/authentication path and was migrated only in disposable databases. Retention enforcement, delete/restore, cleanup, encryption and production object storage remain PV2-02b or deployment work. See [design and limitations](docs/pv2-02a-private-dataset-persistence.md).
+PV2-02a adds a **default-off private Dataset persistence foundation for trusted synthetic harnesses**: project-scoped immutable revisions, opaque local blob references, PostgreSQL metadata, project-wide duplicate recognition, atomic logical-byte quota reservation and conservative reconciliation. It adds no upload/API/authentication path and was migrated only in disposable databases. See [design and limitations](docs/pv2-02a-private-dataset-persistence.md).
+
+PV2-02b locally adds **default-off lifecycle enforcement and bounded maintenance** for that trusted synthetic store: expiry blocks reads, deletion is marked before resumable physical cleanup, fenced operations release logical quota once, stale writes reuse verified reconciliation, and GC removes only reference-checked orphan/staging files under an exclusive maintenance lock. It adds no scheduler, public route, customer-data path or user recycle bin. Production object storage, backup/derived-data deletion and real authorization remain future work. See [lifecycle design and limits](docs/pv2-02b-dataset-lifecycle.md).
 
 ## Start
 
