@@ -248,6 +248,70 @@ class PrivateDatasetLifecycleTests(unittest.TestCase):
         self.assertTrue(all(value in {"completed", "deletion_lease_active"} for value in outcomes))
         self.assertEqual(self.quota(), (0, 0))
 
+    def test_expired_lease_takeover_fences_old_worker_finalization(self):
+        stored = self.persist()
+        revision_id = stored.asset_revision.revision_id
+        marked = self.lifecycle.mark_for_deletion(
+            self.project_id, revision_id, trusted_local=True
+        )
+        old_owner, new_owner = uuid.uuid4(), uuid.uuid4()
+        used_before = self.quota()[0]
+
+        with self.connections() as connection:
+            old_claim = self.lifecycle._claim_deletion(
+                connection, marked.operation_id, old_owner
+            )
+            old_fence, raw_ref, dataset_ref, logical_bytes = old_claim[1:]
+            connection.execute(
+                """UPDATE dataset_store.lifecycle_operations
+                   SET lease_expires_at=now()-interval '1 second'
+                   WHERE operation_id=%s""",
+                (marked.operation_id,),
+            )
+            new_claim = self.lifecycle._claim_deletion(
+                connection, marked.operation_id, new_owner
+            )
+            new_fence = new_claim[1]
+            self.assertEqual(new_fence, old_fence + 1)
+
+            with self.assertRaisesRegex(PersistenceFailure, "stale_deletion_worker"):
+                self.lifecycle._complete_deletion(
+                    connection,
+                    marked.operation_id,
+                    self.project_id,
+                    revision_id,
+                    old_owner,
+                    old_fence,
+                    logical_bytes,
+                )
+            state = connection.execute(
+                """SELECT a.state,d.state,o.state,o.fence_token,o.lease_owner
+                   FROM dataset_store.asset_revisions a
+                   JOIN dataset_store.dataset_revisions d
+                     ON d.asset_revision_id=a.revision_id
+                   JOIN dataset_store.lifecycle_operations o
+                     ON o.asset_revision_id=a.revision_id
+                   WHERE a.revision_id=%s""",
+                (revision_id,),
+            ).fetchone()
+            self.assertEqual(state, ("deleting", "deleting", "removing", new_fence, new_owner))
+            self.assertEqual(self.quota()[0], used_before)
+
+            self.store.remove(raw_ref)
+            self.store.remove(dataset_ref)
+            completed = self.lifecycle._complete_deletion(
+                connection,
+                marked.operation_id,
+                self.project_id,
+                revision_id,
+                new_owner,
+                new_fence,
+                logical_bytes,
+            )
+        self.assertEqual(completed.state, "completed")
+        self.assertEqual(self.quota(), (0, 0))
+        self.assertEqual(self.store.object_count(), 0)
+
     def test_deletion_waits_for_project_write_and_preserves_other_ready_revision(self):
         first = self.persist("10.50")
         writer_entered, writer_release, delete_started = Event(), Event(), Event()

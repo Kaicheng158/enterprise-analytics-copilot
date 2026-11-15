@@ -265,6 +265,29 @@ class PrivateDatasetPersistenceTests(unittest.TestCase):
         self.assertEqual((result.state,result.action),("ready","published_verified_blobs"))
         self.assertEqual(self.counts()[4],0)
 
+    def test_repeated_verified_reconciliation_is_idempotent(self):
+        def fail(): raise RuntimeError("synthetic database boundary failure")
+        uncertain=self.new_service(before_finalize=fail)
+        with self.assertRaisesRegex(PersistenceFailure,"finalization_uncertain"):
+            self.persist(service=uncertain)
+        with self.connections() as connection:
+            operation=connection.execute(
+                "SELECT operation_id FROM dataset_store.storage_operations"
+            ).fetchone()[0]
+
+        first=self.service.reconcile(operation,trusted_local=True)
+        quota_after_first=self.counts()[3:]
+        object_count_after_first=self.store.object_count()
+        second=self.service.reconcile(operation,trusted_local=True)
+
+        self.assertEqual(
+            (first.state,first.action,second.state,second.action),
+            ("ready","published_verified_blobs","ready","published_verified_blobs"),
+        )
+        self.assertEqual(self.counts()[3:],quota_after_first)
+        self.assertEqual(self.store.object_count(),object_count_after_first)
+        self.assertEqual(self.counts()[:3],(1,1,1))
+
     def test_missing_blob_reconciliation_fails_and_releases_reservation(self):
         def fail(): raise RuntimeError("synthetic")
         uncertain=self.new_service(before_finalize=fail)

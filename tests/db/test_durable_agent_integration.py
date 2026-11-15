@@ -319,7 +319,15 @@ class DurableAgentIntegrationDatabaseTests(unittest.TestCase):
         )
         self.assertEqual(crashed.outcome, "crashed")
         self.assertEqual(len(executor.calls), 1)
-        sleep(1.05)
+        with self.connection_factory() as connection, connection.transaction():
+            expired = connection.execute(
+                f"""UPDATE {SCHEMA}.executions
+                       SET lease_expires_at=now()-interval '1 millisecond'
+                     WHERE execution_id=%s AND lease_owner=%s
+                       AND lease_expires_at>now()""",
+                (execution_id, "crash-worker-one"),
+            )
+        self.assertEqual(expired.rowcount, 1)
 
         restarted, _, restarted_executor, _, _, _ = self.new_stack()
         result = restarted.run_to_terminal(
