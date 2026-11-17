@@ -19,7 +19,7 @@ Phase 5.8a Workspace 双语 UI 与 Auth 细节已完成本地收尾审查；Figm
 | PV2-01 / P0（本地完成） | 文件/项目产品契约与威胁边界；版本化 CSV/XLSX 解析验证 foundation | synthetic/local 验收完成；不改变旧 API、不接 LLM；真实上传仍关闭 |
 | PV2-02 / P0（本地完成，生产 Hold） | 私有资产持久化、隔离区、配额/期限、删除与恢复；本地可靠性验收 | PV2-01；隔离 migration 与故障矩阵通过；对象存储/KMS/容量/备份/监控仍阻断生产 |
 | PV2-03a / P0（本地实现） | localhost 真实账号、凭证与 Session foundation | 独立默认关闭服务；Argon2id、HttpOnly/CSRF、过期/撤销/限流与持久重启；非公网认证 |
-| PV2-03b / P0，对外阻断项 | 单所有者私有项目、资产授权、项目状态与任务关联 | 依赖02+03a；跨用户负例、权限撤销、任务/资产逐路径授权与审计；禁止用 Demo 或固定内部 scope 接真实数据 |
+| PV2-03b / P0（本地实现，对外仍阻断） | 单所有者私有项目、资产授权、项目状态与任务关联 | 本地跨用户负例、撤销传播、任务/资产逐路径授权与审计通过；无公开 API、协作角色或生产部署，禁止用 Demo 或固定内部 scope 接真实数据 |
 | PV2-04 / P0 | 文件分析主闭环：集中澄清→受控计算工具→图表→简答/版本化报告页面 | 5.8b+01–03；扩展任务须新契约与独立评估；精确计算、口径一致、来源可复现、无证据不编造；复杂度/用户意图决定深度 |
 | PV2-05 / P1，MVP收束 | Data Detective 有限双表核对、持久历史及端到端验收 | 04；显式匹配键/粒度、重复/未匹配/差异解释、每项结论可定位行/列；安全/数值硬条件全过，独立质量与稳定性评估 |
 | PV2-06 / P1 | Decision Lab：版本化假设和确定性情景计算 | 04可信计算/报告；基准与模拟分开、合法输入范围、零/负/边界、敏感性；不承诺预测/因果 |
@@ -98,3 +98,9 @@ Decision: the PV2-01/02 local foundation is sufficient to start **PV2-03 local i
 PV2-03a now has a separate, default-off localhost authentication foundation: strict User/Credential/Session contracts, Argon2id password hashing, opaque server sessions, HttpOnly/SameSite cookies, same-origin and CSRF controls, expiry/revocation, bounded login failure limiting and content-free audit events. Migration 009 is validated only in disposable PostgreSQL. The approved Workspace Login/Register design can use the service only when its independent local flag is explicitly enabled; otherwise the prior non-reading Demo behavior remains unchanged. Successful local registration/login targets My Workspace directly, without an Organization page.
 
 This checkpoint does not claim production authentication or customer onboarding. Email ownership, recovery, MFA, HTTPS deployment, centralized abuse controls, production secrets/monitoring and all real Project/Asset authorization remain Hold. PV2-03b must bind a server-created principal to a single-owner private Project and enforce cross-user project/asset/task denial before any real upload can be enabled. See [PV2-03a design, value gate and limitations](pv2-03a-local-authentication.md).
+
+## PV2-03b local authorization checkpoint — 2026-11-17
+
+PV2-03b adds an append-only migration 010 and a default-off server authorization service. A live PV2-03a session can create one private Project owner relationship; project, active asset and bound durable task paths then require that same active owner. Product task scope is server-derived, wrong-project binding fails, and all negative cases use the same content-free denial. Owner revocation increments the authorization version, revokes task bindings, stops queue claim/heartbeat and blocks later Checkpoint/Receipt publication through a database guard. Metadata-only audit records capture allowed, denied and revoked decisions without credentials or business content.
+
+This local result does not enable customer intake. There is no public project/upload/task facade, collaboration grant, ownership transfer, production RLS/role design, authorization cache strategy or deployed monitoring. PV2-02c production storage blockers and PV2-03a production identity blockers remain Hold. See [PV2-03b design, value gate and limitations](pv2-03b-project-authorization.md).

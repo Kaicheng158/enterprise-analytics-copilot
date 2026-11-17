@@ -92,6 +92,7 @@ class PostgresCheckpointStore:
         schema: str,
         idempotency_secret: bytes,
         max_active_executions: int | None = None,
+        project_authorization_enabled: bool = False,
     ):
         if not IDENTIFIER_RE.fullmatch(schema):
             raise ValueError("invalid checkpoint schema")
@@ -102,10 +103,13 @@ class PostgresCheckpointStore:
             and not 1 <= max_active_executions <= 10_000
         ):
             raise ValueError("invalid active execution limit")
+        if type(project_authorization_enabled) is not bool:
+            raise ValueError("project authorization flag must be boolean")
         self._connection_factory = connection_factory
         self._schema = schema
         self._secret = bytes(idempotency_secret)
         self._max_active_executions = max_active_executions
+        self._project_authorization_enabled = project_authorization_enabled
 
     def create_or_get_execution(
         self,
@@ -356,11 +360,12 @@ class PostgresCheckpointStore:
         expires = now + timedelta(seconds=ttl_seconds)
         query = sql.SQL(
             """WITH candidate AS (
-                   SELECT execution_id FROM {}
-                    WHERE scope_key=%s
-                      AND status IN ('pending','running')
-                      AND (lease_owner IS NULL OR lease_expires_at <= %s)
-                    ORDER BY created_at, execution_id
+                   SELECT queued.execution_id FROM {} AS queued
+                    WHERE queued.scope_key=%s
+                      AND queued.status IN ('pending','running')
+                      AND (queued.lease_owner IS NULL OR queued.lease_expires_at <= %s)
+                      {}
+                    ORDER BY queued.created_at, queued.execution_id
                     FOR UPDATE SKIP LOCKED
                     LIMIT 1
                )
@@ -371,6 +376,7 @@ class PostgresCheckpointStore:
                RETURNING {}"""
         ).format(
             self._table("executions"),
+            self._task_authorization_predicate("queued"),
             self._table("executions"),
             sql.SQL(",").join(
                 sql.Identifier("execution", item)
@@ -399,12 +405,17 @@ class PostgresCheckpointStore:
             raise ValueError("lease TTL must be between 1 and 300 seconds")
         expires = now + timedelta(seconds=ttl_seconds)
         query = sql.SQL(
-            """UPDATE {} SET lease_owner=%s,lease_expires_at=%s,updated_at=%s
-               WHERE execution_id=%s
-                 AND status IN ('pending','running')
-                 AND (lease_owner IS NULL OR lease_expires_at <= %s OR lease_owner=%s)
+            """UPDATE {} AS execution SET lease_owner=%s,lease_expires_at=%s,updated_at=%s
+               WHERE execution.execution_id=%s
+                 AND execution.status IN ('pending','running')
+                 AND (execution.lease_owner IS NULL OR execution.lease_expires_at <= %s OR execution.lease_owner=%s)
+                 {}
                RETURNING {}"""
-        ).format(self._table("executions"), sql.SQL(self._execution_columns()))
+        ).format(
+            self._table("executions"),
+            self._task_authorization_predicate("execution"),
+            sql.SQL(self._execution_columns()),
+        )
         with self._connection_factory() as connection:
             with connection.transaction():
                 row = connection.execute(
@@ -437,13 +448,18 @@ class PostgresCheckpointStore:
             with connection.transaction():
                 row = connection.execute(
                     sql.SQL(
-                        """UPDATE {} SET lease_expires_at=%s,updated_at=%s
-                           WHERE execution_id=%s AND lease_owner=%s
-                             AND lease_expires_at > %s
-                             AND state_version=%s
-                             AND status IN ('pending','running')
+                        """UPDATE {} AS execution SET lease_expires_at=%s,updated_at=%s
+                           WHERE execution.execution_id=%s AND execution.lease_owner=%s
+                             AND execution.lease_expires_at > %s
+                             AND execution.state_version=%s
+                             AND execution.status IN ('pending','running')
+                             {}
                            RETURNING {}"""
-                    ).format(self._table("executions"), sql.SQL(self._execution_columns())),
+                    ).format(
+                        self._table("executions"),
+                        self._task_authorization_predicate("execution"),
+                        sql.SQL(self._execution_columns()),
+                    ),
                     (expires, now, execution_id, worker_id, now, expected_state_version),
                 ).fetchone()
                 if row is not None:
@@ -1212,6 +1228,28 @@ class PostgresCheckpointStore:
 
     def _table(self, name: str):
         return sql.Identifier(self._schema, name)
+
+    def _task_authorization_predicate(self, execution_alias: str):
+        if not self._project_authorization_enabled:
+            return sql.SQL("")
+        return sql.SQL(
+            """AND NOT EXISTS (
+                   SELECT 1
+                     FROM product_auth.project_task_bindings binding
+                     JOIN product_auth.project_owners owner
+                       ON owner.project_id=binding.project_id
+                      AND owner.owner_user_id=binding.owner_user_id
+                     JOIN product_auth.users users
+                       ON users.user_id=owner.owner_user_id
+                    WHERE binding.execution_id={}.execution_id
+                      AND (
+                          binding.state <> 'active'
+                          OR owner.state <> 'active'
+                          OR users.state <> 'active'
+                          OR binding.authorization_version <> owner.authorization_version
+                      )
+               )"""
+        ).format(sql.Identifier(execution_alias))
 
     @staticmethod
     def _execution_columns() -> str:
