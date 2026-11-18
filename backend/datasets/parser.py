@@ -335,6 +335,18 @@ def parse_core(data: bytes, spec: FileSpec, limits: ParseSettings) -> Dataset:
                     kind, value = 'null', None
                     if column.required:
                         issue('required_missing', 'blocking', loc)
+                elif (
+                    value.lstrip().startswith(('=', '+', '@'))
+                    or (
+                        value.lstrip().startswith('-')
+                        and (
+                            column.kind not in {'decimal', 'money'}
+                            or not NUM.fullmatch(value)
+                        )
+                    )
+                ):
+                    kind, value = 'blocked', None
+                    issue('formula_like_text', 'blocking', loc)
                 elif column.kind in {'decimal', 'money'}:
                     if len(value) > 128 or not NUM.fullmatch(value):
                         kind, value = 'blocked', None
@@ -358,8 +370,6 @@ def parse_core(data: bytes, spec: FileSpec, limits: ParseSettings) -> Dataset:
                     if value not in {'true', 'false'}:
                         kind, value = 'blocked', None
                         issue('boolean_ambiguous', 'blocking', loc)
-                elif value.lstrip().startswith(('=', '+', '-', '@')):
-                    issue('formula_like_text', 'blocking', loc)
                 row.append(Cell(value=value, kind=kind, location=loc))
             if ri != 1:
                 output.append(tuple(row))

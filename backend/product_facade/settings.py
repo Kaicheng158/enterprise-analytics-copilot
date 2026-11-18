@@ -3,9 +3,12 @@
 from __future__ import annotations
 
 import os
+from pathlib import Path
 from urllib.parse import urlsplit
 
-from .models import ProductFacadeSettings
+from pydantic import SecretStr
+
+from .models import ProductDatasetSettings, ProductFacadeSettings
 
 
 def _boolean(name: str, default: bool = False) -> bool:
@@ -45,6 +48,35 @@ def load_product_facade_settings() -> ProductFacadeSettings:
             ),
             lifecycle_policy_version=os.getenv(
                 "PRODUCT_FACADE_LIFECYCLE_POLICY_VERSION", "local-private-v1"
+            ),
+        )
+    )
+
+
+def validate_product_dataset_settings(settings: ProductDatasetSettings) -> ProductDatasetSettings:
+    if not settings.enabled:
+        return settings
+    if len(settings.idempotency_secret.get_secret_value()) < 32:
+        raise ValueError("PRODUCT_DATASET_IDEMPOTENCY_SECRET must contain at least 32 characters")
+    if not settings.storage_root:
+        raise ValueError("PRODUCT_DATASET_STORAGE_ROOT is required when upload is enabled")
+    root = Path(settings.storage_root).expanduser()
+    if not root.is_absolute():
+        raise ValueError("PRODUCT_DATASET_STORAGE_ROOT must be absolute")
+    return settings.model_copy(update={"storage_root": str(root)})
+
+
+def load_product_dataset_settings() -> ProductDatasetSettings:
+    return validate_product_dataset_settings(
+        ProductDatasetSettings(
+            enabled=_boolean("PRODUCT_DATASET_UPLOAD_ENABLED"),
+            idempotency_secret=SecretStr(os.getenv("PRODUCT_DATASET_IDEMPOTENCY_SECRET", "")),
+            storage_root=os.getenv("PRODUCT_DATASET_STORAGE_ROOT", ""),
+            max_file_bytes=int(
+                os.getenv("PRODUCT_DATASET_MAX_FILE_BYTES", str(2 * 1024 * 1024))
+            ),
+            max_schema_header_bytes=int(
+                os.getenv("PRODUCT_DATASET_MAX_SCHEMA_HEADER_BYTES", "8192")
             ),
         )
     )

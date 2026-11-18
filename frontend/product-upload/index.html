@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Local Dataset Upload · Analytics Copilot</title>
+  <link rel="stylesheet" href="/dataset-upload/styles.css">
+</head>
+<body>
+  <main>
+    <header>
+      <p class="eyebrow">LOCAL SYNTHETIC HARNESS · DEFAULT OFF</p>
+      <h1>Private Dataset upload</h1>
+      <p>This page shows only responses returned by the authenticated local Product Facade. Do not use customer files.</p>
+    </header>
+
+    <section aria-labelledby="project-heading">
+      <h2 id="project-heading">1. Private Project</h2>
+      <label>Project name <input id="project-name" value="Synthetic Upload Review" maxlength="120"></label>
+      <button id="create-project" type="button">Create or resume Project</button>
+      <output id="project-result" aria-live="polite"></output>
+    </section>
+
+    <section aria-labelledby="upload-heading">
+      <h2 id="upload-heading">2. Validated CSV/XLSX</h2>
+      <label>Dataset name <input id="dataset-name" value="Synthetic quarterly sales" maxlength="120"></label>
+      <label>File <input id="dataset-file" type="file" accept=".csv,.xlsx"></label>
+      <label>Explicit schema JSON
+        <textarea id="dataset-schema" rows="8">[{"name":"region","kind":"text","required":true},{"name":"revenue","kind":"money","required":true,"unit":"USD"},{"name":"date","kind":"date","required":true}]</textarea>
+      </label>
+      <button id="upload-dataset" type="button">Validate and store</button>
+      <output id="upload-result" aria-live="polite"></output>
+    </section>
+
+    <section aria-labelledby="preview-heading">
+      <h2 id="preview-heading">3. Redacted preview</h2>
+      <button id="load-preview" type="button">Load last stored preview</button>
+      <pre id="preview-result" aria-live="polite"></pre>
+    </section>
+  </main>
+  <script src="/dataset-upload/app.js" defer></script>
+</body>
+</html>

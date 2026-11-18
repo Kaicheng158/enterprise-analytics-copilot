@@ -104,6 +104,38 @@ class PrivateLocalBlobStore:
         except OSError:
             return False
 
+    def read_verified(
+        self,
+        reference: str,
+        *,
+        expected_size: int,
+        expected_sha256: str,
+        max_bytes: int,
+    ) -> bytes:
+        """Read an opaque object only after bounded size and digest checks."""
+        if (
+            type(expected_size) is not int
+            or type(max_bytes) is not int
+            or expected_size < 0
+            or max_bytes < 1
+            or expected_size > max_bytes
+            or not re.fullmatch(r"[0-9a-f]{64}", expected_sha256)
+        ):
+            raise PersistenceFailure("invalid_blob_read_contract")
+        path = self._path(reference)
+        try:
+            stat = path.stat()
+            if path.is_symlink() or not path.is_file() or stat.st_size != expected_size:
+                raise PersistenceFailure("stored_blob_integrity_mismatch")
+            content = path.read_bytes()
+        except PersistenceFailure:
+            raise
+        except OSError:
+            raise PersistenceFailure("stored_blob_unavailable") from None
+        if len(content) != expected_size or hashlib.sha256(content).hexdigest() != expected_sha256:
+            raise PersistenceFailure("stored_blob_integrity_mismatch")
+        return content
+
     def remove(self, reference: str) -> None:
         path = self._path(reference)
         try:

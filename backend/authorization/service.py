@@ -27,6 +27,10 @@ def project_scope_key(project_id: UUID) -> str:
     return f"product-project:{project_id}"
 
 
+def _project_write_lock_key(project_id: UUID) -> str:
+    return f"product-auth:project-write:{project_id}"
+
+
 class ProjectAuthorizationService:
     """Authorization derives from a live server session, never request identity fields."""
 
@@ -140,6 +144,129 @@ class ProjectAuthorizationService:
                 now=now, actor_user_id=actor, authorization_version=1,
             )
         return self._owner(row)
+
+    def create_or_get_owned_project(
+        self,
+        principal: AuthPrincipal,
+        *,
+        project_id: UUID,
+        quota_bytes: int,
+        lifecycle_policy_version: str,
+    ) -> ProjectOwner:
+        """Idempotently create the deterministic Project assigned by a server key.
+
+        This is not a general upsert.  Any pre-existing Project must have the
+        exact owner and storage contract or the operation fails closed.
+        """
+        self._enabled()
+        self._validate_contract(principal, project_id)
+        if type(quota_bytes) is not int or quota_bytes <= 0:
+            raise AuthorizationFailure("authorization_contract_invalid")
+        if not isinstance(lifecycle_policy_version, str) or not 1 <= len(lifecycle_policy_version) <= 80:
+            raise AuthorizationFailure("authorization_contract_invalid")
+        now = self._clock()
+        with self._connection() as connection, connection.transaction():
+            actor = self._principal_user(connection, principal, now)
+            if actor is None:
+                raise AuthorizationFailure()
+            connection.execute(
+                "SELECT pg_advisory_xact_lock(hashtextextended(%s,0))",
+                (_project_write_lock_key(project_id),),
+            )
+            connection.execute(
+                """INSERT INTO dataset_store.projects
+                   (project_id,scope_key,quota_bytes,lifecycle_policy_version)
+                   VALUES (%s,%s,%s,%s) ON CONFLICT (project_id) DO NOTHING""",
+                (project_id, project_scope_key(project_id), quota_bytes, lifecycle_policy_version),
+            )
+            project = connection.execute(
+                """SELECT scope_key,state,quota_bytes,lifecycle_policy_version
+                   FROM dataset_store.projects WHERE project_id=%s""",
+                (project_id,),
+            ).fetchone()
+            if project != (
+                project_scope_key(project_id), "active", quota_bytes, lifecycle_policy_version
+            ):
+                raise AuthorizationFailure("authorization_contract_invalid")
+            connection.execute(
+                """INSERT INTO product_auth.project_owners
+                   (project_id,owner_user_id,state,authorization_version,created_at,updated_at)
+                   VALUES (%s,%s,'active',1,%s,%s)
+                   ON CONFLICT (project_id) DO NOTHING""",
+                (project_id, actor, now, now),
+            )
+            row = connection.execute(
+                """SELECT project_id,owner_user_id,state,authorization_version,
+                          created_at,updated_at,revoked_at
+                   FROM product_auth.project_owners WHERE project_id=%s""",
+                (project_id,),
+            ).fetchone()
+            if row is None or row[1] != actor or row[2] != "active":
+                raise AuthorizationFailure()
+            self._audit(
+                connection, principal=principal, project_id=project_id,
+                action="project_write", decision="allowed", reason_code="owner_idempotent",
+                now=now, actor_user_id=actor, authorization_version=row[3],
+            )
+        return self._owner(row)
+
+    @contextmanager
+    def project_write_fence(self, principal: AuthPrincipal, project_id: UUID):
+        """Serialize an authorized write with owner revocation.
+
+        The caller may perform storage work while this server-held lock is
+        active.  Revocation uses the same lock, and the owner/session version is
+        checked before the caller receives a result and again before release.
+        """
+        self._enabled()
+        self._validate_contract(principal, project_id)
+        now = self._clock()
+        with self._connection() as connection:
+            connection.execute(
+                "SELECT pg_advisory_lock(hashtextextended(%s,0))",
+                (_project_write_lock_key(project_id),),
+            )
+            try:
+                with connection.transaction():
+                    actor = self._principal_user(connection, principal, now)
+                    row = None if actor is None else connection.execute(
+                        """SELECT owner.authorization_version
+                           FROM product_auth.project_owners owner
+                           JOIN dataset_store.projects project ON project.project_id=owner.project_id
+                           WHERE owner.project_id=%s AND owner.owner_user_id=%s
+                             AND owner.state='active' AND project.state='active'""",
+                        (project_id, actor),
+                    ).fetchone()
+                    if row is None:
+                        raise AuthorizationFailure()
+                    version = row[0]
+                    self._audit(
+                        connection, principal=principal, project_id=project_id,
+                        action="project_write", decision="allowed", reason_code="write_fence_acquired",
+                        now=now, actor_user_id=actor, authorization_version=version,
+                    )
+                yield AuthorizedResource(
+                    user_id=principal.user_id, project_id=project_id,
+                    action="project_write", authorization_version=version,
+                )
+                final_now = self._clock()
+                with connection.transaction():
+                    final_actor = self._principal_user(connection, principal, final_now)
+                    final = None if final_actor is None else connection.execute(
+                        """SELECT authorization_version FROM product_auth.project_owners
+                           WHERE project_id=%s AND owner_user_id=%s AND state='active'""",
+                        (project_id, final_actor),
+                    ).fetchone()
+                    if final is None or final[0] != version:
+                        raise AuthorizationFailure()
+            finally:
+                try:
+                    connection.execute(
+                        "SELECT pg_advisory_unlock(hashtextextended(%s,0))",
+                        (_project_write_lock_key(project_id),),
+                    )
+                except Exception:
+                    pass
 
     def require_project(
         self,
@@ -294,6 +421,10 @@ class ProjectAuthorizationService:
         self._validate_contract(principal, project_id)
         now = self._clock()
         with self._connection() as connection, connection.transaction():
+            connection.execute(
+                "SELECT pg_advisory_xact_lock(hashtextextended(%s,0))",
+                (_project_write_lock_key(project_id),),
+            )
             actor = self._principal_user(connection, principal, now)
             row = None if actor is None else connection.execute(
                 """UPDATE product_auth.project_owners

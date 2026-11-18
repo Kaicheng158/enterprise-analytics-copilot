@@ -7,13 +7,20 @@ from .models import (
     AnalysisSourceReference,
     ChartSpecV1,
     CreatePrivateProjectRequest,
+    CreatePrivateProjectRequestV2,
+    DatasetListResponse,
+    DatasetPreviewResponse,
+    DatasetRevisionView,
+    DatasetUploadMetadata,
     DatasetAnalysisTaskRequestV1,
     DatasetAnalysisTaskStatusV1,
     ProductFacadeFailure,
     ProductFacadeSettings,
+    ProductDatasetSettings,
     ProductProjectView,
     ProductWorkspaceView,
 )
+from .datasets import AuthorizedDatasetProductService, DatasetValidationRequired
 from .service import LocalProductFacadeService
 
 __all__ = [
@@ -23,11 +30,19 @@ __all__ = [
     "AnalysisSourceReference",
     "ChartSpecV1",
     "CreatePrivateProjectRequest",
+    "CreatePrivateProjectRequestV2",
+    "DatasetListResponse",
+    "DatasetPreviewResponse",
+    "DatasetRevisionView",
+    "DatasetUploadMetadata",
     "DatasetAnalysisTaskRequestV1",
     "DatasetAnalysisTaskStatusV1",
     "ProductFacadeFailure",
     "ProductFacadeSettings",
+    "ProductDatasetSettings",
     "ProductProjectView",
     "ProductWorkspaceView",
     "LocalProductFacadeService",
+    "AuthorizedDatasetProductService",
+    "DatasetValidationRequired",
 ]

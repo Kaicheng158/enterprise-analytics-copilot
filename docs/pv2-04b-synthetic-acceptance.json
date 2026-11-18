@@ -1,0 +1,48 @@
+{
+  "acceptance_version": "pv2-04b-local-synthetic-v1",
+  "date": "2026-11-19",
+  "scope": "synthetic_localhost_only",
+  "migration_chain": {
+    "first": "001_vector.sql",
+    "last": "011_product_dataset_upload.sql",
+    "history_modified": false,
+    "application_database_migrated": false
+  },
+  "tests": {
+    "offline": {"passed": 475, "total": 475},
+    "isolated_postgresql": {"passed": 171, "total": 171},
+    "pv2_04b_database_cases": {"passed": 12, "total": 12}
+  },
+  "browser_smoke": {
+    "status": "passed",
+    "account": "synthetic_not_recorded",
+    "source_formats": ["xlsx", "csv"],
+    "xlsx_source_bytes": 1446,
+    "csv_source_bytes": 70,
+    "xlsx_source_sha256": "d1ef87d8ae86efd440cf8c320a391d8415868902fa56145b6ea3f9e5f7c49311",
+    "csv_source_sha256": "2b8acfd158489e38d10da65957b0aa27bf838858d33060e39976a2c9a4ed5b1b",
+    "normalized_sha256": "8e971d963232158ff49db52dd853a9987aef05afa2b14d6d0c56745a104c2aed",
+    "normalized_hashes_equal": true,
+    "source_hashes_different": true,
+    "revision_filenames_correct": true,
+    "revision_states": ["ready", "ready"],
+    "rows": 2,
+    "columns": 3,
+    "values_redacted": true,
+    "blocking_errors": 0,
+    "confirmations": 0,
+    "warnings": 0,
+    "llm_calls": 0
+  },
+  "fault_evidence": {
+    "interrupted_ready_count_before_reconciliation": 0,
+    "duplicate_file_additional_quota_bytes": 0,
+    "same_key_result_count": 1,
+    "cross_scope_success_count": 0
+  },
+  "feature_flags_default_off": true,
+  "contains_raw_file_values": false,
+  "contains_credentials_or_session_tokens": false,
+  "contains_blob_references_or_paths": false,
+  "production_release": "hold"
+}

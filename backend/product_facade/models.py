@@ -14,7 +14,9 @@ import unicodedata
 from typing import Literal
 from uuid import UUID
 
-from pydantic import BaseModel, ConfigDict, Field, field_validator, model_validator
+from pydantic import BaseModel, ConfigDict, Field, SecretStr, field_validator, model_validator
+
+from backend.datasets.models import Column
 
 
 HEX_SHA256 = r"^[0-9a-f]{64}$"
@@ -36,6 +38,17 @@ class ProductFacadeSettings(ProductContract):
     allowed_origin: str = "http://127.0.0.1:8775"
     default_project_quota_bytes: int = Field(default=10 * 1024 * 1024, ge=1, le=100 * 1024 * 1024)
     lifecycle_policy_version: Literal["local-private-v1"] = "local-private-v1"
+
+
+class ProductDatasetSettings(ProductContract):
+    enabled: bool = False
+    policy_version: Literal["local-product-dataset-v1"] = "local-product-dataset-v1"
+    idempotency_secret: SecretStr = SecretStr("")
+    storage_root: str = ""
+    max_file_bytes: int = Field(default=2 * 1024 * 1024, ge=1, le=2 * 1024 * 1024)
+    max_schema_header_bytes: int = Field(default=8192, ge=128, le=8192)
+    max_preview_rows: Literal[5] = 5
+    max_preview_columns: Literal[8] = 8
 
 
 class ProductCapabilities(ProductContract):
@@ -75,6 +88,192 @@ class ProductWorkspaceView(ProductContract):
 class CreatePrivateProjectRequest(ProductContract):
     contract_version: Literal["create-private-project-v1"] = "create-private-project-v1"
     project_kind: Literal["private-analysis"] = "private-analysis"
+
+
+def _display_name(value: str, *, max_length: int) -> str:
+    normalized = " ".join(unicodedata.normalize("NFKC", value).strip().split())
+    if (
+        normalized != value
+        or not normalized
+        or len(normalized) > max_length
+        or any(ord(character) < 32 or ord(character) == 127 for character in normalized)
+    ):
+        raise ValueError("invalid display name")
+    return value
+
+
+class CreatePrivateProjectRequestV2(ProductContract):
+    contract_version: Literal["create-private-project-v2"] = "create-private-project-v2"
+    project_kind: Literal["private-analysis"] = "private-analysis"
+    name: str = Field(min_length=1, max_length=120)
+
+    @field_validator("name")
+    @classmethod
+    def valid_name(cls, value: str) -> str:
+        return _display_name(value, max_length=120)
+
+
+class ProductCapabilitiesV2(ProductContract):
+    project_access: Literal[True] = True
+    dataset_upload: bool
+    dataset_preview: bool
+    analysis_execution: Literal[False] = False
+    chart_generation: Literal[False] = False
+    report_generation: Literal[False] = False
+
+
+class ProductProjectViewV2(ProductContract):
+    contract_version: Literal["product-project-v2"] = "product-project-v2"
+    project_id: UUID
+    name: str = Field(min_length=1, max_length=120)
+    state: Literal["active"] = "active"
+    role: Literal["owner"] = "owner"
+    authorization_version: int = Field(gt=0)
+    quota_bytes: int = Field(gt=0)
+    used_bytes: int = Field(ge=0)
+    reserved_bytes: int = Field(ge=0)
+    lifecycle_policy_version: str = Field(min_length=1, max_length=80)
+    capabilities: ProductCapabilitiesV2
+
+    @model_validator(mode="after")
+    def quota_is_coherent(self):
+        if self.used_bytes + self.reserved_bytes > self.quota_bytes:
+            raise ValueError("project quota is incoherent")
+        return self
+
+
+class ProductWorkspaceViewV2(ProductContract):
+    response_version: Literal["product-workspace-v2"] = "product-workspace-v2"
+    destination: Literal["my-workspace"] = "my-workspace"
+    projects: tuple[ProductProjectViewV2, ...]
+    capabilities: ProductCapabilitiesV2
+
+
+class DatasetUploadMetadata(ProductContract):
+    contract_version: Literal["dataset-upload-v1"] = "dataset-upload-v1"
+    dataset_name: str = Field(min_length=1, max_length=120)
+    filename: str = Field(min_length=1, max_length=128)
+    columns: tuple[Column, ...] = Field(min_length=1, max_length=64)
+
+    @field_validator("columns", mode="before")
+    @classmethod
+    def json_columns(cls, value):
+        return tuple(value) if isinstance(value, list) else value
+
+    @field_validator("dataset_name")
+    @classmethod
+    def valid_dataset_name(cls, value: str) -> str:
+        return _display_name(value, max_length=120)
+
+    @field_validator("filename")
+    @classmethod
+    def safe_filename(cls, value: str) -> str:
+        if (
+            value != unicodedata.normalize("NFC", value).strip()
+            or "/" in value
+            or "\\" in value
+            or ":" in value
+            or value.startswith(".")
+            or not value.endswith((".csv", ".xlsx"))
+            or any(ord(character) < 32 or ord(character) == 127 for character in value)
+        ):
+            raise ValueError("invalid filename")
+        return value
+
+
+class DatasetIssueLocationView(ProductContract):
+    table_index: int = Field(ge=1)
+    sheet: str | None = Field(default=None, max_length=128)
+    row: int = Field(ge=1)
+    column: int = Field(ge=1, le=64)
+    line_start: int | None = Field(default=None, ge=1)
+    line_end: int | None = Field(default=None, ge=1)
+
+
+class DatasetQualityIssueView(ProductContract):
+    code: str = Field(pattern=r"^[a-z][a-z0-9_]{1,79}$")
+    category: Literal["blocking_error", "confirmation_required", "warning"]
+    location: DatasetIssueLocationView
+
+
+class DatasetQualitySummary(ProductContract):
+    contract_version: Literal["dataset-quality-v1"] = "dataset-quality-v1"
+    blocking_errors: tuple[DatasetQualityIssueView, ...] = ()
+    confirmations: tuple[DatasetQualityIssueView, ...] = ()
+    warnings: tuple[DatasetQualityIssueView, ...] = ()
+
+
+class DatasetRevisionView(ProductContract):
+    response_version: Literal["dataset-revision-v1"] = "dataset-revision-v1"
+    project_id: UUID
+    asset_id: UUID
+    asset_revision_id: UUID
+    dataset_revision_id: UUID
+    dataset_name: str = Field(min_length=1, max_length=120)
+    original_filename: str = Field(min_length=1, max_length=128)
+    revision_number: int = Field(gt=0)
+    source_format: Literal["csv", "xlsx"]
+    source_bytes: int = Field(ge=0)
+    source_sha256: str = Field(pattern=HEX_SHA256)
+    normalized_sha256: str = Field(pattern=HEX_SHA256)
+    dataset_contract_version: str = Field(min_length=1, max_length=80)
+    parser_policy_version: str = Field(min_length=1, max_length=80)
+    state: Literal["ready"] = "ready"
+    reused: bool = False
+    quality: DatasetQualitySummary
+
+
+class DatasetRevisionSummary(ProductContract):
+    project_id: UUID
+    asset_id: UUID
+    asset_revision_id: UUID
+    dataset_revision_id: UUID
+    dataset_name: str = Field(min_length=1, max_length=120)
+    original_filename: str = Field(min_length=1, max_length=128)
+    revision_number: int = Field(gt=0)
+    source_format: Literal["csv", "xlsx"]
+    source_bytes: int = Field(ge=0)
+    state: Literal["ready"] = "ready"
+
+
+class DatasetListResponse(ProductContract):
+    response_version: Literal["dataset-list-v1"] = "dataset-list-v1"
+    project_id: UUID
+    revisions: tuple[DatasetRevisionSummary, ...]
+
+
+class DatasetPreviewCell(ProductContract):
+    value: Literal["[redacted]"] | None
+    kind: Literal["text", "decimal", "money", "date", "boolean", "null", "blocked"]
+    row: int = Field(ge=2)
+    column: int = Field(ge=1, le=64)
+
+
+class DatasetPreviewColumn(ProductContract):
+    name: str = Field(min_length=1, max_length=128)
+    kind: Literal["text", "decimal", "money", "date", "boolean"]
+    required: bool
+    unit: str | None = Field(default=None, max_length=32)
+
+
+class DatasetPreviewTable(ProductContract):
+    table_index: int = Field(ge=1)
+    sheet: str | None = Field(default=None, max_length=128)
+    columns: tuple[DatasetPreviewColumn, ...] = Field(max_length=8)
+    rows: tuple[tuple[DatasetPreviewCell, ...], ...] = Field(max_length=5)
+    total_rows: int = Field(ge=0)
+    total_columns: int = Field(ge=1)
+
+
+class DatasetPreviewResponse(ProductContract):
+    response_version: Literal["dataset-preview-v1"] = "dataset-preview-v1"
+    project_id: UUID
+    asset_id: UUID
+    asset_revision_id: UUID
+    dataset_revision_id: UUID
+    values_redacted: Literal[True] = True
+    tables: tuple[DatasetPreviewTable, ...] = Field(max_length=4)
+    quality: DatasetQualitySummary
 
 
 class DatasetRevisionBinding(ProductContract):

@@ -6,7 +6,7 @@ import re
 from typing import Callable
 import uuid
 
-from .models import FileSpec, ParseSettings
+from .models import Dataset, FileSpec, ParseSettings
 from .persistence_models import (
     Asset,
     AssetRevision,
@@ -218,6 +218,54 @@ class PrivateDatasetPersistenceService:
                     )
                 except Exception:
                     pass
+
+    def load_dataset(
+        self,
+        *,
+        project_id: uuid.UUID,
+        dataset_revision_id: uuid.UUID,
+        trusted_local: bool = False,
+    ) -> Dataset:
+        """Load one active/ready normalized Dataset without exposing its blob reference."""
+        self._authorize(trusted_local)
+        if type(project_id) is not uuid.UUID or type(dataset_revision_id) is not uuid.UUID:
+            raise PersistenceFailure("invalid_dataset_read_contract")
+        with self._connection() as connection:
+            row = connection.execute(
+                """SELECT dataset.storage_ref,dataset.dataset_bytes,dataset.blob_sha256,
+                          dataset.normalized_sha256,dataset.dataset_contract_version,
+                          dataset.parser_policy_version,revision.source_sha256,revision.asset_id,
+                          revision.revision_id
+                   FROM dataset_store.dataset_revisions dataset
+                   JOIN dataset_store.asset_revisions revision
+                     ON (revision.project_id,revision.revision_id)=
+                        (dataset.project_id,dataset.asset_revision_id)
+                   JOIN dataset_store.assets asset
+                     ON (asset.project_id,asset.asset_id)=(revision.project_id,revision.asset_id)
+                   JOIN dataset_store.projects project ON project.project_id=asset.project_id
+                   WHERE dataset.project_id=%s AND dataset.dataset_revision_id=%s
+                     AND project.state='active' AND asset.state='active'
+                     AND revision.state='ready' AND dataset.state='ready'""",
+                (project_id, dataset_revision_id),
+            ).fetchone()
+        if row is None:
+            raise PersistenceFailure("dataset_revision_unavailable")
+        content = self._blobs.read_verified(
+            row[0], expected_size=row[1], expected_sha256=row[2], max_bytes=16 * 1024 * 1024
+        )
+        try:
+            dataset = Dataset.model_validate_json(content)
+        except Exception:
+            raise PersistenceFailure("stored_dataset_contract_invalid") from None
+        if (
+            dataset.project_id != str(project_id)
+            or dataset.source_sha256 != row[6]
+            or dataset.normalized_sha256 != row[3]
+            or dataset.contract_version != row[4]
+            or dataset.policy_version != row[5]
+        ):
+            raise PersistenceFailure("stored_dataset_integrity_mismatch")
+        return dataset
 
     def reconcile(
         self, operation_id: uuid.UUID, *, trusted_local: bool = False

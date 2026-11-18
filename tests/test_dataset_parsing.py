@@ -116,6 +116,10 @@ class DatasetParsingTests(unittest.TestCase):
         result=self.parse(b'name\n=HYPERLINK("invalid")\n')
         self.assertEqual(result.issues[0].code,'formula_like_text')
         self.assertEqual(result.status,'needs_review')
+        numeric=self.parse(b'name\n=1+1\n',columns=(Column(name='name',kind='money',unit='USD'),))
+        self.assertEqual(numeric.issues[0].code,'formula_like_text')
+        self.assertEqual(numeric.tables[0].rows[0][0].kind,'blocked')
+        self.assertIsNone(numeric.tables[0].rows[0][0].value)
 
     def test_hidden_merged_and_styled(self):
         for before,after in (('<row r="2">','<row r="2" hidden="1">'),('</sheetData>','</sheetData><mergeCells/>')):
@@ -124,11 +128,15 @@ class DatasetParsingTests(unittest.TestCase):
         self.assertEqual(self.parse(payload,'xlsx').issues[0].code,'styled_cell_requires_review')
 
     def test_decimal_date_boolean_and_units(self):
-        for value in ('1e3','1,000','$10','12%',' 10','+10','NaN'):
+        for value in ('1e3','1,000','$10','12%',' 10','NaN'):
             import csv,io
             f=io.StringIO(); csv.writer(f).writerows([['name'],[value]])
             result=self.parse(f.getvalue().encode(),columns=(Column(name='name',kind='decimal'),))
             self.assertEqual(result.issues[0].code,'numeric_ambiguous')
+        self.assertEqual(
+            self.parse(b'name\n+10\n',columns=(Column(name='name',kind='decimal'),)).issues[0].code,
+            'formula_like_text',
+        )
         self.assertEqual(self.parse(b'name\n-0.00\n',columns=(Column(name='name',kind='decimal'),)).tables[0].rows[0][0].value,'0')
         for value in ('45200','2026-02-30'):
             self.assertEqual(self.parse(('name\n'+value+'\n').encode(),columns=(Column(name='name',kind='date'),)).status,'needs_review')
