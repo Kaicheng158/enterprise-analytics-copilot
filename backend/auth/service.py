@@ -132,6 +132,19 @@ class LocalAuthService:
             display_name=user.display_name,
         ), csrf_hash
 
+    def require_write_principal(
+        self,
+        token: str | None,
+        csrf_token: str | None,
+    ) -> AuthPrincipal:
+        """Resolve a live principal and verify the current session CSRF token."""
+        if not csrf_token:
+            raise AuthServiceError("auth_csrf_invalid")
+        principal, csrf_hash = self.require_principal(token)
+        if not self._store.verify_csrf_hash(csrf_hash, csrf_token):
+            raise AuthServiceError("auth_csrf_invalid")
+        return principal
+
     def workspace_identity(self, token: str | None) -> WorkspaceIdentity:
         principal, _ = self.require_principal(token)
         return WorkspaceIdentity(principal=principal)

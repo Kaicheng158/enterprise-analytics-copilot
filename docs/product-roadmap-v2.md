@@ -20,7 +20,7 @@ Phase 5.8a Workspace 双语 UI 与 Auth 细节已完成本地收尾审查；Figm
 | PV2-02 / P0（本地完成，生产 Hold） | 私有资产持久化、隔离区、配额/期限、删除与恢复；本地可靠性验收 | PV2-01；隔离 migration 与故障矩阵通过；对象存储/KMS/容量/备份/监控仍阻断生产 |
 | PV2-03a / P0（本地实现） | localhost 真实账号、凭证与 Session foundation | 独立默认关闭服务；Argon2id、HttpOnly/CSRF、过期/撤销/限流与持久重启；非公网认证 |
 | PV2-03b / P0（本地实现，对外仍阻断） | 单所有者私有项目、资产授权、项目状态与任务关联 | 本地跨用户负例、撤销传播、任务/资产逐路径授权与审计通过；无公开 API、协作角色或生产部署，禁止用 Demo 或固定内部 scope 接真实数据 |
-| PV2-04 / P0 | 文件分析主闭环：集中澄清→受控计算工具→图表→简答/版本化报告页面 | 5.8b+01–03；扩展任务须新契约与独立评估；精确计算、口径一致、来源可复现、无证据不编造；复杂度/用户意图决定深度 |
+| PV2-04 / P0（04a 本地实现，04b–e 未实现） | 文件分析主闭环：04a Product Facade/契约→04b 授权上传/预览→04c 受控计算→04d Durable Agent→04e 图表/简答/版本化报告 | 5.8b+01–03；04a 仅验证身份、项目、ready Revision 和集中澄清，创建零任务；后续须独立验收精确计算、口径一致、来源可复现、无证据不编造及撤权传播 |
 | PV2-05 / P1，MVP收束 | Data Detective 有限双表核对、持久历史及端到端验收 | 04；显式匹配键/粒度、重复/未匹配/差异解释、每项结论可定位行/列；安全/数值硬条件全过，独立质量与稳定性评估 |
 | PV2-06 / P1 | Decision Lab：版本化假设和确定性情景计算 | 04可信计算/报告；基准与模拟分开、合法输入范围、零/负/边界、敏感性；不承诺预测/因果 |
 | PV2-07 / P1 | Decision Follow-through：行动、目标、实际结果复盘 | 03项目+04证据；目标单位/期间/来源、负责人、手动记录与验证区分；不执行外部行动 |
@@ -104,3 +104,11 @@ This checkpoint does not claim production authentication or customer onboarding.
 PV2-03b adds an append-only migration 010 and a default-off server authorization service. A live PV2-03a session can create one private Project owner relationship; project, active asset and bound durable task paths then require that same active owner. Product task scope is server-derived, wrong-project binding fails, and all negative cases use the same content-free denial. Owner revocation increments the authorization version, revokes task bindings, stops queue claim/heartbeat and blocks later Checkpoint/Receipt publication through a database guard. Metadata-only audit records capture allowed, denied and revoked decisions without credentials or business content.
 
 This local result does not enable customer intake. There is no public project/upload/task facade, collaboration grant, ownership transfer, production RLS/role design, authorization cache strategy or deployed monitoring. PV2-02c production storage blockers and PV2-03a production identity blockers remain Hold. See [PV2-03b design, value gate and limitations](pv2-03b-project-authorization.md).
+
+## PV2-04a local Product Facade checkpoint — 2026-11-18
+
+PV2-04a now composes the existing localhost Auth Session and single-owner Project Authorization in one independent, default-off, same-origin Product Facade. A live user can create/list/read private Project metadata and validate a strict `dataset-analysis-task-v1` request against exact active/ready Asset and Dataset revisions. Missing measure/comparison/time requirements are returned in one centralized clarification bundle. The browser cannot send principal, scope, SQL, Tool name, authorization version or trusted-local authority.
+
+The facade deliberately creates zero Durable executions and exposes no file upload, preview rows, private blobs, computation, model, chart or report generation. Migrations remain 001–010 and are exercised only in disposable PostgreSQL. PV2-04b must add the authorized parser/persistence upload boundary; 04c owns deterministic Dataset operations; 04d owns atomic task binding/Durable execution; 04e owns result, chart and report delivery. See [design, Feature Value Gate, tests and limits](pv2-04a-local-product-facade.md).
+
+Local verification passed 469 offline and 159 isolated PostgreSQL tests on the final complete runs. One existing short-Lease crash-recovery test showed a single timing failure in the first database run. It already used the deterministic database-expiry correction from PV2-02c, so this was not the former fixed-sleep defect. The unchanged test then passed 20/20 targeted repetitions and the full rerun without changing runtime code or assertions; the deliberately one-second test Lease remains a recorded stability risk rather than evidence of product readiness.

@@ -71,6 +71,7 @@ def create_local_auth_app(
     settings: LocalAuthSettings | None = None,
     service: LocalAuthService | None = None,
     connection_factory=None,
+    mount_workspace: bool = True,
 ) -> FastAPI:
     auth_settings = settings or load_local_auth_settings()
     auth_service = service or LocalAuthService(
@@ -208,7 +209,8 @@ def create_local_auth_app(
     app.state.local_auth_enabled = auth_settings.enabled
     app.state.auth_service = auth_service
     app.state.agent_api_reused_as_identity = False
-    app.mount("/", StaticFiles(directory=WORKSPACE_DIR, html=True), name="workspace")
+    if mount_workspace:
+        app.mount("/", StaticFiles(directory=WORKSPACE_DIR, html=True), name="workspace")
     return app
 
 

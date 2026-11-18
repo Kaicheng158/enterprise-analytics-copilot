@@ -1,0 +1,46 @@
+{
+  "evidence_version": "pv2-04a-synthetic-acceptance-v1",
+  "recorded_at": "2026-11-18T00:00:00Z",
+  "environment": "synthetic-disposable-local",
+  "paid_api_calls": 0,
+  "existing_application_database_migrated": false,
+  "migration_range_tested": "001-010",
+  "new_migration_added": false,
+  "offline_tests": {
+    "passed": 469,
+    "failed": 0
+  },
+  "isolated_postgresql_final_run": {
+    "passed": 159,
+    "failed": 0
+  },
+  "existing_short_lease_timing_follow_up": {
+    "initial_full_run_failures": 1,
+    "targeted_repetitions_passed": 5,
+    "targeted_repetitions_failed": 0,
+    "assertions_weakened": false,
+    "waits_extended": false,
+    "runtime_modified": false
+  },
+  "product_facade_cases": [
+    {"case": "authenticated_private_project", "verdict": "pass"},
+    {"case": "ready_revision_contract_validation", "verdict": "pass"},
+    {"case": "centralized_clarification", "verdict": "pass"},
+    {"case": "cross_user_denied", "verdict": "pass"},
+    {"case": "expired_session_denied", "verdict": "pass"},
+    {"case": "csrf_and_cross_site_denied", "verdict": "pass"},
+    {"case": "revoked_project_denied", "verdict": "pass"},
+    {"case": "unready_revision_not_disclosed", "verdict": "pass"},
+    {"case": "invalid_fields_redacted", "verdict": "pass"},
+    {"case": "validation_creates_zero_executions", "verdict": "pass"}
+  ],
+  "capabilities_explicitly_false": [
+    "customer_upload",
+    "dataset_blob_read",
+    "analysis_execution",
+    "tool_or_model_call",
+    "chart_generation",
+    "report_generation",
+    "public_access"
+  ]
+}
