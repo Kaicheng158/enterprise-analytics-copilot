@@ -1,0 +1,37 @@
+{
+  "acceptance_version": "pv2-04c-local-synthetic-v1",
+  "date": "2026-11-19",
+  "scope": "synthetic_localhost_internal_tools_only",
+  "contract_versions": {
+    "policy": "deterministic-dataset-analysis-v1",
+    "result": "dataset-analysis-tool-result-v1",
+    "source": "dataset-analysis-source-v1"
+  },
+  "tests": {
+    "offline": {"passed": 487, "total": 487},
+    "isolated_postgresql": {"passed": 179, "total": 179},
+    "focused_pv2_04c": {"passed": 20, "total": 20}
+  },
+  "calculation_checks": [
+    {"case": "regional_revenue", "expected": ["220.25 USD", "-20.25 USD"], "actual": ["220.25 USD", "-20.25 USD"], "passed": true},
+    {"case": "period_absolute_change", "expected": "40 USD", "actual": "40 USD", "passed": true},
+    {"case": "xlsx_headcount_rank", "expected": ["B 20", "A 10"], "actual": ["B 20", "A 10"], "passed": true},
+    {"case": "capacity_percentage", "expected": "82.8571%", "actual": "82.8571%", "passed": true},
+    {"case": "zero_denominator", "expected": "null + limitation", "actual": "null + zero_denominator", "passed": true},
+    {"case": "mixed_currency", "expected": "clarification", "actual": "unit_mismatch", "passed": true},
+    {"case": "ratio_nulls_and_ties", "expected": "ratio 3.3333; null excluded from numeric aggregate; A/B stable tie", "actual": "ratio 3.3333; sum 20; average 10; non-null 2/3; A then B", "passed": true}
+  ],
+  "security": {
+    "cross_scope_success_count": 0,
+    "revoked_result_publication_count": 0,
+    "expired_result_publication_count": 0,
+    "tampered_blob_result_count": 0,
+    "arbitrary_sql_python_network_surface": false,
+    "internal_path_in_results": false
+  },
+  "feature_flag_default_off": true,
+  "public_api_added": false,
+  "application_database_migrated": false,
+  "paid_model_calls": 0,
+  "production_release": "hold"
+}
