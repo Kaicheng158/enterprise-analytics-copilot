@@ -97,6 +97,23 @@ from .validation import (
     PlanningPolicy,
     canonical_plan_sha256,
 )
+from .dataset_agent_runtime import (
+    DatasetAgentError,
+    DatasetAgentRunResult,
+    DurableDatasetAgentRuntime,
+    DurableDatasetPlanner,
+    load_dataset_agent_settings,
+)
+from .dataset_models import (
+    DatasetAgentFinalResult,
+    DatasetAgentRequest,
+    DatasetAgentSettings,
+    DatasetAgentTaskView,
+    DatasetPlan,
+    DatasetPlanValidationResult,
+)
+from .dataset_provider import DatasetPlanProvider, DeterministicDatasetPlanProvider
+from .dataset_validation import DatasetPlanValidator, canonical_dataset_request_sha256
 
 __all__ = [
     "AgentState",
@@ -173,4 +190,19 @@ __all__ = [
     "WorkerSupervisorMetrics",
     "WorkerSupervisorSettings",
     "load_worker_supervisor_settings",
+    "DatasetAgentError",
+    "DatasetAgentFinalResult",
+    "DatasetAgentRequest",
+    "DatasetAgentRunResult",
+    "DatasetAgentSettings",
+    "DatasetAgentTaskView",
+    "DatasetPlan",
+    "DatasetPlanProvider",
+    "DatasetPlanValidationResult",
+    "DatasetPlanValidator",
+    "DeterministicDatasetPlanProvider",
+    "DurableDatasetAgentRuntime",
+    "DurableDatasetPlanner",
+    "canonical_dataset_request_sha256",
+    "load_dataset_agent_settings",
 ]

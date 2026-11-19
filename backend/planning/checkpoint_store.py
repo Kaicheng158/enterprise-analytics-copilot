@@ -20,6 +20,7 @@ from psycopg import sql
 from psycopg.types.json import Jsonb
 
 from .checkpoint_models import (
+    AtomicProjectTaskBinding,
     ExecutionConsistency,
     ExecutionCreation,
     PersistentCheckpoint,
@@ -29,7 +30,8 @@ from .checkpoint_models import (
     ReconciliationResolution,
     StepStart,
 )
-from .models import AgentState, Plan
+from .durable_plan import DurablePlan, parse_durable_plan_json
+from .models import AgentState
 from .transitions import StateTransitionError, validate_agent_transition
 from .validation import canonical_plan_sha256
 
@@ -117,11 +119,12 @@ class PostgresCheckpointStore:
         scope_key: str,
         idempotency_key: str,
         request_sha256: str,
-        plan: Plan,
+        plan: DurablePlan,
         initial_state: AgentState,
         policy_version: str,
         runtime_version: str,
         now: datetime,
+        project_binding: AtomicProjectTaskBinding | None = None,
     ) -> ExecutionCreation:
         self._validate_time(now)
         self._validate_hash(request_sha256)
@@ -172,6 +175,13 @@ class PostgresCheckpointStore:
                             raise IdempotencyConflict("idempotency_key_conflict")
                         checkpoint = self._latest_checkpoint(
                             connection, execution.execution_id
+                        )
+                        self._ensure_atomic_project_binding(
+                            connection,
+                            execution.execution_id,
+                            scope_key,
+                            project_binding,
+                            now,
                         )
                         return ExecutionCreation(
                             execution=execution,
@@ -242,6 +252,13 @@ class PostgresCheckpointStore:
                     ):
                         raise IdempotencyConflict("idempotency_key_conflict")
                     checkpoint = self._latest_checkpoint(connection, execution.execution_id)
+                self._ensure_atomic_project_binding(
+                    connection,
+                    execution.execution_id,
+                    scope_key,
+                    project_binding,
+                    now,
+                )
         return ExecutionCreation(
             execution=execution,
             checkpoint=checkpoint,
@@ -1081,9 +1098,7 @@ class PostgresCheckpointStore:
     def _execution_from_row(self, row) -> PersistentExecution:
         if row is None:
             raise ExecutionNotFound("execution_not_found")
-        plan = Plan.model_validate_json(
-            json.dumps(row[6], ensure_ascii=False), strict=True
-        )
+        plan = parse_durable_plan_json(json.dumps(row[6], ensure_ascii=False))
         if row[5] != plan.version or row[4] != canonical_plan_sha256(plan):
             raise CheckpointConflict("execution_plan_integrity_invalid")
         return PersistentExecution(
@@ -1126,7 +1141,7 @@ class PostgresCheckpointStore:
 
     def _ensure_step_matches_plan(
         self,
-        plan: Plan,
+        plan: DurablePlan,
         step_id: str,
         action_name: str,
         input_payload: dict,
@@ -1146,7 +1161,7 @@ class PostgresCheckpointStore:
             raise ReceiptConflict("step_input_mismatch")
 
     @staticmethod
-    def _validate_initial_state(plan: Plan, state: AgentState) -> None:
+    def _validate_initial_state(plan: DurablePlan, state: AgentState) -> None:
         expected_steps = tuple((step.step_id, step.kind) for step in plan.steps)
         actual_steps = tuple((step.step_id, step.kind) for step in state.step_states)
         if (
@@ -1211,6 +1226,89 @@ class PostgresCheckpointStore:
         payload = f"{scope_key}\0{key}".encode("utf-8")
         return hmac.new(self._secret, payload, sha256).hexdigest()
 
+    def _ensure_atomic_project_binding(
+        self,
+        connection,
+        execution_id: UUID,
+        scope_key: str,
+        binding: AtomicProjectTaskBinding | None,
+        now: datetime,
+    ) -> None:
+        if binding is None:
+            return
+        if not self._project_authorization_enabled:
+            raise CheckpointStoreError("project_authorization_disabled")
+        if scope_key != f"product-project:{binding.project_id}":
+            raise CheckpointStoreError("task_binding_scope_mismatch")
+        authorized = connection.execute(
+            """SELECT 1
+                 FROM product_auth.project_owners owner
+                 JOIN product_auth.users users ON users.user_id=owner.owner_user_id
+                 JOIN product_auth.sessions session
+                   ON session.user_id=users.user_id AND session.session_id=%s
+                WHERE owner.project_id=%s AND owner.owner_user_id=%s
+                  AND owner.state='active' AND users.state='active'
+                  AND session.state='active' AND session.expires_at>%s
+                  AND owner.authorization_version=%s
+                FOR UPDATE OF owner,users,session""",
+            (
+                binding.session_id,
+                binding.project_id,
+                binding.user_id,
+                now,
+                binding.authorization_version,
+            ),
+        ).fetchone()
+        if authorized is None:
+            raise CheckpointStoreError("task_binding_unauthorized")
+        row = connection.execute(
+            """INSERT INTO product_auth.project_task_bindings
+                   (execution_id,project_id,owner_user_id,authorization_version,
+                    state,created_at,updated_at)
+               VALUES (%s,%s,%s,%s,'active',%s,%s)
+               ON CONFLICT (execution_id) DO NOTHING
+               RETURNING execution_id""",
+            (
+                execution_id,
+                binding.project_id,
+                binding.user_id,
+                binding.authorization_version,
+                now,
+                now,
+            ),
+        ).fetchone()
+        if row is None:
+            existing = connection.execute(
+                """SELECT project_id,owner_user_id,authorization_version,state
+                     FROM product_auth.project_task_bindings
+                    WHERE execution_id=%s""",
+                (execution_id,),
+            ).fetchone()
+            expected = (
+                binding.project_id,
+                binding.user_id,
+                binding.authorization_version,
+                "active",
+            )
+            if existing != expected:
+                raise CheckpointStoreError("task_binding_conflict")
+        else:
+            connection.execute(
+                """INSERT INTO product_auth.authorization_audit_events
+                   (event_id,actor_user_id,session_id,project_id,execution_id,
+                    action,decision,reason_code,authorization_version,created_at)
+                   VALUES (%s,%s,%s,%s,%s,'task_submit','allowed','task_bound',%s,%s)""",
+                (
+                    uuid4(),
+                    binding.user_id,
+                    binding.session_id,
+                    binding.project_id,
+                    execution_id,
+                    binding.authorization_version,
+                    now,
+                ),
+            )
+
     @staticmethod
     def _validate_hash(value: str) -> None:
         if not HEX_SHA256_RE.fullmatch(value):
@@ -1233,7 +1331,7 @@ class PostgresCheckpointStore:
         if not self._project_authorization_enabled:
             return sql.SQL("")
         return sql.SQL(
-            """AND NOT EXISTS (
+            """AND EXISTS (
                    SELECT 1
                      FROM product_auth.project_task_bindings binding
                      JOIN product_auth.project_owners owner
@@ -1242,12 +1340,10 @@ class PostgresCheckpointStore:
                      JOIN product_auth.users users
                        ON users.user_id=owner.owner_user_id
                     WHERE binding.execution_id={}.execution_id
-                      AND (
-                          binding.state <> 'active'
-                          OR owner.state <> 'active'
-                          OR users.state <> 'active'
-                          OR binding.authorization_version <> owner.authorization_version
-                      )
+                      AND binding.state='active'
+                      AND owner.state='active'
+                      AND users.state='active'
+                      AND binding.authorization_version=owner.authorization_version
                )"""
         ).format(sql.Identifier(execution_alias))
 

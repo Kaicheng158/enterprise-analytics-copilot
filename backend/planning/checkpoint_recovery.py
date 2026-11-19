@@ -8,15 +8,16 @@ from uuid import UUID
 
 from .checkpoint_models import RecoveryDecision, SimulationResult
 from .checkpoint_store import LeaseUnavailable, PostgresCheckpointStore
-from .models import AgentState, Plan, PlanStep, StepExecutionState
+from .durable_plan import DurablePlan
+from .models import AgentState, StepExecutionState
 from .transitions import validate_agent_transition
 
 
 CrashPoint = Literal["after_start", "after_operation", "after_checkpoint"]
-StepOperation = Callable[[PlanStep], dict]
+StepOperation = Callable[[object], dict]
 
 
-def initial_agent_state(plan: Plan) -> AgentState:
+def initial_agent_state(plan: DurablePlan) -> AgentState:
     return AgentState(
         plan_id=plan.plan_id,
         status="pending",
@@ -300,13 +301,13 @@ class CrashRecoverySimulator:
         )
 
     @staticmethod
-    def _step_action(step: PlanStep) -> tuple[str, dict]:
+    def _step_action(step) -> tuple[str, dict]:
         if step.kind == "tool":
             return step.tool_call.name, dict(step.tool_call.arguments)
         return step.computation.operation, step.computation.model_dump(mode="json")
 
     @staticmethod
-    def _running_state(state: AgentState, step: PlanStep) -> AgentState:
+    def _running_state(state: AgentState, step) -> AgentState:
         updated_steps = tuple(
             StepExecutionState(
                 step_id=item.step_id,
@@ -336,7 +337,7 @@ class CrashRecoverySimulator:
     @staticmethod
     def _completed_state(
         state: AgentState,
-        step: PlanStep,
+        step,
         output: dict,
         token: str,
     ) -> AgentState:

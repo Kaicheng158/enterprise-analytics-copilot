@@ -10,7 +10,8 @@ from pydantic import Field, field_validator, model_validator
 
 from backend.tools.models import StrictModel
 
-from .models import AgentState, Plan
+from .durable_plan import DurablePlan
+from .models import AgentState
 
 
 ExecutionStatus = Literal[
@@ -27,7 +28,7 @@ class PersistentExecution(StrictModel):
     request_sha256: str = Field(pattern=HEX_SHA256)
     plan_sha256: str = Field(pattern=HEX_SHA256)
     plan_version: str = Field(min_length=1, max_length=80)
-    plan: Plan
+    plan: DurablePlan
     policy_version: str = Field(min_length=1, max_length=80)
     runtime_version: str = Field(min_length=1, max_length=80)
     status: ExecutionStatus
@@ -208,6 +209,15 @@ class LeaseSession(StrictModel):
         if value.tzinfo is None:
             raise ValueError("lease expiry must be timezone-aware")
         return value
+
+
+class AtomicProjectTaskBinding(StrictModel):
+    """Server-created identity material for an atomic execution/task binding."""
+
+    project_id: UUID
+    user_id: UUID
+    session_id: UUID
+    authorization_version: int = Field(gt=0)
 
 
 class ReconciliationResolution(StrictModel):

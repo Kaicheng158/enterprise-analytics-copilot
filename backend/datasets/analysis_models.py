@@ -34,6 +34,20 @@ class DatasetAnalysisSettings(ProductContract):
     wall_seconds: float = Field(default=2.0, gt=0, le=5.0)
 
 
+class DatasetTableFieldCatalog(ProductContract):
+    table_index: int = Field(ge=1, le=4)
+    fields: tuple[str, ...] = Field(min_length=1, max_length=256)
+
+
+class DatasetBindingContext(ProductContract):
+    context_version: Literal["dataset-binding-context-v1"] = "dataset-binding-context-v1"
+    project_id: UUID
+    binding: DatasetRevisionBinding
+    normalized_sha256: str = Field(pattern=r"^[0-9a-f]{64}$")
+    authorization_version: int = Field(gt=0)
+    tables: tuple[DatasetTableFieldCatalog, ...] = Field(min_length=1, max_length=4)
+
+
 class DatasetFilterV1(ProductContract):
     field: str = Field(min_length=1, max_length=128)
     operator: Literal[

@@ -1,0 +1,10 @@
+{
+  "suite_version": "dataset-agent-eval-v1",
+  "policy_version": "dataset-agent-eval-policy-v1",
+  "cases_sha256": "e015f6e69f5feaffc6f7152ee7c2a33d076a056cb8c99a9feef152389d4af4e9",
+  "policy_sha256": "9c5eae78b2f55a74ca40444bba9c41897816d564a9a81a8768e70e299c0751b8",
+  "case_count": 8,
+  "frozen_before_execution": true,
+  "paid_provider_calls": 0,
+  "scope": "fake_mock_and_isolated_postgresql"
+}

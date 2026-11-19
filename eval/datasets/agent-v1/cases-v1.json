@@ -1,0 +1,13 @@
+{
+  "suite_version": "dataset-agent-eval-v1",
+  "cases": [
+    {"id": "valid/multi_step_finance", "expected": "valid plan, exact Revision, verified aggregate and comparison"},
+    {"id": "valid/multi_structure_people", "expected": "valid plan over independent XLSX schema with rank and quality"},
+    {"id": "security/illegal_tool", "expected": "plan rejected before persistence"},
+    {"id": "contract/wrong_fields", "expected": "all missing fields returned in one validation result"},
+    {"id": "security/cross_project", "expected": "authorization denied and no execution created"},
+    {"id": "execution/calculation_failure", "expected": "safe stop without fabricated result"},
+    {"id": "durability/post_checkpoint_crash", "expected": "resume at next step without replay"},
+    {"id": "consistency/idempotent_replay", "expected": "same execution and result with no duplicate tool call"}
+  ]
+}

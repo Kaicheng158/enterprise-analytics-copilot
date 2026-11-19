@@ -1,0 +1,96 @@
+{
+  "acceptance_version": "pv2-04d-local-synthetic-v1",
+  "date": "2026-11-19",
+  "scope": "fake_mock_disposable_postgresql_only",
+  "contracts": {
+    "request": "dataset-agent-request-v1",
+    "plan": "dataset-plan-v1",
+    "result": "dataset-agent-result-v1",
+    "policy": "dataset-agent-policy-v1",
+    "runtime": "durable-dataset-agent-v1"
+  },
+  "evaluation": {
+    "suite": "dataset-agent-eval-v1",
+    "policy": "dataset-agent-eval-policy-v1",
+    "case_count": 8,
+    "cases_sha256": "e015f6e69f5feaffc6f7152ee7c2a33d076a056cb8c99a9feef152389d4af4e9",
+    "policy_sha256": "9c5eae78b2f55a74ca40444bba9c41897816d564a9a81a8768e70e299c0751b8",
+    "case_results": [
+      {
+        "case_id": "valid/multi_step_finance",
+        "verdict": "PASS",
+        "evidence": "tests.db.test_dataset_agent_integration.DatasetAgentDatabaseTests.test_submit_queue_execute_status_and_atomic_binding"
+      },
+      {
+        "case_id": "valid/multi_structure_people",
+        "verdict": "PASS",
+        "evidence": "tests.db.test_dataset_agent_integration.DatasetAgentDatabaseTests.test_independent_xlsx_structure_executes_rank_quality_and_derived_metric"
+      },
+      {
+        "case_id": "security/illegal_tool",
+        "verdict": "PASS",
+        "evidence": "tests.test_dataset_agent_integration.DatasetAgentIntegrationTests.test_illegal_tool_and_changed_binding_are_rejected"
+      },
+      {
+        "case_id": "contract/wrong_fields",
+        "verdict": "PASS",
+        "evidence": "tests.test_dataset_agent_integration.DatasetAgentIntegrationTests.test_wrong_fields_are_reported_together_without_persisting_a_plan"
+      },
+      {
+        "case_id": "security/cross_project",
+        "verdict": "PASS",
+        "evidence": "tests.db.test_dataset_agent_integration.DatasetAgentDatabaseTests.test_cross_user_wrong_field_and_revocation_fail_closed"
+      },
+      {
+        "case_id": "execution/calculation_failure",
+        "verdict": "PASS",
+        "evidence": "tests.db.test_dataset_agent_integration.DatasetAgentDatabaseTests.test_tampered_blob_stops_in_reconciliation_without_fabricated_result"
+      },
+      {
+        "case_id": "durability/post_checkpoint_crash",
+        "verdict": "PASS",
+        "evidence": "tests.db.test_dataset_agent_integration.DatasetAgentDatabaseTests.test_post_checkpoint_crash_resumes_without_replaying_completed_tool"
+      },
+      {
+        "case_id": "consistency/idempotent_replay",
+        "verdict": "PASS",
+        "evidence": "tests.db.test_dataset_agent_integration.DatasetAgentDatabaseTests.test_idempotent_submission_and_completed_replay_do_not_repeat_tools"
+      }
+    ]
+  },
+  "tests": {
+    "offline": {"passed": 492, "total": 492},
+    "isolated_postgresql": {"passed": 185, "total": 185},
+    "focused_pv2_04d": {"passed": 11, "total": 11},
+    "legacy_durable_compatibility": {"passed": 47, "total": 47}
+  },
+  "calculation_checks": [
+    {"case": "regional_revenue", "expected": ["North 220.25 USD", "South -20.25 USD"], "actual": ["North 220.25 USD", "South -20.25 USD"], "passed": true},
+    {"case": "period_absolute_change", "expected": "40 USD", "actual": "40 USD", "passed": true},
+    {"case": "people_headcount_rank", "expected": ["B 20", "A 10"], "actual": ["B 20", "A 10"], "passed": true},
+    {"case": "people_utilization", "expected": "82.8571%", "actual": "82.8571%", "passed": true}
+  ],
+  "durability": {
+    "atomic_execution_task_binding": true,
+    "idempotent_provider_calls_for_repeat": 1,
+    "committed_tool_replay_after_recovery": 0,
+    "post_checkpoint_recovery_passed": true,
+    "tampered_blob_final_result_count": 0,
+    "tampered_blob_state": "reconciling"
+  },
+  "security": {
+    "illegal_tool_persisted_count": 0,
+    "wrong_field_execution_count": 0,
+    "cross_user_execution_count": 0,
+    "revoked_tool_receipt_count": 0,
+    "client_authority_fields_allowed": false,
+    "arbitrary_sql_python_network_surface": false,
+    "internal_storage_path_in_results": false
+  },
+  "feature_flag_default_off": true,
+  "public_api_added": false,
+  "database_migration_added": false,
+  "application_database_migrated": false,
+  "paid_model_calls": 0,
+  "production_release": "hold"
+}

@@ -20,7 +20,7 @@ Phase 5.8a Workspace 双语 UI 与 Auth 细节已完成本地收尾审查；Figm
 | PV2-02 / P0（本地完成，生产 Hold） | 私有资产持久化、隔离区、配额/期限、删除与恢复；本地可靠性验收 | PV2-01；隔离 migration 与故障矩阵通过；对象存储/KMS/容量/备份/监控仍阻断生产 |
 | PV2-03a / P0（本地实现） | localhost 真实账号、凭证与 Session foundation | 独立默认关闭服务；Argon2id、HttpOnly/CSRF、过期/撤销/限流与持久重启；非公网认证 |
 | PV2-03b / P0（本地实现，对外仍阻断） | 单所有者私有项目、资产授权、项目状态与任务关联 | 本地跨用户负例、撤销传播、任务/资产逐路径授权与审计通过；无公开 API、协作角色或生产部署，禁止用 Demo 或固定内部 scope 接真实数据 |
-| PV2-04 / P0（04a 本地实现，04b–e 未实现） | 文件分析主闭环：04a Product Facade/契约→04b 授权上传/预览→04c 受控计算→04d Durable Agent→04e 图表/简答/版本化报告 | 5.8b+01–03；04a 仅验证身份、项目、ready Revision 和集中澄清，创建零任务；后续须独立验收精确计算、口径一致、来源可复现、无证据不编造及撤权传播 |
+| PV2-04 / P0（04a–d 本地实现，04e 未实现） | 文件分析主闭环：04a Product Facade/契约→04b 授权上传/预览→04c 受控计算→04d Durable Dataset Agent→04e 图表/简答/版本化报告 | 5.8b+01–03；04d 复用自研 Planner/Validator/Queue/Checkpoint/Receipt/Recovery，并完成 Fake/Mock/隔离 DB 验收；04e 仍须独立验收可信展示、报告和用户工作量 |
 | PV2-05 / P1，MVP收束 | Data Detective 有限双表核对、持久历史及端到端验收 | 04；显式匹配键/粒度、重复/未匹配/差异解释、每项结论可定位行/列；安全/数值硬条件全过，独立质量与稳定性评估 |
 | PV2-06 / P1 | Decision Lab：版本化假设和确定性情景计算 | 04可信计算/报告；基准与模拟分开、合法输入范围、零/负/边界、敏感性；不承诺预测/因果 |
 | PV2-07 / P1 | Decision Follow-through：行动、目标、实际结果复盘 | 03项目+04证据；目标单位/期间/来源、负责人、手动记录与验证区分；不执行外部行动 |
@@ -49,6 +49,14 @@ A+B+E 是目标产品的核心分析—决策闭环，D 是长期核心协作能
 Gate 记录字段：feature/work-package ID、目标主线、用户与任务、baseline、价值假设、指标与预注册目标、代表性场景/证据、是否与现有能力重复、开发与运维成本、运行/模型成本、安全与隐私代价、依赖和风险、决策/理由/负责人/日期，以及实现后的实际结果。Hold/Reject 项不得被 UI 或文档描述为已支持功能。
 
 准入流程：提案→记录 baseline/代价/预注册目标→Approve/Hold/Reject→仅 Approve 进入 Active Roadmap→隔离环境实现→按原指标验收→记录实际收益与剩余代价。验收不达标时回到 Hold 或 Reject，不能因为代码已完成而跳过价值复核。
+
+## AI Agent Learning Gate v1
+
+项目第一优先级是 AI Agent Engineering 的系统学习、工程实现与技术实践，产品化为第二优先级。每个新的 Agent 阶段在开发前必须明确：技术学习目标、最小原理、亲自实现的控制边界、离线/真实评估方法、失败模式，以及何时不适用。没有学习目标或只是追逐框架名称的工作包进入 **Hold**。
+
+现有自研 Agent、Planner、Validator、Tool Registry/Executor、Durable Runtime、Queue、Checkpoint、Receipt、Lease、Idempotency 和 Recovery 继续作为主工程路径。Codex、LangChain、LangGraph、OpenAI Agents SDK 等只作为独立学习、架构对比和技术实验，不因其存在而替换已验证实现。引入框架必须证明减少了明确的工程负担或解锁无法合理实现的能力，并通过现有授权、恢复、成本和可观测性硬条件。
+
+后续学习主线按独立阶段推进：**Dynamic Planning → Memory → LangChain 对比实验 → LangGraph 对比实验 → MCP → Multi-Agent → Human-in-the-loop → Evaluation → Observability → Deployment**。这些不是 PV2-04d 的已实现能力，不得在产品界面或文档中提前宣称可用。
 
 ## MVP / Future release 边界与验收
 
@@ -129,4 +137,14 @@ PV2-04c adds a separate `deterministic-dataset-analysis-v1` layer over one exact
 
 Feature Value Gate v1 decision: **Approve as necessary infrastructure**. It replaces supported manual spreadsheet filters/pivots/formula checks and provides reproducible evidence for Investigate, future Simulate and Decide & Review, while immutable parameter/source bindings support Collaborate. Engineering evidence confirms exact calculations, repeatability and zero cross-scope publication; it does not yet measure real user time savings.
 
-Local verification passed 486 offline and 179 disposable PostgreSQL tests, including 19 focused PV2-04c cases across structurally different CSV/XLSX datasets. No migration, public analysis endpoint, Planner/Agent integration, chart/report path or paid call was added. `DATASET_ANALYSIS_TOOLS_ENABLED` remains false. PV2-04d must map validated requests to these tools through server-owned planning and Durable execution; PV2-04e owns chart/report delivery. See [design, evidence and remaining blockers](pv2-04c-deterministic-dataset-analysis.md).
+Local verification passed 487 offline and 179 disposable PostgreSQL tests, including 20 focused PV2-04c cases across structurally different CSV/XLSX datasets. No migration, public analysis endpoint, Planner/Agent integration, chart/report path or paid call was added. `DATASET_ANALYSIS_TOOLS_ENABLED` remains false. PV2-04d maps validated requests to these tools through server-owned planning and Durable execution; PV2-04e owns chart/report delivery. See [design, evidence and remaining blockers](pv2-04c-deterministic-dataset-analysis.md).
+
+## PV2-04d durable Dataset Agent checkpoint — 2026-11-19
+
+PV2-04d keeps the self-built Agent as the primary learning and engineering path. A new `dataset-plan-v1` converts one strict multi-operation Dataset intent into allowlisted Tool steps plus one local assembly step. Validation fixes Project/Revision/content/authorization identity, rejects illegal Tools and wrong fields before persistence, and returns missing fields together. The existing PostgreSQL queue, Checkpoint, Receipt, Lease, CAS, heartbeat and recovery mechanisms execute the accepted Plan; no second runtime was built.
+
+Execution creation, initial Checkpoint and Project task authorization binding are now one transaction. Queue claims require an active binding, Worker steps recheck task authorization, and PV2-04c independently rechecks the Revision before publishing results. Fake/Mock tests cover finance CSV and independent people XLSX structures, exact calculations, idempotent replay, post-checkpoint recovery, cross-user denial, revocation and tampered-content reconciliation. `DATASET_AGENT_ENABLED` remains false; no HTTP route, paid provider, chart or report was added.
+
+Feature Value Gate: **Approve as necessary infrastructure**, with real user time savings still unproven. AI Agent Learning Gate: **Approve**, because the stage explicitly exercises structured planning authority separation, graph/field validation, durable state, idempotency and recovery boundaries. See [design and evaluation scope](pv2-04d-dataset-agent-integration.md).
+
+Final local verification passed 492 offline and 185 disposable PostgreSQL tests, including 11 focused PV2-04d cases. Eight evaluation scenarios were frozen before execution. No migration, HTTP route, paid call or production database change was introduced.

@@ -15,11 +15,13 @@ from backend.datasets.analysis import DatasetAnalysisLimit, DeterministicDataset
 from backend.datasets.analysis_models import (
     DatasetAggregateInput,
     DatasetAnalysisSettings,
+    DatasetBindingContext,
     DatasetComparisonInput,
     DatasetDerivedMetricInput,
     DatasetProfileInput,
     DatasetQualityInput,
     DatasetRankingInput,
+    DatasetTableFieldCatalog,
     DatasetToolResult,
 )
 from backend.datasets.persistence import PrivateDatasetPersistenceService
@@ -60,6 +62,14 @@ class AuthorizedDatasetAnalysisRuntime:
         self._project_id = project_id
         self._settings = settings
 
+    @property
+    def principal(self) -> AuthPrincipal:
+        return self._principal
+
+    @property
+    def project_id(self) -> UUID:
+        return self._project_id
+
     @contextmanager
     def _connection(self):
         try:
@@ -70,10 +80,9 @@ class AuthorizedDatasetAnalysisRuntime:
         except psycopg.Error:
             raise ToolRegistryError("tool_database_error") from None
 
-    def _analyzer(self, request):
+    def _analyzer_for_binding(self, binding):
         if not self._settings.enabled:
             raise ToolRegistryError("tool_not_authorized")
-        binding = request.binding
         try:
             before = self._authorization.require_asset(
                 self._principal, self._project_id, binding.asset_id, action="asset_read"
@@ -96,6 +105,48 @@ class AuthorizedDatasetAnalysisRuntime:
             raise ToolRegistryError("tool_not_authorized") from None
         except PersistenceFailure:
             raise ToolRegistryError("tool_execution_failed") from None
+
+    def _analyzer(self, request):
+        return self._analyzer_for_binding(request.binding)
+
+    def binding_context(self, binding) -> DatasetBindingContext:
+        """Return only server-verified schema identity needed by a Planner."""
+
+        analyzer, version = self._analyzer_for_binding(binding)
+        try:
+            after = self._authorization.require_asset(
+                self._principal, self._project_id, binding.asset_id, action="asset_read"
+            )
+        except AuthorizationFailure:
+            raise ToolRegistryError("tool_not_authorized") from None
+        if after.authorization_version != version:
+            raise ToolRegistryError("tool_not_authorized")
+        if self._ready_revision_sha(binding) != analyzer.dataset.normalized_sha256:
+            raise ToolRegistryError("tool_execution_failed")
+        return DatasetBindingContext(
+            project_id=self._project_id,
+            binding=binding,
+            normalized_sha256=analyzer.dataset.normalized_sha256,
+            authorization_version=version,
+            tables=tuple(
+                DatasetTableFieldCatalog(
+                    table_index=index,
+                    fields=tuple(column.name for column in table.columns),
+                )
+                for index, table in enumerate(analyzer.dataset.tables, 1)
+            ),
+        )
+
+    def require_task_execution(self, execution_id: UUID):
+        return self._authorization.require_task_execution(execution_id)
+
+    def require_task_read(self, execution_id: UUID):
+        return self._authorization.require_task(
+            self._principal,
+            self._project_id,
+            execution_id,
+            action="task_read",
+        )
 
     def _ready_revision_sha(self, binding) -> str:
         with self._connection() as connection:

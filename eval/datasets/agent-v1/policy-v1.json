@@ -1,0 +1,18 @@
+{
+  "policy_version": "dataset-agent-eval-policy-v1",
+  "hard_invariants": [
+    "strict schema and plan validation",
+    "only six authorized Dataset tools",
+    "fixed Project and DatasetRevision binding",
+    "no unauthorized or revoked result publication",
+    "calculation result matches deterministic tool output",
+    "checkpoint and receipt integrity",
+    "no duplicate execution after replay or recovery"
+  ],
+  "quality_dimensions": [
+    "task completeness",
+    "clarification consolidation",
+    "source traceability"
+  ],
+  "release_status": "offline-local-only"
+}

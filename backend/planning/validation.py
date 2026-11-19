@@ -32,7 +32,7 @@ class PlanningPolicy:
     allowed_computations: frozenset[str] = frozenset({"compare_sales_growth"})
 
 
-def canonical_plan_sha256(plan: Plan) -> str:
+def canonical_plan_sha256(plan) -> str:
     payload = json.dumps(
         plan.model_dump(mode="json"),
         ensure_ascii=False,

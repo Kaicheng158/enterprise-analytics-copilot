@@ -129,3 +129,9 @@ Design file: [Enterprise Analytics Copilot — Figma MVP](https://www.figma.com/
 新的产品规划入口为 [Product Vision v2](product-vision-v2.md)、[Product Roadmap v2](product-roadmap-v2.md) 与 [数据生命周期及项目协作架构初稿](project-data-architecture-v2.md)。本文件继续保留历史阶段、验收结果与原有编号；v2 规划不会回写或覆盖冻结证据。
 
 Product Vision v2 将主链路定义为上传文件→验证→分析与对话→可视化→简答或完整报告，并将 Sales Comparison 保留为已实现模板。新增功能必须先通过 v2 Roadmap 中的 Feature Value Gate v1，证明减少用户工作量并服务 Investigate、Simulate、Decide & Review 或 Collaborate 主线。
+
+## AI Agent Engineering priority — 2026-11-19
+
+第一目标正式明确为 AI Agent Engineering 的系统学习、工程开发与技术实践；第二目标为 Analytics Copilot 产品化落地。现有自研 Agent 和 Durable Runtime 保持主线，不因成熟 SDK 出现而替换。PV2-04d 在不重写 Runtime 的前提下，将真实 Dataset 工具接入版本化 Plan、Validator、Queue、Checkpoint/Receipt 和 Recovery。
+
+后续高级方向按独立学习/实验阶段推进：Dynamic Planning、Memory、LangChain、LangGraph、MCP、Multi-Agent、Human-in-the-loop、Evaluation、Observability 和 Deployment。每阶段必须同时通过 Product Feature Value Gate 与 AI Agent Learning Gate；本次 PV2-04d 不提前实现这些能力。
