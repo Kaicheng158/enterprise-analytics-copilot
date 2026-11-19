@@ -114,6 +114,19 @@ from .dataset_models import (
 )
 from .dataset_provider import DatasetPlanProvider, DeterministicDatasetPlanProvider
 from .dataset_validation import DatasetPlanValidator, canonical_dataset_request_sha256
+from .dataset_planner_models import (
+    DatasetPlannerCatalog,
+    DatasetPlannerDraft,
+    DatasetPlannerOutcome,
+    DatasetPlannerQuestion,
+    DatasetPlannerTelemetry,
+)
+from .deepseek_dataset_planner import (
+    DatasetPlannerError,
+    DeepSeekDatasetPlannerAdapter,
+    PreparedDatasetPlanProvider,
+    load_deepseek_dataset_planner_settings,
+)
 
 __all__ = [
     "AgentState",
@@ -205,4 +218,13 @@ __all__ = [
     "DurableDatasetPlanner",
     "canonical_dataset_request_sha256",
     "load_dataset_agent_settings",
+    "DatasetPlannerCatalog",
+    "DatasetPlannerDraft",
+    "DatasetPlannerError",
+    "DatasetPlannerOutcome",
+    "DatasetPlannerQuestion",
+    "DatasetPlannerTelemetry",
+    "DeepSeekDatasetPlannerAdapter",
+    "PreparedDatasetPlanProvider",
+    "load_deepseek_dataset_planner_settings",
 ]

@@ -18,6 +18,8 @@ PV2-04c locally adds **six default-off deterministic Dataset tools** over an exa
 
 PV2-04d locally connects those tools to the **existing self-built durable Agent stack** through a separate `dataset-plan-v1`, exact Project/Revision validation, atomic task authorization binding, persistent queue, Checkpoint/Receipt recovery and structured result assembly. Fake/Mock planning and disposable PostgreSQL are used; all Agent flags remain off, no HTTP route or paid model was added, and the historical sales Agent is unchanged. See [PV2-04d design, learning gate and limits](docs/pv2-04d-dataset-agent-integration.md).
 
+PV2-04d.1 locally adds a **separate default-off DeepSeek Dataset Planner Adapter** without adding another Runtime. It sends only schema/type/unit/approved-metric metadata, compiles the untrusted JSON draft into the existing `dataset-plan-v1`, and still requires the existing Validator, authorization and Durable Runtime. Final review preserved v1 as history and created v2 after finding temporal-scope/year-assumption defects in the original example. Mock HTTP and synthetic/disposable PostgreSQL are verified; real DeepSeek planning quality has not been tested and remains Hold. See [PV2-04d.1 design and v2 live-smoke preregistration](docs/pv2-04d1-deepseek-dataset-planner.md).
+
 ## Start
 
 Start Docker Desktop. From the repository root, create a local `.env` with your own password:

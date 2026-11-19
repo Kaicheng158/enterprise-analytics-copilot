@@ -135,3 +135,5 @@ Product Vision v2 将主链路定义为上传文件→验证→分析与对话�
 第一目标正式明确为 AI Agent Engineering 的系统学习、工程开发与技术实践；第二目标为 Analytics Copilot 产品化落地。现有自研 Agent 和 Durable Runtime 保持主线，不因成熟 SDK 出现而替换。PV2-04d 在不重写 Runtime 的前提下，将真实 Dataset 工具接入版本化 Plan、Validator、Queue、Checkpoint/Receipt 和 Recovery。
 
 后续高级方向按独立学习/实验阶段推进：Dynamic Planning、Memory、LangChain、LangGraph、MCP、Multi-Agent、Human-in-the-loop、Evaluation、Observability 和 Deployment。每阶段必须同时通过 Product Feature Value Gate 与 AI Agent Learning Gate；本次 PV2-04d 不提前实现这些能力。
+
+PV2-04d.1 已建立独立、默认关闭的 DeepSeek Dataset Planner Adapter 基础：自然语言及字段元数据只作为不可信数据，模型仅接收最小字段/类型/单位/已批准指标定义，输出必须编译并通过既有 `dataset-plan-v1` Validator 后才可进入 Durable Runtime。最终审查保留存在时间范围缺陷的 v1 历史证据，并独立冻结 v2 的 deliverable/scope 完整性及缺少年份集中澄清规则。当前仅 Mock HTTP 与隔离数据库通过；真实模型能力尚未验收，v2 低成本 smoke test 已预注册。

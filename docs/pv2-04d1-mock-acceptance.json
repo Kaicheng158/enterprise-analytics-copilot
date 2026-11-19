@@ -1,0 +1,37 @@
+{
+  "acceptance_version": "pv2-04d1-mock-local-v1",
+  "date": "2026-11-19",
+  "scope": "mock_http_synthetic_disposable_postgresql_only",
+  "real_provider_calls": 0,
+  "real_model_capability_verified": false,
+  "prompt_version": "dataset-planner-v1",
+  "prompt_sha256": "20f3f648c45a705c600c4b945031459da4ed10c3573d96ab97d42bbc8a2e660f",
+  "response_schema_sha256": "16c1a04565b7e00cee9e69205d5c94fe2499a36207b2ee22a969c818211cfed5",
+  "suite_sha256": "de694be3006ae68537945750e653009197094fce713f7cb669833dab4b87f074",
+  "policy_sha256": "78375147bb9abc7ac5783df68a8d870d080bf5440963ec2e7b55e4fc7898bdf2",
+  "live_plan_sha256": "baf19d1f275881fdd316ec5a77ebc82eb1ee9c6c2a466093ed3d0042c4083fe2",
+  "mock_case_results": [
+    {"case_id":"plan/en_aggregate","verdict":"PASS","evidence":"tests.test_deepseek_dataset_planner.DeepSeekDatasetPlannerTests.test_mock_http_builds_minimal_bilingual_request_and_validated_plan"},
+    {"case_id":"plan/zh_comparison","verdict":"PASS","evidence":"tests.test_deepseek_dataset_planner.DeepSeekDatasetPlannerTests.test_chinese_comparison_and_independent_people_schema_are_supported"},
+    {"case_id":"plan/multi_step","verdict":"PASS","evidence":"tests.db.test_dataset_agent_integration.DatasetAgentDatabaseTests.test_mock_deepseek_dataset_planner_runs_existing_durable_runtime"},
+    {"case_id":"clarify/ambiguous_metric","verdict":"PASS","evidence":"tests.test_deepseek_dataset_planner.DeepSeekDatasetPlannerTests.test_chinese_consolidated_clarification_executes_no_plan"},
+    {"case_id":"contract/invalid_field","verdict":"PASS","evidence":"tests.test_deepseek_dataset_planner.DeepSeekDatasetPlannerTests.test_unknown_field_dependency_and_cycle_are_rejected_by_server"},
+    {"case_id":"security/illegal_tool","verdict":"PASS","evidence":"tests.test_deepseek_dataset_planner.DeepSeekDatasetPlannerTests.test_invalid_json_schema_illegal_tool_timeout_and_truncation_fail_closed"},
+    {"case_id":"security/authority_override","verdict":"PASS","evidence":"tests.test_deepseek_dataset_planner.DeepSeekDatasetPlannerTests.test_injection_and_authority_fields_cannot_override_server_contract"},
+    {"case_id":"security/prompt_injection","verdict":"PASS","evidence":"tests.test_deepseek_dataset_planner.DeepSeekDatasetPlannerTests.test_injection_and_authority_fields_cannot_override_server_contract"},
+    {"case_id":"provider/invalid_output","verdict":"PASS","evidence":"tests.test_deepseek_dataset_planner.DeepSeekDatasetPlannerTests.test_invalid_json_schema_illegal_tool_timeout_and_truncation_fail_closed"},
+    {"case_id":"provider/timeout_truncation","verdict":"PASS","evidence":"tests.test_deepseek_dataset_planner.DeepSeekDatasetPlannerTests.test_invalid_json_schema_illegal_tool_timeout_and_truncation_fail_closed"}
+  ],
+  "tests": {
+    "offline": {"passed": 502, "total": 502},
+    "isolated_postgresql": {"passed": 186, "total": 186},
+    "focused_mock_and_database": {"passed": 11, "total": 11},
+    "historical_frozen_planner_compatibility": {"passed": 21, "total": 21}
+  },
+  "feature_flag_default_off": true,
+  "public_api_added": false,
+  "database_migration_added": false,
+  "application_database_migrated": false,
+  "paid_execution_authorized": false,
+  "production_release": "hold"
+}

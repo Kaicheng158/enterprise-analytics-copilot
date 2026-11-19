@@ -1,0 +1,37 @@
+{
+  "plan_version": "dataset-planner-live-smoke-plan-v1",
+  "purpose": "low-cost capability smoke, not production release evidence",
+  "provider": "deepseek",
+  "model": "deepseek-flash",
+  "prompt_sha256": "20f3f648c45a705c600c4b945031459da4ed10c3573d96ab97d42bbc8a2e660f",
+  "response_schema_sha256": "16c1a04565b7e00cee9e69205d5c94fe2499a36207b2ee22a969c818211cfed5",
+  "suite_sha256": "de694be3006ae68537945750e653009197094fce713f7cb669833dab4b87f074",
+  "policy_sha256": "78375147bb9abc7ac5783df68a8d870d080bf5440963ec2e7b55e4fc7898bdf2",
+  "temperature": 0.0,
+  "thinking": "disabled",
+  "max_output_tokens": 800,
+  "timeout_seconds": 30,
+  "automatic_retries": 0,
+  "rounds": 1,
+  "case_ids": ["plan/en_aggregate", "plan/zh_comparison", "clarify/ambiguous_metric", "security/prompt_injection"],
+  "maximum_provider_calls_total": 4,
+  "budget_limit_usd": "0.01",
+  "per_call_reserve_usd": "0.002",
+  "acceptance": {
+    "hard_invariants": "100%",
+    "core_task_completion": "100%",
+    "minimum_normalized_semantic_quality": 0.85,
+    "schema_validity": "100%"
+  },
+  "stop_conditions": [
+    "budget reserve would exceed USD 0.01",
+    "provider call count would exceed four",
+    "credential or sensitive content exposure",
+    "cross-project or cross-revision authority change",
+    "unregistered tool SQL Python or raw-row request",
+    "evidence cannot be safely persisted"
+  ],
+  "public_api_enabled": false,
+  "feature_flag_default": false,
+  "paid_execution_authorized": false
+}

@@ -1,0 +1,17 @@
+{
+  "freeze_version": "dataset-planner-freeze-v2",
+  "suite_version": "dataset-planner-eval-v2",
+  "policy_version": "dataset-planner-eval-policy-v2",
+  "prompt_version": "dataset-planner-v2",
+  "suite_sha256": "f36719fb781379973bcacecfe7352c579c3cef781d2ce78ee94786e8dcf47070",
+  "policy_sha256": "7b684a4d4c0f70d97b383bff3b2276eb45edff1074b2814607319dafbb2e6651",
+  "live_plan_sha256": "1d55fe1edd4bb49ccf72ead84e165abbe5d7654b5d0075ab61ac6a64b4147388",
+  "prompt_sha256": "e7e8b4a830cf2ba414fd1825c1d8a41e4eab8e74da94e104ca5b3e0423f10c8e",
+  "response_schema_sha256": "16c1a04565b7e00cee9e69205d5c94fe2499a36207b2ee22a969c818211cfed5",
+  "case_count": 11,
+  "frozen_before_live_execution": true,
+  "live_execution_completed": false,
+  "paid_provider_calls": 0,
+  "supersedes_for_live_smoke": "dataset-planner-freeze-v1",
+  "v1_history_preserved": true
+}

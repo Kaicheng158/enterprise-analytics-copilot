@@ -137,6 +137,50 @@ class AuthorizedDatasetAnalysisRuntime:
             ),
         )
 
+    def planner_catalog(
+        self,
+        binding,
+        *,
+        metrics: tuple = (),
+    ):
+        """Expose schema metadata only; never rows, paths or storage references."""
+
+        from backend.planning.dataset_planner_models import (
+            DatasetPlannerCatalog,
+            DatasetPlannerField,
+            DatasetPlannerTable,
+        )
+
+        analyzer, version = self._analyzer_for_binding(binding)
+        try:
+            after = self._authorization.require_asset(
+                self._principal, self._project_id, binding.asset_id, action="asset_read"
+            )
+        except AuthorizationFailure:
+            raise ToolRegistryError("tool_not_authorized") from None
+        if after.authorization_version != version:
+            raise ToolRegistryError("tool_not_authorized")
+        if self._ready_revision_sha(binding) != analyzer.dataset.normalized_sha256:
+            raise ToolRegistryError("tool_execution_failed")
+        return DatasetPlannerCatalog(
+            tables=tuple(
+                DatasetPlannerTable(
+                    table_index=index,
+                    fields=tuple(
+                        DatasetPlannerField(
+                            name=column.name,
+                            kind=column.kind,
+                            required=column.required,
+                            unit=column.unit,
+                        )
+                        for column in table.columns
+                    ),
+                )
+                for index, table in enumerate(analyzer.dataset.tables, 1)
+            ),
+            metrics=metrics,
+        )
+
     def require_task_execution(self, execution_id: UUID):
         return self._authorization.require_task_execution(execution_id)
 

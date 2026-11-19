@@ -148,3 +148,11 @@ Execution creation, initial Checkpoint and Project task authorization binding ar
 Feature Value Gate: **Approve as necessary infrastructure**, with real user time savings still unproven. AI Agent Learning Gate: **Approve**, because the stage explicitly exercises structured planning authority separation, graph/field validation, durable state, idempotency and recovery boundaries. See [design and evaluation scope](pv2-04d-dataset-agent-integration.md).
 
 Final local verification passed 492 offline and 185 disposable PostgreSQL tests, including 11 focused PV2-04d cases. Eight evaluation scenarios were frozen before execution. No migration, HTTP route, paid call or production database change was introduced.
+
+## PV2-04d.1 real-model Dataset Planner foundation — 2026-11-19
+
+PV2-04d.1 adds a default-off DeepSeek Dataset Planner Adapter around the existing provider contracts. The model receives schema/type/unit/approved-metric metadata only and returns an authority-free draft. Server compilation and the existing Validator bind the draft to the live Project/Revision/SHA/authorization version before the unchanged Durable Runtime can accept it. Final review found omitted time filters and an inferred year in v1, preserved all v1 artifacts, and froze independent `dataset-planner-v2` scope-completeness and ambiguous-year behavior. Chinese/English questions, different Dataset structures, multi-step plans, centralized clarification, illegal fields/Tools, authority injection, invalid JSON, timeout and truncation are covered with Mock HTTP and synthetic data.
+
+Feature Value Gate: **Approve as infrastructure / user-value evidence pending**. AI Agent Learning Gate: **Approve**, focused on probabilistic Planner versus deterministic authority, schema compilation and evaluation. The ten-case suite, policy, prompt/schema hashes and one-round/four-call/USD 0.01 live smoke plan are frozen before any paid run. Real DeepSeek quality and stability remain **Hold**; Mock PASS must not be presented as real-model acceptance. No endpoint, migration, chart/report or advanced Agent feature is introduced.
+
+Local foundation verification passed 502 offline and 186 disposable PostgreSQL tests, including 11 focused Mock/Database cases and 21 historical frozen-Planner compatibility checks. No paid call was made.

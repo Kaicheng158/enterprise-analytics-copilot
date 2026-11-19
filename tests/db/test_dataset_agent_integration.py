@@ -6,6 +6,7 @@ from contextlib import contextmanager
 from datetime import UTC, datetime
 from pathlib import Path
 from tempfile import TemporaryDirectory
+import json
 import unittest
 import uuid
 
@@ -29,7 +30,15 @@ from backend.planning.dataset_agent_runtime import (
     DurableDatasetPlanner,
 )
 from backend.planning.dataset_models import DatasetAgentRequest, DatasetAgentSettings
+from backend.planning.dataset_planner_models import DatasetPlannerQuestion
 from backend.planning.dataset_provider import DeterministicDatasetPlanProvider
+from backend.planning.deepseek_dataset_planner import (
+    DeepSeekDatasetPlannerAdapter,
+    PreparedDatasetPlanProvider,
+)
+from backend.planning.deepseek_planner_adapter import DeepSeekPlannerSettings
+from backend.planning.planner_safety import PlannerCostGuard
+from backend.planning.dataset_validation import DatasetPlanValidator
 from backend.planning.task_queue import PersistentAgentQueueSettings, PersistentAgentQueueWorker
 from backend.planning.worker_runtime import DurableWorkerRuntime, DurableWorkerSettings
 from backend.product_facade.datasets import AuthorizedDatasetProductService
@@ -57,6 +66,20 @@ class RecordingExecutor:
     def execute(self, call, context):
         self.calls.append((call.name, dict(call.arguments)))
         return self.delegate.execute(call, context)
+
+
+class FakePlannerHttpResponse:
+    def __init__(self, payload):
+        self.payload = json.dumps(payload).encode("utf-8")
+
+    def __enter__(self):
+        return self
+
+    def __exit__(self, *args):
+        return False
+
+    def read(self, limit):
+        return self.payload[:limit]
 
 
 class DatasetAgentDatabaseTests(unittest.TestCase):
@@ -450,6 +473,127 @@ class DatasetAgentDatabaseTests(unittest.TestCase):
         self.assertIsNone(agent._planner.final_output(creation.execution.execution_id))
         receipt = store.list_receipts(creation.execution.execution_id)[0]
         self.assertEqual(receipt.status, "ambiguous")
+
+    def test_mock_deepseek_dataset_planner_runs_existing_durable_runtime(self):
+        revision = self.finance()
+        binding = self.binding(revision)
+        analysis = AuthorizedDatasetAnalysisRuntime(
+            self.connections,
+            self.authorization,
+            self.persistence,
+            principal=self.owner,
+            project_id=self.project.project_id,
+            settings=DatasetAnalysisSettings(enabled=True),
+        )
+        context = analysis.binding_context(binding)
+        catalog = analysis.planner_catalog(binding)
+        question = DatasetPlannerQuestion(
+            project_id=self.project.project_id,
+            binding=binding,
+            question="Compare January 2026 and February 2026 revenue by region and give the overall change.",
+            preferred_language="en",
+        )
+        draft = {
+            "response_version": "dataset-planner-draft-v1",
+            "outcome": "plan",
+            "operations": [
+                {
+                    "operation_id": "january_by_region",
+                    "tool_name": "aggregate_dataset_revision",
+                    "description": "Aggregate January 2026 revenue by region",
+                    "arguments": {
+                        "filters": [{"field": "period", "operator": "eq", "values": ["2026-01-31"]}],
+                        "group_by": ["region"],
+                        "aggregations": [{"result_id": "revenue", "function": "sum", "field": "revenue"}],
+                        "sort": [{"key": "region", "direction": "ascending"}]
+                    },
+                    "depends_on": []
+                },
+                {
+                    "operation_id": "february_by_region",
+                    "tool_name": "aggregate_dataset_revision",
+                    "description": "Aggregate February 2026 revenue by region",
+                    "arguments": {
+                        "filters": [{"field": "period", "operator": "eq", "values": ["2026-02-28"]}],
+                        "group_by": ["region"],
+                        "aggregations": [{"result_id": "revenue", "function": "sum", "field": "revenue"}],
+                        "sort": [{"key": "region", "direction": "ascending"}]
+                    },
+                    "depends_on": []
+                },
+                {
+                    "operation_id": "overall_period_change",
+                    "tool_name": "compare_dataset_revision",
+                    "description": "Compare overall January and February revenue",
+                    "arguments": {
+                        "dimension": "period",
+                        "measure": "revenue",
+                        "aggregation": "sum",
+                        "baseline": "2026-01-31",
+                        "comparison": "2026-02-28",
+                        "derived_metric": "absolute_change"
+                    },
+                    "depends_on": []
+                }
+            ],
+            "clarifications": []
+        }
+
+        def opener(request, timeout):
+            payload = json.loads(request.data)
+            self.assertNotIn(str(self.project.project_id), payload["messages"][1]["content"])
+            return FakePlannerHttpResponse({
+                "id": "dataset-planner-db-mock-1",
+                "model": "deepseek-flash",
+                "choices": [{
+                    "index": 0,
+                    "finish_reason": "stop",
+                    "message": {"role": "assistant", "content": json.dumps(draft)},
+                }],
+                "usage": {"prompt_tokens": 350, "completion_tokens": 200, "total_tokens": 550},
+            })
+
+        adapter = DeepSeekDatasetPlannerAdapter(
+            DeepSeekPlannerSettings(
+                enabled=True,
+                api_key=SecretStr("synthetic-dataset-planner-key-not-real"),
+            ),
+            validator=DatasetPlanValidator(settings=DatasetAgentSettings(enabled=True)),
+            cost_guard=PlannerCostGuard(),
+            opener=opener,
+        )
+        outcome = adapter.plan(question, context, catalog)
+        self.assertEqual(outcome.status, "planned")
+        agent, _, executor, provider, store, queue = self.stack(
+            provider=PreparedDatasetPlanProvider(outcome)
+        )
+        creation = agent.submit(
+            outcome.request,
+            idempotency_key="dataset-agent-llm-mock-0001",
+        )
+        self.assertEqual(queue.run_once(worker_id="dataset-llm-mock-worker").outcome, "completed")
+        view = agent.get(creation.execution.execution_id)
+        self.assertEqual(view.status, "completed")
+        january = view.result.results[0]
+        february = view.result.results[1]
+        comparison = view.result.results[2]
+        self.assertEqual(
+            [(row.dimensions[0].result.value, row.measures[0].result.value) for row in january.rows],
+            [("North", "100.25"), ("South", "-20.25")],
+        )
+        self.assertEqual(
+            [(row.dimensions[0].result.value, row.measures[0].result.value) for row in february.rows],
+            [("North", "120"), ("South", "0")],
+        )
+        self.assertEqual(comparison.rows[0].measures[0].result.value, "80")
+        self.assertEqual(comparison.rows[0].measures[1].result.value, "120")
+        self.assertEqual(comparison.rows[0].measures[2].result.value, "40")
+        self.assertEqual([call[0] for call in executor.calls], [
+            "aggregate_dataset_revision",
+            "aggregate_dataset_revision",
+            "compare_dataset_revision",
+        ])
+        self.assertEqual(store.audit_execution_consistency(creation.execution.execution_id).status, "consistent")
 
 
 if __name__ == "__main__":

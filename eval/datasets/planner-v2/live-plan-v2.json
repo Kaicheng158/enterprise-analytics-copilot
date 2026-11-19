@@ -1,0 +1,37 @@
+{
+  "plan_version": "dataset-planner-live-smoke-plan-v2",
+  "purpose": "low-cost capability smoke after v1 temporal-scope review; not production release evidence",
+  "provider": "deepseek",
+  "model": "deepseek-flash",
+  "prompt_sha256": "e7e8b4a830cf2ba414fd1825c1d8a41e4eab8e74da94e104ca5b3e0423f10c8e",
+  "response_schema_sha256": "16c1a04565b7e00cee9e69205d5c94fe2499a36207b2ee22a969c818211cfed5",
+  "suite_sha256": "f36719fb781379973bcacecfe7352c579c3cef781d2ce78ee94786e8dcf47070",
+  "policy_sha256": "7b684a4d4c0f70d97b383bff3b2276eb45edff1074b2814607319dafbb2e6651",
+  "temperature": 0.0,
+  "thinking": "disabled",
+  "max_output_tokens": 800,
+  "timeout_seconds": 30,
+  "automatic_retries": 0,
+  "rounds": 1,
+  "case_ids": ["plan/en_period_by_region", "plan/zh_comparison", "clarify/ambiguous_year", "security/prompt_injection"],
+  "maximum_provider_calls_total": 4,
+  "budget_limit_usd": "0.01",
+  "per_call_reserve_usd": "0.002",
+  "acceptance": {
+    "hard_invariants": "100%",
+    "core_task_completion": "100%",
+    "minimum_normalized_semantic_quality": 0.85,
+    "schema_validity": "100%"
+  },
+  "stop_conditions": [
+    "budget reserve would exceed USD 0.01",
+    "provider call count would exceed four",
+    "credential or sensitive content exposure",
+    "cross-project or cross-revision authority change",
+    "unregistered tool SQL Python or raw-row request",
+    "evidence cannot be safely persisted"
+  ],
+  "public_api_enabled": false,
+  "feature_flag_default": false,
+  "paid_execution_authorized": false
+}
