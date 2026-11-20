@@ -1,0 +1,748 @@
+[
+  {
+    "case_id": "plan/en_period_by_region",
+    "mode": "offline_replay_of_saved_live_draft_no_provider_call",
+    "queue_outcome": "completed",
+    "status": "completed",
+    "tool_calls": [
+      {
+        "name": "aggregate_dataset_revision",
+        "arguments": {
+          "sort": [],
+          "limit": 200,
+          "filters": [
+            {
+              "field": "period",
+              "values": [
+                "2026-01-01",
+                "2026-01-31"
+              ],
+              "operator": "between"
+            }
+          ],
+          "group_by": [
+            "region"
+          ],
+          "table_index": 1,
+          "aggregations": [
+            {
+              "field": "revenue",
+              "function": "sum",
+              "result_id": "jan_revenue"
+            }
+          ]
+        }
+      },
+      {
+        "name": "aggregate_dataset_revision",
+        "arguments": {
+          "sort": [],
+          "limit": 200,
+          "filters": [
+            {
+              "field": "period",
+              "values": [
+                "2026-02-01",
+                "2026-02-28"
+              ],
+              "operator": "between"
+            }
+          ],
+          "group_by": [
+            "region"
+          ],
+          "table_index": 1,
+          "aggregations": [
+            {
+              "field": "revenue",
+              "function": "sum",
+              "result_id": "feb_revenue"
+            }
+          ]
+        }
+      },
+      {
+        "name": "aggregate_dataset_revision",
+        "arguments": {
+          "sort": [],
+          "limit": 1,
+          "filters": [
+            {
+              "field": "period",
+              "values": [
+                "2026-01-01",
+                "2026-01-31"
+              ],
+              "operator": "between"
+            }
+          ],
+          "group_by": [],
+          "table_index": 1,
+          "aggregations": [
+            {
+              "field": "revenue",
+              "function": "sum",
+              "result_id": "jan_total_revenue"
+            }
+          ]
+        }
+      },
+      {
+        "name": "aggregate_dataset_revision",
+        "arguments": {
+          "sort": [],
+          "limit": 1,
+          "filters": [
+            {
+              "field": "period",
+              "values": [
+                "2026-02-01",
+                "2026-02-28"
+              ],
+              "operator": "between"
+            }
+          ],
+          "group_by": [],
+          "table_index": 1,
+          "aggregations": [
+            {
+              "field": "revenue",
+              "function": "sum",
+              "result_id": "feb_total_revenue"
+            }
+          ]
+        }
+      },
+      {
+        "name": "compare_dataset_revision",
+        "arguments": {
+          "filters": [],
+          "measure": "revenue",
+          "baseline": "2026-01-01..2026-01-31",
+          "dimension": "period",
+          "comparison": "2026-02-01..2026-02-28",
+          "aggregation": "sum",
+          "table_index": 1,
+          "derived_metric": "absolute_change"
+        }
+      }
+    ],
+    "result": {
+      "result_version": "dataset-agent-result-v1",
+      "plan_id": "dataset-llm-44b996f140b9",
+      "project_id": "<server-project>",
+      "binding": {
+        "asset_id": "<server-asset>",
+        "asset_revision_id": "<server-asset-revision>",
+        "dataset_revision_id": "<server-dataset-revision>"
+      },
+      "normalized_sha256": "<server-normalized-sha256>",
+      "status": "needs_clarification",
+      "results": [
+        {
+          "result_version": "dataset-analysis-tool-result-v1",
+          "policy_version": "deterministic-dataset-analysis-v1",
+          "operation": "aggregate",
+          "status": "completed",
+          "project_id": "<server-project>",
+          "asset_id": "<server-asset>",
+          "asset_revision_id": "<server-asset-revision>",
+          "dataset_revision_id": "<server-dataset-revision>",
+          "parameters_sha256": "b15408d317dfd0ee79412cf7049724741b3201072e6f1beaa28d1b4b4a860640",
+          "scanned_rows": 4,
+          "matched_rows": 2,
+          "rows": [
+            {
+              "dimensions": [
+                {
+                  "key": "region",
+                  "result": {
+                    "value": "North",
+                    "kind": "text",
+                    "unit": null
+                  }
+                }
+              ],
+              "measures": [
+                {
+                  "key": "jan_revenue",
+                  "result": {
+                    "value": "100.25",
+                    "kind": "decimal",
+                    "unit": "USD"
+                  }
+                }
+              ]
+            },
+            {
+              "dimensions": [
+                {
+                  "key": "region",
+                  "result": {
+                    "value": "South",
+                    "kind": "text",
+                    "unit": null
+                  }
+                }
+              ],
+              "measures": [
+                {
+                  "key": "jan_revenue",
+                  "result": {
+                    "value": "-20.25",
+                    "kind": "decimal",
+                    "unit": "USD"
+                  }
+                }
+              ]
+            }
+          ],
+          "findings": [],
+          "sources": [
+            {
+              "source_version": "dataset-analysis-source-v1",
+              "project_id": "<server-project>",
+              "asset_id": "<server-asset>",
+              "asset_revision_id": "<server-asset-revision>",
+              "dataset_revision_id": "<server-dataset-revision>",
+              "normalized_sha256": "<server-normalized-sha256>",
+              "table_index": 1,
+              "sheet": null,
+              "row_start": 2,
+              "row_end": 3,
+              "columns": [
+                "region",
+                "revenue",
+                "period"
+              ]
+            }
+          ]
+        },
+        {
+          "result_version": "dataset-analysis-tool-result-v1",
+          "policy_version": "deterministic-dataset-analysis-v1",
+          "operation": "aggregate",
+          "status": "completed",
+          "project_id": "<server-project>",
+          "asset_id": "<server-asset>",
+          "asset_revision_id": "<server-asset-revision>",
+          "dataset_revision_id": "<server-dataset-revision>",
+          "parameters_sha256": "ad7c83ae209fc6f120f457fe6687c1abf98844b2143b74b45c3b618470ea39f1",
+          "scanned_rows": 4,
+          "matched_rows": 2,
+          "rows": [
+            {
+              "dimensions": [
+                {
+                  "key": "region",
+                  "result": {
+                    "value": "North",
+                    "kind": "text",
+                    "unit": null
+                  }
+                }
+              ],
+              "measures": [
+                {
+                  "key": "feb_revenue",
+                  "result": {
+                    "value": "120",
+                    "kind": "decimal",
+                    "unit": "USD"
+                  }
+                }
+              ]
+            },
+            {
+              "dimensions": [
+                {
+                  "key": "region",
+                  "result": {
+                    "value": "South",
+                    "kind": "text",
+                    "unit": null
+                  }
+                }
+              ],
+              "measures": [
+                {
+                  "key": "feb_revenue",
+                  "result": {
+                    "value": "0",
+                    "kind": "decimal",
+                    "unit": "USD"
+                  }
+                }
+              ]
+            }
+          ],
+          "findings": [],
+          "sources": [
+            {
+              "source_version": "dataset-analysis-source-v1",
+              "project_id": "<server-project>",
+              "asset_id": "<server-asset>",
+              "asset_revision_id": "<server-asset-revision>",
+              "dataset_revision_id": "<server-dataset-revision>",
+              "normalized_sha256": "<server-normalized-sha256>",
+              "table_index": 1,
+              "sheet": null,
+              "row_start": 4,
+              "row_end": 5,
+              "columns": [
+                "region",
+                "revenue",
+                "period"
+              ]
+            }
+          ]
+        },
+        {
+          "result_version": "dataset-analysis-tool-result-v1",
+          "policy_version": "deterministic-dataset-analysis-v1",
+          "operation": "aggregate",
+          "status": "completed",
+          "project_id": "<server-project>",
+          "asset_id": "<server-asset>",
+          "asset_revision_id": "<server-asset-revision>",
+          "dataset_revision_id": "<server-dataset-revision>",
+          "parameters_sha256": "7f8fd19b116e8556d61b1ebf1aa8c9efca236c652693a9112449e7c1f3d31df9",
+          "scanned_rows": 4,
+          "matched_rows": 2,
+          "rows": [
+            {
+              "dimensions": [],
+              "measures": [
+                {
+                  "key": "jan_total_revenue",
+                  "result": {
+                    "value": "80",
+                    "kind": "decimal",
+                    "unit": "USD"
+                  }
+                }
+              ]
+            }
+          ],
+          "findings": [],
+          "sources": [
+            {
+              "source_version": "dataset-analysis-source-v1",
+              "project_id": "<server-project>",
+              "asset_id": "<server-asset>",
+              "asset_revision_id": "<server-asset-revision>",
+              "dataset_revision_id": "<server-dataset-revision>",
+              "normalized_sha256": "<server-normalized-sha256>",
+              "table_index": 1,
+              "sheet": null,
+              "row_start": 2,
+              "row_end": 3,
+              "columns": [
+                "revenue",
+                "period"
+              ]
+            }
+          ]
+        },
+        {
+          "result_version": "dataset-analysis-tool-result-v1",
+          "policy_version": "deterministic-dataset-analysis-v1",
+          "operation": "aggregate",
+          "status": "completed",
+          "project_id": "<server-project>",
+          "asset_id": "<server-asset>",
+          "asset_revision_id": "<server-asset-revision>",
+          "dataset_revision_id": "<server-dataset-revision>",
+          "parameters_sha256": "20a425d7155d5ecbc2c81c1db5c02c919e4750bbc7740ef21446fdc353cf4c2a",
+          "scanned_rows": 4,
+          "matched_rows": 2,
+          "rows": [
+            {
+              "dimensions": [],
+              "measures": [
+                {
+                  "key": "feb_total_revenue",
+                  "result": {
+                    "value": "120",
+                    "kind": "decimal",
+                    "unit": "USD"
+                  }
+                }
+              ]
+            }
+          ],
+          "findings": [],
+          "sources": [
+            {
+              "source_version": "dataset-analysis-source-v1",
+              "project_id": "<server-project>",
+              "asset_id": "<server-asset>",
+              "asset_revision_id": "<server-asset-revision>",
+              "dataset_revision_id": "<server-dataset-revision>",
+              "normalized_sha256": "<server-normalized-sha256>",
+              "table_index": 1,
+              "sheet": null,
+              "row_start": 4,
+              "row_end": 5,
+              "columns": [
+                "revenue",
+                "period"
+              ]
+            }
+          ]
+        },
+        {
+          "result_version": "dataset-analysis-tool-result-v1",
+          "policy_version": "deterministic-dataset-analysis-v1",
+          "operation": "compare",
+          "status": "needs_clarification",
+          "project_id": "<server-project>",
+          "asset_id": "<server-asset>",
+          "asset_revision_id": "<server-asset-revision>",
+          "dataset_revision_id": "<server-dataset-revision>",
+          "parameters_sha256": "b37b9d278c876acd7e5ece9fc325ba0882c0eb9ac39b5455c07ee3ecd5895933",
+          "scanned_rows": 4,
+          "matched_rows": 4,
+          "rows": [],
+          "findings": [
+            {
+              "code": "filter_value_invalid",
+              "severity": "clarification",
+              "fields": [
+                "period"
+              ]
+            }
+          ],
+          "sources": []
+        }
+      ],
+      "clarifications": [
+        {
+          "code": "filter_value_invalid",
+          "fields": [
+            "period"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "source_version": "dataset-analysis-source-v1",
+          "project_id": "<server-project>",
+          "asset_id": "<server-asset>",
+          "asset_revision_id": "<server-asset-revision>",
+          "dataset_revision_id": "<server-dataset-revision>",
+          "normalized_sha256": "<server-normalized-sha256>",
+          "table_index": 1,
+          "sheet": null,
+          "row_start": 2,
+          "row_end": 3,
+          "columns": [
+            "region",
+            "revenue",
+            "period"
+          ]
+        },
+        {
+          "source_version": "dataset-analysis-source-v1",
+          "project_id": "<server-project>",
+          "asset_id": "<server-asset>",
+          "asset_revision_id": "<server-asset-revision>",
+          "dataset_revision_id": "<server-dataset-revision>",
+          "normalized_sha256": "<server-normalized-sha256>",
+          "table_index": 1,
+          "sheet": null,
+          "row_start": 4,
+          "row_end": 5,
+          "columns": [
+            "region",
+            "revenue",
+            "period"
+          ]
+        },
+        {
+          "source_version": "dataset-analysis-source-v1",
+          "project_id": "<server-project>",
+          "asset_id": "<server-asset>",
+          "asset_revision_id": "<server-asset-revision>",
+          "dataset_revision_id": "<server-dataset-revision>",
+          "normalized_sha256": "<server-normalized-sha256>",
+          "table_index": 1,
+          "sheet": null,
+          "row_start": 2,
+          "row_end": 3,
+          "columns": [
+            "revenue",
+            "period"
+          ]
+        },
+        {
+          "source_version": "dataset-analysis-source-v1",
+          "project_id": "<server-project>",
+          "asset_id": "<server-asset>",
+          "asset_revision_id": "<server-asset-revision>",
+          "dataset_revision_id": "<server-dataset-revision>",
+          "normalized_sha256": "<server-normalized-sha256>",
+          "table_index": 1,
+          "sheet": null,
+          "row_start": 4,
+          "row_end": 5,
+          "columns": [
+            "revenue",
+            "period"
+          ]
+        }
+      ]
+    },
+    "checkpoint_consistency": "consistent",
+    "diagnostic_note": "Month-range filters are explicit, but compare tool values must match stored dimension values; this replay tests the saved draft without changing its historical verdict."
+  },
+  {
+    "case_id": "plan/zh_comparison",
+    "mode": "offline_replay_of_saved_live_draft_no_provider_call",
+    "queue_outcome": "completed",
+    "status": "completed",
+    "tool_calls": [
+      {
+        "name": "aggregate_dataset_revision",
+        "arguments": {
+          "sort": [],
+          "limit": 100,
+          "filters": [
+            {
+              "field": "period",
+              "values": [
+                "2026-01-01",
+                "2026-01-31"
+              ],
+              "operator": "between"
+            }
+          ],
+          "group_by": [],
+          "table_index": 1,
+          "aggregations": [
+            {
+              "field": "revenue",
+              "function": "sum",
+              "result_id": "total_revenue"
+            }
+          ]
+        }
+      },
+      {
+        "name": "aggregate_dataset_revision",
+        "arguments": {
+          "sort": [],
+          "limit": 100,
+          "filters": [
+            {
+              "field": "period",
+              "values": [
+                "2026-02-01",
+                "2026-02-28"
+              ],
+              "operator": "between"
+            }
+          ],
+          "group_by": [],
+          "table_index": 1,
+          "aggregations": [
+            {
+              "field": "revenue",
+              "function": "sum",
+              "result_id": "total_revenue"
+            }
+          ]
+        }
+      },
+      {
+        "name": "compare_dataset_revision",
+        "arguments": {
+          "filters": [],
+          "measure": "revenue",
+          "baseline": "2026-01",
+          "dimension": "period",
+          "comparison": "2026-02",
+          "aggregation": "sum",
+          "table_index": 1,
+          "derived_metric": "absolute_change"
+        }
+      }
+    ],
+    "result": {
+      "result_version": "dataset-agent-result-v1",
+      "plan_id": "dataset-llm-96a078588917",
+      "project_id": "<server-project>",
+      "binding": {
+        "asset_id": "<server-asset>",
+        "asset_revision_id": "<server-asset-revision>",
+        "dataset_revision_id": "<server-dataset-revision>"
+      },
+      "normalized_sha256": "<server-normalized-sha256>",
+      "status": "needs_clarification",
+      "results": [
+        {
+          "result_version": "dataset-analysis-tool-result-v1",
+          "policy_version": "deterministic-dataset-analysis-v1",
+          "operation": "aggregate",
+          "status": "completed",
+          "project_id": "<server-project>",
+          "asset_id": "<server-asset>",
+          "asset_revision_id": "<server-asset-revision>",
+          "dataset_revision_id": "<server-dataset-revision>",
+          "parameters_sha256": "0aa30855e6c3eb65e744324d92d57fa027db9fd095d7baf60992f808918b54fb",
+          "scanned_rows": 4,
+          "matched_rows": 2,
+          "rows": [
+            {
+              "dimensions": [],
+              "measures": [
+                {
+                  "key": "total_revenue",
+                  "result": {
+                    "value": "80",
+                    "kind": "decimal",
+                    "unit": "USD"
+                  }
+                }
+              ]
+            }
+          ],
+          "findings": [],
+          "sources": [
+            {
+              "source_version": "dataset-analysis-source-v1",
+              "project_id": "<server-project>",
+              "asset_id": "<server-asset>",
+              "asset_revision_id": "<server-asset-revision>",
+              "dataset_revision_id": "<server-dataset-revision>",
+              "normalized_sha256": "<server-normalized-sha256>",
+              "table_index": 1,
+              "sheet": null,
+              "row_start": 2,
+              "row_end": 3,
+              "columns": [
+                "revenue",
+                "period"
+              ]
+            }
+          ]
+        },
+        {
+          "result_version": "dataset-analysis-tool-result-v1",
+          "policy_version": "deterministic-dataset-analysis-v1",
+          "operation": "aggregate",
+          "status": "completed",
+          "project_id": "<server-project>",
+          "asset_id": "<server-asset>",
+          "asset_revision_id": "<server-asset-revision>",
+          "dataset_revision_id": "<server-dataset-revision>",
+          "parameters_sha256": "a74c69beb21a7883be78a78b4d2daae332f495fbf8c384cba6efaa8d8e8610ed",
+          "scanned_rows": 4,
+          "matched_rows": 2,
+          "rows": [
+            {
+              "dimensions": [],
+              "measures": [
+                {
+                  "key": "total_revenue",
+                  "result": {
+                    "value": "120",
+                    "kind": "decimal",
+                    "unit": "USD"
+                  }
+                }
+              ]
+            }
+          ],
+          "findings": [],
+          "sources": [
+            {
+              "source_version": "dataset-analysis-source-v1",
+              "project_id": "<server-project>",
+              "asset_id": "<server-asset>",
+              "asset_revision_id": "<server-asset-revision>",
+              "dataset_revision_id": "<server-dataset-revision>",
+              "normalized_sha256": "<server-normalized-sha256>",
+              "table_index": 1,
+              "sheet": null,
+              "row_start": 4,
+              "row_end": 5,
+              "columns": [
+                "revenue",
+                "period"
+              ]
+            }
+          ]
+        },
+        {
+          "result_version": "dataset-analysis-tool-result-v1",
+          "policy_version": "deterministic-dataset-analysis-v1",
+          "operation": "compare",
+          "status": "needs_clarification",
+          "project_id": "<server-project>",
+          "asset_id": "<server-asset>",
+          "asset_revision_id": "<server-asset-revision>",
+          "dataset_revision_id": "<server-dataset-revision>",
+          "parameters_sha256": "1b56d83984103917565bdc4b704060a2599fdfb156565a3519ae44fe836884af",
+          "scanned_rows": 4,
+          "matched_rows": 4,
+          "rows": [],
+          "findings": [
+            {
+              "code": "filter_value_invalid",
+              "severity": "clarification",
+              "fields": [
+                "period"
+              ]
+            }
+          ],
+          "sources": []
+        }
+      ],
+      "clarifications": [
+        {
+          "code": "filter_value_invalid",
+          "fields": [
+            "period"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "source_version": "dataset-analysis-source-v1",
+          "project_id": "<server-project>",
+          "asset_id": "<server-asset>",
+          "asset_revision_id": "<server-asset-revision>",
+          "dataset_revision_id": "<server-dataset-revision>",
+          "normalized_sha256": "<server-normalized-sha256>",
+          "table_index": 1,
+          "sheet": null,
+          "row_start": 2,
+          "row_end": 3,
+          "columns": [
+            "revenue",
+            "period"
+          ]
+        },
+        {
+          "source_version": "dataset-analysis-source-v1",
+          "project_id": "<server-project>",
+          "asset_id": "<server-asset>",
+          "asset_revision_id": "<server-asset-revision>",
+          "dataset_revision_id": "<server-dataset-revision>",
+          "normalized_sha256": "<server-normalized-sha256>",
+          "table_index": 1,
+          "sheet": null,
+          "row_start": 4,
+          "row_end": 5,
+          "columns": [
+            "revenue",
+            "period"
+          ]
+        }
+      ]
+    },
+    "checkpoint_consistency": "consistent",
+    "diagnostic_note": "Month-range filters are explicit, but compare tool values must match stored dimension values; this replay tests the saved draft without changing its historical verdict."
+  }
+]

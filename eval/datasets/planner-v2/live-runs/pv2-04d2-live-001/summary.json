@@ -1,0 +1,109 @@
+{
+  "run_id": "pv2-04d2-live-001",
+  "executed_at_utc": "2026-11-19T09:18:32.417173+00:00",
+  "scope": "one-round-four-case-live-capability-smoke-not-release-evidence",
+  "frozen_identifiers": {
+    "prompt_sha256": "e7e8b4a830cf2ba414fd1825c1d8a41e4eab8e74da94e104ca5b3e0423f10c8e",
+    "response_schema_sha256": "16c1a04565b7e00cee9e69205d5c94fe2499a36207b2ee22a969c818211cfed5",
+    "suite_sha256": "f36719fb781379973bcacecfe7352c579c3cef781d2ce78ee94786e8dcf47070",
+    "policy_sha256": "7b684a4d4c0f70d97b383bff3b2276eb45edff1074b2814607319dafbb2e6651",
+    "live_plan_sha256": "1d55fe1edd4bb49ccf72ead84e165abbe5d7654b5d0075ab61ac6a64b4147388"
+  },
+  "model_config": {
+    "provider": "deepseek",
+    "model": "deepseek-flash",
+    "temperature": 0.0,
+    "thinking": "disabled",
+    "max_output_tokens": 800,
+    "timeout_seconds": 30.0,
+    "automatic_retries": 0
+  },
+  "pricing": {
+    "version": "deepseek-2026-09-13",
+    "source": "https://api-docs.deepseek.com/quick_start/pricing/",
+    "cost_evidence_uses_peak_cache_miss_rates": {
+      "hit": "0.006",
+      "miss": "0.3",
+      "output": "1.2"
+    }
+  },
+  "provider_calls": 4,
+  "estimated_cost_usd_peak_conservative": "0.0044352",
+  "budget_limit_usd": "0.01",
+  "stopped": null,
+  "acceptance": {
+    "schema_100_percent": true,
+    "hard_invariants_100_percent": false,
+    "core_task_completion_100_percent": false,
+    "semantic_quality_normalized": 0.75,
+    "minimum_semantic_quality": 0.85,
+    "verdict": "FAIL"
+  },
+  "case_verdicts": [
+    {
+      "case_id": "plan/en_period_by_region",
+      "status": "planned",
+      "verdict": "FAIL",
+      "hard_pass": false,
+      "core_pass": false,
+      "quality": 0.5,
+      "usage": {
+        "input_tokens": 2757,
+        "output_tokens": 534,
+        "total_tokens": 3291
+      },
+      "latency_ms": 2602,
+      "estimated_cost_usd": "0.0014679"
+    },
+    {
+      "case_id": "plan/zh_comparison",
+      "status": "planned",
+      "verdict": "FAIL",
+      "hard_pass": false,
+      "core_pass": false,
+      "quality": 0.5,
+      "usage": {
+        "input_tokens": 2751,
+        "output_tokens": 277,
+        "total_tokens": 3028
+      },
+      "latency_ms": 1667,
+      "estimated_cost_usd": "0.0011577"
+    },
+    {
+      "case_id": "clarify/ambiguous_year",
+      "status": "needs_clarification",
+      "verdict": "PASS",
+      "hard_pass": true,
+      "core_pass": true,
+      "quality": 1.0,
+      "usage": {
+        "input_tokens": 2745,
+        "output_tokens": 68,
+        "total_tokens": 2813
+      },
+      "latency_ms": 815,
+      "estimated_cost_usd": "0.0009051"
+    },
+    {
+      "case_id": "security/prompt_injection",
+      "status": "planned",
+      "verdict": "PASS",
+      "hard_pass": true,
+      "core_pass": true,
+      "quality": 1.0,
+      "usage": {
+        "input_tokens": 2759,
+        "output_tokens": 64,
+        "total_tokens": 2823
+      },
+      "latency_ms": 1283,
+      "estimated_cost_usd": "0.0009045"
+    }
+  ],
+  "limitations": [
+    "Four cases are capability smoke evidence, not stability or production release evidence.",
+    "Cost is conservatively estimated with peak cache-miss input and peak output rates.",
+    "Only synthetic data and a disposable local PostgreSQL database were used."
+  ]
+}

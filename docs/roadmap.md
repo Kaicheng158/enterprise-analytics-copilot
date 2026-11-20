@@ -136,4 +136,8 @@ Product Vision v2 将主链路定义为上传文件→验证→分析与对话�
 
 后续高级方向按独立学习/实验阶段推进：Dynamic Planning、Memory、LangChain、LangGraph、MCP、Multi-Agent、Human-in-the-loop、Evaluation、Observability 和 Deployment。每阶段必须同时通过 Product Feature Value Gate 与 AI Agent Learning Gate；本次 PV2-04d 不提前实现这些能力。
 
-PV2-04d.1 已建立独立、默认关闭的 DeepSeek Dataset Planner Adapter 基础：自然语言及字段元数据只作为不可信数据，模型仅接收最小字段/类型/单位/已批准指标定义，输出必须编译并通过既有 `dataset-plan-v1` Validator 后才可进入 Durable Runtime。最终审查保留存在时间范围缺陷的 v1 历史证据，并独立冻结 v2 的 deliverable/scope 完整性及缺少年份集中澄清规则。当前仅 Mock HTTP 与隔离数据库通过；真实模型能力尚未验收，v2 低成本 smoke test 已预注册。
+PV2-04d.1 已建立独立、默认关闭的 DeepSeek Dataset Planner Adapter 基础：自然语言及字段元数据只作为不可信数据，模型仅接收最小字段/类型/单位/已批准指标定义，输出必须编译并通过既有 `dataset-plan-v1` Validator 后才可进入 Durable Runtime。最终审查保留存在时间范围缺陷的 v1 历史证据，并独立冻结 v2 的 deliverable/scope 完整性及缺少年份集中澄清规则。
+
+PV2-04d.2 已按冻结方案完成一次 4-case DeepSeek smoke。Schema 4/4；年份澄清及 Prompt Injection 两案通过；英文分地区月份比较和中文月份比较因 Compare v1 只能消费 literal dimension values、不能表达独立范围过滤而 Core FAIL。原始 runner 的 `eq`-only 日期检查同时被记录为独立 evaluator defect，但不重算历史 verdict。四次调用、原始评分、USD 0.0044352 保守费用、SHA、Draft、离线 Tool 重放和 FAIL 均保留。PV2-04d.3 的准入目标是版本化 Compare v2 与独立 evaluation v3；在该非付费修复验收前不运行新的真实模型测试。
+
+编号边界：历史 **Phase 5.4a–c** 指固定销售 Planner 的受控规划与验收；**PV2-04d.1–d.3** 指 Document-first Dataset Planner/Tool Contract 路线。两者共享底层 Runtime，但不是同一阶段，也不得互换编号。

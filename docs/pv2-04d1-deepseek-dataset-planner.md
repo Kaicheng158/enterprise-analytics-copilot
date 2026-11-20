@@ -1,6 +1,6 @@
 # PV2-04d.1 — DeepSeek Dataset Planner foundation
 
-Status: local Mock/HTTP foundation complete; real DeepSeek capability remains **unverified / Hold**. No paid provider call was made during PV2-04d.1.
+Status: PV2-04d.1 local Mock/HTTP foundation complete. PV2-04d.2 later ran the separately authorized frozen live smoke and returned **FAIL / Hold**; no paid provider call was made during PV2-04d.1 itself.
 
 The original `dataset-planner-v1` Prompt, suite, SHA and Mock evidence remain immutable. Final review found that its example dropped explicit month filters and inferred an unspecified year. It was not used for paid evaluation. `dataset-planner-v2` is an independent release that adds general scope/deliverable completeness and missing-year clarification rules; v2 is the only candidate eligible for the PV2-04d.2 smoke.
 
@@ -153,4 +153,4 @@ Verified locally with Mock HTTP and synthetic/disposable PostgreSQL:
 
 Final local verification passed **502/502 offline tests**, **186/186 disposable PostgreSQL tests**, **11/11 focused PV2-04d.1 tests**, and **21/21 historical frozen-Planner compatibility checks**. The ten Mock evaluation cases are mapped to concrete test evidence in the machine-readable acceptance record. Paid provider calls: zero.
 
-Not verified: real DeepSeek planning quality/stability, production data privacy, human approval, cancellation, dynamic replanning, arbitrary business metrics, rate-limit behavior under load, hard process isolation or public product integration.
+PV2-04d.2 follow-up: the frozen four-case smoke used four calls and zero retries. Schema was 4/4, but two comparison cases failed because Compare v1 could not consume Planner-generated month-range values. The original verdict and complete synthetic evidence are retained under `eval/datasets/planner-v2/live-runs/pv2-04d2-live-001/`. The runner's narrower exact-date diagnostic is recorded without recomputing the historical verdict. Real-model stability, production data privacy, human approval, cancellation, dynamic replanning, arbitrary business metrics, rate-limit behavior under load, hard process isolation and public product integration remain unverified.
