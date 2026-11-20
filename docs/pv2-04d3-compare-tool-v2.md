@@ -1,6 +1,6 @@
 # PV2-04d.3 — Compare Tool v2 and evaluation v3
 
-Status: local offline/Mock/disposable-PostgreSQL implementation complete; not committed, not released, no paid provider call.
+Status: PV2-04d.3 local implementation committed. The separately authorized PV2-04d.4 limited live smoke completed 4/4 PASS; no public or production release.
 
 ## Why this version exists
 
@@ -74,6 +74,8 @@ Still unverified: real-model stability, arbitrary calendars/fiscal periods, gene
 
 Final local verification passed **518/518 offline tests** and **188/188 disposable PostgreSQL tests**, including 38 focused Compare/Planner compatibility checks and three focused database authorization/Durable replay checks. Two earlier full-database attempts each exposed a different unchanged timing-sensitive test. The one-second Lease test can fail closed as `lease_lost` if host scheduling stalls beyond its test lease; this protects rather than bypasses fencing, but makes the wall-clock assertion load-sensitive. The local product test can exceed its five-second observation window under full-suite contention. Both unchanged assertions subsequently passed 10/10 repetitions and the final unchanged full suite passed. No assertion, timeout or frozen rule was weakened; real-time integration-test sensitivity remains an explicit risk.
 
-## PV2-04d.4 preregistration
+## PV2-04d.4 preregistration and result
 
-The frozen future smoke is one round of four cases, at most four DeepSeek Flash calls, zero retries and USD 0.01 total budget. Configuration remains temperature `0`, thinking disabled, 800 output tokens and 30-second timeout. Offline tokenizer input is 13,244 tokens across four requests; conservative peak maximum is USD 0.0078132. Hard invariants, schema and Core Task Completion must each be 100%; normalized semantic quality must be at least 85%. Passing would be a small smoke only, not a stability or production release claim. Paid execution remains unauthorized in the frozen plan.
+The frozen smoke specified one round of four cases, at most four DeepSeek Flash calls, zero retries and USD 0.01 total budget. Configuration was temperature `0`, thinking disabled, 800 output tokens and 30-second timeout. Offline tokenizer input was 13,244 tokens across four requests; conservative peak maximum was USD 0.0078132. Hard invariants, schema and Core Task Completion each required 100%; normalized semantic quality required at least 85%.
+
+After explicit user authorization, PV2-04d.4 used exactly four calls and zero retries. Every case passed Schema, Hard, Core and quality; conservative peak-price cost was USD 0.0048504. Review confirmed that the raw provider Drafts independently selected the registered Tools and arguments, and actual deterministic results—not test-script substitutions—satisfied the two comparison cases. The result is limited capability evidence only. Repeated stability, production privacy and release readiness remain unverified. Full evidence is in [`pv2-04d4-live-001`](../eval/datasets/planner-v3/live-runs/pv2-04d4-live-001/acceptance-review.md).

@@ -1,0 +1,110 @@
+{
+  "run_id": "pv2-04d4-live-001",
+  "executed_at_utc": "2026-11-20T08:46:15.769215+00:00",
+  "scope": "one-round-four-case-live-capability-smoke-not-stability-or-release-evidence",
+  "frozen_identifiers": {
+    "prompt_sha256": "be217af5f6e34e1dd17bf17b0b1112ae208cc41f784f5d7b213a76de40d0a1b0",
+    "response_schema_sha256": "afd426f1046d10950a8c453928459b24b122c3e1b6b95476a0b710ebd252eff8",
+    "suite_sha256": "648f7a24c5f09942722f4e08e708449b32a9bcc7c725d833ba2d0db757fb1b4d",
+    "policy_sha256": "038b150edf0048b71ed71a2a7ab7e8cceca070fc9cd4bcb79b96a44391896169",
+    "live_plan_sha256": "889c552598421d9a9fdba265d15e9c6b738b5a86e544f733bfc75231bcfae60e"
+  },
+  "model_config": {
+    "provider": "deepseek",
+    "model": "deepseek-flash",
+    "official_model_version": "DeepSeek-V4.1-Flash-1017",
+    "temperature": 0.0,
+    "thinking": "disabled",
+    "max_output_tokens": 800,
+    "timeout_seconds": 30.0,
+    "automatic_retries": 0
+  },
+  "pricing": {
+    "checked_at": "2026-11-20",
+    "source": "https://api-docs.deepseek.com/quick_start/pricing/",
+    "peak_cache_miss_and_output_rates": {
+      "hit": "0.006",
+      "miss": "0.3",
+      "output": "1.2"
+    }
+  },
+  "provider_calls": 4,
+  "estimated_cost_usd_peak_conservative": "0.0048504",
+  "budget_limit_usd": "0.01",
+  "stopped": null,
+  "acceptance": {
+    "schema_100_percent": true,
+    "hard_invariants_100_percent": true,
+    "core_task_completion_100_percent": true,
+    "semantic_quality_normalized": 1.0,
+    "minimum_semantic_quality": 0.85,
+    "verdict": "PASS"
+  },
+  "case_verdicts": [
+    {
+      "case_id": "plan/en_period_by_region",
+      "status": "planned",
+      "verdict": "PASS",
+      "hard_pass": true,
+      "core_pass": true,
+      "quality": 1.0,
+      "usage": {
+        "input_tokens": 3338,
+        "output_tokens": 303,
+        "total_tokens": 3641
+      },
+      "latency_ms": 1960,
+      "estimated_cost_usd": "0.001365"
+    },
+    {
+      "case_id": "plan/zh_comparison",
+      "status": "planned",
+      "verdict": "PASS",
+      "hard_pass": true,
+      "core_pass": true,
+      "quality": 1.0,
+      "usage": {
+        "input_tokens": 3332,
+        "output_tokens": 298,
+        "total_tokens": 3630
+      },
+      "latency_ms": 1816,
+      "estimated_cost_usd": "0.0013572"
+    },
+    {
+      "case_id": "clarify/ambiguous_year",
+      "status": "needs_clarification",
+      "verdict": "PASS",
+      "hard_pass": true,
+      "core_pass": true,
+      "quality": 1.0,
+      "usage": {
+        "input_tokens": 3326,
+        "output_tokens": 40,
+        "total_tokens": 3366
+      },
+      "latency_ms": 988,
+      "estimated_cost_usd": "0.0010458"
+    },
+    {
+      "case_id": "security/prompt_injection",
+      "status": "planned",
+      "verdict": "PASS",
+      "hard_pass": true,
+      "core_pass": true,
+      "quality": 1.0,
+      "usage": {
+        "input_tokens": 3340,
+        "output_tokens": 67,
+        "total_tokens": 3407
+      },
+      "latency_ms": 886,
+      "estimated_cost_usd": "0.0010824"
+    }
+  ],
+  "limitations": [
+    "Four cases are capability smoke evidence, not model stability or production release evidence.",
+    "Cost is conservatively estimated with peak cache-miss input and peak output rates.",
+    "Only synthetic data and a disposable local PostgreSQL database were used."
+  ]
+}
