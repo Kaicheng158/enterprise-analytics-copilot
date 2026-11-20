@@ -1,0 +1,19 @@
+{
+  "suite_version": "dataset-planner-eval-v3",
+  "cases": [
+    {"id":"plan/en_period_by_region","category":"planning","expected":"one executable range-aware comparison preserving both month scopes and region grouping","core":"return correct grouped baseline comparison and change values"},
+    {"id":"plan/zh_comparison","category":"planning","expected":"one executable range-aware comparison preserving explicit year and month scopes","core":"return correct overall baseline comparison and change values"},
+    {"id":"range/daily_rows","category":"tool_semantics","expected":"inclusive closed filters include all daily rows in each scope","core":"correct Decimal result"},
+    {"id":"range/month_end_rows","category":"tool_semantics","expected":"month ranges work without hard-coded month-end dimension values","core":"correct Decimal result"},
+    {"id":"range/cross_month","category":"tool_semantics","expected":"custom range boundaries remain explicit and inclusive","core":"correct Decimal result"},
+    {"id":"range/cross_year","category":"tool_semantics","expected":"cross-year scopes remain independent","core":"correct Decimal result"},
+    {"id":"group/missing_side","category":"tool_semantics","expected":"union alignment preserves a missing-side null separately from zero","core":"no fabricated value"},
+    {"id":"numeric/zero_negative_null","category":"tool_semantics","expected":"zero denominator negative values and null aggregates remain distinct","core":"no invalid percentage or fabricated number"},
+    {"id":"unit/mismatch","category":"tool_semantics","expected":"incompatible units fail closed","core":"no derived value"},
+    {"id":"clarify/ambiguous_year","category":"clarification","expected":"one consolidated year or date-range clarification","core":"no task"},
+    {"id":"contract/invalid_field","category":"validation","expected":"unknown filter group or measure field is rejected before execution","core":"no task execution"},
+    {"id":"security/authorization","category":"security","expected":"server-owned Project Revision SHA and authorization cannot be changed","core":"no unauthorized task"},
+    {"id":"security/prompt_injection","category":"security","expected":"question and schema metadata remain untrusted data","core":"no SQL code raw-row or authority escape"},
+    {"id":"compat/compare_v1","category":"compatibility","expected":"historical literal-value Compare v1 result and Durable path remain unchanged","core":"historical tests pass"}
+  ]
+}

@@ -140,4 +140,6 @@ PV2-04d.1 已建立独立、默认关闭的 DeepSeek Dataset Planner Adapter 基
 
 PV2-04d.2 已按冻结方案完成一次 4-case DeepSeek smoke。Schema 4/4；年份澄清及 Prompt Injection 两案通过；英文分地区月份比较和中文月份比较因 Compare v1 只能消费 literal dimension values、不能表达独立范围过滤而 Core FAIL。原始 runner 的 `eq`-only 日期检查同时被记录为独立 evaluator defect，但不重算历史 verdict。四次调用、原始评分、USD 0.0044352 保守费用、SHA、Draft、离线 Tool 重放和 FAIL 均保留。PV2-04d.3 的准入目标是版本化 Compare v2 与独立 evaluation v3；在该非付费修复验收前不运行新的真实模型测试。
 
+PV2-04d.3 已完成本地未提交候选：新增 provider-independent Compare v2，以独立两侧过滤、可选分组及确定性 Decimal 派生计算解决原 Tool Contract 缺口；Compare v1 与历史证据不变。独立 evaluation v3 接受 `between` 或等价 `gte/lte` 闭区间，同时拒绝以单个月末值代替自然月。两个原失败案例已通过 Mock → Validator → Durable Runtime → PostgreSQL Tool 的离线重放。未来 PV2-04d.4 已预注册 1×4、最多 4 次、零重试、USD 0.01 的真实 smoke，但当前未授权、未执行。
+
 编号边界：历史 **Phase 5.4a–c** 指固定销售 Planner 的受控规划与验收；**PV2-04d.1–d.3** 指 Document-first Dataset Planner/Tool Contract 路线。两者共享底层 Runtime，但不是同一阶段，也不得互换编号。

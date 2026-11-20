@@ -17,6 +17,7 @@ from backend.datasets.analysis_models import (
     DatasetAnalysisSettings,
     DatasetBindingContext,
     DatasetComparisonInput,
+    DatasetComparisonV2Input,
     DatasetDerivedMetricInput,
     DatasetProfileInput,
     DatasetQualityInput,
@@ -249,6 +250,9 @@ class AuthorizedDatasetAnalysisRuntime:
     def compare(self, request: DatasetComparisonInput) -> DatasetToolResult:
         return self._execute(request, "compare")
 
+    def compare_v2(self, request: DatasetComparisonV2Input) -> DatasetToolResult:
+        return self._execute(request, "compare_v2")
+
     def derive(self, request: DatasetDerivedMetricInput) -> DatasetToolResult:
         return self._execute(request, "derive")
 
@@ -284,6 +288,14 @@ def build_dataset_analysis_registry(runtime: AuthorizedDatasetAnalysisRuntime) -
             input_model=DatasetComparisonInput,
             output_model=DatasetToolResult,
             handler=runtime.compare,
+        ),
+        ToolDefinition(
+            name="compare_dataset_revision_v2",
+            version="2.0.0",
+            description="Compare two independently filtered and optionally grouped scopes using compatible measures and deterministic Decimal arithmetic.",
+            input_model=DatasetComparisonV2Input,
+            output_model=DatasetToolResult,
+            handler=runtime.compare_v2,
         ),
         ToolDefinition(
             name="derive_dataset_metric",

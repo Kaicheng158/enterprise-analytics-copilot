@@ -29,14 +29,20 @@ from .dataset_models import (
 from .dataset_planner_models import (
     DatasetPlannerCatalog,
     DatasetPlannerDraft,
+    DatasetPlannerDraftV2,
     DatasetPlannerOutcome,
+    DatasetPlannerOutcomeV2,
     DatasetPlannerQuestion,
     DatasetPlannerTelemetry,
+    DatasetPlannerTelemetryV2,
 )
 from .dataset_planner_prompt import (
     DATASET_PLANNER_PROMPT_SHA256,
     DATASET_PLANNER_SCHEMA_SHA256,
+    DATASET_PLANNER_V3_PROMPT_SHA256,
+    DATASET_PLANNER_V3_SCHEMA_SHA256,
     build_dataset_planner_generation_request,
+    build_dataset_planner_v3_generation_request,
 )
 from .dataset_validation import DatasetPlanValidator, canonical_dataset_request_sha256
 from .deepseek_planner_adapter import (
@@ -223,6 +229,7 @@ class DeepSeekDatasetPlannerAdapter:
             telemetry=telemetry,
         )
 
+
     @staticmethod
     def _validate_server_context(
         question: DatasetPlannerQuestion,
@@ -318,6 +325,77 @@ class DeepSeekDatasetPlannerAdapter:
         return request, plan
 
 
+class DeepSeekDatasetPlannerV3Adapter(DeepSeekDatasetPlannerAdapter):
+    """Compare-v2 Planner release; v1/v2 adapters remain byte-compatible."""
+
+    def plan(
+        self,
+        question: DatasetPlannerQuestion,
+        context: DatasetBindingContext,
+        catalog: DatasetPlannerCatalog,
+    ) -> DatasetPlannerOutcomeV2:
+        self._validate_server_context(question, context, catalog)
+        if self.calls >= 1:
+            raise DatasetPlannerError("dataset_planner_call_limit")
+        generation_request = build_dataset_planner_v3_generation_request(
+            question, catalog, self.config
+        )
+        self.calls += 1
+        self.last_generation_request = generation_request
+        try:
+            response = self.transport.generate(generation_request)
+        except (PlannerProviderError, PlannerSafetyStop) as error:
+            raise DatasetPlannerError(str(error)) from None
+        self.last_response = response
+        if response.finish_reason != "stop":
+            raise DatasetPlannerError("dataset_planner_incomplete_output")
+        if response.usage is None or response.estimated_cost_usd is None:
+            raise DatasetPlannerError("dataset_planner_telemetry_missing")
+        try:
+            draft = DatasetPlannerDraftV2.model_validate_json(
+                response.content, strict=True
+            )
+        except (ValidationError, ValueError):
+            raise DatasetPlannerError("dataset_planner_invalid_output") from None
+        telemetry = DatasetPlannerTelemetryV2(
+            prompt_sha256=DATASET_PLANNER_V3_PROMPT_SHA256,
+            schema_sha256=DATASET_PLANNER_V3_SCHEMA_SHA256,
+            request_id=response.request_id,
+            usage=response.usage,
+            latency_ms=response.latency_ms,
+            estimated_cost_usd=response.estimated_cost_usd,
+            generation_config=self.config,
+        )
+        question_hash = self._question_sha256(question, catalog)
+        if draft.outcome == "needs_clarification":
+            return DatasetPlannerOutcomeV2(
+                status="needs_clarification",
+                question_sha256=question_hash,
+                clarifications=draft.clarifications,
+                telemetry=telemetry,
+            )
+        try:
+            request, plan = self._compile(draft, question, context)
+        except ValidationError:
+            raise DatasetPlannerError("dataset_planner_semantic_invalid") from None
+        verdict = self.validator.validate(plan, request, context)
+        if verdict.status == "invalid":
+            return DatasetPlannerOutcomeV2(
+                status="rejected",
+                question_sha256=question_hash,
+                request=request,
+                issues=verdict.issues,
+                telemetry=telemetry,
+            )
+        return DatasetPlannerOutcomeV2(
+            status="planned",
+            question_sha256=question_hash,
+            request=request,
+            plan=plan,
+            telemetry=telemetry,
+        )
+
+
 class PreparedDatasetPlanProvider:
     """Pass one already validated Adapter result into the existing Durable Runtime."""
 
@@ -346,6 +424,7 @@ __all__ = [
     "DatasetPlannerError",
     "DeepSeekDatasetPlannerTransport",
     "DeepSeekDatasetPlannerAdapter",
+    "DeepSeekDatasetPlannerV3Adapter",
     "PreparedDatasetPlanProvider",
     "load_deepseek_dataset_planner_settings",
 ]

@@ -313,11 +313,16 @@ class DatasetAnalysisToolTests(unittest.TestCase):
         with self.assertRaises(ValidationError):
             DatasetFilterV1(field="region", operator="between", values=("a",))
 
-    def test_registry_exposes_only_six_registered_tools_to_internal_principal(self):
+    def test_registry_exposes_only_versioned_registered_tools_to_internal_principal(self):
         result = self.analyzer().profile(DatasetProfileInput(binding=self.binding, fields=("region",)))
-        runtime = SimpleNamespace(**{name: (lambda _request, value=result: value) for name in ("profile", "aggregate", "compare", "derive", "rank", "quality")})
+        runtime = SimpleNamespace(**{name: (lambda _request, value=result: value) for name in ("profile", "aggregate", "compare", "compare_v2", "derive", "rank", "quality")})
         registry = build_dataset_analysis_registry(runtime)
-        self.assertEqual(len(registry.schemas_for(DATASET_ANALYSIS_PRINCIPAL)), 6)
+        schemas = registry.schemas_for(DATASET_ANALYSIS_PRINCIPAL)
+        self.assertEqual(len(schemas), 7)
+        self.assertEqual(
+            {item["name"] for item in schemas if item["name"].startswith("compare_")},
+            {"compare_dataset_revision", "compare_dataset_revision_v2"},
+        )
         self.assertEqual(registry.schemas_for("user-supplied"), ())
         with self.assertRaises(ToolRegistryError) as error:
             registry.resolve("aggregate_dataset_revision", "user-supplied")

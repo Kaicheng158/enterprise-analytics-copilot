@@ -246,6 +246,59 @@ class DatasetAnalysisDatabaseTests(unittest.TestCase):
         self.assertEqual(derived.output["rows"][0]["measures"][2]["result"]["value"], "82.8571")
         self.assertEqual(people.source_format, "xlsx")
 
+    def test_compare_v2_is_authorized_revision_bound_and_revocation_safe(self):
+        project = self.create_project()
+        revision = self.finance_dataset(project.project_id)
+        arguments = {
+            "binding": self.binding(revision).model_dump(mode="json"),
+            "baseline_filters": [
+                {
+                    "field": "period",
+                    "operator": "between",
+                    "values": ["2026-01-01", "2026-01-31"],
+                }
+            ],
+            "comparison_filters": [
+                {
+                    "field": "period",
+                    "operator": "between",
+                    "values": ["2026-02-01", "2026-02-28"],
+                }
+            ],
+            "group_by": ["region"],
+            "baseline_measure": "revenue",
+            "comparison_measure": "revenue",
+            "aggregation": "sum",
+            "derived_metric": "absolute_change",
+        }
+        executor = self.executor(self.owner, project.project_id)
+        first = self.execute(executor, "compare_dataset_revision_v2", arguments)
+        second = self.execute(executor, "compare_dataset_revision_v2", arguments)
+        self.assertEqual(first.output, second.output)
+        self.assertEqual(
+            [
+                (
+                    row["dimensions"][0]["result"]["value"],
+                    [item["result"]["value"] for item in row["measures"]],
+                )
+                for row in first.output["rows"]
+            ],
+            [
+                ("North", ["100.25", "120", "19.75"]),
+                ("South", ["-20.25", "0", "20.25"]),
+            ],
+        )
+        other = self.register("compare-v2-other@example.test")
+        denied = self.execute(
+            self.executor(other, project.project_id),
+            "compare_dataset_revision_v2",
+            arguments,
+        )
+        self.assertEqual(denied.error.code, "tool_not_authorized")
+        self.authorization.revoke_project(self.owner, project.project_id)
+        revoked = self.execute(executor, "compare_dataset_revision_v2", arguments)
+        self.assertEqual(revoked.error.code, "tool_not_authorized")
+
     def test_cross_user_cross_project_and_forged_binding_fail_closed(self):
         project = self.create_project()
         revision = self.finance_dataset(project.project_id)

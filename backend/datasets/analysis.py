@@ -16,6 +16,7 @@ from .analysis_models import (
     DatasetAnalysisFinding,
     DatasetAnalysisSettings,
     DatasetComparisonInput,
+    DatasetComparisonV2Input,
     DatasetDerivedMetricInput,
     DatasetFilterV1,
     DatasetProfileInput,
@@ -427,6 +428,234 @@ class DeterministicDatasetAnalyzer:
         used_rows = baseline_rows + comparison_rows
         used_columns = [request.dimension, request.measure] + [item.field for item in request.filters]
         return self._result(request, operation="compare", status="completed", scanned=len(table.rows), matched=len(used_rows), rows=(row,), findings=notices, sources=(self._source(table, request.table_index, used_rows, used_columns),))
+
+    def compare_v2(self, request: DatasetComparisonV2Input) -> DatasetToolResult:
+        """Compare two independently filtered scopes with deterministic group alignment."""
+
+        table = self._table(request.table_index)
+        columns = self._column_map(table)
+        requested = (
+            *request.group_by,
+            request.baseline_measure,
+            request.comparison_measure,
+        )
+        findings = self._require_fields(requested, columns)
+        if not findings and request.aggregation != "count_non_null":
+            for field in (request.baseline_measure, request.comparison_measure):
+                if columns[field][1].kind not in NUMERIC_KINDS:
+                    findings.append(
+                        self._finding("invalid_field_type", "clarification", field)
+                    )
+            if not findings:
+                baseline_unit = columns[request.baseline_measure][1].unit or "number"
+                comparison_unit = columns[request.comparison_measure][1].unit or "number"
+                if baseline_unit != comparison_unit:
+                    findings.append(
+                        self._finding(
+                            "unit_mismatch",
+                            "clarification",
+                            request.baseline_measure,
+                            request.comparison_measure,
+                        )
+                    )
+        baseline_rows, baseline_findings = self._select(
+            table, request.baseline_filters
+        )
+        comparison_rows, comparison_findings = self._select(
+            table, request.comparison_filters
+        )
+        findings.extend(baseline_findings)
+        findings.extend(comparison_findings)
+        if findings:
+            return self._result(
+                request,
+                operation="compare",
+                status="needs_clarification",
+                scanned=len(table.rows),
+                matched=len(baseline_rows) + len(comparison_rows),
+                findings=findings,
+            )
+        if not baseline_rows and not comparison_rows:
+            return self._result(
+                request,
+                operation="compare",
+                status="needs_clarification",
+                scanned=len(table.rows),
+                matched=0,
+                findings=(self._finding("no_matching_rows", "clarification"),),
+            )
+
+        def grouped(rows):
+            result = {}
+            for row_number, row in rows:
+                key = tuple(
+                    self._cell_value(row[columns[name][0]], columns[name][1])
+                    for name in request.group_by
+                )
+                result.setdefault(key, []).append((row_number, row))
+            if not request.group_by and rows:
+                return {(): rows}
+            return result
+
+        baseline_groups = grouped(baseline_rows)
+        comparison_groups = grouped(comparison_rows)
+        group_keys = set(baseline_groups) | set(comparison_groups)
+        if len(group_keys) > self.settings.max_groups:
+            return self._result(
+                request,
+                operation="compare",
+                status="blocked",
+                scanned=len(table.rows),
+                matched=len(baseline_rows) + len(comparison_rows),
+                findings=(
+                    self._finding(
+                        "group_limit_exceeded", "limitation", *request.group_by
+                    ),
+                ),
+            )
+
+        def stable_key(values):
+            return tuple((type(value).__name__, str(value)) for value in values)
+
+        result_rows = []
+        missing_baseline = False
+        missing_comparison = False
+        baseline_unit = (
+            "count"
+            if request.aggregation == "count_non_null"
+            else columns[request.baseline_measure][1].unit or "number"
+        )
+        for key in sorted(group_keys, key=stable_key):
+            left_rows = baseline_groups.get(key)
+            right_rows = comparison_groups.get(key)
+            missing_baseline = missing_baseline or left_rows is None
+            missing_comparison = missing_comparison or right_rows is None
+            left_value = (
+                None
+                if left_rows is None
+                else self._measure_for(
+                    left_rows,
+                    columns[request.baseline_measure],
+                    request.aggregation,
+                )[0]
+            )
+            right_value = (
+                None
+                if right_rows is None
+                else self._measure_for(
+                    right_rows,
+                    columns[request.comparison_measure],
+                    request.aggregation,
+                )[0]
+            )
+            derived = (
+                None
+                if left_value is None or right_value is None
+                else right_value - left_value
+            )
+            derived_unit = baseline_unit
+            if request.derived_metric == "percentage_change":
+                derived_unit = "%"
+                if left_value == 0:
+                    derived = None
+                elif left_value is not None and right_value is not None:
+                    derived = (
+                        (right_value - left_value) / left_value * Decimal(100)
+                    ).quantize(Decimal("0.0001"), rounding=ROUND_HALF_UP)
+            dimensions = tuple(
+                DatasetResultCell(
+                    key=name,
+                    result=self._value(
+                        value, columns[name][1].kind, columns[name][1].unit
+                    ),
+                )
+                for name, value in zip(request.group_by, key)
+            )
+            result_rows.append(
+                DatasetResultRow(
+                    dimensions=dimensions,
+                    measures=(
+                        DatasetResultCell(
+                            key="baseline_value",
+                            result=self._value(
+                                left_value, "decimal", baseline_unit
+                            ),
+                        ),
+                        DatasetResultCell(
+                            key="comparison_value",
+                            result=self._value(
+                                right_value, "decimal", baseline_unit
+                            ),
+                        ),
+                        DatasetResultCell(
+                            key=request.derived_metric,
+                            result=self._value(derived, "decimal", derived_unit),
+                        ),
+                    ),
+                )
+            )
+
+        notices = []
+        if missing_baseline:
+            notices.append(
+                self._finding(
+                    "comparison_group_missing_baseline",
+                    "limitation",
+                    *request.group_by,
+                )
+            )
+        if missing_comparison:
+            notices.append(
+                self._finding(
+                    "comparison_group_missing_comparison",
+                    "limitation",
+                    *request.group_by,
+                )
+            )
+        if request.derived_metric == "percentage_change" and any(
+            row.measures[0].result.value == "0" for row in result_rows
+        ):
+            notices.append(
+                self._finding(
+                    "zero_denominator", "limitation", request.baseline_measure
+                )
+            )
+
+        used_columns = list(request.group_by) + [
+            request.baseline_measure,
+            request.comparison_measure,
+            *(item.field for item in request.baseline_filters),
+            *(item.field for item in request.comparison_filters),
+        ]
+        sources = []
+        if baseline_rows:
+            sources.append(
+                self._source(
+                    table,
+                    request.table_index,
+                    baseline_rows,
+                    used_columns,
+                )
+            )
+        if comparison_rows:
+            source = self._source(
+                table,
+                request.table_index,
+                comparison_rows,
+                used_columns,
+            )
+            if source not in sources:
+                sources.append(source)
+        return self._result(
+            request,
+            operation="compare",
+            status="completed",
+            scanned=len(table.rows),
+            matched=len(baseline_rows) + len(comparison_rows),
+            rows=result_rows,
+            findings=notices,
+            sources=sources,
+        )
 
     def derive(self, request: DatasetDerivedMetricInput) -> DatasetToolResult:
         table = self._table(request.table_index)

@@ -11,6 +11,7 @@ from backend.datasets.analysis_models import (
     DatasetAggregateInput,
     DatasetBindingContext,
     DatasetComparisonInput,
+    DatasetComparisonV2Input,
     DatasetDerivedMetricInput,
     DatasetProfileInput,
     DatasetQualityInput,
@@ -182,6 +183,13 @@ class DatasetPlanValidator:
             fields.update(item.key for item in validated.sort if item.key not in valid_sort)
         elif isinstance(validated, DatasetComparisonInput):
             fields.update((validated.dimension, validated.measure))
+        elif isinstance(validated, DatasetComparisonV2Input):
+            fields.update(validated.group_by)
+            fields.update(
+                (validated.baseline_measure, validated.comparison_measure)
+            )
+            fields.update(item.field for item in validated.baseline_filters)
+            fields.update(item.field for item in validated.comparison_filters)
         elif isinstance(validated, DatasetDerivedMetricInput):
             fields.update((validated.numerator_field, validated.denominator_field))
         elif isinstance(validated, DatasetRankingInput):

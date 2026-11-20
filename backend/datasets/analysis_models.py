@@ -185,6 +185,48 @@ class DatasetComparisonInput(DatasetToolInput):
         return _safe_name(value)
 
 
+class DatasetComparisonV2Input(DatasetToolInput):
+    """Compare independently filtered aggregates without cross-step data flow."""
+
+    baseline_filters: tuple[DatasetFilterV1, ...] = Field(default=(), max_length=12)
+    comparison_filters: tuple[DatasetFilterV1, ...] = Field(default=(), max_length=12)
+    group_by: tuple[str, ...] = Field(default=(), max_length=4)
+    baseline_measure: str = Field(min_length=1, max_length=128)
+    comparison_measure: str = Field(min_length=1, max_length=128)
+    aggregation: Literal["sum", "average", "count_non_null"] = "sum"
+    derived_metric: Literal["absolute_change", "percentage_change"]
+
+    @field_validator(
+        "baseline_filters", "comparison_filters", "group_by", mode="before"
+    )
+    @classmethod
+    def json_arrays(cls, value):
+        return tuple(value) if isinstance(value, list) else value
+
+    @field_validator("group_by")
+    @classmethod
+    def valid_group_fields(cls, values: tuple[str, ...]) -> tuple[str, ...]:
+        if len(set(values)) != len(values):
+            raise ValueError("group fields must be unique")
+        return tuple(_safe_name(value) for value in values)
+
+    @field_validator("baseline_measure", "comparison_measure")
+    @classmethod
+    def valid_measure_fields(cls, value: str) -> str:
+        return _safe_name(value)
+
+    @model_validator(mode="after")
+    def scopes_must_differ(self):
+        if len(self.baseline_filters) + len(self.comparison_filters) > 12:
+            raise ValueError("combined comparison filters exceed the bounded limit")
+        if (
+            self.baseline_filters == self.comparison_filters
+            and self.baseline_measure == self.comparison_measure
+        ):
+            raise ValueError("comparison scopes must differ")
+        return self
+
+
 class DatasetDerivedMetricInput(DatasetToolInput):
     filters: tuple[DatasetFilterV1, ...] = Field(default=(), max_length=12)
     numerator_field: str = Field(min_length=1, max_length=128)
@@ -280,6 +322,8 @@ class DatasetAnalysisFinding(ProductContract):
         "group_limit_exceeded",
         "result_limit_applied",
         "dataset_quality_issue",
+        "comparison_group_missing_baseline",
+        "comparison_group_missing_comparison",
     ]
     severity: Literal["clarification", "limitation", "info"]
     fields: tuple[str, ...] = Field(default=(), max_length=8)

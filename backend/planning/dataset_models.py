@@ -11,6 +11,7 @@ from backend.datasets.analysis_models import (
     DatasetAggregateInput,
     DatasetBindingContext,
     DatasetComparisonInput,
+    DatasetComparisonV2Input,
     DatasetDerivedMetricInput,
     DatasetProfileInput,
     DatasetQualityInput,
@@ -22,7 +23,7 @@ from backend.product_facade.models import DatasetRevisionBinding
 from backend.tools.models import StrictModel, ToolCall
 
 
-DATASET_TOOL_INPUTS = {
+DATASET_TOOL_INPUTS_V1 = {
     "profile_dataset_revision": DatasetProfileInput,
     "aggregate_dataset_revision": DatasetAggregateInput,
     "compare_dataset_revision": DatasetComparisonInput,
@@ -30,6 +31,11 @@ DATASET_TOOL_INPUTS = {
     "rank_dataset_revision": DatasetRankingInput,
     "inspect_dataset_quality": DatasetQualityInput,
 }
+DATASET_TOOL_INPUTS = {
+    **DATASET_TOOL_INPUTS_V1,
+    "compare_dataset_revision_v2": DatasetComparisonV2Input,
+}
+DATASET_TOOL_NAMES_V1 = frozenset(DATASET_TOOL_INPUTS_V1)
 DATASET_TOOL_NAMES = frozenset(DATASET_TOOL_INPUTS)
 BLOCKED_ARGUMENT_KEYS = frozenset(
     {"binding", "project_id", "principal", "scope", "trusted_local", "sql", "python", "tool"}
@@ -52,6 +58,7 @@ class DatasetRequestedOperation(StrictModel):
         "profile_dataset_revision",
         "aggregate_dataset_revision",
         "compare_dataset_revision",
+        "compare_dataset_revision_v2",
         "derive_dataset_metric",
         "rank_dataset_revision",
         "inspect_dataset_quality",

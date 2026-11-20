@@ -34,6 +34,7 @@ from backend.planning.dataset_planner_models import DatasetPlannerQuestion
 from backend.planning.dataset_provider import DeterministicDatasetPlanProvider
 from backend.planning.deepseek_dataset_planner import (
     DeepSeekDatasetPlannerAdapter,
+    DeepSeekDatasetPlannerV3Adapter,
     PreparedDatasetPlanProvider,
 )
 from backend.planning.deepseek_planner_adapter import DeepSeekPlannerSettings
@@ -594,6 +595,149 @@ class DatasetAgentDatabaseTests(unittest.TestCase):
             "compare_dataset_revision",
         ])
         self.assertEqual(store.audit_execution_consistency(creation.execution.execution_id).status, "consistent")
+
+    def test_compare_v2_contract_conversion_runs_both_failed_intents_through_durable_runtime(self):
+        for index, (question_text, language, group_by) in enumerate(
+            (
+                (
+                    "Compare January 2026 and February 2026 revenue by region and give the overall change.",
+                    "en",
+                    ["region"],
+                ),
+                ("比较 2026 年一月与二月的总收入变化。", "zh", []),
+            ),
+            1,
+        ):
+            with self.subTest(question=question_text):
+                revision = self.finance()
+                binding = self.binding(revision)
+                analysis = AuthorizedDatasetAnalysisRuntime(
+                    self.connections,
+                    self.authorization,
+                    self.persistence,
+                    principal=self.owner,
+                    project_id=self.project.project_id,
+                    settings=DatasetAnalysisSettings(enabled=True),
+                )
+                context = analysis.binding_context(binding)
+                catalog = analysis.planner_catalog(binding)
+                question = DatasetPlannerQuestion(
+                    project_id=self.project.project_id,
+                    binding=binding,
+                    question=question_text,
+                    preferred_language=language,
+                )
+                draft = {
+                    "response_version": "dataset-planner-draft-v2",
+                    "outcome": "plan",
+                    "operations": [
+                        {
+                            "operation_id": "month_comparison",
+                            "tool_name": "compare_dataset_revision_v2",
+                            "description": "Compare independently filtered month scopes",
+                            "arguments": {
+                                "table_index": 1,
+                                "baseline_filters": [
+                                    {
+                                        "field": "period",
+                                        "operator": "between",
+                                        "values": ["2026-01-01", "2026-01-31"],
+                                    }
+                                ],
+                                "comparison_filters": [
+                                    {
+                                        "field": "period",
+                                        "operator": "between",
+                                        "values": ["2026-02-01", "2026-02-28"],
+                                    }
+                                ],
+                                "group_by": group_by,
+                                "baseline_measure": "revenue",
+                                "comparison_measure": "revenue",
+                                "aggregation": "sum",
+                                "derived_metric": "absolute_change",
+                            },
+                            "depends_on": [],
+                        }
+                    ],
+                    "clarifications": [],
+                }
+
+                def opener(request, timeout):
+                    return FakePlannerHttpResponse(
+                        {
+                            "id": f"dataset-planner-v3-db-mock-{index}",
+                            "model": "deepseek-flash",
+                            "choices": [
+                                {
+                                    "index": 0,
+                                    "finish_reason": "stop",
+                                    "message": {
+                                        "role": "assistant",
+                                        "content": json.dumps(draft),
+                                    },
+                                }
+                            ],
+                            "usage": {
+                                "prompt_tokens": 400,
+                                "completion_tokens": 120,
+                                "total_tokens": 520,
+                            },
+                        }
+                    )
+
+                adapter = DeepSeekDatasetPlannerV3Adapter(
+                    DeepSeekPlannerSettings(
+                        enabled=True,
+                        api_key=SecretStr("synthetic-v3-db-key-not-real"),
+                    ),
+                    validator=DatasetPlanValidator(
+                        settings=DatasetAgentSettings(enabled=True)
+                    ),
+                    cost_guard=PlannerCostGuard(),
+                    opener=opener,
+                )
+                outcome = adapter.plan(question, context, catalog)
+                agent, _, executor, _, store, queue = self.stack(
+                    provider=PreparedDatasetPlanProvider(outcome)
+                )
+                creation = agent.submit(
+                    outcome.request,
+                    idempotency_key=f"dataset-agent-compare-v2-replay-{index}",
+                )
+                self.assertEqual(
+                    queue.run_once(worker_id=f"compare-v2-worker-{index}").outcome,
+                    "completed",
+                )
+                view = agent.get(creation.execution.execution_id)
+                self.assertEqual(view.result.status, "completed")
+                result = view.result.results[0]
+                self.assertEqual(executor.calls[0][0], "compare_dataset_revision_v2")
+                if group_by:
+                    values = {
+                        row.dimensions[0].result.value: [
+                            cell.result.value for cell in row.measures
+                        ]
+                        for row in result.rows
+                    }
+                    self.assertEqual(
+                        values,
+                        {
+                            "North": ["100.25", "120", "19.75"],
+                            "South": ["-20.25", "0", "20.25"],
+                        },
+                    )
+                else:
+                    self.assertEqual(
+                        [cell.result.value for cell in result.rows[0].measures],
+                        ["80", "120", "40"],
+                    )
+                self.assertEqual(
+                    store.audit_execution_consistency(
+                        creation.execution.execution_id
+                    ).status,
+                    "consistent",
+                )
 
 
 if __name__ == "__main__":

@@ -14,18 +14,21 @@ from backend.tools.models import StrictModel
 from .dataset_planner_models import (
     DatasetPlannerCatalog,
     DatasetPlannerDraft,
+    DatasetPlannerDraftV2,
     DatasetPlannerQuestion,
 )
-from .dataset_models import DATASET_TOOL_INPUTS
+from .dataset_models import DATASET_TOOL_INPUTS, DATASET_TOOL_INPUTS_V1
 from .structured_provider import PlannerGenerationConfig, _canonical_sha256
 
 
 DATASET_PLANNER_V1_PROMPT_VERSION = "dataset-planner-v1"
 DATASET_PLANNER_PROMPT_VERSION = "dataset-planner-v2"
+DATASET_PLANNER_V3_PROMPT_VERSION = "dataset-planner-v3"
 _TOOL_PURPOSES = {
     "profile_dataset_revision": "profile selected fields",
     "aggregate_dataset_revision": "filter, group, aggregate and sort",
     "compare_dataset_revision": "compare two values of one dimension",
+    "compare_dataset_revision_v2": "compare two independently filtered and optionally grouped aggregate scopes",
     "derive_dataset_metric": "calculate difference, ratio or percentage from two fields",
     "rank_dataset_revision": "rank a dimension by one measure",
     "inspect_dataset_quality": "inspect missing and blocked values",
@@ -33,7 +36,7 @@ _TOOL_PURPOSES = {
 
 
 def _public_tool_schema_v1(name: str) -> dict:
-    schema = deepcopy(DATASET_TOOL_INPUTS[name].model_json_schema())
+    schema = deepcopy(DATASET_TOOL_INPUTS_V1[name].model_json_schema())
     schema.get("properties", {}).pop("binding", None)
     schema["required"] = [item for item in schema.get("required", []) if item != "binding"]
     return schema
@@ -45,7 +48,7 @@ DATASET_PLANNER_V1_TOOL_CATALOG = tuple(
         "purpose": _TOOL_PURPOSES[name],
         "arguments_schema": _public_tool_schema_v1(name),
     }
-    for name in DATASET_TOOL_INPUTS
+    for name in DATASET_TOOL_INPUTS_V1
 )
 
 
@@ -64,7 +67,7 @@ DATASET_PLANNER_TOOL_CATALOG = tuple(
         "purpose": _TOOL_PURPOSES[name],
         "arguments_schema": _public_tool_schema_v2(name),
     }
-    for name in DATASET_TOOL_INPUTS
+    for name in DATASET_TOOL_INPUTS_V1
 )
 
 DATASET_PLANNER_V1_INSTRUCTIONS = """You are a bounded Dataset planning component for an analytics Agent.
@@ -81,15 +84,25 @@ DATASET_PLANNER_INSTRUCTIONS = DATASET_PLANNER_V1_INSTRUCTIONS + """
 Every explicit deliverable must have a recognizable operation. Preserve every requested filter, time scope, grouping dimension, comparison and metric; do not replace a scoped comparison with an all-time grouping or an overall-only comparison.
 When a question names a month, quarter or other period without the year or date range required to identify it reliably, return one consolidated clarification instead of inferring a year. A grouped period comparison may use separate period-filtered grouped aggregations plus a compatible comparison operation; all scopes must remain explicit in arguments."""
 
+DATASET_PLANNER_V3_INSTRUCTIONS = DATASET_PLANNER_INSTRUCTIONS + """
+For natural months, quarters, custom date ranges, category scopes or grouped comparisons, use compare_dataset_revision_v2. Express each side only through baseline_filters and comparison_filters; between boundaries are inclusive. Put requested grouping fields in group_by and use baseline_measure/comparison_measure for compatible measures. Do not create separate aggregate operations merely to feed this Tool: dependencies are control flow only and do not pass result values. Use legacy compare_dataset_revision only when the user explicitly supplies two exact stored dimension values. Never encode a range into one literal baseline/comparison string."""
+
 _DATASET_PLANNER_RESPONSE_SCHEMA = DatasetPlannerDraft.model_json_schema()
 DATASET_PLANNER_SCHEMA_SHA256 = _canonical_sha256(_DATASET_PLANNER_RESPONSE_SCHEMA)
-def _system_prompt(instructions: str, tool_catalog) -> str:
+_DATASET_PLANNER_V3_RESPONSE_SCHEMA = DatasetPlannerDraftV2.model_json_schema()
+DATASET_PLANNER_V3_SCHEMA_SHA256 = _canonical_sha256(
+    _DATASET_PLANNER_V3_RESPONSE_SCHEMA
+)
+
+
+def _system_prompt(instructions: str, tool_catalog, response_schema=None) -> str:
+    response_schema = response_schema or _DATASET_PLANNER_RESPONSE_SCHEMA
     return (
         instructions
         + "\nAvailable tools:\n"
         + json.dumps(tool_catalog, ensure_ascii=False, sort_keys=True, separators=(",", ":"))
         + "\nReturn JSON only. Required response schema:\n"
-        + json.dumps(_DATASET_PLANNER_RESPONSE_SCHEMA, ensure_ascii=False, sort_keys=True, separators=(",", ":"))
+        + json.dumps(response_schema, ensure_ascii=False, sort_keys=True, separators=(",", ":"))
     )
 
 
@@ -101,6 +114,37 @@ DATASET_PLANNER_SYSTEM_PROMPT = _system_prompt(
     DATASET_PLANNER_INSTRUCTIONS, DATASET_PLANNER_TOOL_CATALOG
 )
 DATASET_PLANNER_PROMPT_SHA256 = sha256(DATASET_PLANNER_SYSTEM_PROMPT.encode("utf-8")).hexdigest()
+
+
+def _public_tool_schema_v3(name: str) -> dict:
+    schema = deepcopy(DATASET_TOOL_INPUTS[name].model_json_schema())
+    schema.get("properties", {}).pop("binding", None)
+    schema["required"] = [
+        item for item in schema.get("required", []) if item != "binding"
+    ]
+    definitions = schema.get("$defs", {})
+    definitions.pop("DatasetRevisionBinding", None)
+    if not definitions:
+        schema.pop("$defs", None)
+    return schema
+
+
+DATASET_PLANNER_V3_TOOL_CATALOG = tuple(
+    {
+        "name": name,
+        "purpose": _TOOL_PURPOSES[name],
+        "arguments_schema": _public_tool_schema_v3(name),
+    }
+    for name in DATASET_TOOL_INPUTS
+)
+DATASET_PLANNER_V3_SYSTEM_PROMPT = _system_prompt(
+    DATASET_PLANNER_V3_INSTRUCTIONS,
+    DATASET_PLANNER_V3_TOOL_CATALOG,
+    _DATASET_PLANNER_V3_RESPONSE_SCHEMA,
+)
+DATASET_PLANNER_V3_PROMPT_SHA256 = sha256(
+    DATASET_PLANNER_V3_SYSTEM_PROMPT.encode("utf-8")
+).hexdigest()
 
 
 class DatasetPlannerMessage(StrictModel):
@@ -127,6 +171,29 @@ class DatasetPlannerGenerationRequest(StrictModel):
         return self
 
 
+class DatasetPlannerGenerationRequestV3(StrictModel):
+    messages: tuple[DatasetPlannerMessage, DatasetPlannerMessage]
+    response_schema: dict
+    prompt_version: Literal["dataset-planner-v3"] = DATASET_PLANNER_V3_PROMPT_VERSION
+    prompt_sha256: Literal[DATASET_PLANNER_V3_PROMPT_SHA256] = (
+        DATASET_PLANNER_V3_PROMPT_SHA256
+    )
+    schema_sha256: Literal[DATASET_PLANNER_V3_SCHEMA_SHA256] = (
+        DATASET_PLANNER_V3_SCHEMA_SHA256
+    )
+    config: PlannerGenerationConfig
+
+    @model_validator(mode="after")
+    def server_owned_content(self):
+        if tuple(message.role for message in self.messages) != ("system", "user"):
+            raise ValueError("Dataset Planner messages must be system then user")
+        if self.messages[0].content != DATASET_PLANNER_V3_SYSTEM_PROMPT:
+            raise ValueError("Dataset Planner v3 system prompt mismatch")
+        if _canonical_sha256(self.response_schema) != DATASET_PLANNER_V3_SCHEMA_SHA256:
+            raise ValueError("Dataset Planner v3 response schema mismatch")
+        return self
+
+
 def build_dataset_planner_generation_request(
     question: DatasetPlannerQuestion,
     catalog: DatasetPlannerCatalog,
@@ -150,6 +217,36 @@ def build_dataset_planner_generation_request(
     )
 
 
+def build_dataset_planner_v3_generation_request(
+    question: DatasetPlannerQuestion,
+    catalog: DatasetPlannerCatalog,
+    config: PlannerGenerationConfig | None = None,
+) -> DatasetPlannerGenerationRequestV3:
+    public_payload = {
+        "question": question.question,
+        "preferred_language": question.preferred_language,
+        "dataset_catalog": catalog.model_dump(mode="json"),
+    }
+    return DatasetPlannerGenerationRequestV3(
+        messages=(
+            DatasetPlannerMessage(
+                role="system", content=DATASET_PLANNER_V3_SYSTEM_PROMPT
+            ),
+            DatasetPlannerMessage(
+                role="user",
+                content=json.dumps(
+                    public_payload,
+                    ensure_ascii=False,
+                    sort_keys=True,
+                    separators=(",", ":"),
+                ),
+            ),
+        ),
+        response_schema=deepcopy(_DATASET_PLANNER_V3_RESPONSE_SCHEMA),
+        config=config or PlannerGenerationConfig(),
+    )
+
+
 __all__ = [
     "DATASET_PLANNER_PROMPT_SHA256",
     "DATASET_PLANNER_PROMPT_VERSION",
@@ -158,6 +255,12 @@ __all__ = [
     "DATASET_PLANNER_V1_PROMPT_SHA256",
     "DATASET_PLANNER_V1_PROMPT_VERSION",
     "DATASET_PLANNER_V1_SYSTEM_PROMPT",
+    "DATASET_PLANNER_V3_PROMPT_SHA256",
+    "DATASET_PLANNER_V3_PROMPT_VERSION",
+    "DATASET_PLANNER_V3_SCHEMA_SHA256",
+    "DATASET_PLANNER_V3_SYSTEM_PROMPT",
     "DatasetPlannerGenerationRequest",
+    "DatasetPlannerGenerationRequestV3",
     "build_dataset_planner_generation_request",
+    "build_dataset_planner_v3_generation_request",
 ]

@@ -1,0 +1,82 @@
+{
+  "acceptance_version": "pv2-04d3-local-offline-v1",
+  "date": "2026-11-20",
+  "scope": "synthetic_mock_disposable_postgresql_only",
+  "paid_provider_calls": 0,
+  "historical_pv2_04d2_verdict_preserved": true,
+  "historical_compare_v1_preserved": true,
+  "prompt_version": "dataset-planner-v3",
+  "prompt_sha256": "be217af5f6e34e1dd17bf17b0b1112ae208cc41f784f5d7b213a76de40d0a1b0",
+  "response_schema_sha256": "afd426f1046d10950a8c453928459b24b122c3e1b6b95476a0b710ebd252eff8",
+  "suite_sha256": "648f7a24c5f09942722f4e08e708449b32a9bcc7c725d833ba2d0db757fb1b4d",
+  "policy_sha256": "038b150edf0048b71ed71a2a7ab7e8cceca070fc9cd4bcb79b96a44391896169",
+  "future_live_plan_sha256": "889c552598421d9a9fdba265d15e9c6b738b5a86e544f733bfc75231bcfae60e",
+  "original_draft_replay": {
+    "mode": "saved PV2-04d.2 DeepSeek Draft replayed unchanged through Compare v1",
+    "evidence": "eval/datasets/planner-v2/live-runs/pv2-04d2-live-001/post-run-offline-diagnostic.json",
+    "verdict": "FAIL",
+    "reason": "literal Compare v1 values cannot express independently filtered natural-month scopes"
+  },
+  "compare_v2_contract_conversion_replays": [
+    {
+      "case_id": "plan/en_period_by_region",
+      "question": "Compare January 2026 and February 2026 revenue by region and give the overall change.",
+      "tool": "compare_dataset_revision_v2",
+      "baseline_period": ["2026-01-01", "2026-01-31"],
+      "comparison_period": ["2026-02-01", "2026-02-28"],
+      "group_by": ["region"],
+      "actual": {
+        "North": ["100.25", "120", "19.75"],
+        "South": ["-20.25", "0", "20.25"]
+      },
+      "durable_state": "completed",
+      "consistency_audit": "consistent",
+      "verdict": "PASS"
+    },
+    {
+      "case_id": "plan/zh_comparison",
+      "question": "比较 2026 年一月与二月的总收入变化。",
+      "tool": "compare_dataset_revision_v2",
+      "baseline_period": ["2026-01-01", "2026-01-31"],
+      "comparison_period": ["2026-02-01", "2026-02-28"],
+      "group_by": [],
+      "actual": ["80", "120", "40"],
+      "durable_state": "completed",
+      "consistency_audit": "consistent",
+      "verdict": "PASS"
+    }
+  ],
+  "case_evidence": [
+    {"case_ids":["plan/en_period_by_region","plan/zh_comparison"],"evidence":"tests.db.test_dataset_agent_integration.DatasetAgentDatabaseTests.test_compare_v2_contract_conversion_runs_both_failed_intents_through_durable_runtime"},
+    {"case_ids":["range/daily_rows","range/month_end_rows"],"evidence":"tests.test_dataset_compare_v2.DatasetCompareV2Tests.test_natural_month_range_decimal_and_sources_are_repeatable"},
+    {"case_ids":["range/cross_month","range/cross_year"],"evidence":"tests.test_dataset_compare_v2.DatasetCompareV2Tests.test_daily_cross_month_cross_year_and_category_scopes"},
+    {"case_ids":["group/missing_side"],"evidence":"tests.test_dataset_compare_v2.DatasetCompareV2Tests.test_group_alignment_missing_group_negative_and_true_zero"},
+    {"case_ids":["numeric/zero_negative_null"],"evidence":"tests.test_dataset_compare_v2.DatasetCompareV2Tests.test_percentage_zero_denominator_is_not_confused_with_missing"},
+    {"case_ids":["unit/mismatch"],"evidence":"tests.test_dataset_compare_v2.DatasetCompareV2Tests.test_null_measure_and_unit_mismatch_are_explicit"},
+    {"case_ids":["clarify/ambiguous_year"],"evidence":"tests.test_deepseek_dataset_planner.DeepSeekDatasetPlannerTests.test_chinese_consolidated_clarification_executes_no_plan"},
+    {"case_ids":["contract/invalid_field","security/prompt_injection"],"evidence":"tests.test_deepseek_dataset_planner_v3.DeepSeekDatasetPlannerV3Tests.test_invalid_field_equal_scope_and_authority_injection_fail_closed"},
+    {"case_ids":["security/authorization"],"evidence":"tests.db.test_dataset_analysis_tools.DatasetAnalysisDatabaseTests.test_compare_v2_is_authorized_revision_bound_and_revocation_safe"},
+    {"case_ids":["compat/compare_v1"],"evidence":"tests.test_dataset_compare_v2.DatasetCompareV2Tests.test_compare_v1_historical_behavior_is_unchanged"}
+  ],
+  "test_results": {
+    "offline": {"passed": 518, "total": 518},
+    "focused_compare_planner": {"passed": 38, "total": 38},
+    "focused_postgresql": {"passed": 3, "total": 3},
+    "full_postgresql_final": {"passed": 188, "total": 188},
+    "timing_diagnostics_before_final_pass": [
+      {"passed": 187, "total": 188, "failure":"unchanged heartbeat timing test; subsequent unchanged assertion 10/10 PASS"},
+      {"passed": 187, "total": 188, "failure":"unchanged local Agent product polling timing test; subsequent unchanged assertion 10/10 PASS"}
+    ],
+    "timing_risk_review": {
+      "lease_test": "real-time scheduler delay can exceed the one-second test lease; runtime fails closed with lease_lost and prevents the old worker from committing",
+      "product_poll_test": "five-second test-harness observation window can expire under full-suite host contention; no task or authorization invariant was relaxed",
+      "assertions_or_timeouts_changed": false,
+      "remaining_risk": "real-time integration tests remain host-load sensitive even though the final full suite and unchanged focused repetitions passed"
+    }
+  },
+  "feature_flag_default_off": true,
+  "public_api_added": false,
+  "database_migration_added": false,
+  "application_database_migrated": false,
+  "production_release": "hold"
+}

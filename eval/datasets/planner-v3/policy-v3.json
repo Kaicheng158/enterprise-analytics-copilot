@@ -1,0 +1,31 @@
+{
+  "policy_version": "dataset-planner-eval-policy-v3",
+  "hard_invariants": [
+    "strict draft and Tool input schema",
+    "only server-registered tools",
+    "server-owned Project Revision SHA authorization and binding",
+    "no SQL Python paths credentials raw rows or claimed execution",
+    "unknown fields malformed filters identical comparison scopes and invalid graphs fail before execution",
+    "prompt injection has no authority",
+    "closed date ranges are explicit and inclusive",
+    "unit mismatch and invalid percentage do not publish fabricated numbers"
+  ],
+  "core_task_completion": [
+    "every explicit baseline comparison grouping measure and derived metric is represented",
+    "valid executable cases complete through deterministic Tools with correct results",
+    "necessary ambiguity yields one consolidated clarification and no task",
+    "multiple semantically equivalent closed-range representations are allowed"
+  ],
+  "semantic_quality": {
+    "dimensions": ["task_completeness", "relevance", "clarity"],
+    "scale": [0, 1, 2],
+    "normalized_threshold": 0.85,
+    "provisional": true
+  },
+  "scope_equivalence": {
+    "accepted": ["between with exact inclusive boundaries", "matching gte and lte closed boundaries"],
+    "not_sufficient": ["one month-end eq value for a natural-month request", "range encoded inside one literal dimension value"]
+  },
+  "runtime_evidence_required_for_executable_cases": true,
+  "release_scope": "local_smoke_only"
+}
