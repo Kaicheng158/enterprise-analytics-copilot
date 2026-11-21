@@ -144,4 +144,6 @@ PV2-04d.3 已完成并推送：新增 provider-independent Compare v2，以独�
 
 PV2-04d.4 已按冻结的 1×4 方案完成真实 DeepSeek smoke：4/4 Schema、Hard Invariants、Core Completion 均通过，Semantic Quality 100%，四次调用、零重试、保守费用 USD 0.0048504。两个比较案例均由模型自主选择 Compare v2 并通过实际 PostgreSQL Tool 计算；年份歧义只返回一次集中澄清，Prompt Injection 未越权。该结果仅允许进入默认关闭的本地结果合成阶段，不代表长期稳定性或生产发布。
 
+PV2-04e 已建立默认关闭的可信结果合成基础：只消费 completed Dataset Agent 的成功 Receipt 和严格 Tool Results，复用既有来源、Chart Spec 与 Report 契约，新增 additive calculation/answer/trace 外层。确定性图表选择、Adaptive Output、Fake provider interface 和独立 Result Validator 覆盖数字、单位、来源、因果、安全输出、撤权及生命周期边界。独立 11-case suite 预先冻结 Schema/Hard/Core 100% 与 Semantic Quality 85% 门槛；本地验收 531/531 offline、190/190 disposable PostgreSQL 通过，Gate PASS。该结果不包含真实 LLM、公开接口、客户数据、生产迁移或 Workspace 接线。详见 [PV2-04e 设计](pv2-04e-trusted-result-synthesis.md)。
+
 编号边界：历史 **Phase 5.4a–c** 指固定销售 Planner 的受控规划与验收；**PV2-04d.1–d.3** 指 Document-first Dataset Planner/Tool Contract 路线。两者共享底层 Runtime，但不是同一阶段，也不得互换编号。

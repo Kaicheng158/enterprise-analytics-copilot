@@ -51,6 +51,13 @@ from backend.product_facade.models import (
     ProductFacadeSettings,
 )
 from backend.tools.dataset_analysis import AuthorizedDatasetAnalysisRuntime, build_dataset_analysis_executor
+from backend.synthesis.models import (
+    SynthesisFailure,
+    TrustedSynthesisRequestV1,
+    TrustedSynthesisSettings,
+)
+from backend.synthesis.provider import FakeResultSynthesizer
+from backend.synthesis.service import TrustedResultSynthesisService
 from scripts.migrate import apply_migrations, connect_kwargs
 from tests.dataset_fixtures import workbook
 
@@ -336,6 +343,83 @@ class DatasetAgentDatabaseTests(unittest.TestCase):
         self.assertEqual(comparison.rows[0].measures[2].result.value, "40")
         self.assertTrue(all(source.dataset_revision_id == revision.dataset_revision_id for source in view.result.sources))
         self.assertEqual(store.audit_execution_consistency(creation.execution.execution_id).status, "consistent")
+
+    def test_trusted_synthesis_uses_completed_receipts_and_revocation_blocks_read(self):
+        revision = self.finance()
+        agent, planner, _, _, store, queue = self.stack()
+        creation = agent.submit(
+            self.finance_request(revision),
+            idempotency_key="dataset-synthesis-finance-0001",
+        )
+        self.assertEqual(queue.run_once(worker_id="synthesis-worker").outcome, "completed")
+        service = TrustedResultSynthesisService(
+            agent,
+            store,
+            planner._analysis,
+            FakeResultSynthesizer(),
+            settings=TrustedSynthesisSettings(enabled=True),
+        )
+        response = service.synthesize(
+            TrustedSynthesisRequestV1(
+                task_id=creation.execution.execution_id,
+                question="Compare revenue by region and period.",
+                output_mode="full_report",
+            )
+        )
+        self.assertEqual(response.mode, "full_report")
+        self.assertEqual(response.trace.dataset_revision_id, revision.dataset_revision_id)
+        self.assertEqual(
+            {item.output_sha256 for item in response.trace.receipts},
+            {item.output_sha256 for item in store.list_receipts(creation.execution.execution_id)},
+        )
+        self.assertTrue(response.calculations)
+        self.authorization.revoke_project(self.owner, self.project.project_id)
+        with self.assertRaisesRegex(SynthesisFailure, "synthesis_not_authorized"):
+            service.authorize_read(response)
+
+    def test_trusted_synthesis_blocks_expired_and_corrupted_revisions(self):
+        revision = self.finance()
+        agent, planner, _, _, store, queue = self.stack()
+        creation = agent.submit(
+            self.finance_request(revision),
+            idempotency_key="dataset-synthesis-lifecycle-0001",
+        )
+        self.assertEqual(queue.run_once(worker_id="synthesis-lifecycle-worker").outcome, "completed")
+        service = TrustedResultSynthesisService(
+            agent,
+            store,
+            planner._analysis,
+            FakeResultSynthesizer(),
+            settings=TrustedSynthesisSettings(enabled=True),
+        )
+        request = TrustedSynthesisRequestV1(
+            task_id=creation.execution.execution_id,
+            question="Summarize verified revenue.",
+            output_mode="short_answer",
+        )
+        response = service.synthesize(request)
+        with self.connections() as connection, connection.transaction():
+            connection.execute(
+                "UPDATE dataset_store.assets SET state='expired' WHERE project_id=%s AND asset_id=%s",
+                (self.project.project_id, revision.asset_id),
+            )
+        with self.assertRaisesRegex(SynthesisFailure, "synthesis_not_authorized"):
+            service.synthesize(request)
+        with self.assertRaisesRegex(SynthesisFailure, "synthesis_not_authorized"):
+            service.authorize_read(response)
+
+        with self.connections() as connection, connection.transaction():
+            connection.execute(
+                "UPDATE dataset_store.assets SET state='active' WHERE project_id=%s AND asset_id=%s",
+                (self.project.project_id, revision.asset_id),
+            )
+            storage_ref = connection.execute(
+                "SELECT storage_ref FROM dataset_store.dataset_revisions WHERE project_id=%s AND dataset_revision_id=%s",
+                (self.project.project_id, revision.dataset_revision_id),
+            ).fetchone()[0]
+        self.blobs._path(storage_ref).write_bytes(b"corrupted-synthetic-blob")
+        with self.assertRaisesRegex(SynthesisFailure, "synthesis_not_authorized"):
+            service.synthesize(request)
 
     def test_idempotent_submission_and_completed_replay_do_not_repeat_tools(self):
         revision = self.finance()

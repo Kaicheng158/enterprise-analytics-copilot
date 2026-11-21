@@ -1,0 +1,32 @@
+{
+  "acceptance_version": "pv2-04e-local-acceptance-v1",
+  "status": "passed_local_acceptance",
+  "provider": "FakeResultSynthesizer",
+  "paid_provider_calls": 0,
+  "feature_default_enabled": false,
+  "public_endpoint_added": false,
+  "production_migration_added": false,
+  "frozen_gate": {
+    "schema_required": 1.0,
+    "hard_invariants_required": 1.0,
+    "core_completion_required": 1.0,
+    "semantic_quality_threshold": 0.85
+  },
+  "focused_offline_tests": 13,
+  "focused_database_tests": 2,
+  "full_offline_tests": 531,
+  "full_database_tests": 190,
+  "gate_verdict": "PASS",
+  "gate_result": {
+    "schema": 1.0,
+    "hard_invariants": 1.0,
+    "core_completion": 1.0,
+    "semantic_quality": 1.0
+  },
+  "limitations": [
+    "synthetic data and Fake synthesizer only",
+    "no repeated live-model stability evidence",
+    "no public endpoint or persisted report artifact",
+    "engineering evidence is not user time-saving evidence"
+  ]
+}

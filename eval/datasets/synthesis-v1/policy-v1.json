@@ -1,0 +1,30 @@
+{
+  "policy_version": "trusted-synthesis-policy-v1",
+  "hard_invariants": [
+    "strict schema and successful Receipt hashes",
+    "completed task and ready authorized Dataset Revision at synthesis publication and read",
+    "numeric unit percentage and Chart Report consistency",
+    "every calculation and visualization is backed by current verified sources",
+    "no unsupported enterprise fact causal conclusion internal path secret or credential",
+    "malicious Tool Result content remains untrusted data"
+  ],
+  "core_task_completion": [
+    "explicit short answer chart or full report deliverable is returned when supported",
+    "adaptive output does not force a meaningless chart",
+    "all requested verified findings remain identifiable and traceable"
+  ],
+  "semantic_quality": {
+    "dimensions": ["completeness", "relevance", "clarity"],
+    "scale": [0, 1, 2],
+    "normalized_threshold": 0.85,
+    "provisional": true
+  },
+  "release_gate": {
+    "schema": 1.0,
+    "hard_invariants": 1.0,
+    "core_task_completion": 1.0,
+    "semantic_quality": 0.85
+  },
+  "scope": "local synthetic acceptance only",
+  "paid_provider_calls": 0
+}

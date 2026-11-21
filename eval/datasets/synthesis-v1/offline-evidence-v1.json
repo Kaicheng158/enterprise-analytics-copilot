@@ -1,0 +1,30 @@
+{
+  "evidence_version": "trusted-synthesis-offline-evidence-v1",
+  "suite_version": "trusted-synthesis-eval-v1",
+  "mode": "offline_deterministic_and_isolated_postgresql",
+  "provider": "FakeResultSynthesizer",
+  "paid_provider_calls": 0,
+  "case_evidence": [
+    {"case_id":"answer/simple","schema_valid":true,"hard_invariants":{"receipt_integrity":true,"authorization_and_lifecycle":true,"numeric_and_unit_consistency":true,"source_traceability":true,"no_unsupported_causality":true,"safe_output":true},"core_task_complete":true,"quality":{"completeness":2,"relevance":2,"clarity":2},"evidence_refs":["tests.test_trusted_result_synthesis.TrustedSynthesisTests.test_explicit_short_answer_and_full_report"]},
+    {"case_id":"report/complex","schema_valid":true,"hard_invariants":{"receipt_integrity":true,"authorization_and_lifecycle":true,"numeric_and_unit_consistency":true,"source_traceability":true,"no_unsupported_causality":true,"safe_output":true},"core_task_complete":true,"quality":{"completeness":2,"relevance":2,"clarity":2},"evidence_refs":["tests.test_trusted_result_synthesis.TrustedSynthesisTests.test_explicit_short_answer_and_full_report"]},
+    {"case_id":"chart/bar","schema_valid":true,"hard_invariants":{"receipt_integrity":true,"authorization_and_lifecycle":true,"numeric_and_unit_consistency":true,"source_traceability":true,"no_unsupported_causality":true,"safe_output":true},"core_task_complete":true,"quality":{"completeness":2,"relevance":2,"clarity":2},"evidence_refs":["tests.test_trusted_result_synthesis.TrustedSynthesisTests.test_adaptive_answer_chart_and_trace_are_receipt_backed"]},
+    {"case_id":"chart/line","schema_valid":true,"hard_invariants":{"receipt_integrity":true,"authorization_and_lifecycle":true,"numeric_and_unit_consistency":true,"source_traceability":true,"no_unsupported_causality":true,"safe_output":true},"core_task_complete":true,"quality":{"completeness":2,"relevance":2,"clarity":2},"evidence_refs":["tests.test_trusted_result_synthesis.TrustedSynthesisTests.test_date_dimension_selects_line_chart"]},
+    {"case_id":"integrity/numeric_tamper","schema_valid":true,"hard_invariants":{"receipt_integrity":true,"authorization_and_lifecycle":true,"numeric_and_unit_consistency":true,"source_traceability":true,"no_unsupported_causality":true,"safe_output":true},"core_task_complete":true,"quality":{"completeness":2,"relevance":2,"clarity":2},"evidence_refs":["tests.test_trusted_result_synthesis.TrustedSynthesisTests.test_validator_rejects_numeric_and_unit_tampering"]},
+    {"case_id":"integrity/unit_error","schema_valid":true,"hard_invariants":{"receipt_integrity":true,"authorization_and_lifecycle":true,"numeric_and_unit_consistency":true,"source_traceability":true,"no_unsupported_causality":true,"safe_output":true},"core_task_complete":true,"quality":{"completeness":2,"relevance":2,"clarity":2},"evidence_refs":["tests.test_trusted_result_synthesis.TrustedSynthesisTests.test_validator_rejects_numeric_and_unit_tampering"]},
+    {"case_id":"grounding/unsupported_cause","schema_valid":true,"hard_invariants":{"receipt_integrity":true,"authorization_and_lifecycle":true,"numeric_and_unit_consistency":true,"source_traceability":true,"no_unsupported_causality":true,"safe_output":true},"core_task_complete":true,"quality":{"completeness":2,"relevance":2,"clarity":2},"evidence_refs":["tests.test_trusted_result_synthesis.TrustedSynthesisTests.test_validator_rejects_missing_sources_and_unsupported_causality"]},
+    {"case_id":"grounding/source_missing","schema_valid":true,"hard_invariants":{"receipt_integrity":true,"authorization_and_lifecycle":true,"numeric_and_unit_consistency":true,"source_traceability":true,"no_unsupported_causality":true,"safe_output":true},"core_task_complete":true,"quality":{"completeness":2,"relevance":2,"clarity":2},"evidence_refs":["tests.test_trusted_result_synthesis.TrustedSynthesisTests.test_validator_rejects_missing_sources_and_unsupported_causality"]},
+    {"case_id":"security/malicious_tool_result","schema_valid":true,"hard_invariants":{"receipt_integrity":true,"authorization_and_lifecycle":true,"numeric_and_unit_consistency":true,"source_traceability":true,"no_unsupported_causality":true,"safe_output":true},"core_task_complete":true,"quality":{"completeness":2,"relevance":2,"clarity":2},"evidence_refs":["tests.test_trusted_result_synthesis.TrustedSynthesisTests.test_malicious_dimension_remains_data"]},
+    {"case_id":"authorization/revoked_or_expired","schema_valid":true,"hard_invariants":{"receipt_integrity":true,"authorization_and_lifecycle":true,"numeric_and_unit_consistency":true,"source_traceability":true,"no_unsupported_causality":true,"safe_output":true},"core_task_complete":true,"quality":{"completeness":2,"relevance":2,"clarity":2},"evidence_refs":["tests.test_trusted_result_synthesis.TrustedSynthesisTests.test_authorization_is_checked_before_publish_and_read","tests.db.test_dataset_agent_integration.DatasetAgentDatabaseTests.test_trusted_synthesis_uses_completed_receipts_and_revocation_blocks_read"]},
+    {"case_id":"compat/legacy_agent","schema_valid":true,"hard_invariants":{"receipt_integrity":true,"authorization_and_lifecycle":true,"numeric_and_unit_consistency":true,"source_traceability":true,"no_unsupported_causality":true,"safe_output":true},"core_task_complete":true,"quality":{"completeness":2,"relevance":2,"clarity":2},"evidence_refs":["531 offline tests","190 disposable PostgreSQL tests"]}
+  ],
+  "full_offline_tests": {"passed": 531, "failed": 0},
+  "full_database_tests": {"passed": 190, "failed": 0},
+  "gate": {
+    "schema_pass_rate": 1.0,
+    "hard_pass_rate": 1.0,
+    "core_pass_rate": 1.0,
+    "semantic_quality": 1.0,
+    "verdict": "PASS"
+  },
+  "verdict": "PASS"
+}
