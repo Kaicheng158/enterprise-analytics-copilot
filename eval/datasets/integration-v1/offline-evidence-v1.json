@@ -1,0 +1,82 @@
+{
+  "evidence_version": "pv2-04f-integration-evidence-v1",
+  "suite_version": "pv2-04f-integration-eval-v1",
+  "new_paid_provider_calls": 0,
+  "evaluation_runs": 1,
+  "stability_scope": "one deterministic local run; not stochastic or production stability evidence",
+  "customer_data_used": false,
+  "public_endpoint_enabled": false,
+  "production_feature_flags_enabled": false,
+  "full_offline_tests": {"passed": 537, "failed": 0},
+  "full_database_tests": {"passed": 197, "failed": 0},
+  "common_version_refs": {
+    "principal": "local-user-principal-v1",
+    "authorization": "project-authorization-v1",
+    "dataset_storage": "dataset-storage-v1",
+    "dataset_tool_result": "dataset-analysis-tool-result-v1",
+    "dataset_plan": "dataset-plan-v1",
+    "dataset_agent": "durable-dataset-agent-v1",
+    "synthesis": "trusted-result-synthesis-v1",
+    "result_validator": "trusted-result-validator-v1",
+    "integration_gate": "pv2-04f-integration-gate-v1"
+  },
+  "common_sha_refs": {
+    "suite": "d9a7b14f7f1678af51d4778e897d4989c51d86f1323705ba2b061b21c92beaa3",
+    "policy": "2dec5137785c7d990a217cc6b7e6cfd1f866bca02d6e0cce09a4748a58b3bc2f",
+    "evaluator": "73781a6f58a73ac936a92a8e1a62b7302df39013fff0a85744023e5c71f33b40",
+    "trusted_synthesis_freeze": "ce9157e8e877356d4233ab8cc10df7ad1ed8ec8ab327cb420a06d02788a24b18",
+    "planner_v3_freeze": "80aab87fd336e2f805f4b6fe436f569341da4bad3a4af9ad87196523c7f8e135"
+  },
+  "record_defaults": {
+    "synthesizer_mode": "fake",
+    "schema_valid": true,
+    "hard_invariants": {
+      "session_identity": true,
+      "project_dataset_authorization": true,
+      "planner_validator_alignment": true,
+      "runtime_receipt_integrity": true,
+      "synthesis_grounding": true,
+      "result_cross_field_consistency": true,
+      "lifecycle_and_revocation": true,
+      "safe_output": true
+    },
+    "core_task_complete": true,
+    "quality": {"task_completion": 2, "relevance_actionability": 2, "clarity_concision": 2},
+    "provider_calls": 0,
+    "tokens": 0,
+    "provider_latency_ms": 0,
+    "estimated_cost_usd": "0"
+  },
+  "case_records": [
+    {"case_id":"chain/en_short_answer","execution_mode":"isolated_postgresql","planner_mode":"deterministic_fake","expected_outcome":"completed","observed_outcome":"completed","reproduction_steps":["authenticate synthetic owner","create private Project and CSV revision","submit validated Dataset plan","run Durable Worker and synthesize short answer"],"evidence_refs":["tests.db.test_pv2_04f_integration.PV204FIntegrationDatabaseTests.test_english_chinese_chart_report_and_no_chart_modes"]},
+    {"case_id":"chain/zh_complex_report","execution_mode":"isolated_postgresql","planner_mode":"deterministic_fake","expected_outcome":"completed","observed_outcome":"completed","reproduction_steps":["complete authorized multi-step task","request zh full_report","validate claims report and sources"],"evidence_refs":["tests.db.test_pv2_04f_integration.PV204FIntegrationDatabaseTests.test_english_chinese_chart_report_and_no_chart_modes"]},
+    {"case_id":"chart/categorical_bar","execution_mode":"isolated_postgresql","planner_mode":"deterministic_fake","expected_outcome":"completed","observed_outcome":"completed","reproduction_steps":["aggregate revenue by region","synthesize auto mode","validate bar values and calculation references"],"evidence_refs":["tests.db.test_pv2_04f_integration.PV204FIntegrationDatabaseTests.test_english_chinese_chart_report_and_no_chart_modes"]},
+    {"case_id":"chart/not_meaningful","execution_mode":"isolated_postgresql","planner_mode":"deterministic_fake","expected_outcome":"completed","observed_outcome":"completed","reproduction_steps":["calculate one scalar total","synthesize auto mode","verify short answer and no chart"],"evidence_refs":["tests.db.test_pv2_04f_integration.PV204FIntegrationDatabaseTests.test_english_chinese_chart_report_and_no_chart_modes"]},
+    {"case_id":"datasets/multiple_structures","execution_mode":"isolated_postgresql","planner_mode":"deterministic_fake","expected_outcome":"completed","observed_outcome":"completed","reproduction_steps":["persist finance CSV and people XLSX","execute separate immutable-revision tasks","compare trace revisions and sources"],"evidence_refs":["tests.db.test_pv2_04f_integration.PV204FIntegrationDatabaseTests.test_multiple_dataset_structures_and_duplicate_submission_are_isolated"]},
+    {"case_id":"runtime/idempotent_duplicate","execution_mode":"isolated_postgresql","planner_mode":"deterministic_fake","expected_outcome":"completed","observed_outcome":"completed","reproduction_steps":["submit same request and Idempotency-Key twice","run Worker once","replay completed task and count Tool calls"],"evidence_refs":["tests.db.test_pv2_04f_integration.PV204FIntegrationDatabaseTests.test_multiple_dataset_structures_and_duplicate_submission_are_isolated"]},
+    {"case_id":"runtime/crash_recovery","execution_mode":"isolated_postgresql","planner_mode":"deterministic_fake","expected_outcome":"completed","observed_outcome":"completed","reproduction_steps":["crash after first committed checkpoint","expire synthetic lease","resume remaining dependency-ready steps","synthesize Receipt-backed result"],"evidence_refs":["tests.db.test_pv2_04f_integration.PV204FIntegrationDatabaseTests.test_multistep_crash_recovery_reuses_receipts_without_tool_replay"]},
+    {"case_id":"security/session_expired","execution_mode":"isolated_postgresql","planner_mode":"deterministic_fake","expected_outcome":"blocked","observed_outcome":"blocked","reproduction_steps":["complete authorized task","expire server Session","attempt synthesis and result read"],"evidence_refs":["tests.db.test_pv2_04f_integration.PV204FIntegrationDatabaseTests.test_expired_session_cannot_synthesize_completed_task"]},
+    {"case_id":"security/cross_user_project","execution_mode":"isolated_postgresql","planner_mode":"deterministic_fake","expected_outcome":"rejected","observed_outcome":"rejected","reproduction_steps":["complete owner task","attempt read as second user","attempt submit with another Project identity"],"evidence_refs":["tests.db.test_pv2_04f_integration.PV204FIntegrationDatabaseTests.test_cross_user_project_and_revocation_race_fail_closed"]},
+    {"case_id":"security/revocation_race","execution_mode":"isolated_postgresql","planner_mode":"deterministic_fake","expected_outcome":"blocked","observed_outcome":"blocked","reproduction_steps":["complete task","revoke Project in before-publish hook","require final authorization recheck"],"evidence_refs":["tests.db.test_pv2_04f_integration.PV204FIntegrationDatabaseTests.test_cross_user_project_and_revocation_race_fail_closed"]},
+    {"case_id":"lifecycle/expired_corrupt","execution_mode":"isolated_postgresql","planner_mode":"deterministic_fake","expected_outcome":"blocked","observed_outcome":"blocked","reproduction_steps":["expire ready Asset and attempt synthesis","restore synthetic state","corrupt private blob and attempt synthesis"],"evidence_refs":["tests.db.test_pv2_04f_integration.PV204FIntegrationDatabaseTests.test_lifecycle_receipt_and_report_tampering_fail_closed"]},
+    {"case_id":"planning/wrong_intent","execution_mode":"isolated_postgresql","planner_mode":"deterministic_fake","expected_outcome":"rejected","observed_outcome":"rejected","reproduction_steps":["request revenue aggregation","provider proposes valid cost aggregation","Validator compares exact Tool input and rejects before persistence"],"evidence_refs":["tests.db.test_pv2_04f_integration.PV204FIntegrationDatabaseTests.test_wrong_planner_intent_is_rejected_before_persistence"]},
+    {"case_id":"integrity/receipt_tamper","execution_mode":"isolated_postgresql","planner_mode":"deterministic_fake","expected_outcome":"blocked","observed_outcome":"blocked","reproduction_steps":["complete task","change assembly Receipt JSON without hash","attempt synthesis through safe error boundary"],"evidence_refs":["tests.db.test_pv2_04f_integration.PV204FIntegrationDatabaseTests.test_lifecycle_receipt_and_report_tampering_fail_closed"]},
+    {"case_id":"integrity/report_tamper","execution_mode":"isolated_postgresql","planner_mode":"deterministic_fake","expected_outcome":"rejected","observed_outcome":"rejected","reproduction_steps":["build valid report","change numeric claim and source set","run independent Result Validator"],"evidence_refs":["tests.db.test_pv2_04f_integration.PV204FIntegrationDatabaseTests.test_lifecycle_receipt_and_report_tampering_fail_closed"]},
+    {"case_id":"boundary/live_planner_fake_synthesizer","execution_mode":"historical_live_reference","planner_mode":"frozen_live_deepseek_reference","expected_outcome":"completed","observed_outcome":"completed","reproduction_steps":["verify immutable PV2-04d.4 summary and SHA","reuse no provider response","run current synthesis only with FakeResultSynthesizer"],"evidence_refs":["eval/datasets/planner-v3/live-runs/pv2-04d4-live-001/summary.json","eval/datasets/planner-v3/live-runs/pv2-04d4-live-001/acceptance-review.md"],"provider_calls":4,"tokens":14044,"provider_latency_ms":5650,"estimated_cost_usd":"0.0048504"}
+  ],
+  "gate": {
+    "case_count": 15,
+    "schema_pass_rate": 1.0,
+    "hard_pass_rate": 1.0,
+    "core_pass_rate": 1.0,
+    "semantic_quality": 1.0,
+    "unexpected_failure_count": 0,
+    "verdict": "PASS"
+  },
+  "limitations": [
+    "The live Planner entry is immutable historical reference, not a new PV2-04f provider run.",
+    "All new synthesis uses FakeResultSynthesizer and synthetic data.",
+    "One Dataset Agent task still binds exactly one immutable Dataset Revision; multiple structures are evaluated as separate tasks.",
+    "This local gate is not production load, security or long-term model stability evidence."
+  ]
+}

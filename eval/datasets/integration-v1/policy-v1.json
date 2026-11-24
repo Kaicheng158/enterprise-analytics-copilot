@@ -1,0 +1,41 @@
+{
+  "policy_version": "pv2-04f-integration-policy-v1",
+  "purpose": "independent end-to-end acceptance; development-unit-test success is not sufficient evidence",
+  "hard_invariants": [
+    "server-derived Session identity and Project Dataset authorization",
+    "Planner intent and Tool arguments must pass the frozen Validator",
+    "Durable Runtime Checkpoint Receipt Lease CAS and idempotency remain consistent",
+    "published numbers units charts reports and sources match verified Tool Results",
+    "revoked expired corrupted unfinished and reconciling work cannot publish or read",
+    "cross-user cross-project paths fail closed without resource disclosure",
+    "malicious or tampered results cannot change authority or evidence",
+    "no credential storage path private content or sensitive error output"
+  ],
+  "core_task_completion": [
+    "each explicit deliverable is recognizable and backed by the bound Dataset Revision",
+    "expected safe rejection counts as completion only when the preregistered condition is rejected",
+    "multiple Dataset structures remain isolated; one task still binds exactly one immutable Revision",
+    "short answer full report chart and no-chart modes preserve task semantics"
+  ],
+  "semantic_quality": {
+    "dimensions": ["task_completion", "relevance_actionability", "clarity_concision"],
+    "scale": [0, 1, 2],
+    "normalized_threshold": 0.85,
+    "provisional": true
+  },
+  "release_gate": {
+    "schema": 1.0,
+    "hard_invariants": 1.0,
+    "core_task_completion": 1.0,
+    "semantic_quality": 0.85,
+    "unexpected_failures": 0
+  },
+  "provider_policy": {
+    "new_paid_calls": 0,
+    "planner": "deterministic Fake or Mock HTTP; PV2-04d.4 is historical live reference only",
+    "synthesizer": "FakeResultSynthesizer only"
+  },
+  "customer_data": false,
+  "public_endpoint": false,
+  "production_flags": false
+}

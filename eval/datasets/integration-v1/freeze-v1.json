@@ -1,0 +1,19 @@
+{
+  "freeze_version": "pv2-04f-integration-freeze-v1",
+  "suite_version": "pv2-04f-integration-eval-v1",
+  "policy_version": "pv2-04f-integration-policy-v1",
+  "gate_version": "pv2-04f-integration-gate-v1",
+  "suite_sha256": "d9a7b14f7f1678af51d4778e897d4989c51d86f1323705ba2b061b21c92beaa3",
+  "policy_sha256": "2dec5137785c7d990a217cc6b7e6cfd1f866bca02d6e0cce09a4748a58b3bc2f",
+  "evaluator_sha256": "73781a6f58a73ac936a92a8e1a62b7302df39013fff0a85744023e5c71f33b40",
+  "trusted_synthesis_freeze_sha256": "ce9157e8e877356d4233ab8cc10df7ad1ed8ec8ab327cb420a06d02788a24b18",
+  "dataset_planner_v3_freeze_sha256": "80aab87fd336e2f805f4b6fe436f569341da4bad3a4af9ad87196523c7f8e135",
+  "case_count": 15,
+  "schema_required": 1.0,
+  "hard_invariants_required": 1.0,
+  "core_completion_required": 1.0,
+  "semantic_quality_threshold": 0.85,
+  "unexpected_failures_allowed": 0,
+  "new_paid_provider_calls": 0,
+  "frozen_before_final_evidence": true
+}

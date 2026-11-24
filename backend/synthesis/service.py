@@ -8,7 +8,7 @@ import re
 from typing import Callable
 
 from backend.datasets.analysis_models import DatasetSourceSpan, DatasetToolResult
-from backend.planning.checkpoint_store import canonical_json_sha256
+from backend.planning.checkpoint_store import ReceiptConflict, canonical_json_sha256
 from backend.product_facade.models import (
     AnalysisReportV1,
     AnalysisSourceReference,
@@ -181,7 +181,12 @@ class TrustedResultSynthesisService:
             raise SynthesisFailure("synthesis_not_authorized") from None
 
     def _verified_receipts(self, task_id, result, execution):
-        receipts = self._store.list_receipts(task_id)
+        try:
+            receipts = self._store.list_receipts(task_id)
+        except ReceiptConflict:
+            raise SynthesisFailure("synthesis_receipt_integrity_invalid") from None
+        except Exception:
+            raise SynthesisFailure("synthesis_receipt_unavailable") from None
         if not receipts or any(item.status != "succeeded" for item in receipts):
             raise SynthesisFailure("synthesis_receipt_incomplete")
         expected_steps = tuple(step.step_id for step in execution.plan.steps)

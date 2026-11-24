@@ -1,0 +1,31 @@
+{
+  "acceptance_version": "pv2-04f-local-integration-acceptance-v1",
+  "status": "passed_local_integration_gate",
+  "suite_version": "pv2-04f-integration-eval-v1",
+  "case_count": 15,
+  "independent_database_tests": 7,
+  "new_paid_provider_calls": 0,
+  "evaluation_runs": 1,
+  "stability_scope": "one deterministic local run only",
+  "customer_data_used": false,
+  "public_endpoint_added": false,
+  "production_feature_flags_enabled": false,
+  "full_offline_tests": 537,
+  "full_database_tests": 197,
+  "gate": {
+    "schema_pass_rate": 1.0,
+    "hard_pass_rate": 1.0,
+    "core_pass_rate": 1.0,
+    "semantic_quality": 1.0,
+    "unexpected_failure_count": 0,
+    "verdict": "PASS"
+  },
+  "defects_found": [
+    {
+      "layer": "synthesis error boundary",
+      "symptom": "ReceiptConflict escaped after persisted Receipt integrity rejection",
+      "fix": "map ReceiptConflict to synthesis_receipt_integrity_invalid and distinguish receipt-store unavailability without publishing data",
+      "test_standard_changed": false
+    }
+  ]
+}

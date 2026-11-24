@@ -1,0 +1,20 @@
+{
+  "suite_version": "pv2-04f-integration-eval-v1",
+  "cases": [
+    {"id":"chain/en_short_answer","category":"end_to_end","expected":"authenticated private Dataset task completes and returns a traceable short answer"},
+    {"id":"chain/zh_complex_report","category":"end_to_end","expected":"Chinese request returns a source-backed structured report without claiming a real LLM synthesizer"},
+    {"id":"chart/categorical_bar","category":"delivery","expected":"categorical verified calculations produce a consistent bar chart"},
+    {"id":"chart/not_meaningful","category":"delivery","expected":"one scalar result does not force a meaningless chart"},
+    {"id":"datasets/multiple_structures","category":"data_scope","expected":"CSV finance and XLSX people revisions execute independently without cross-source leakage"},
+    {"id":"runtime/idempotent_duplicate","category":"durability","expected":"same request and key reuse one execution and do not replay Tools"},
+    {"id":"runtime/crash_recovery","category":"durability","expected":"multi-step execution resumes from committed Receipts without duplicate Tool effects"},
+    {"id":"security/session_expired","category":"authorization","expected":"expired Session cannot synthesize or read a previously completed task"},
+    {"id":"security/cross_user_project","category":"authorization","expected":"another user or Project cannot read or synthesize the task"},
+    {"id":"security/revocation_race","category":"authorization","expected":"revocation before publication blocks the result"},
+    {"id":"lifecycle/expired_corrupt","category":"lifecycle","expected":"expired or corrupted Dataset content cannot publish or read"},
+    {"id":"planning/wrong_intent","category":"planning_semantics","expected":"mathematically valid but request-mismatched Tool arguments are rejected before persistence"},
+    {"id":"integrity/receipt_tamper","category":"evidence","expected":"Tool or assembly output changed without matching Receipt hash is rejected"},
+    {"id":"integrity/report_tamper","category":"evidence","expected":"changed report numbers units or source references are rejected"},
+    {"id":"boundary/live_planner_fake_synthesizer","category":"capability_boundary","expected":"existing 04d.4 live Planner evidence remains historical while the 04f Synthesizer is explicitly Fake and incurs no call"}
+  ]
+}

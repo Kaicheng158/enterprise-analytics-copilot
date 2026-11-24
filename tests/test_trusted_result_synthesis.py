@@ -252,6 +252,16 @@ class TrustedSynthesisTests(unittest.TestCase):
         with self.assertRaisesRegex(SynthesisFailure, "synthesis_receipt_sequence_mismatch"):
             service.synthesize(self.request())
 
+    def test_receipt_store_unavailable_is_not_misclassified_as_tampering(self):
+        service, _ = self.service()
+
+        def unavailable(_task_id):
+            raise RuntimeError("synthetic database outage")
+
+        service._store.list_receipts = unavailable
+        with self.assertRaisesRegex(SynthesisFailure, "synthesis_receipt_unavailable"):
+            service.synthesize(self.request())
+
 
 if __name__ == "__main__":
     unittest.main()

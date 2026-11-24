@@ -146,4 +146,6 @@ PV2-04d.4 已按冻结的 1×4 方案完成真实 DeepSeek smoke：4/4 Schema、
 
 PV2-04e 已建立默认关闭的可信结果合成基础：只消费 completed Dataset Agent 的成功 Receipt 和严格 Tool Results，复用既有来源、Chart Spec 与 Report 契约，新增 additive calculation/answer/trace 外层。确定性图表选择、Adaptive Output、Fake provider interface 和独立 Result Validator 覆盖数字、单位、来源、因果、安全输出、撤权及生命周期边界。独立 11-case suite 预先冻结 Schema/Hard/Core 100% 与 Semantic Quality 85% 门槛；本地验收 531/531 offline、190/190 disposable PostgreSQL 通过，Gate PASS。该结果不包含真实 LLM、公开接口、客户数据、生产迁移或 Workspace 接线。详见 [PV2-04e 设计](pv2-04e-trusted-result-synthesis.md)。
 
+PV2-04f 建立独立于开发验收的 15-case 端到端评估：Session→Project→Revision→Planner/Validator→Durable Runtime→Tool/Receipt→Synthesis→Chart/Report→Result Validator。覆盖两个数据结构、幂等、崩溃恢复、越权/撤权/过期/损坏、错误 Planner 意图及 Receipt/报告篡改。独立测试发现并最小修复 Receipt 完整性异常未被 Synthesis 安全封装的问题，未修改 Gate 或历史证据。全量回归 537/537 offline、197/197 disposable PostgreSQL 通过。新付费调用为 0，04d.4 DeepSeek 仅作冻结历史引用，Synthesizer 仍为 Fake。详见 [PV2-04f 评估](pv2-04f-integration-evaluation.md)。
+
 编号边界：历史 **Phase 5.4a–c** 指固定销售 Planner 的受控规划与验收；**PV2-04d.1–d.3** 指 Document-first Dataset Planner/Tool Contract 路线。两者共享底层 Runtime，但不是同一阶段，也不得互换编号。
